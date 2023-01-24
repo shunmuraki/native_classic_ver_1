@@ -11,6 +11,9 @@ window.addEventListener("keydown", (e)=>{
         current = document.activeElement;
 
         if (k == "/") {
+
+        if (! screen.classList.contains("ms")) {
+
           // まずcenteringのあるverticalを取得
           // その中の一番下の要素をとれ。 
           screen.classList.add("ms");
@@ -45,13 +48,18 @@ window.addEventListener("keydown", (e)=>{
           setTimeout(() => {
             ms.value = "";
           }, 10)
+         }
+
         }
 
         if (screen.classList.contains("ms")) {
           if (k == "Escape" || k == "Enter") {
-            if (document.querySelector(".ms_area")) {
-              document.querySelector(".ms_area").remove();
-            }
+
+            setTimeout(() => {
+              if (document.querySelector(".ms_area")) {
+                document.querySelector(".ms_area").remove();
+              }
+            }, 10)
 
             // connect の場合を考慮し再取得.
             ms_adjust_target = document.querySelector(".centering").lastElementChild;

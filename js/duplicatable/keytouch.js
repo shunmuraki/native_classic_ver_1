@@ -124,6 +124,9 @@ window.addEventListener("keydown", (e)=>{
 
     if (type_signiture) {
       if ( type_signiture.indexOf('ind') != -1) {
+
+        console.log("ind");
+        
         document.querySelector(".ms_area").remove();
         if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
           document.querySelector(".centering").lastElementChild.focus();
