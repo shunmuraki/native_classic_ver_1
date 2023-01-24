@@ -61,8 +61,17 @@ document.addEventListener("keydown", (e) => {
           );
         layer_resetter();
         wheel.style.display = "none";
+        
         // * focusを返す
-        let centering = document.querySelector(".centering");
-        centering.lastElementChild.focus();
+        let next_focus;
+        if (document.querySelector(".centering").classList.contains("same")) {
+          next_focus = document.querySelector(".special_cov").lastElementChild;              
+          console.log("dddd");
+        } else {            
+          next_focus = document.querySelector(".centering").lastElementChild;
+          console.log("eeee");
+        }
+
+        next_focus.focus();
     }
 })

@@ -155,7 +155,6 @@ document.addEventListener("keydown", (e) => {
                 native_center.appendChild(new_elm);
                 native_center.style.height = 225 + "px";
             }
-            
     
             // um モード自体を終了しておく。
             um.style.display = "none";

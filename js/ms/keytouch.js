@@ -51,24 +51,33 @@ window.addEventListener("keydown", (e)=>{
          }
 
         }
+      } 
+      
+      if (screen.classList.contains("ms")) {
+        if (k == "Escape" || k == "Enter") {
 
-        if (screen.classList.contains("ms")) {
-          if (k == "Escape" || k == "Enter") {
-
-            setTimeout(() => {
-              if (document.querySelector(".ms_area")) {
-                document.querySelector(".ms_area").remove();
-              }
-            }, 10)
-
-            // connect の場合を考慮し再取得.
+          setTimeout(() => {
+            if (document.querySelector(".ms_area")) {
+              document.querySelector(".ms_area").remove();
+            }
+          }, 10)
+          
+          if (document.querySelector(".centering").classList.contains("same")) {
+            ms_adjust_target = document.querySelector(".special_cov").lastElementChild;              
+            console.log("dddd");
+          } else {            
             ms_adjust_target = document.querySelector(".centering").lastElementChild;
-            console.log(ms_adjust_target);
-            ms_adjust_target.style.top = '';
-            ms_adjust_target.focus();
-            screen.classList.remove("ms");
+            console.log("eeee");
           }
+
+          console.log(ms_adjust_target);
+
+          ms_adjust_target.focus();
+          // connect の場合を考慮し再取得.
+
+          console.log(ms_adjust_target);
+          ms_adjust_target.style.top = '';
+          screen.classList.remove("ms");
         }
-    }
-  
+      }
 })

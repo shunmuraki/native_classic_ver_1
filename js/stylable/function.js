@@ -102,7 +102,18 @@ base_3.addEventListener("click", () => {
 const style_num_changer = (f, g) => {
     // writing_area のクラス名の中を書き換えてしまっているのはどうして？？
     // あとなぜか centering がついてこない。
-    let target = document.getElementsByClassName("centering")[0].lastElementChild;
+
+    // * これを変えたらいいのかな？？
+
+    let target;
+    let centering = document.getElementsByClassName("centering")[0];
+
+    if (centering.classList.contains("same")) {
+      target = document.querySelector(".special_cov").lastElementChild;
+    } else {
+      target = centering.lastElementChild;
+    }
+    
     let current_classname = target_data(target, "styling_");
     // let used_name = Object.create(current_classname);
     // current_classname.replace(the_numpos, g);
@@ -126,7 +137,6 @@ const style_num_changer = (f, g) => {
 sl_1_1.addEventListener("click", () => {
     // style_num_changer()
     style_num_changer(0, 0);
-
     ly_2_1.style.display = "none";
 })
 sl_1_2.addEventListener("click", () => {
