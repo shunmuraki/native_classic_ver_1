@@ -46,7 +46,7 @@ window.addEventListener("keydown", (e)=>{
                     document.querySelector(".centering").lastElementChild.focus();
                 }
 
-                console.log(type_signiture);
+                // console.log(type_signiture);
                 // centering 認証を突破しています。
                 // let centering = document.querySelector(".centering");
             
@@ -283,12 +283,12 @@ window.addEventListener("keydown", (e)=>{
                     // last Run
                     let last_one = the_sp_cover_a.lastElementChild.lastElementChild.children[the_center_num - 1];
                     let finish_form = last_one.lastElementChild;
-                    let pre_v = String(finish_form.value);
-                    let new_v = pre_v.slice(0, -8);
-                    console.log(pre_v);
-                    console.log(new_v);
-                    finish_form.value = new_v;
-                    console.log(pre_v);
+                    // let pre_v = String(finish_form.value);
+                    // // let new_v = pre_v.slice(0, -8);
+                    // console.log(pre_v);
+                    // console.log(new_v);
+                    // finish_form.value = new_v;
+                    // console.log(pre_v);
         
                     finish_form.focus();
                     horizontal_stripe_checker(the_sp_cover_a);

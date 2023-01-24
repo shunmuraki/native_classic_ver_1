@@ -2,7 +2,7 @@
 // ---------- VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE 
 
 import { half_left_width } from "../base/elements.js";
-import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover } from "../base/tools.js";
+import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter } from "../base/tools.js";
 
 // *** ブロック内に iFrame を作成する関数, 引数に videoId と 挿入先のブロック
 export const block_multiable = (e, f) => {
@@ -94,11 +94,11 @@ export const make_special_cov = (e, f) => {
     let left_distance = half_left_width;
     
     special_cov.style.top = bottom_distance + "px";
-    special_cov.style.left = left_distance + "px";
+    special_cov.style.left = left_distance + 10 + "px";
 
     let height_siz = e.clientHeight - 10;
 
-    special_cov.style.width = 400 + "px";
+    special_cov.style.width = 380 + "px";
     special_cov.style.height = height_siz + "px";
 
     let the_name = "this_cov_is_" + f;
@@ -128,15 +128,15 @@ export const is_it_same_start = (e) => {
             let the_your_end = hit_target.cloneNode(true);
             
             //  editモード用に隠す.
-            hit_target.lastElementChild.style.opacity = 0;
+            // hit_target.lastElementChild.style.opacity = 0;
 
             console.log(the_your_end);
             let the_one = the_your_end.lastElementChild.cloneNode(true);
             console.log(the_one);
             // let the_one = e.lastElementChild.cloneNode(true);
-            if (e.classList.contains("actuar_st")) {
-                the_one.style.opacity = 0;
-            } 
+            // if (e.classList.contains("actuar_st")) {
+            //     the_one.style.opacity = 0;
+            // } 
             let spec = document.getElementsByClassName("this_cov_is_" + the_num)[0];
             spec.appendChild(the_one);
         }
@@ -161,7 +161,7 @@ export const is_it_same_alend = (e) => {
         let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
 
         // 隠してきたものを戻す。
-        hit_target.lastElementChild.style.opacity = 1;
+        // hit_target.lastElementChild.style.opacity = 1;
     }
 
     let the_target_left = e.previousElementSibling;
@@ -210,11 +210,17 @@ export const is_it_same_series = (e) => {
 
 
 // ** sameの途中で切っちゃった場合に対処する関数
-export const same_cutter = (e) => {
+export const same_cutter = (e, f) => {
     // * もしかして　その前の要素に end ,その次の要素にstart をつけたら済む話なのかもしかして？？
     // * 両サイドがsameであることが条件で、かつ両者が start , end は持たない場合にのみ実行する。
     let the_target_left = e.previousElementSibling;
-    let the_target_right = e.nextElementSibling;
+    let the_target_right;
+
+    if (f == "addon") {
+        the_target_right = e.nextElementSibling;
+    } else if (f == "replace") {
+        the_target_right = e;
+    }
     if (the_target_left && the_target_right) {
         console.log(the_target_left);
         console.log(the_target_right);
@@ -222,24 +228,37 @@ export const same_cutter = (e) => {
         if (the_target_left.classList.contains("same") && the_target_right.classList.contains("same")) {
             console.log("nanana");
             if (the_target_left.classList.contains("same_start") == false && the_target_left.classList.contains("same_end") == false && the_target_right.classList.contains("same_start") == false && the_target_right.classList.contains("same_end") == false) {
+                
+                let spe_cont = document.querySelector(".special_cov").lastElementChild;
                 console.log("nanana");
                 the_target_left.classList.add("same_end");
+                
+                // * 特徴的
+                the_target_left.appendChild(spe_cont);
                 the_target_right.classList.add("same_start");
 
+                let same_name = "same_num_" + target_data(the_target_right, "same_num_");
+
+                console.log(same_name);
+
                 // * same_start　以降の same_num_ を更新せなあかんやんか。
-                let sames = document.querySelectorAll(same_name);
-                let breakpoint = [].slice.call(sames).indexOf(centering);
+                let sames = document.getElementsByClassName(same_name);
+                let breakpoint = [].slice.call(sames).indexOf(the_target_right);
+                console.log(breakpoint);
                 
                 let same_data = same_data_getter();
                 same_data += 1;
                 same_data_counter(same_data);
                 
-                for (i = breakpoint; i < sames.length; i++) {
+                for (let i = sames.length - 1; i >= breakpoint; i--) {
                     let same_block = sames[i];
                     classmover(same_block, same_block, "same_num_", "remove");
                     same_block.classList.add("same_num_" + same_data);
+                    console.log(same_block);
                 }
             }
+
+            // same_startの上でこれやられたらまた違う対処になるんか？？？
         }
     }
 }

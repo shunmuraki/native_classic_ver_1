@@ -92,13 +92,17 @@ import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.j
                             // * ここがたぶん途中からの挿入である必要があって。だからindexOfの出番だと思う。
                             // ** editの場合は特別仕様にする必要がある...
                             let c_v = sps[i].lastElementChild.children[c_v_num];
-                            if (c_v.classList.contains("same")) {
-                                make_ver_fragment(c_v, "before");
-                            } else {
+                            if (c_v.classList.contains("same") || c_v.classList.contains("same_end") == false) {
+                                let addition = c_v.cloneNode(true);
+                                c_v.before(addition);
+          
+                                console.log(c_v);
+                                console.log("dup made!");
+                            } else if (c_v.classList.contains("same") == false || c_v.classList.contains("same_end")) {
+                                console.log(c_v);
+                                console.log("ver made!");
                                 make_ver_fragment(c_v, "after");
                             }
-                            console.log(c_v);
-                            console.log(c_v_num);
                         }
                     }
         
@@ -123,7 +127,7 @@ import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.j
                     // もし same の途中だったら　というケースを考える必要がある。ここでもう一度再構築が必要になる。
 
                     // SPECIAL COV
-                    same_cutter(center);
+                    same_cutter(center, "addon");
                     is_it_same_series(center);
                 }
             }

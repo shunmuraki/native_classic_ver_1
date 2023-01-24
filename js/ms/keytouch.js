@@ -1,5 +1,6 @@
 // * / が押されたら。Change イベントより.
 let screen = document.querySelector(".screen"); 
+let ms_adjust_target;
 
 window.addEventListener("keydown", (e)=>{
   
@@ -18,17 +19,27 @@ window.addEventListener("keydown", (e)=>{
           ms.classList.add("ms_area");
           ms.style.opacity = 0;
 
-          if (document.activeElement.tagName == "BODY") {
-            centering.lastElementChild.before(ms);
+          // * ここで条件分岐します。「same」クラスがついている場合はカバーが被さっているので、対象を special_cov にします.
+          if (centering.classList.contains("same")) {
+
+            ms_adjust_target = document.querySelector(".special_cov").lastElementChild;
+            ms_adjust_target.before(ms);
+
           } else {
-           
-            current.value = current.value.slice(0, -1);
-            current.blur();
-            current.before(ms);
+
+            if (document.activeElement.tagName == "BODY") {
+              centering.lastElementChild.before(ms);
+            } else {
+              current.value = current.value.slice(0, -1);
+              current.blur();
+              current.before(ms);
+            }
+
+            ms_adjust_target = centering.lastElementChild;
           }
           
-          // centering.lastElementChild.style.top = 30 + "%";
-          centering.lastElementChild.style.setProperty('top', '20%', 'important');
+          ms_adjust_target.style.setProperty('top', '20%', 'important');
+
           ms.style.opacity = 1;
           ms.focus();
           setTimeout(() => {
@@ -38,9 +49,15 @@ window.addEventListener("keydown", (e)=>{
 
         if (screen.classList.contains("ms")) {
           if (k == "Escape" || k == "Enter") {
-            // document.querySelector(".ms_area").remove();
-            document.querySelector(".centering").lastElementChild.style.top = '';
-            // document.querySelector(".centering").lastElementChild.focus();
+            if (document.querySelector(".ms_area")) {
+              document.querySelector(".ms_area").remove();
+            }
+
+            // connect の場合を考慮し再取得.
+            ms_adjust_target = document.querySelector(".centering").lastElementChild;
+            console.log(ms_adjust_target);
+            ms_adjust_target.style.top = '';
+            ms_adjust_target.focus();
             screen.classList.remove("ms");
           }
         }

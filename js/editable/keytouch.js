@@ -39,7 +39,7 @@ window.addEventListener("keydown", (e)=>{
             current.parentElement.style.height = height + "px";
         }
         
-        console.log(type_signiture);
+        // console.log(type_signiture);
         
         if ( type_signiture.indexOf('edit') != -1) {
 
@@ -209,11 +209,11 @@ window.addEventListener("keydown", (e)=>{
     
                             // [！　ud_space ができたらここは改良します　！]
                             // screen side を更新.
-                            let pre_v = screen_vers[o].lastElementChild.value;
-                            let new_v = pre_v.slice(0, -5);
-                            screen_vers[o].lastElementChild.value = new_v;
-                            // screen side も更新.
-                            imp_content.value = new_v;
+                            // let pre_v = screen_vers[o].lastElementChild.value;
+                            // let new_v = pre_v.slice(0, -5);
+                            // screen_vers[o].lastElementChild.value = new_v;
+                            // // screen side も更新.
+                            // imp_content.value = new_v;
                             the_block_into.classList.add("new_layer_centering");
                             // * マーキング
                             // scrollTOP とかこれあってんのかよ. まぁでもこんな感じ。

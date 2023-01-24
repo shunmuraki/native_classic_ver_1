@@ -1,5 +1,5 @@
 import { same_data_counter, same_data_getter, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
-import { make_ver_fragment } from "../base/function.js";
+import { make_ver_fragment, make_dup_fragment } from "../base/function.js";
 import { all_view_changer } from "../editable/function.js";
 import { block_multiable } from "./function.js";
 
@@ -59,10 +59,14 @@ export const video_load_then = (e, f) => {
     the_box.classList.add(the_name);
     
     // ** 試しに一つ、ということで。
-    make_ver_fragment(the_box, "before");
+    make_dup_fragment(the_box, "before");
     // * 即コピーする.
     // let the_copied_stable = the_box.previousElementSibling.cloneNode(true);
+
+    // * おおもとのこれの中身が textarea だったらいいのかしら？
+    // * 理想的には空で済ませたいところ。
     let the_will_copied = the_box.previousElementSibling;
+    console.log(the_will_copied);
     // * ↑ ひとつ思ったんだけど、こいつは消さなくていいの？？
     
     // *動画の尺 / 3　分のブロックが必要やな。

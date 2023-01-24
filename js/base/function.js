@@ -201,6 +201,32 @@ export const make_ver_fragment = (e, f) => {
     }
 }
 
+export const make_dup_fragment = (e, f) => {
+    const stripe_ver = document.createElement("div");
+    const stripe_hor = document.createElement("div");
+    const vertical = document.createElement("div");
+
+    stripe_ver.classList.add("stripe_ver");
+    stripe_hor.classList.add("stripe_hor");
+    vertical.classList.add("vertical");
+    vertical.classList.add("horizontal_child");
+
+    vertical.appendChild(stripe_ver);
+    vertical.appendChild(stripe_hor);
+
+    stripe_ver.style.opacity = 0;
+    stripe_hor.style.opacity = 0;
+
+    let fragment = document.createDocumentFragment();
+    fragment.append(vertical);
+
+    if (f == "before") {
+        e.before(fragment);
+    } else if (f == "after") {
+        e.after(fragment);
+    }
+}
+
 // ------------------------------------------------------------------------------------------
 
 

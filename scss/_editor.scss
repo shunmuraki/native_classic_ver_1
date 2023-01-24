@@ -297,31 +297,7 @@
                     .audio_input {
                         background-color: blue;
                     }
-                    .ms_area {
-                        position: absolute;
-                        top: 7%;
-                        left: 2%;
-                        width: 95%;
-                        height: 28px;
-                        font-size: 1.2rem;
-                        color: #ffffff;
-                        background-color: #0070D8;
-                        font-weight: 500;
-                        letter-spacing: 0.1em;
-                        font-family: "Brandon-Grotesque", sans-serif;
-                        line-height: 2;
-                        border: none;
-                        resize: none;
-                        outline: none;
-                        padding: 5px 10px 28px 10px;
-                        box-sizing: border-box;
-                        box-sizing: border-box;
-                        border-radius: 2px;
-                    }
-                    img, video {
-                        width: 100%;
-                        position: absolute;
-                        top: 0;
+                    .write_area, img, iframe {
                         padding: 30px 10px;
                     }
                 }
@@ -340,6 +316,17 @@
                         height: 225px !important;
                     }
                 }
+
+                .same {
+                    .write_area, img, iframe {
+                        opacity: 0 !important;
+                    }
+                }
+                .same_end {
+                    .write_area, img, iframe {
+                        opacity: 1 !important;
+                    }
+                }                
             }
         }
     }
@@ -424,10 +411,8 @@
 
 .write_area {
     position: absolute;
-    // top: 0px;
-    // left: 0px;
-    // text-align: center;
-    width: 70%;
+    width: 80%;
+    box-sizing: border-box;
     font-size: 1.3rem;
     color: #ffffff;
     background-color: transparent;
@@ -438,8 +423,44 @@
     border: none;
     resize: none;
     outline: none;
-    padding: 30px 10px;
+}
+
+img, iframe {
+    position: absolute;
+    top: 0;
+    object-fit: contain;
+    width: 80%;
     box-sizing: border-box;
+}
+
+.ms_area {
+    position: absolute;
+    top: 7%;
+    left: 2%;
+    width: 95%;
+    height: 28px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: #0070D8;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    font-family: "Brandon-Grotesque", sans-serif;
+    line-height: 2;
+    border: none;
+    resize: none;
+    outline: none;
+    padding: 5px 10px 28px 10px;
+    box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+.special_cov {
+    background-color: #121212;
+    z-index: 100;
+    .write_area, img, iframe {
+        padding: 25px 5px;
+    }
 }
 
 .redirect_cover {
@@ -456,7 +477,6 @@
 
     .contents {
         z-index: 300;
-
         text-align: center;
         opacity: 0;
 
@@ -481,7 +501,6 @@
     }
 
 }
-
 // *** wheel .... long, long, and long....
 
 // * あくまでエディター上の描画が目的の
