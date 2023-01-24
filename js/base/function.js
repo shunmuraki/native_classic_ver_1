@@ -1,7 +1,9 @@
 import { all_view_changer } from "../editable/function.js";
 import { is_it_same_series } from "../multiable/function.js";
-import { full_start_scrollwidth, full_end_scrollwidth } from "./elements.js";
-import { same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
+import { full_start_scrollwidth, full_end_scrollwidth, the_name_list } from "./elements.js";
+import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
+
+let magic_elms = new Array();
 
 // centering function.
 export const centering_marker = (e, f, g) => {
@@ -513,4 +515,111 @@ export const go_right = (e, f) => {
         same_change_tracer(next_one);
         is_it_same_series(next_one);
     }
+}
+
+
+// ------------- MAGIC COMMAND ---------------
+
+export const the_magic_copy = (e) => {
+
+    // * 初期化
+    magic_elms = [];   
+    // - 以降に残っているものを、動画に限らず全部コピーしての改行になる. 今のブロックが最後尾になる。innerHTMLをsessionStorageに保存しておいて最新を保つ.
+    let sp_cover = vertical_to_sp_cover(e);
+    let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
+    
+    // - 各spごとにコピーして以前のブロックをまとめて削除してラインfragmentとして変数に格納しておく。それをリストにして「the_magic_fragment」とする。
+    for (let i = 0; i < sp_cover.childElementCount; i++) {
+        let line = sp_cover.children[i].lastElementChild.children;
+        console.log(line);
+        let new_folder = new Array();
+        console.log(line.length);
+        console.log(c_num);
+        for (let o = line.length - 1; o >= c_num + 1; o--) {
+            console.log(o);
+            console.log(line[o]);
+            new_folder.unshift(line[o]);
+            line[o].remove();
+        }
+        magic_elms.push(new_folder);
+    }
+}
+
+
+export const the_magic_paste = (e) => {
+
+    console.log("de");
+    // - 最初に追加ライン分（関係性から算出）複製（全部空にする）
+    let the_line_num = magic_elms.length;
+    console.log(the_line_num);
+
+    console.log(magic_elms);
+    
+    // 現在の位置はsp_coverのラインの中の何番目?
+    let sp_cover = vertical_to_sp_cover(e);
+    let whole_line_num = sp_cover.childElementCount;
+    let current_line_num = [].slice.call(sp_cover.children).indexOf(vertical_to_sp(e));
+    let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
+
+    console.log(c_num);
+
+    let the_underground_num = whole_line_num - current_line_num;
+    let the_additional_num = the_line_num - the_underground_num;
+
+    let current_ver_num = vertical_to_hor(e).childElementCount;
+    let current_scrollleft = vertical_to_hor(e).scrollLeft;
+
+    let added_line = vertical_to_sp(e).cloneNode(true);
+    let edit_contents = added_line.lastElementChild.children;
+
+    // * 足りないラインを新しく生成
+    for (let i = 1; i < current_ver_num; i++) {
+        for (let o = 0; o < the_name_list.length; o++) {
+            classmover(edit_contents[i], edit_contents[i], the_name_list[o], "remove");
+        }
+        edit_contents[i].lastElementChild.remove();
+        let new_textarea = document.createElement("textarea");
+        new_textarea.classList.add("write_area");
+        edit_contents[i].appendChild(new_textarea);
+    }
+
+    console.log(added_line);
+
+    for (let i = 0; i < the_additional_num; i++) {
+        let final_copy = added_line.cloneNode(true);
+        sp_cover.appendChild(final_copy);
+        // scroll
+        final_copy.lastElementChild.scrollLeft = current_scrollleft;
+    }
+
+    // - そのまま中身を同じラインに追加
+    console.log(current_line_num);
+    for (let i = 0; i <= current_line_num; i++) {
+        let target_line_num = i + current_line_num;
+        console.log(i);
+        console.log(current_line_num);
+        console.log(target_line_num);
+        let will_added_elems = magic_elms[i];
+        console.log(will_added_elems);
+        for (let o = 0; o < will_added_elems.length; o++) {
+
+            console.log(sp_cover.children[target_line_num].lastElementChild.children[c_num]);
+            sp_cover.children[target_line_num].lastElementChild.children[c_num].after(will_added_elems[o]);
+        }
+    }
+
+    console.log(e.nextElementSibling);
+
+    centering_marker(e, e.nextElementSibling, "centering");
+    original_centering_checker(sp_cover, e.nextElementSibling);
+
+    // * 400 分だけスクロール.
+    all_view_changer(sp_cover, 400);
+    
+    e.blur();
+
+    if (e.nextElementSibling.lastElementChild.tagName == "TEXTAREA") {
+        e.nextElementSibling.lastElementChild.focus();
+    }
+
 }

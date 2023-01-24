@@ -1,6 +1,6 @@
 import { screen } from "../base/elements.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
-import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, vertical_stripe_checker, horizontal_stripe_checker } from "./function.js";
+import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, vertical_stripe_checker, horizontal_stripe_checker, the_magic_copy, the_magic_paste } from "./function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
 
     // 縦に要素を追加する処理
@@ -178,7 +178,16 @@ import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.j
             
             // ------------------------------------------------------------------------------------------    
             
-            // Markdowns.
+            // Magic command.
+            if(e.ctrlKey) {
+                if (k == "b") {
+                    the_magic_copy(current_vertical);
+                }
+                if (k == "j") {
+                    the_magic_paste(current_vertical);
+                }
+            }
+
         }
     });
 
