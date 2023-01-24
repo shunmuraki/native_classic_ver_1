@@ -106,7 +106,6 @@ export const classmover = (e, f, g, h) => {
     }
 } 
 
-
 export const same_data_getter = () => {
     let screen = document.querySelector(".screen");
     let the_same_data_now = Number(target_data(screen, "same_data_"));
@@ -123,6 +122,31 @@ export const same_data_counter = (e) => {
         if (classname.indexOf("same_data_") !== -1) {
             screen.classList.remove(classname);
             screen.classList.add("same_data_" + e);
+        }
+    }
+}
+
+export const same_change_tracer = (e) => {
+    console.log("trace!");
+    if (e.previousElementSibling) {
+        if (e.previousElementSibling.classList.contains("same_end")) {
+            let specon_cloned = document.querySelector(".special_cov").lastElementChild.cloneNode(true);
+            e.previousElementSibling.lastElementChild.remove();
+            e.previousElementSibling.appendChild(specon_cloned);
+            console.log("ddddsfdsfas");
+        }
+    } 
+    if (e.nextElementSibling) {
+        if (e.nextElementSibling.classList.contains("same_start")) {
+            let specon_cloned = document.querySelector(".special_cov").lastElementChild.cloneNode(true);
+
+            let same_name = "same_num_" + target_data(e.nextElementSibling, "same_num_");
+            let sames = document.getElementsByClassName(same_name);
+
+            console.log(sames[sames.length - 1]);
+        
+            sames[sames.length - 1].lastElementChild.remove();
+            sames[sames.length - 1].appendChild(specon_cloned);
         }
     }
 }

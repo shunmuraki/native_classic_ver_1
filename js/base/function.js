@@ -1,7 +1,7 @@
 import { all_view_changer } from "../editable/function.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { full_start_scrollwidth, full_end_scrollwidth } from "./elements.js";
-import { target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
+import { same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
 
 // centering function.
 export const centering_marker = (e, f, g) => {
@@ -290,7 +290,8 @@ export const go_top = (e, f) => {
 
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
-            is_it_same_series(next_one);
+            let the_special_cov = document.getElementsByClassName("special_cov")[0];
+            the_special_cov.remove();
         }
 
     } else if (f == "new_layer_centering") {
@@ -386,7 +387,8 @@ export const go_bottom = (e, f) => {
 
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
-            is_it_same_series(next_one);
+            let the_special_cov = document.getElementsByClassName("special_cov")[0];
+            the_special_cov.remove();
         }
 
     } else if (f == "new_layer_centering") {
@@ -465,6 +467,7 @@ export const go_left = (e, f) => {
 
         // SPECIAL_COV SPECIAL_COV SPECIAL_COV
         // SPECIAL_COV SPECIAL_COV SPECIAL_COV
+        same_change_tracer(next_one);
         is_it_same_series(next_one);
     }
 }
@@ -507,6 +510,7 @@ export const go_right = (e, f) => {
 
         // SPECIAL_COV SPECIAL_COV SPECIAL_COV
         // SPECIAL_COV SPECIAL_COV SPECIAL_COV
+        same_change_tracer(next_one);
         is_it_same_series(next_one);
     }
 }

@@ -144,7 +144,6 @@ import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.j
             // ------------------------------------------------------------------------------------------    
         
             // ver & hor moving func.
-        
             if(e.shiftKey) {
                 
                 if (k == "ArrowUp") {

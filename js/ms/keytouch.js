@@ -49,35 +49,29 @@ window.addEventListener("keydown", (e)=>{
             ms.value = "";
           }, 10)
          }
-
         }
-      } 
-      
-      if (screen.classList.contains("ms")) {
-        if (k == "Escape" || k == "Enter") {
 
-          setTimeout(() => {
-            if (document.querySelector(".ms_area")) {
-              document.querySelector(".ms_area").remove();
+        if (screen.classList.contains("ms")) {
+          if (k == "Escape" || k == "Enter") {
+
+            setTimeout(() => {
+              if (document.querySelector(".ms_area")) {
+                document.querySelector(".ms_area").remove();
+              }
+            }, 10)
+            
+            // ms_adjust_target.focus();
+            // connect の場合を考慮し再取得.
+            if (document.querySelector(".centering").classList.contains("same")) {
+              ms_adjust_target = document.querySelector(".special_cov").lastElementChild;
+            } else {
+              ms_adjust_target = document.querySelector(".centering").lastElementChild;
             }
-          }, 10)
-          
-          if (document.querySelector(".centering").classList.contains("same")) {
-            ms_adjust_target = document.querySelector(".special_cov").lastElementChild;              
-            console.log("dddd");
-          } else {            
-            ms_adjust_target = document.querySelector(".centering").lastElementChild;
-            console.log("eeee");
+            ms_adjust_target.style.top = '';
+            console.log(ms_adjust_target);
+            screen.classList.remove("ms");
           }
-
-          console.log(ms_adjust_target);
-
-          ms_adjust_target.focus();
-          // connect の場合を考慮し再取得.
-
-          console.log(ms_adjust_target);
-          ms_adjust_target.style.top = '';
-          screen.classList.remove("ms");
         }
-      }
+    }
+  
 })
