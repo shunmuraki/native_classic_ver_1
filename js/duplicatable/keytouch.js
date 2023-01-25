@@ -85,16 +85,24 @@ window.addEventListener("keydown", (e)=>{
                   }
               } else {
                   let c_v = sps[i].lastElementChild.children[c_v_num];
-                  if (c_v.classList.contains("same") || c_v.classList.contains("same_end") == false) {
+
+                  if (c_v.classList.contains("same")) {
+                    if (! c_v.classList.contains("same_end")) {
                       let addition = c_v.cloneNode(true);
                       c_v.before(addition);
 
                       console.log(c_v);
                       console.log("dup made!");
-                  } else if (c_v.classList.contains("same") == false || c_v.classList.contains("same_end")) {
+                        
+                    } else if (c_v.classList.contains("same_end")) {
                       console.log(c_v);
                       console.log("ver made!");
                       make_ver_fragment(c_v, "after");
+                    }
+                  } else  {
+                    console.log(c_v);
+                    console.log("ver made!");
+                    make_ver_fragment(c_v, "after");
                   }
 
               }

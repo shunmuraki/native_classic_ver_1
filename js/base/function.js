@@ -1,5 +1,5 @@
 import { all_view_changer } from "../editable/function.js";
-import { is_it_same_series } from "../multiable/function.js";
+import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { full_start_scrollwidth, full_end_scrollwidth, the_name_list } from "./elements.js";
 import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
 
@@ -298,12 +298,19 @@ export const go_top = (e, f) => {
             for (let i = 0; i < ends.length; i++) {
                 if (vertical_to_sp_cover(ends[i]).isEqualNode(pre_sibling)) {
                     let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
+
+                    console.log(the_name);
                     // * 同じ列に存在するsame_endを取得してそこから番号だけもらった上で、ループでその番号と対応するspecial_covを消すようにしたらどうだろう。
                     let the_special_cov = document.getElementsByClassName(the_name)[0];
-                    the_special_cov.remove();
+                    
+                    if (the_special_cov) {
+                        let cont = the_special_cov.lastElementChild.cloneNode(true);
+                        ends[i].lastElementChild.remove();
+                        ends[i].appendChild(cont);
+                        the_special_cov.remove();
+                    }
                 }
             }
-
         }
 
     } else if (f == "new_layer_centering") {
@@ -399,13 +406,22 @@ export const go_bottom = (e, f) => {
 
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
+            // * same_endの方を先に取得してみるか。 同時に中身を移す処理も済ませる。
             let ends = document.querySelectorAll(".same_end");
             for (let i = 0; i < ends.length; i++) {
                 if (vertical_to_sp_cover(ends[i]).isEqualNode(pre_sibling)) {
                     let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
+
+                    console.log(the_name);
                     // * 同じ列に存在するsame_endを取得してそこから番号だけもらった上で、ループでその番号と対応するspecial_covを消すようにしたらどうだろう。
                     let the_special_cov = document.getElementsByClassName(the_name)[0];
-                    the_special_cov.remove();
+                    
+                    if (the_special_cov) {
+                        let cont = the_special_cov.lastElementChild.cloneNode(true);
+                        ends[i].lastElementChild.remove();
+                        ends[i].appendChild(cont);
+                        the_special_cov.remove();
+                    }
                 }
             }
         }
@@ -575,13 +591,14 @@ export const the_magic_paste = (e) => {
     // 現在の位置はsp_coverのラインの中の何番目?
     let sp_cover = vertical_to_sp_cover(e);
     let whole_line_num = sp_cover.childElementCount;
-    let current_line_num = [].slice.call(sp_cover.children).indexOf(vertical_to_sp(e));
+
+    let current_line_num = [].slice.call(sp_cover.children).indexOf(vertical_to_sp(e)) + 1;
     let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
 
     console.log(c_num);
 
-    let the_underground_num = whole_line_num - current_line_num;
-    let the_additional_num = the_line_num - the_underground_num;
+    let bottom_line_num = current_line_num + the_line_num - 1;
+    let the_additional_num = bottom_line_num - whole_line_num;
 
     let current_ver_num = vertical_to_hor(e).childElementCount;
     let current_scrollleft = vertical_to_hor(e).scrollLeft;
@@ -589,28 +606,32 @@ export const the_magic_paste = (e) => {
     let added_line = vertical_to_sp(e).cloneNode(true);
     let edit_contents = added_line.lastElementChild.children;
 
-    let new_name_list = the_name_list.push("centering");
-    new_name_list.push("original_centering");
+    the_name_list.push("centering");
+    the_name_list.push("original_centering");
 
-    // * 足りないラインを新しく生成
-    for (let i = 1; i < current_ver_num; i++) {
-        for (let o = 0; o < new_name_list.length; o++) {
-            classmover(edit_contents[i], edit_contents[i], the_name_list[o], "remove");
-        }
-        edit_contents[i].lastElementChild.remove();
-        let new_textarea = document.createElement("textarea");
-        new_textarea.classList.add("write_area");
-        edit_contents[i].appendChild(new_textarea);
-    }
     
-    console.log(added_line);
+    // * 足りないラインを新しく生成
+    if (the_additional_num > 0) {
 
-    for (let i = 0; i < the_additional_num; i++) {
-        let final_copy = added_line.cloneNode(true);
-        sp_cover.appendChild(final_copy);
-        // scroll
-        final_copy.lastElementChild.scrollLeft = current_scrollleft;
+        for (let i = 1; i < current_ver_num; i++) {
+            for (let o = 0; o < the_name_list.length; o++) {
+                classmover(edit_contents[i], edit_contents[i], the_name_list[o], "remove");
+            }
+            edit_contents[i].lastElementChild.remove();
+            let new_textarea = document.createElement("textarea");
+            new_textarea.classList.add("write_area");
+            edit_contents[i].appendChild(new_textarea);
+        }
+        
+        console.log(added_line);
+        for (let i = 0; i < the_additional_num; i++) {
+            let final_copy = added_line.cloneNode(true);
+            sp_cover.appendChild(final_copy);
+            // scroll
+            final_copy.lastElementChild.scrollLeft = current_scrollleft;
+        }
     }
+
 
     // - そのまま中身を同じラインに追加
     console.log(current_line_num);
@@ -618,54 +639,65 @@ export const the_magic_paste = (e) => {
     // * i が current_line_num -- the_line_num + current_line_num の間だったらmagic_elemsから挿入, 一応same_cutterとかやっとく必要ある？ is_itとかもさ.
     // * i がその範囲の外にあったら、 same クラスを持っているかどうかで判定して、持っていたらひとつ前のを複製、持っていなかったらmake_ver_fragment()するといいのかな.
 
+    console.log(sp_cover.childElementCount);
 
-    for (let i = 0; i <= sp_cover.childElementCount; i++) {
+    for (let i = 1; i <= sp_cover.childElementCount; i++) {
 
-        if (i > current_line_num || i < the_line_num + current_line_num) {
-
-            let target_line_num = i + current_line_num;
-            console.log(i);
-            console.log(current_line_num);
-            console.log(target_line_num);
-            let will_added_elems = magic_elms[i];
-            console.log(will_added_elems);
-            for (let o = 0; o < will_added_elems.length; o++) {
-    
-                console.log(sp_cover.children[target_line_num].lastElementChild.children[c_num]);
-    
-                // * そもそも after で純に追加していくと順番変わりそうじゃない？
-                // * それを考慮して c_num + o に after するようにした. これでどうだろう.
-                sp_cover.children[target_line_num].lastElementChild.children[c_num + o].after(will_added_elems[o]);
-
-            }
-
-        } else {
+        if (i < current_line_num || i > bottom_line_num) {
 
             // * ---------    ここまでですべての挿入は終わっていて、あとは数合わせ、っていう段階.   --------------------------------
     
             // * 追加分のブロックも増やさないといけないでしょう？どこに挿入されるかによって、挿入先は異なってくるが。sameとかだったら大変だぞ....
             // * 通常の追加分は make_ver_fragment() でいいわけやんか.
             // * will_added_emls 分のブロックをすべてのsp-horに追加することは決まっている.
-            for (let o = 0; o < will_added_elems.length; o++) {
+            for (let o = 0; o < magic_elms[0].length; o++) {
             
-                let c_v = sp_cover.children[i].lastElementChild.children[c_num + o];
-    
-                if (c_v.classList.contains("same") || c_v.classList.contains("same_end") == false) {
-                    let addition = c_v.cloneNode(true);
-                    c_v.before(addition);
-                } else if (c_v.classList.contains("same") == false || c_v.classList.contains("same_end")) {
+                let c_v = sp_cover.children[i - 1].lastElementChild.children[c_num + o];
+
+                if (c_v.classList.contains("same")) {
+                    if (! c_v.classList.contains("same_end")) {
+                        // a
+                        let addition = c_v.cloneNode(true);
+                        c_v.before(addition);
+                    } else if (c_v.classList.contains("same_end")) {
+                        //b
+                        make_ver_fragment(c_v, "after");
+                    }
+                } else  {
+                    // b
                     make_ver_fragment(c_v, "after");
                 }
+            }
+
+        } else {
+            console.log(i);
+            console.log(current_line_num);
+            console.log(magic_elms);
+
+            console.log(i - current_line_num);
+
+            let will_added_elems = magic_elms[i - current_line_num];
+            
+            console.log(will_added_elems);
+            for (let o = 0; o < will_added_elems.length; o++) {
+    
+                console.log(sp_cover.children[i - 1].lastElementChild.children[c_num]);
+    
+                // * そもそも after で純に追加していくと順番変わりそうじゃない？
+                // * それを考慮して c_num + o に after するようにした. これでどうだろう.
+                sp_cover.children[i - 1].lastElementChild.children[c_num + o].after(will_added_elems[o]);
+
             }
     
         }
 
     }
 
-    let center = e.nextElementSibling;
+    let old_center = document.querySelector(".centering");
+    let center = old_center.nextElementSibling;
 
-    centering_marker(e, center, "centering");
-    original_centering_checker(sp_cover, e.nextElementSibling);
+    centering_marker(old_center, center, "centering");
+    original_centering_checker(sp_cover, center);
     // [[[ --- new_setup --- ]]]
     original_centering_checker(sp_cover, center);
     vertical_stripe_checker(sp_cover);
@@ -679,11 +711,9 @@ export const the_magic_paste = (e) => {
 
     // * 400 分だけスクロール.
     all_view_changer(sp_cover, 400);
-    
-    e.blur();
 
-    if (e.nextElementSibling.lastElementChild.tagName == "TEXTAREA") {
-        e.nextElementSibling.lastElementChild.focus();
+    if (center.lastElementChild.tagName == "TEXTAREA") {
+        center.lastElementChild.focus();
     }
 
 }

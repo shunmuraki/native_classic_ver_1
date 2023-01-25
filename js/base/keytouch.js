@@ -92,13 +92,19 @@ import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.j
                             // * ここがたぶん途中からの挿入である必要があって。だからindexOfの出番だと思う。
                             // ** editの場合は特別仕様にする必要がある...
                             let c_v = sps[i].lastElementChild.children[c_v_num];
-                            if (c_v.classList.contains("same") || c_v.classList.contains("same_end") == false) {
-                                let addition = c_v.cloneNode(true);
-                                c_v.before(addition);
-          
-                                console.log(c_v);
-                                console.log("dup made!");
-                            } else if (c_v.classList.contains("same") == false || c_v.classList.contains("same_end")) {
+                            console.log(c_v);
+                            if (c_v.classList.contains("same")) {
+                                if (! c_v.classList.contains("same_end")) {
+                                    let addition = c_v.cloneNode(true);
+                                    c_v.before(addition);
+                                    console.log(c_v);
+                                    console.log("dup made!");
+                                } else if (c_v.classList.contains("same_end")) {
+                                    console.log(c_v);
+                                    console.log("ver made!");
+                                    make_ver_fragment(c_v, "after");
+                                }
+                            } else  {
                                 console.log(c_v);
                                 console.log("ver made!");
                                 make_ver_fragment(c_v, "after");
@@ -180,10 +186,10 @@ import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.j
             
             // Magic command.
             if(e.ctrlKey) {
-                if (k == "b") {
+                if (k == "c") {
                     the_magic_copy(current_vertical);
                 }
-                if (k == "j") {
+                if (k == "v") {
                     the_magic_paste(current_vertical);
                 }
             }
