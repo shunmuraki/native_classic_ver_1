@@ -26,7 +26,6 @@ document.addEventListener("keydown", (e) => {
             }
             
             screen.classList.add("um");
-            console.log(type_signiture);
             current.value = current.value.slice(0, -4);
             current.blur();
 
@@ -36,7 +35,6 @@ document.addEventListener("keydown", (e) => {
     }
 
     // screen に um クラスを付与した上で。
-
     if (screen.classList.contains("um")) {
 
         if (k == "Escape") {
@@ -108,8 +106,6 @@ document.addEventListener("keydown", (e) => {
                             if (! the_um_current.previousElementSibling.classList.contains("panc")) {
                                 audio_list.scrollLeft += 400;
                                 the_um_current.classList.remove("um_centering");
-                                console.log(the_um_current);
-                                console.log(the_um_current.previousElementSibling);
                                 the_um_current.previousElementSibling.classList.add("um_centering");
                             }
                         }
@@ -120,7 +116,6 @@ document.addEventListener("keydown", (e) => {
                             if (! the_um_current.nextElementSibling.classList.contains("panc")) {
                                 video_list.scrollLeft += 400;
                                 // ひっくり返ってるかも。
-                                console.log(the_um_current);
                                 the_um_current.classList.remove("um_centering");
                                 the_um_current.nextElementSibling.classList.add("um_centering");
                             }
@@ -137,16 +132,12 @@ document.addEventListener("keydown", (e) => {
         // * なぜか UM がクラスとして挿入される前の時点でもenter が実行されてしまう。// 上下を変えたらいいのかしら
     
         if (k == "Enter") { 
-            let native_center = document.querySelector(".centering");
-    
+            let native_center = document.querySelector(".centering");    
             let um_centering = document.querySelector(".um_centering");
-            console.log(um_centering);
 
             if (um_centering.lastElementChild.tagName == "IFRAME") {
                 // どうやっても多分アクセス違反になるそうなので、別の方法を遠回りではあるが考える必要がある。
                 let the_uri = target_data(um_centering, "this_yt_id_");
-                // console.log("現在のiframeのURLは", url);
-                console.log(the_uri);
                 // ** multi の keytouch と同じことをするだけ。話はシンプルなのに”感じ”で難しく受け止めようとするな.
                 video_load_then(the_uri, native_center.lastElementChild);
             } else {

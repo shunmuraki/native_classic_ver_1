@@ -46,16 +46,13 @@ export function grab_auto(e) {
             partner_stripe = all_stripe[i];
         }
     }
+    
     // もうひとつのセットとなるpointerを取得
-
     // いやこんな取り方じゃダメでしょ。ちゃんと trigger_pointer が所属している orange_pointer_spaceとかから検索しないと。
     let partner_pointer = null;
 
     let pointer_space = e.parentElement;
     let all_pointer = pointer_space.children;
-
-    console.log(all_pointer);
-
     
     for (let i = 0; i < all_pointer.length; i++) {
         if (trigger_pointer.classList.contains("orange_pointer_s")) {
@@ -68,17 +65,7 @@ export function grab_auto(e) {
             }
         }
     }
-    // if (trigger_pointer.classList.contains("pointer_s")) {
-    //   all_pointer_oppo = document.querySelectorAll(".pointer_f");
-    // } else if (trigger_pointer.classList.contains("pointer_f")) {
-    //     all_pointer_oppo - document.querySelectorAll(".pointer_s");
-    // }
-    // for (let i = 0; i < list.length; i++) {
-    //     if (all_pointer_oppo[i].classList.contains(the_key_classname)) {
-    //         var partner_pointer = all_pointer_oppo[i];
-    //     }
-    // }
-    // 仕上げ
+
     const grabed = [partner_stripe, partner_pointer];
     return grabed;
 }
@@ -127,7 +114,6 @@ export const same_data_counter = (e) => {
 }
 
 export const same_change_tracer = (e) => {
-    console.log("trace!");
     if (e.previousElementSibling) {
         if (e.previousElementSibling.classList.contains("same_end")) {
 
@@ -138,7 +124,6 @@ export const same_change_tracer = (e) => {
                 let specon_cloned = special_cov.lastElementChild.cloneNode(true);
                 e.previousElementSibling.lastElementChild.remove();
                 e.previousElementSibling.appendChild(specon_cloned);
-                console.log("ddddsfdsfas");
             }
 
         }
@@ -150,12 +135,11 @@ export const same_change_tracer = (e) => {
             let special_cov = document.getElementsByClassName(the_name)[0];
 
             if (special_cov) {
+                
                 let specon_cloned = special_cov.lastElementChild.cloneNode(true);
     
                 let same_name = "same_num_" + target_data(e.nextElementSibling, "same_num_");
                 let sames = document.getElementsByClassName(same_name);
-    
-                console.log(sames[sames.length - 1]);
             
                 sames[sames.length - 1].lastElementChild.remove();
                 sames[sames.length - 1].appendChild(specon_cloned);

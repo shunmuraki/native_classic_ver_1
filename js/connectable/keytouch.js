@@ -45,10 +45,6 @@ window.addEventListener("keydown", (e)=>{
                 if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
                     document.querySelector(".centering").lastElementChild.focus();
                 }
-
-                // console.log(type_signiture);
-                // centering 認証を突破しています。
-                // let centering = document.querySelector(".centering");
             
                 // 移転先（ひとつ上の sp_cover) 
                 let the_sp_cover_a = current_sp_cover.previousElementSibling;
@@ -93,8 +89,6 @@ window.addEventListener("keydown", (e)=>{
                         if (i != 0) {
                             if (inc_last_children[i].classList.contains("original_centering")) {
                                 original_centering_num = i;
-                                console.log("waaaaaa");
-                                console.log(inc_last_children[i]);
                             }  
                         }
                     }
@@ -106,15 +100,7 @@ window.addEventListener("keydown", (e)=>{
                     // それぞれの centering まで　/ centering から　のブロックの数を調べて、それぞれの最大値を足したものに - 1をします。
                     let the_triumph_tops = 0;
                     let the_triumph_bottoms = 0;
-                
-                    // TESTTESTTESTTEST
-                    console.log(the_centering_num);
-                    console.log(original_centering_num); // *
-                    console.log(the_current_tops);
-                    console.log(the_current_bottoms); 
-                    console.log(the_original_tops); // *
-                    console.log(the_original_bottoms); 
-                
+                 
                     if (the_current_tops > the_original_tops) {
                         the_triumph_tops = the_current_tops;
                     } else {
@@ -128,16 +114,9 @@ window.addEventListener("keydown", (e)=>{
                     }
                 
                     let the_triumph = the_triumph_tops + the_triumph_bottoms;
-                    // で、次はこの番号で無理やり 各 sp の hor に対してのループの中でブロックにループをかけて「なかったらブロック作れ」「そこに textarea詰める」の処理を施す
-                    // * ↑ この時 original_centering との差分を考慮したらいいよ（新たに追加するもの以外についてはブロックの数は全部揃っているので、端から端まできっちりと。）
-                    // let the_sp_gap = original_centering_num - the_centering_num;
-                    // let the_content_disi = o - the_sp_gap;
                     let the_sp_gap = original_centering_num - the_centering_num;
                     let the_top_less = the_triumph_tops - the_original_tops;
                     let the_bottom_less = the_triumph_bottoms - the_original_bottoms;
-                
-                    console.log("the_top_less" + the_top_less);
-                    console.log("the_bottom_less" + the_bottom_less);
                 
                     for (let i = 0; i < the_sp_cover_a.children.length; i++) {
                         // あとで　orange_space を考慮する必要があるが、テストのために。
@@ -148,13 +127,11 @@ window.addEventListener("keydown", (e)=>{
                                 // adjuster を飛ばして。
                                 const first_block = the_sp_cover_a.children[i].lastElementChild.children[1];
         
-                                console.log(first_block);
                                 //　先頭より小さかったら
                                 make_ver_fragment(first_block, "before");
                             }
                             for (let o = 0; o < the_bottom_less; o++) {
                                 let last_block = the_sp_cover_a.children[i].lastElementChild.lastElementChild;
-                                console.log(last_block);
                                 // お尻より大きかったら
                                 make_ver_fragment(last_block, "after");
                             }
@@ -171,16 +148,14 @@ window.addEventListener("keydown", (e)=>{
 
                     for (let i = 0; i < children_block.length; i++) {
                         // textarea も含めた「総詰め直し
-                        console.log("triumph_tops" + the_triumph_tops);
-                        console.log("endpoint" + the_this_loop_endpoint);
                         if (i > 0) {
 
                             // クラス動かしまくるゾーン
                             for (let o = 0; o < the_name_list.length; o++) {
                                 classmover(children_block[i], children_block[i], the_name_list[o], "remove");
                             }
+                            
                             // クラス動かしまくるゾーン
-    
                             children_block[i].lastElementChild.remove();
                             // なんかすごいばかっぽいけど。。
                             let new_textarea = document.createElement("textarea");
@@ -194,30 +169,18 @@ window.addEventListener("keydown", (e)=>{
                                 if (the_content_disi > 0) { 
                                     // triumph_tops - the_centering_num が current_horizontal の相対的 0 にあたる気がする。
                                     // したがってこっちの 1 が、current_horizontal[i - triumph_tops + the_centering_num + 1]になりそう...???
-                                    console.log(current_horizontal.children[the_content_disi]);
-                                    console.log("high");
-               
                                     
                                     let old_block = current_horizontal.children[the_content_disi];
-                                    console.log(old_block);
                                     let classies = old_block.classList;
-                                    console.log("nankagomen");
 
-                                    let the_content_embed = old_block.lastElementChild.cloneNode(true);
-
-                                    // console.log(classies);
-
-                                    // for (let o = 0; 0 < classies.length; o++) {
-                                    //     children_block[i].classList.add(classies[o]);
-                                    // }
+                                    let the_content_embed = old_block.lastElementChild.cloneNode(true);                                
                                     
                                     // クラス動かしまくるゾーン
                                     for (let o = 0; o < the_name_list.length; o++) {
                                         classmover(old_block, children_block[i], the_name_list[o], "add");
-                                        console.log("nu");
                                     }
-                                    // クラス動かしまくるゾーン
                                     
+                                    // クラス動かしまくるゾーン
                                     children_block[i].lastElementChild.remove();
                                     // centering 引き継ぎ
                                     if (current_horizontal.children[the_content_disi].classList.contains("centering")) {
@@ -240,6 +203,7 @@ window.addEventListener("keydown", (e)=>{
                     
                     let the_center_num_b = [].slice.call(current_horizontal.children).indexOf(current_vertical) + 1;
                     let the_default_leng = current_horizontal.scrollLeft;
+                    
                     // 最後に　今の sp_cover をゴリっと削除します。
                     current_sp_cover.remove();
                 
@@ -248,21 +212,13 @@ window.addEventListener("keydown", (e)=>{
                     let latest_hor = vertical_to_hor(center);
                     let the_center_num = [].slice.call(latest_hor.children).indexOf(center) + 1;
                     let the_b_a_gap = the_center_num - the_center_num_b;
-                    console.log(the_b_a_gap);
+                    
                     let the_redefault_scroll = the_b_a_gap * 400;
                     for (let i = 0; i < the_sp_cover_a.children.length; i++) {
                         // ブロックのループ
                         let blocks = the_sp_cover_a.children[i].lastElementChild.children;
                         the_sp_cover_a.children[i].lastElementChild.scrollLeft = the_default_leng + the_redefault_scroll;
-                        // ついでに ver も同期しておくわけ。
-                        // for (let o = 0; o < blocks.length; o++) {
-                        //     if (o != 0) {
-                        //         // adjuster に色がつくのを避ける
-                        //         v_stripe_op(blocks[o]);
-                        //     }
-                        // }
-                        console.log(the_center_num);
-                        console.log(blocks.length);
+    
                 
                         let right_side_blocks = blocks.length - the_center_num;
                         // マイナスになる可能性もあって、でもループは回さないといけないので。
@@ -283,16 +239,10 @@ window.addEventListener("keydown", (e)=>{
                     // last Run
                     let last_one = the_sp_cover_a.lastElementChild.lastElementChild.children[the_center_num - 1];
                     let finish_form = last_one.lastElementChild;
-                    // let pre_v = String(finish_form.value);
-                    // // let new_v = pre_v.slice(0, -8);
-                    // console.log(pre_v);
-                    // console.log(new_v);
-                    // finish_form.value = new_v;
-                    // console.log(pre_v);
         
                     finish_form.focus();
                     horizontal_stripe_checker(the_sp_cover_a);
-                }
+                  }
                 }
             
         }

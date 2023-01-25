@@ -12,43 +12,43 @@ window.addEventListener("keydown", (e)=>{
 
         if (k == "/") {
 
-        if (! screen.classList.contains("ms")) {
+          if (! screen.classList.contains("ms")) {
 
-          // まずcenteringのあるverticalを取得
-          // その中の一番下の要素をとれ。 
-          screen.classList.add("ms");
-          let centering = document.querySelector(".centering");
-          let ms = document.createElement("textarea");
-          ms.classList.add("ms_area");
-          ms.style.opacity = 0;
+            // まずcenteringのあるverticalを取得
+            // その中の一番下の要素をとれ。 
+            screen.classList.add("ms");
+            let centering = document.querySelector(".centering");
+            let ms = document.createElement("textarea");
+            ms.classList.add("ms_area");
+            ms.style.opacity = 0;
 
-          // * ここで条件分岐します。「same」クラスがついている場合はカバーが被さっているので、対象を special_cov にします.
-          if (centering.classList.contains("same")) {
+            // * ここで条件分岐します。「same」クラスがついている場合はカバーが被さっているので、対象を special_cov にします.
+            if (centering.classList.contains("same")) {
 
-            ms_adjust_target = document.querySelector(".special_cov").lastElementChild;
-            ms_adjust_target.before(ms);
+              ms_adjust_target = document.querySelector(".special_cov").lastElementChild;
+              ms_adjust_target.before(ms);
 
-          } else {
-
-            if (document.activeElement.tagName == "BODY") {
-              centering.lastElementChild.before(ms);
             } else {
-              current.value = current.value.slice(0, -1);
-              current.blur();
-              current.before(ms);
+
+              if (document.activeElement.tagName == "BODY") {
+                centering.lastElementChild.before(ms);
+              } else {
+                current.value = current.value.slice(0, -1);
+                current.blur();
+                current.before(ms);
+              }
+
+              ms_adjust_target = centering.lastElementChild;
             }
+            
+            ms_adjust_target.style.setProperty('top', '20%', 'important');
 
-            ms_adjust_target = centering.lastElementChild;
+            ms.style.opacity = 1;
+            ms.focus();
+            setTimeout(() => {
+              ms.value = "";
+            }, 10)
           }
-          
-          ms_adjust_target.style.setProperty('top', '20%', 'important');
-
-          ms.style.opacity = 1;
-          ms.focus();
-          setTimeout(() => {
-            ms.value = "";
-          }, 10)
-         }
         }
 
         if (screen.classList.contains("ms")) {
@@ -67,8 +67,7 @@ window.addEventListener("keydown", (e)=>{
             } else {
               ms_adjust_target = document.querySelector(".centering").lastElementChild;
             }
-            ms_adjust_target.style.top = '';
-            console.log(ms_adjust_target);
+            ms_adjust_target.style.top = ''; 
             screen.classList.remove("ms");
           }
         }

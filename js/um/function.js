@@ -2,17 +2,16 @@ import { half_left_width } from "../base/elements.js";
 import { block_multiable } from "../multiable/function.js";
 
 var adjust_box = document.querySelector(".centering");
-
 let pointer_position_top = adjust_box.getBoundingClientRect().top;
 
 var video_list = document.querySelector(".um_video");
 var audio_list = document.querySelector(".um_audio");
-
 var video_null = video_list.lastElementChild;
 var audio_null = audio_list.lastElementChild;
 
 video_list.style.top = pointer_position_top + "px";
 audio_list.style.top = pointer_position_top + "px";
+
 // video below
 var the_video_width = 400 * 10;
 video_list.scrollLeft = the_video_width;
@@ -22,12 +21,10 @@ var the_audio_width = - 400 * 10;
 audio_list.scrollLeft = the_audio_width;
 
 // --------------- この辺りは「seeモード」用の移動funcとして捉えてね --------
-
 export function video_street_scroll() {
   var before_choose = document.querySelector(".um_centering");
   before_choose.classList.remove("um_centering");
   var after_choose = video_list.lastElementChild.previousElementSibling;
-  console.log(after_choose);
   after_choose.classList.add("um_centering");
 
   video_null.style.opacity = 1;
@@ -41,7 +38,6 @@ export function audio_street_scroll() {
   var before_choose = document.querySelector(".um_centering");
   before_choose.classList.remove("um_centering");
   var after_choose = audio_list.lastElementChild.previousElementSibling;
-  console.log(after_choose);
   after_choose.classList.add("um_centering");
   video_null.style.opacity = 0;
   audio_null.style.opacity = 1;
@@ -61,9 +57,7 @@ export function clear_umdisplay() {
   native_center.lastElementChild.focus();
 }
 
-
 // * datasets.
-
 let yt_videolist_ted = ["ddJvVf1eqwM", "O0CsyfiQr34", "ZHhmi2bS0hU", "iLc27nj8KrU", "hVclObff6fc", "H-vvS1zonI0", "ESAaz9v4mSU", "CrGpipgcfi4", "oQ1FDFMdYjM", "9OLxBvLvCoM", "441nwncPN28", "YddEiDSuOrY", "OlgcaYAO5VM", "5cbCYwgQkTE", "j-rw3x8VZxA", "abF_EfprTIE", "9XGm_uHit5g", "uEATpbQ9md4", "KYK6Tfb0snQ", "mYS2CcIdW1M"];
 
 // * なんかデータセットでループして、動的にDivを作った方が賢いような気がしてきたのでそうしてみます。
@@ -90,8 +84,6 @@ for (let i = 0; i < 10; i++) {
   audio_panc.after(container);
 }
 
-// 最初は image_list の null_f
-// image_null.classList.add("um_centering");
 // * デフォルトの設定.
 audio_list.lastElementChild.classList.add("um_centering");
 

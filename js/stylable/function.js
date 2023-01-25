@@ -4,6 +4,7 @@ const pointer = document.querySelector(".pointer_and_wheel");
 const wheel = document.querySelector(".wheel");
 const the_pointer = document.querySelector(".pointer");
 const layer_base = document.querySelector(".layer_1");
+
 // layers
 const base_1 = document.querySelector(".base_1");
 const base_2 = document.querySelector(".base_2");
@@ -46,9 +47,6 @@ export const wheel_seton = () => {
     let the_focus_top = centering_box.getBoundingClientRect().top;
     let the_focus_left = centering_box.getBoundingClientRect().left;
     
-    console.log(the_focus_top);
-    console.log(the_focus_left);
-    
     pointer.style.top = the_focus_top - 10 + "px";
     pointer.style.left = the_focus_left - 10 + "px";
 
@@ -67,8 +65,7 @@ export const wheel_seton = () => {
           { transform: 'rotate(270)', },
           { transform: 'rotate(360deg) ' }
         ], {
-          duration: 1000,
-        //   delay: 500,
+          duration: 1000,        
           fill: "both"
         }
       );
@@ -82,9 +79,7 @@ export const wheel_seton = () => {
           fill: "both"
         }
       );
-
 }
-
 
 base_1.addEventListener("click", () => {
     // * ここが開店したら可愛い
@@ -102,9 +97,7 @@ base_3.addEventListener("click", () => {
 const style_num_changer = (f, g) => {
     // writing_area のクラス名の中を書き換えてしまっているのはどうして？？
     // あとなぜか centering がついてこない。
-
     // * これを変えたらいいのかな？？
-
     let target;
     let centering = document.getElementsByClassName("centering")[0];
 
@@ -115,73 +108,58 @@ const style_num_changer = (f, g) => {
     }
     
     let current_classname = target_data(target, "styling_");
-    // let used_name = Object.create(current_classname);
-    // current_classname.replace(the_numpos, g);
     let the_numpos = f * 2;
     
     let a = current_classname.slice(0, the_numpos);
     let c = current_classname.slice(the_numpos + 1);
-    
-    console.log(a);
-    console.log(c);
-    
+
     let final_name = "styling_" + a + g + c;
-    
-    console.log(final_name);
     classmover(target, target, "styling_", "remove");
     target.classList.add(final_name);
 }
 
-// --   height処理ゾーン  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 sl_1_1.addEventListener("click", () => {
-    // style_num_changer()
     style_num_changer(0, 0);
     ly_2_1.style.display = "none";
 })
+
 sl_1_2.addEventListener("click", () => {
-    // style_num_changer()
     style_num_changer(0, 1);
     ly_2_1.style.display = "none";
 })
+
 sl_1_3.addEventListener("click", () => {
-    // style_num_changer()
     style_num_changer(0, 2);
     ly_2_1.style.display = "none";
 })
 
-// --   height処理ゾーン  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 sl_2_1.addEventListener("click", () => {
-    // style_num_changer()
     style_num_changer(1, 0);
     ly_2_2.style.display = "none";
 })
 
 sl_2_2.addEventListener("click", () => {
-    // style_num_changer()
     style_num_changer(1, 1);
     ly_2_2.style.display = "none";
 })
 
 sl_2_3.addEventListener("click", () => {
-    // style_num_changer()
     style_num_changer(1, 2);
     ly_2_2.style.display = "none";
 })
 
-// --   height処理ゾーン  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 sl_3_1.addEventListener("click", () => {
-    // style_num_changer()
-    console.log("ssss");
     style_num_changer(2, 0);
     ly_2_3.style.display = "none";
 })
 
 sl_3_2.addEventListener("click", () => {
-    // style_num_changer()
-    console.log("bbbbb");
     style_num_changer(2, 1);
     ly_2_3.style.display = "none";
 })

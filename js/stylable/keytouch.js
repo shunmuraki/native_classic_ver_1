@@ -22,7 +22,7 @@ document.addEventListener("keydown", (e) => {
             if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
                 document.querySelector(".centering").lastElementChild.focus();
             }
-            console.log(type_signiture);
+            
             wheel_seton();
             current.value = current.value.slice(0, -6);
             current.blur();
