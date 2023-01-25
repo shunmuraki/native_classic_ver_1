@@ -103,6 +103,7 @@ export const make_special_cov = (e, f) => {
 
     let the_name = "this_cov_is_" + f;
     special_cov.classList.add("special_cov");
+    special_cov.classList.add("cov_active");
     special_cov.classList.add(the_name);
 
     let script_elem = document.getElementsByTagName('script')[0];
@@ -151,17 +152,11 @@ export const is_it_same_alend = (e) => {
     // * となりが same_endだったら.
     // special_cov の削除.
     function the_state(e) {
-        let the_t = "same_num_" + target_data(e, "same_num_");
         let the_name = "this_cov_is_" + target_data(e, "same_num_");
         let the_special_cov = document.getElementsByClassName(the_name)[0];
-        console.log(the_special_cov);
         if (the_special_cov) {
             the_special_cov.remove();
         }
-        let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
-
-        // 隠してきたものを戻す。
-        // hit_target.lastElementChild.style.opacity = 1;
     }
 
     let the_target_left = e.previousElementSibling;

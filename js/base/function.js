@@ -292,8 +292,18 @@ export const go_top = (e, f) => {
 
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
-            let the_special_cov = document.getElementsByClassName("special_cov")[0];
-            the_special_cov.remove();
+
+            // * same_endの方を先に取得してみるか。
+            let ends = document.querySelectorAll(".same_end");
+            for (let i = 0; i < ends.length; i++) {
+                if (vertical_to_sp_cover(ends[i]).isEqualNode(pre_sibling)) {
+                    let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
+                    // * 同じ列に存在するsame_endを取得してそこから番号だけもらった上で、ループでその番号と対応するspecial_covを消すようにしたらどうだろう。
+                    let the_special_cov = document.getElementsByClassName(the_name)[0];
+                    the_special_cov.remove();
+                }
+            }
+
         }
 
     } else if (f == "new_layer_centering") {
@@ -389,8 +399,15 @@ export const go_bottom = (e, f) => {
 
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
             // SPECIAL_COV SPECIAL_COV SPECIAL_COV
-            let the_special_cov = document.getElementsByClassName("special_cov")[0];
-            the_special_cov.remove();
+            let ends = document.querySelectorAll(".same_end");
+            for (let i = 0; i < ends.length; i++) {
+                if (vertical_to_sp_cover(ends[i]).isEqualNode(pre_sibling)) {
+                    let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
+                    // * 同じ列に存在するsame_endを取得してそこから番号だけもらった上で、ループでその番号と対応するspecial_covを消すようにしたらどうだろう。
+                    let the_special_cov = document.getElementsByClassName(the_name)[0];
+                    the_special_cov.remove();
+                }
+            }
         }
 
     } else if (f == "new_layer_centering") {
@@ -572,9 +589,12 @@ export const the_magic_paste = (e) => {
     let added_line = vertical_to_sp(e).cloneNode(true);
     let edit_contents = added_line.lastElementChild.children;
 
+    let new_name_list = the_name_list.push("centering");
+    new_name_list.push("original_centering");
+
     // * 足りないラインを新しく生成
     for (let i = 1; i < current_ver_num; i++) {
-        for (let o = 0; o < the_name_list.length; o++) {
+        for (let o = 0; o < new_name_list.length; o++) {
             classmover(edit_contents[i], edit_contents[i], the_name_list[o], "remove");
         }
         edit_contents[i].lastElementChild.remove();
@@ -582,7 +602,7 @@ export const the_magic_paste = (e) => {
         new_textarea.classList.add("write_area");
         edit_contents[i].appendChild(new_textarea);
     }
-
+    
     console.log(added_line);
 
     for (let i = 0; i < the_additional_num; i++) {
@@ -594,24 +614,68 @@ export const the_magic_paste = (e) => {
 
     // - そのまま中身を同じラインに追加
     console.log(current_line_num);
-    for (let i = 0; i <= current_line_num; i++) {
-        let target_line_num = i + current_line_num;
-        console.log(i);
-        console.log(current_line_num);
-        console.log(target_line_num);
-        let will_added_elems = magic_elms[i];
-        console.log(will_added_elems);
-        for (let o = 0; o < will_added_elems.length; o++) {
 
-            console.log(sp_cover.children[target_line_num].lastElementChild.children[c_num]);
-            sp_cover.children[target_line_num].lastElementChild.children[c_num].after(will_added_elems[o]);
+    // * i が current_line_num -- the_line_num + current_line_num の間だったらmagic_elemsから挿入, 一応same_cutterとかやっとく必要ある？ is_itとかもさ.
+    // * i がその範囲の外にあったら、 same クラスを持っているかどうかで判定して、持っていたらひとつ前のを複製、持っていなかったらmake_ver_fragment()するといいのかな.
+
+
+    for (let i = 0; i <= sp_cover.childElementCount; i++) {
+
+        if (i > current_line_num || i < the_line_num + current_line_num) {
+
+            let target_line_num = i + current_line_num;
+            console.log(i);
+            console.log(current_line_num);
+            console.log(target_line_num);
+            let will_added_elems = magic_elms[i];
+            console.log(will_added_elems);
+            for (let o = 0; o < will_added_elems.length; o++) {
+    
+                console.log(sp_cover.children[target_line_num].lastElementChild.children[c_num]);
+    
+                // * そもそも after で純に追加していくと順番変わりそうじゃない？
+                // * それを考慮して c_num + o に after するようにした. これでどうだろう.
+                sp_cover.children[target_line_num].lastElementChild.children[c_num + o].after(will_added_elems[o]);
+
+            }
+
+        } else {
+
+            // * ---------    ここまでですべての挿入は終わっていて、あとは数合わせ、っていう段階.   --------------------------------
+    
+            // * 追加分のブロックも増やさないといけないでしょう？どこに挿入されるかによって、挿入先は異なってくるが。sameとかだったら大変だぞ....
+            // * 通常の追加分は make_ver_fragment() でいいわけやんか.
+            // * will_added_emls 分のブロックをすべてのsp-horに追加することは決まっている.
+            for (let o = 0; o < will_added_elems.length; o++) {
+            
+                let c_v = sp_cover.children[i].lastElementChild.children[c_num + o];
+    
+                if (c_v.classList.contains("same") || c_v.classList.contains("same_end") == false) {
+                    let addition = c_v.cloneNode(true);
+                    c_v.before(addition);
+                } else if (c_v.classList.contains("same") == false || c_v.classList.contains("same_end")) {
+                    make_ver_fragment(c_v, "after");
+                }
+            }
+    
         }
+
     }
 
-    console.log(e.nextElementSibling);
+    let center = e.nextElementSibling;
 
-    centering_marker(e, e.nextElementSibling, "centering");
+    centering_marker(e, center, "centering");
     original_centering_checker(sp_cover, e.nextElementSibling);
+    // [[[ --- new_setup --- ]]]
+    original_centering_checker(sp_cover, center);
+    vertical_stripe_checker(sp_cover);
+    horizontal_stripe_checker(sp_cover);
+
+    // もし same の途中だったら　というケースを考える必要がある。ここでもう一度再構築が必要になる。
+
+    // SPECIAL COV
+    same_cutter(center, "addon");
+    is_it_same_series(center);
 
     // * 400 分だけスクロール.
     all_view_changer(sp_cover, 400);
