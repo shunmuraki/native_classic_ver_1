@@ -25,11 +25,9 @@ for (let i = 0; i < section_elms.length; i++) {
     let the_next_section = section_elms[i].nextElementSibling;
     if (the_next_section) {
         the_next_section.style.opacity = 0;
-        console.log(the_next_section);
     }
 }
 // * video, Animation などについて管理をするデータリスト
 // ** 仮置きのsampleデータをここに書いてみますね！（本番と同じ形式）
-// export const sections = {"section_1": {"about_time": {"section_current_time": 0, "section_now_time": 0, "section_duration": 50}, "about_doms": {"ani_0": {"trigger_when": 4, "animate_duration": 2}, "ani_1": {"trigger_when": 20, "animate_duration": 2}}}};
 
 // ** 要はこっちは手書きしろってことね.

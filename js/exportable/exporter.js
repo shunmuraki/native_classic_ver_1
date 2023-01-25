@@ -20,8 +20,6 @@ let screen = document.querySelector(".screen");
 const button = document.querySelector(".button");
 
 button.addEventListener("click", () => {
-
-    console.log("neee");
     // textarea が innerHTMLではコピーされないので、その配慮。
     let write_areas = document.querySelectorAll(".write_area");
     for (let i = 0; i < write_areas.length; i++) {
@@ -34,14 +32,6 @@ button.addEventListener("click", () => {
     let output_doms = screen.innerHTML;
     sessionStorage.setItem("output", output_doms);
     sessionStorage.setItem("the_values", JSON.stringify(the_values));
-
-    // // エディターを現場復帰.
-    // for (let i = musks.length; i >= 0; i--) {
-    //     musks[i].remove();
-    // }
-
-    console.log(sessionStorage.getItem("output"));
-    console.log(sessionStorage.getItem("the_values"));
 
     // * ここに一枚カバーが入るイメージかな。完成イメージとしてはそんな感じ。
     let redirect_cover = document.createElement("div");

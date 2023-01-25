@@ -8,8 +8,6 @@ let the_html = "";
 let the_js = "";
 let the_img_blob_list = {};
 
-console.log("ss");
-
 let data_num = 0;
 let animation_data = {};
 let animation_generate_list = [];
@@ -339,8 +337,6 @@ for (let i = 0; i < sp_covers.length; i++) {
         let here = o + 1;
         let the_classname = "outerstyle_" + sp_num + "_" + here;
 
-
-        console.log(verticals.length);
         // リニアだけを対象にする。
         if (verticals.length > 1) {
                     for (let j = 0; j < verticals.length; j++) {
@@ -470,8 +466,6 @@ for (let i = 0; i < sp_covers.length; i++) {
 
     // 最後の総召集.
     animation_data["section_" + i]["about_time"]["section_current_time"] = 0;
-    // animation_data["section_" + i] = section_animation;
-    console.log(animation_data);
 }
 
 
@@ -488,8 +482,6 @@ let final_dom = String(screen.innerHTML);
 fetch('../js/exportable/commons/index_head.html') // (1) リクエスト送信
 .then(response => response.text()) // (2) レスポンスデータを取得
 .then(data => { // (3)レスポンスデータを処理
-
-    console.log("hi");
     the_html += data;
     the_html += final_dom;
 
@@ -508,14 +500,11 @@ let css_url = '../js/exportable/commons/style.css';
 let css_res = await fetch(css_url);
 let cb = await css_res.text();
 zip.file('style.css', cb);
-console.log("hi");
 
 // * ln JS GENERATION .
 let lnjs_url_list = ["../js/exportable/commons/javascript/anim.js", "../js/exportable/commons/javascript/states.js", "../js/exportable/commons/javascript/setup.js", "../js/exportable/commons/javascript/parts.js"];
-console.log("hi");
 
 for (let i = 0; i < lnjs_url_list.length; i++) {
-    console.log("hi");
 
     let url = lnjs_url_list[i];
     let res = await fetch(url);
@@ -526,11 +515,8 @@ for (let i = 0; i < lnjs_url_list.length; i++) {
         text = final_animation_generate_list + text;
     }
 
-    console.log("hi");
     let the_e_num =  url.indexOf(".js");    
-
     let the_name =  url.slice(36, the_e_num) + ".js";
-    console.log(the_name);
 
     zip.folder("javascript").file(the_name, text);
 }
@@ -540,8 +526,6 @@ let final_animation_data = "let animation_data = " + JSON.stringify(animation_da
 let final_yt_id_list =  "let yt_id_list = " + JSON.stringify(yt_id_list);
 // ここでようやく成果物を書き込み。
 the_js = the_js + final_animation_data + final_yt_id_list;
-console.log("hi");
-
 let main_res = await fetch("../js/exportable/commons/javascript/main.js");
 let main_text = await main_res.text();
 the_js = the_js + main_text;
@@ -553,7 +537,6 @@ zip.generateAsync(
      compressionOptions: {level: 1} 
     }).then(function (b) {
         const del = new Blob([b], { type: 'application/zip' });
-        console.log("hi");
         const uri = URL.createObjectURL(del);
         button.download = 'output.zip';
         button.href = uri;

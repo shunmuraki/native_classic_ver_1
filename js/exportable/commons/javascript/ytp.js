@@ -3,8 +3,6 @@ export const block_multiable = (e, f, z) => {
 
     // * さて、そろそろこの「player」についてまともに考えてもいい頃合いだが、いかがでしょうか。
     let the_box = document.getElementById(e).parentElement;
-    // the_box.lastElementChild.remove();
-    // the_box.style.height = 225 + "px";
     let the_related_name = "yt_num_" + z;
     the_box.classList.add(the_related_name);
 
@@ -40,7 +38,6 @@ export const block_multiable = (e, f, z) => {
     function pauseVideo() {
         player.pauseVideo();
         player.seekTo(0);
-        console.log("loaded!");
     }
 
     onYouTubeIframeAPIReady(e, f);

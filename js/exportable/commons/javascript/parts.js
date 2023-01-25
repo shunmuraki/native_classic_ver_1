@@ -1,11 +1,9 @@
 // preventer
 export function on_preventer(){
-    console.log("ON PREVENTER !!!!!");
     document.querySelector("body").style.overflow = "hidden";
     document.querySelector("html").style.overflow = "hidden";
 }
 export function off_preventer() {
-    console.log("OFF PREVENTER !!!!!");
     document.querySelector("body").style.overflow = "visible";
     document.querySelector("html").style.overflow = "visible";
 }
@@ -75,7 +73,6 @@ export const pragm_stylies = (e) => {
         let class_name = object_classlist[j]; 
         if (class_name.indexOf("outerstyle_") !== -1) {
             whole_num = class_name.slice(11, 1);
-            console.log(whole_num);
             this_num = class_name.slice(13, 1);   
         } 
     }

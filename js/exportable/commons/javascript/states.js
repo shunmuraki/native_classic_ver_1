@@ -83,7 +83,6 @@ export const the_states = (e, f, g, h) => {
     
                     if (the_object.classList.contains("playing")) {
                         play_pause_classi(the_object, "paused");
-                        console.log("opso");
                         object_content.pauseVideo();
                     }
         
@@ -97,7 +96,6 @@ export const the_states = (e, f, g, h) => {
     
                         for ( let o = 0; o < the_classlist.length; o++ ) {
                             if (the_classlist[o].indexOf("running") != -1) {
-                                console.log(the_object);
                                 the_object.classList.remove(the_classlist[o]);
                             }
                         }
@@ -105,7 +103,6 @@ export const the_states = (e, f, g, h) => {
     
                     for ( let o = 0; o < the_classlist.length; o++ ) {
                         if (the_classlist[o].indexOf("finish") != -1) {
-                            console.log(the_object);
                             the_object.classList.remove(the_classlist[o]);
                         }
                     }
@@ -123,7 +120,6 @@ export const the_states = (e, f, g, h) => {
     
                             object_content.seekTo(current_time - trigger_when);
                             object_content.playVideo();
-                            console.log("run");
                             play_pause_classi(the_object, "playing");
     
                             object_content.addEventListener("ended", () => {
@@ -150,7 +146,6 @@ export const the_states = (e, f, g, h) => {
                             the_animation.effect.updateTiming({ fill: 'none' }); 
     
                             if (current_time > trigger_when && current_time < finish_when){
-                                console.log("4 5 6");
     
                                 let the_duration_saving = current_time - trigger_when;
                                 the_animation.currentTime = the_duration_saving;
@@ -158,15 +153,12 @@ export const the_states = (e, f, g, h) => {
     
                                 the_animation.play();
                                 the_animation.effect.updateTiming({ fill: 'forwards' }); 
-                                console.log("play start!:" + anim_name);
-    
                                 the_animation.onfinish = () => {
                                     run_finish_classi(the_object, "finished", anim_name); 
                                     the_animation.persist();
                                 };
     
                             } else if (current_time >= finish_when) {
-                                console.log("7 8 9");
                                 run_finish_classi(the_object, "finished", anim_name);
                                 the_animation.effect.updateTiming({ fill: 'forwards' }); 
                                 the_animation.finish();
