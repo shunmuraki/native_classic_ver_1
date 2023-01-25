@@ -9,6 +9,7 @@ window.addEventListener("keydown", (e)=>{
         let k = e.key;
         let current;
         let current_vertical;
+        let type_signiture;
         
         if (document.activeElement.tagName != "BODY") {
             current = document.activeElement;
