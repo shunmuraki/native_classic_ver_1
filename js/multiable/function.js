@@ -215,7 +215,7 @@ export const make_it_img = (e, m) => {
         label.classList.add("image_input");
 
         const uploaded_multi_media = document.createElement("img");
-        uploaded_multi_media.classList.add("styling_0_0_1_1");
+        uploaded_multi_media.classList.add("styling_1_1_1_1");
         let multi_one_fragment = document.createDocumentFragment();
         multi_one_fragment.append(uploaded_multi_media);
 

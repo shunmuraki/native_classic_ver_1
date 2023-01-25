@@ -1,6 +1,6 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list } from "../base/elements.js";
 import { make_ver_fragment, go_top, go_left, go_right, go_bottom, vertical_stripe_checker, horizontal_stripe_checker, original_centering_checker, centering_marker} from "../base/function.js";
-import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover } from "../base/tools.js";
+import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
 
@@ -576,31 +576,48 @@ window.addEventListener("keydown", (e)=>{
 
                 // 本来same_endではなかったが、編集の結果same_endとなるブロックへの対処。中身にvideo本来を格納. 
                 // ブロックの content が video で左隣は船内のsameで右隣は船外のsame、そして、same_end を持っていないなら実行. 
-                let special_menu = (e, f) => {
-                    if (e.classList.contains("video")) {
-                        if (e.previousElementSibling) {
-                            if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in")) {
-                                if (e.nextElementSibling) {
-                                    if (e.nextElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in") == false) {                                                     
-                                        if (f.classList.contains("same") && f.classList.contains("same_end") == false) {
-                                            let the_t = "same_num_" + target_data(e, "same_num_");
-                                            let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
-                                            let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
+                let special_menu = (e, f, g) => {
+                    let f_p = g;
+                    if (e.previousElementSibling) {
+                        if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in")) {
+                            if (e.nextElementSibling) {
+                                if (e.nextElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in") == false) {                                                     
+                                    if (f.classList.contains("same") && f.classList.contains("same_end") == false) {
+                                        let the_t = "same_num_" + target_data(e, "same_num_");
+                                        let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
+                                        let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
+                                        // dupブロックだった場合を想定.                                        
+                                        if (the_natural_cont.tagName == "IFRAME" || the_natural_cont.tagName == "IMG" || the_natural_cont.tagName == "TEXTAREA") {
                                             the_natural_cont.style.opacity = 1;
                                             f.lastElementChild.remove();
                                             f.appendChild(the_natural_cont);
-                                            f.classList.add("same_end");
-                                        } 
-                                    }
+                                        }
+                                        f.classList.add("same_end");
+                                    } 
                                 }
                             }
-                            if (e.previousElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in")) {
-                                if (e.previousElementSibling) {
-                                    if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in") == false) {                                                     
-                                        if (f.classList.contains("same") && f.classList.contains("same_start") == false) {
-                                            f.classList.add("same_start");
-                                        } 
-                                    }
+                        }
+                        if (e.previousElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in")) {
+                            if (e.previousElementSibling) {
+                                if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in") == false) {                                                     
+                                    if (f.classList.contains("same") && f.classList.contains("same_start") == false) {
+                                        f.classList.add("same_start");
+
+                                        let same_name = "same_num_" + target_data(f, "same_num_");
+                                        let breakpoint = [].slice.call(f_p.children).indexOf(f);                                                        
+                                        
+                                        let same_data = same_data_getter();
+                                        same_data += 1;
+                                        same_data_counter(same_data);
+                                
+                                        for (let i = f_p.children.length - 1; i >= breakpoint; i--) {
+                                            if (f_p.children[i].classList.contains(same_name)) {
+                                                let same_block = f_p.children[i];
+                                                classmover(same_block, same_block, "same_num_", "remove");
+                                                same_block.classList.add("same_num_" + same_data);
+                                            }
+                                        }
+                                    } 
                                 }
                             }
                         }
@@ -700,7 +717,7 @@ window.addEventListener("keydown", (e)=>{
                         for (let l = 0; l < scrap_sp_hor_fragment.children.length; l++) {
                             let the_ob_name = "you_" + target_data(scrap_sp_hor_fragment.children[l], "you_");
                             let its_you = document.getElementsByClassName(the_ob_name)[0];
-                            special_menu(its_you, scrap_sp_hor_fragment.children[l]);
+                            special_menu(its_you, scrap_sp_hor_fragment.children[l], scrap_sp_hor_fragment);
                         }
                         
                         // デフォルトレイヤーにおける編集対象だったsp_coverへFragmentたちを挿入. 編集モードから回帰.

@@ -15,7 +15,7 @@ export const video_load_then = (e, f) => {
     the_box.lastElementChild.remove();
     let the_add_box = document.createElement("div");
     the_add_box.setAttribute("id","auth_video_same");
-    the_add_box.classList.add("styling_0_0_1_1");
+    the_add_box.classList.add("styling_1_1_1_1");
     the_box.appendChild(the_add_box);
     
     let pl = block_multiable("auth_video_same", the_code);
