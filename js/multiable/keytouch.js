@@ -14,7 +14,8 @@ window.addEventListener("keydown", (e) => {
     } 
 
     if (type_signiture)  {
-        // もし YouTubeの動画のURLがペーストされていたら.
+        
+        // 以下YouTubeの動画のURLがペーストされた場合の処理.
         if ( type_signiture.indexOf('youtube.com') != -1) {
             video_load_then(type_signiture, current);
         }

@@ -3,14 +3,12 @@ import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, vertical_stripe_checker, horizontal_stripe_checker, the_magic_copy, the_magic_paste } from "./function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
 
-// 縦に要素を追加する処理
 window.addEventListener("keydown", (e)=>{
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {
         
         let k = e.key;
         let current;
         let current_vertical;
-        let type_signiture;
         
         if (document.activeElement.tagName != "BODY") {
             current = document.activeElement;
@@ -24,7 +22,7 @@ window.addEventListener("keydown", (e)=>{
                 let height = current.clientHeight;
                 current.parentElement.style.height = height + "px";
             }
-            // 現在の sp_cover を取得して、その下に追加する（after）
+
         } else {
             current_vertical = document.querySelector(".centering");
         }
@@ -32,38 +30,28 @@ window.addEventListener("keydown", (e)=>{
         let current_horizontal = vertical_to_hor(current_vertical);
         let current_sp_cover = vertical_to_sp_cover(current_vertical);
 
-        // ------------------------------------------------------------------------------------------    
-    
+        // 縦に要素を追加する処理.
         if(e.metaKey) {
             if (k == "Enter") {
-                // v_stripe_op(current_vertical);
-                // [[[ --- new_setup --- ]]
                 original_centering_checker(current_sp_cover, current_vertical);
                 vertical_stripe_checker(current_sp_cover);
                 horizontal_stripe_checker(current_sp_cover);
-    
                 make_fragment(current_sp_cover, "after");    
                 let next_one = current_sp_cover.nextElementSibling.lastElementChild.lastElementChild.lastElementChild;
                 var next_textarea = next_one.lastElementChild;
                 centering_marker(current_vertical, next_one, "centering");
-                // original_centering_marker(current_vertical);
-    
                 next_textarea.focus();
-
                 is_it_same_series(next_one);
             }
         }
     
-        // ------------------------------------------------------------------------------------------    
-    
-        // 横に要素を追加する処理
+        // 横に要素を追加する処理.
         if(e.metaKey) {
             if (k == "u") {
                 
                 let sps = current_sp_cover.children;
                 let c_v_num = [].slice.call(current_horizontal.children).indexOf(current_vertical);
                 let scrollleft_b = current_horizontal.scrollLeft;
-    
                 let balanc = 0;
                 let center_num = [].slice.call(sps).indexOf(vertical_to_sp(current_vertical)); 
     
@@ -74,8 +62,6 @@ window.addEventListener("keydown", (e)=>{
                         next_one.lastElementChild.focus();
                         centering_marker(current_vertical, next_one, "centering");
                     } else {
-                        // * ここがたぶん途中からの挿入である必要があって。だからindexOfの出番だと思う。
-                        // ** editの場合は特別仕様にする必要がある...
                         let c_v = sps[i].lastElementChild.children[c_v_num];
                         if (c_v.classList.contains("same")) {
                             if (! c_v.classList.contains("same_end")) {
@@ -90,7 +76,7 @@ window.addEventListener("keydown", (e)=>{
                     }
                 }
     
-                // after that...
+                // 以下各ラインへの挿入後の処理.
                 let center = document.querySelector(".centering");
                 let the_center_num_b = [].slice.call(vertical_to_hor(center).children).indexOf(center);
                 
@@ -99,29 +85,15 @@ window.addEventListener("keydown", (e)=>{
                     sps[i].lastElementChild.scrollLeft = balanc * 400 + scrollleft_b;
                 }
     
-                // [[[ --- new_setup --- ]]]
                 original_centering_checker(current_sp_cover, center);
                 vertical_stripe_checker(current_sp_cover);
                 horizontal_stripe_checker(current_sp_cover);
-
-                // もし same の途中だったら　というケースを考える必要がある。ここでもう一度再構築が必要になる。 
                 same_cutter(center, "addon");
                 is_it_same_series(center);
             }
         }
     
-        // ------------------------------------------------------------------------------------------    
-    
-        // edit finished.
-        if(e.metaKey) {
-            if (k == " ") {
-                window.location.href = "/";
-            }
-        }
-    
-        // ------------------------------------------------------------------------------------------    
-    
-        // ver & hor moving func.
+        // 上下左右の移動. (デフォルトレイヤー）
         if(e.shiftKey) {
             
             if (k == "ArrowUp") {
@@ -145,11 +117,10 @@ window.addEventListener("keydown", (e)=>{
                 vertical_stripe_checker(current_sp_cover);
                 horizontal_stripe_checker(current_sp_cover);
             }
+
         }
         
-        // ------------------------------------------------------------------------------------------    
-        
-        // Magic command.
+        // マジックコマンド.
         if(e.ctrlKey) {
             if (k == "c") {
                 the_magic_copy(current_vertical);

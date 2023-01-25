@@ -1,4 +1,4 @@
-// * / が押されたら。Change イベントより.
+// これはインポートできる.
 let screen = document.querySelector(".screen"); 
 let ms_adjust_target;
 
@@ -10,26 +10,24 @@ window.addEventListener("keydown", (e)=>{
     if (screen.classList.contains("um") == false) {
         current = document.activeElement;
 
+        // マークダウンスペースの軌道処理.
         if (k == "/") {
-
           if (! screen.classList.contains("ms")) {
 
-            // まずcenteringのあるverticalを取得
-            // その中の一番下の要素をとれ。 
             screen.classList.add("ms");
             let centering = document.querySelector(".centering");
+
+            // ms の生成.
             let ms = document.createElement("textarea");
             ms.classList.add("ms_area");
             ms.style.opacity = 0;
 
-            // * ここで条件分岐します。「same」クラスがついている場合はカバーが被さっているので、対象を special_cov にします.
+            // msの挿入先について条件分岐.「same」クラスがついている場合はカバーが被さっているので、対象を special_cov とする.
             if (centering.classList.contains("same")) {
-
               ms_adjust_target = document.querySelector(".special_cov").lastElementChild;
               ms_adjust_target.before(ms);
 
             } else {
-
               if (document.activeElement.tagName == "BODY") {
                 centering.lastElementChild.before(ms);
               } else {
@@ -37,12 +35,10 @@ window.addEventListener("keydown", (e)=>{
                 current.blur();
                 current.before(ms);
               }
-
               ms_adjust_target = centering.lastElementChild;
             }
             
             ms_adjust_target.style.setProperty('top', '20%', 'important');
-
             ms.style.opacity = 1;
             ms.focus();
             setTimeout(() => {
@@ -52,15 +48,13 @@ window.addEventListener("keydown", (e)=>{
         }
 
         if (screen.classList.contains("ms")) {
+          // ms の終了処理.
           if (k == "Escape" || k == "Enter") {
-
             setTimeout(() => {
               if (document.querySelector(".ms_area")) {
                 document.querySelector(".ms_area").remove();
               }
             }, 10)
-            
-            // ms_adjust_target.focus();
             // connect の場合を考慮し再取得.
             if (document.querySelector(".centering").classList.contains("same")) {
               ms_adjust_target = document.querySelector(".special_cov").lastElementChild;

@@ -1,23 +1,15 @@
 // Tools.
-
-// vertical(centering) - horizontal
 export const vertical_to_hor = (e) => {
     return e.parentElement;
 };
-
-// vertical(centering) - sp
 export const vertical_to_sp = (e) => {
     return e.parentElement.parentElement;
 };
-
-// vertical(centering) - sp_cover
 export const vertical_to_sp_cover = (e) => {
     return e.parentElement.parentElement.parentElement;
 };
 
-// ---------------------------------- * - * - * - * Editable シリーズ * - * - * - * ----------------------------------
-
-// ターゲットの知りたい数字を返してくれる関数
+// ターゲットの知りたい数字を返してくれる関数.
 export function target_data(e, f) {
     const list = e.classList;
     for (let i = 0; i < list.length; i++) {
@@ -29,16 +21,12 @@ export function target_data(e, f) {
 }
 
 // 同じ番号を持つ pointer, stripe を返す関数
-// ** 取り方直す。
 export function grab_auto(e) {
     const trigger_pointer = e;
-    // まず num_ を取得. * num はファイルにおけるグローバル変数による管理にある。
     const num = target_data(trigger_pointer, "num_");
     const the_key_classname = "num_" + num;
-
-    // stripeを特定
     let partner_stripe = null;
-    // * ここ
+
     let stripe_space = e.parentElement.parentElement.nextElementSibling.firstElementChild;
     let all_stripe = stripe_space.children;
     for (let i = 0; i < all_stripe.length; i++) {
@@ -46,11 +34,8 @@ export function grab_auto(e) {
             partner_stripe = all_stripe[i];
         }
     }
-    
-    // もうひとつのセットとなるpointerを取得
-    // いやこんな取り方じゃダメでしょ。ちゃんと trigger_pointer が所属している orange_pointer_spaceとかから検索しないと。
-    let partner_pointer = null;
 
+    let partner_pointer = null;
     let pointer_space = e.parentElement;
     let all_pointer = pointer_space.children;
     
@@ -70,12 +55,12 @@ export function grab_auto(e) {
     return grabed;
 }
 
-// sorting.
+// ソート関数.
 export const sorter = (e, f) => {
     return e - f;
 }
 
-// remover
+// クラスの付け替え関数.
 export const classmover = (e, f, g, h) => {
     let classlist = e.classList;
     for (let i = 0; i < classlist.length; i++) {
@@ -93,17 +78,17 @@ export const classmover = (e, f, g, h) => {
     }
 } 
 
+// screen 要素に付与されている same　の数を取得する関数.
 export const same_data_getter = () => {
     let screen = document.querySelector(".screen");
     let the_same_data_now = Number(target_data(screen, "same_data_"));
     return the_same_data_now;
 }
 
+// screen 要素に付与されている same　の数を更新する関数.
 export const same_data_counter = (e) => {
-
     let screen = document.querySelector(".screen");
     let screen_classlist = screen.classList;
-
     for (let i = 0; i < screen_classlist.length; i++) {
         let classname = screen_classlist[i];
         if (classname.indexOf("same_data_") !== -1) {
@@ -113,6 +98,7 @@ export const same_data_counter = (e) => {
     }
 }
 
+// same がセンタリングしている間にスタイリングを変更した場合に、sameの外に出る時に対象となっていた special_cov の要素を複製して大元の same_end に格納する関数.
 export const same_change_tracer = (e) => {
     if (e.previousElementSibling) {
         if (e.previousElementSibling.classList.contains("same_end")) {
@@ -135,18 +121,12 @@ export const same_change_tracer = (e) => {
             let special_cov = document.getElementsByClassName(the_name)[0];
 
             if (special_cov) {
-                
                 let specon_cloned = special_cov.lastElementChild.cloneNode(true);
-    
                 let same_name = "same_num_" + target_data(e.nextElementSibling, "same_num_");
                 let sames = document.getElementsByClassName(same_name);
-            
                 sames[sames.length - 1].lastElementChild.remove();
                 sames[sames.length - 1].appendChild(specon_cloned);
-
             }
-
-
         }
     }
 }

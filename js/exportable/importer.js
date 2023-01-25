@@ -1,8 +1,5 @@
-// 要素単位でループをさせて、”same”クラスの有無で条件分岐をする。”same”系統のクラスを持っていないのなら、
-// trigger_whenを決定した上でそれに + 3 or 5 してfinish_whenとしたアニメーションを追加する。（JS）
 import { target_data } from "../base/tools.js";
 
-// ** 書き込み
 const zip = new JSZip();
 let the_html = "";
 let the_js = "";
@@ -16,10 +13,8 @@ let yt_id_list = [];
 let screen = document.querySelector(".screen");
 let caset = document.createDocumentFragment();
 
-// ** ------------------------------------------------------------------------------
-// * ここに一枚カバーが入るイメージかな。完成イメージとしてはそんな感じ。
 
-// * animation ...
+// ページ遷移アニメーション.
 let button = document.querySelector(".button");
 let contents = document.querySelector(".contents");
 contents.animate(
@@ -32,20 +27,20 @@ contents.animate(
     }
 );
 
-// import DOM!
+// DOMのインポート.
 let the_values = JSON.parse(sessionStorage.getItem("the_values"));
 let the_output = sessionStorage.getItem("output");
 screen.innerHTML = the_output;
 
-// import textarea's VALUE!
+// textareaの値を現状復帰.
 let write_areas = document.querySelectorAll(".write_area");
 for (let i = 0; i < write_areas.length ; i++) {
     write_areas[i].value = the_values[i];
 }
 
 let sp_covers = document.querySelectorAll(".sp_cover");
-// ** ------------------------------------------------------------------------------
 
+// actuar クラスへの対応や video_startpointのセットなど、 animation_data を更新する関数.
 function ac_vi_adaptation(e, f) {
     
     let classlist = e.classList;
@@ -57,12 +52,14 @@ function ac_vi_adaptation(e, f) {
         if (classname.indexOf("this_video_st_") != -1) {
             animation_data["video_startpoint"] = Number(target_data(e, "this_video_st_"));
         } else if (classname.indexOf("actuar_time_") != -1) {
-            // * ここで秒数に変換.
+            
+            // 秒数に変換.
             let act_num = 5 * (Number(target_data(e, "actuar_time_")) / 300);
 
             if (classname.indexOf("actuar_st_") != -1) {
                 animation_data["trigger_when"] = animation_data["trigger_when"] + act_num;
-                // merge,
+                
+                // actuar を video_startpoint にも反映.
                 if (classname.indexOf('this_video_st_') != -1) {
                     animation_data["video_startpoint"] = animation_data["video_startpoint"] + act_num;
                 }
@@ -75,6 +72,8 @@ function ac_vi_adaptation(e, f) {
     return animation_data;
 }
 
+
+// change クラスから スタイリングの変化前と変化後の値をセットにして返す関数.
 function en_change_adaptation(e, f) {    
     let target = e.nextElementSibling;
     let animation_data = f;
@@ -87,56 +86,48 @@ function en_change_adaptation(e, f) {
             let b_data = [];
             let a_data = [];
 
-    
             for (let i = 0; i < be_classlist.length; i++) {
                 let classname = be_classlist[i];
-
-                if (classname.indexOf("styling_") !== -1) {
-                    // * styling_0_0_0
+                if (classname.indexOf("styling_") !== -1) {                    
                     let first = Number(classname.slice(8, 9));
                     let second = Number(classname.slice(10, 11));
                     let third = Number(classname.slice(12, 13));
                     let forth = Number(classname.slice(14, 15));
-                    // * 前から9番目と11番目と13番目
                     b_data = [first, second, third, forth];
                 }
             }
     
             for (let i = 0; i < af_classlist.length; i++) {
-
                 let classname = af_classlist[i];
-
                 if (classname.indexOf("styling_") != -1) {
-                    // * styling_0_0_0_0
                     let first = Number(classname.slice(8, 9));
                     let second = Number(classname.slice(10, 11));
                     let third = Number(classname.slice(12, 13));
                     let forth = Number(classname.slice(14, 15));
-                    // * 前から9番目と11番目と13番目
                     a_data = [first, second, third, forth];
                 }
             }
 
             let final_data = [b_data, a_data];
-            
             return final_data;
         }
     }
 }
 
+// yt-IDからyt-iframeを生成するための仮置きのdiv要素をセットする関数.
 function iframe_adaptation(e) {
     let the_content = e.lastElementChild;
     let value_id = target_data(the_content, "this_video_id_");
     yt_id_list.push(value_id);
 
     let the_name = "yt_" + yt_id_list.length;
-
     let newElement = document.createElement("div");
     newElement.setAttribute("id", the_name);
     the_content.remove();
     e.appendChild(newElement);
 }
 
+// textareaをpタグに置換する関数.
 function textarea_adaptation(e) {
     let the_content = e.lastElementChild;
     let the_value = the_content.value;
@@ -147,7 +138,7 @@ function textarea_adaptation(e) {
     e.appendChild(newElement);
 }
 
-
+// blockから <object> を生成して返す関数.
 function object_generation(e) {
 
     let final_block = e.cloneNode(true);
@@ -160,6 +151,7 @@ function object_generation(e) {
     return final_block;
 }
 
+// 画像のパスを配列に加え、画像のElementにも対応するsrcの値をセットする関数.
 function img_src_getter(e) {
     let target = e.lastElementChild;
     if (target.tagName == "IMG") {
@@ -172,9 +164,8 @@ function img_src_getter(e) {
     }
 }
 
+// ２つのスタイリング配列（[0, 0, 0, 0] など）を比較して、そのギャップから animation_generate_list へ格納するデータを生成して返す関数.
 function genedata_compare(e, f) {
-    // * 値が異なったプロパティをすべて洗い出して、その差分も教えてくれる.
-    // * で、データについては [["opacity", 1], ["vertical", -1]] みたいな感じにしたものを戻り値にするのがいいと思った.
     let output = [];
 
     let vertical_data = f[0] - e[0];
@@ -203,34 +194,31 @@ function genedata_compare(e, f) {
     return output;
 }
 
+// animation_generate_list に格納するデータを生成して返す関数.
 function generationdata_setup(e, f) {
-    // e にブロックを渡す。 
-    // f には start か end か　common
+    
     let final_data = new Array();
     let anim_blockhas = [];
     
     if (f == "start") {
-        // * ここは比較する必要がない
+        // ここは比較する必要がない.
         anim_blockhas = ["opacity", 1];
 
-        // // * このブロックが change を持っていたら
+        // このブロックが change を持っていたら
         if (e.classList.contains("change")) {
-            // * finish_when = start_when にしてください.
+            // finish_when = trigger_when.
             final_data = [anim_blockhas, 0];
         } else {
             final_data = [anim_blockhas, 1];
         }
-        // * これは別のところでやるわ。ここはあくまでanimation生成についてだから.
 
     } else if (f == "end") {
-        // * ここは比較する必要がない
+        // ここは比較する必要がない
         anim_blockhas = ["opacity", -1];
-
-        // * 次のブロックが changeを持っていたら
+        // 次のブロックが changeを持っていたら
         let the_nextblock = e.nextElementSibling;
         if (the_nextblock) {
             if (the_nextblock.classList.contains("change")) {
-                // * finish_when = start_when にしてください. 
                 let final_data = en_change_adaptation(e);
                 anim_blockhas = genedata_compare(final_data[0], final_data[1]); 
             }
@@ -239,24 +227,19 @@ function generationdata_setup(e, f) {
         final_data = [anim_blockhas, 1];
 
     } else if (f == "common") {
-        // * ここは比較する必要がない
+        // ここは比較する必要がない.
         let before_data = ["opacity", 1];
         let after_data = ["opacity", -1];
         anim_blockhas = [before_data, after_data];
         final_data = [anim_blockhas, 1];
-
     } 
     
     return final_data;
 }
 
 
-// * 土台のanimationを作る関数
-// * VIDEO系列以外！！！
+// 土台のanimationを作る関数 (VIDEOを除く)
 function base_setup(e, f, g) {
-    // * e にブロック、
-    // * f には j を、
-    // * g には start_animation か end_animation かをもらう.
     let new_animation = {};
     new_animation["trigger_when"] = f * 5;
 
@@ -269,66 +252,55 @@ function base_setup(e, f, g) {
     return new_animation;
 }
 
+// animation_generate_list と animation_data を紐付け、前者にデータを格納して後者をアップデートして返す関数.
 function animationdata_setup(e, f, g) {
-    // * e には ブロック、
-    // * f には土台となるanimation をセットする.
-    // * g には anim_blockhas をセットする.
+    
     let the_block = e;
     let the_animation = f;
     let gene_datas = g;
     let the_num = gene_datas.length;
 
-    // * ここで the_num 分のanimationを複製してやる.
+    // the_num 分のanimationを複製する.
+    // [処理内容]
+    // anim_name のセット. ← animation_generation_list の何番目かの数字を格納.
+    // anim_num のセット.
+    // ブロックに anim_num をadd.
     for (let i = 0; i < the_num; i++) {
-        // * [最後にやること
-        // - anim_name のセット ← animation_generation_list の何番目かの数字を格納.
-        // - anim_num のセット
-        // - ブロックに anim_num をadd
-        let new_typedata = Object.create(the_animation);
         
-        // * anim_blockhas の１つを格納し、それとセットになる the_animation にはその length を渡してあげる.
+        let new_typedata = Object.create(the_animation);        
+        // anim_blockhas の１つを格納し、それとセットになる the_animation にはその length を渡してあげる.
         animation_generate_list.push(gene_datas[i]);
 
         let the_keynum = animation_generate_list.length;
-
         new_typedata["anim_name"] = the_keynum;
-
         let the_name = "anim_num_" + the_keynum;
-
         the_block.classList.add(the_name);
-
         let final_animation = ac_vi_adaptation(the_block, new_typedata);
 
         return final_animation;
     }
 }
 
-// ** ------------------------------------------------------------------------------
-
-// * 先に adjuster を消してしまう。整理したいので、
+// 変換の手前、update.htmlからadjuster をすべて除去する.
 let adjusters = document.querySelectorAll(".adjuster");
 for (let i = adjusters.length - 1; i >= 0 ; i--) {
     adjusters[i].remove();
 }
 
-// ** ------------------------------------------------------------------------------
-
-
+// section - object 構造へ仕上げる. この中で画像はリストにpushする。
 for (let i = 0; i < sp_covers.length; i++) {
+    
     let sps = sp_covers[i].children;
-
-    // * section - object 構造へ仕上げる
-    // * この中で画像については新しくblobを作成し、リストにpushする。
     let the_big_section = document.createElement("div");
     the_big_section.classList.add("section");
-
-    let section_animation = {};
     let sp_num = sps.length;
 
     for (let o = 0; o < sp_num; o++) {
+        
         let sp = sps[o];
         let verticals = sp.lastElementChild.children;
-        // remove()する前に。
+        
+        // remove()する前に実行.
         animation_data[String("section_" + i)] = {};
         animation_data[String("section_" + i)]["about_time"] = {};
         animation_data["section_" + i]["about_anims"] = {};
@@ -337,137 +309,125 @@ for (let i = 0; i < sp_covers.length; i++) {
         let here = o + 1;
         let the_classname = "outerstyle_" + sp_num + "_" + here;
 
-        // リニアだけを対象にする。
+        // リニアだけを対象にする.
         if (verticals.length > 1) {
-                    for (let j = 0; j < verticals.length; j++) {
-                        let block = verticals[j];
-            
-                        if (block.classList.contains("same")) {
-                            if (block.classList.contains("same_start")) {
-            
-                                // start
-                                data_num += 1;
-                                img_src_getter(block);
-            
-                                // * 作っているアニメーションはいくつ？？
-                                // ** start_animation
-                                let start_animation = base_setup(block, j, "start");
-                                let generative_data_start = generationdata_setup(block, "start");
-                                let final_animation_start = animationdata_setup(block, start_animation, generative_data_start);    
-                                animation_data["section_" + i]["about_anims"]["data" + data_num] = final_animation_start;
-            
-                                textarea_adaptation(block);
-                             
-                                block.classList.add(the_classname);
-            
-                                let object = object_generation(block);
-            
-                                the_big_section.appendChild(object);
-            
-                            } else if (block.classList.contains("same_end")) {
-            
-                                // end
-            
-                                // * 作っているアニメーションはいくつ？？
-                                // ** start_animation
-                                data_num += 1;
-                                // * - end_animationを作る場所 -
-                                let end_animation = base_setup(block, j + 1, "end");
-                                let generative_data_end = generationdata_setup(block, "end");
-                                let final_animation_end = animationdata_setup(block, end_animation, generative_data_end);
-                                animation_data["section_" + i]["about_anims"]["data" + data_num] = final_animation_end;
-            
-                                // video
-                                if (block.classList.contains("video")) {
-                                    // * 作っているアニメーションはいくつ？？               
-                                    data_num += 1;
-            
-                                    let video_animation = {};
-                                    let the_same_name = "same_num_" + target_data(block, "same_num_");
-            
-                                    // 同じ same_num_を持つ　same_start について処理
-                                    let the_start_elems = document.getElementsByClassName(the_same_name)[0];
-            
-                                    let v_start_when = Number(target_data(the_start_elems, "this_video_st_"));
-                                    let v_end_when = Number(target_data(block, "this_video_st_")) + 5;
-                                    let v_duration = Number(v_end_when - v_start_when);
-                                
-                                    // When .
-                                    video_animation["finish_when"] = (j * 5) + 5;
-                                    video_animation["trigger_when"] = video_animation["finish_when"] - v_duration;
-                                    video_animation["video_startpoint"] = v_start_when;
-            
-                                    // * tirrger_when, st_
-                                    video_animation = ac_vi_adaptation(block, video_animation);
-                                    video_animation["anim_name"] = data_num;
-            
-                                    animation_data["section_" + i]["about_anims"]["data" + data_num] = video_animation;
-                                    block.classList.add("anim_num_" + data_num);
-            
-                                    // iframe の id を取得し、リストに加える。
-                                    // そのリストの長さを測り、その数字を yt_？ というidに持ったdiv要素に置換。
-                                    iframe_adaptation(block);
-            
-                                } else if (block.lastElementChild.tagName == "TEXTAREA") {
-                                    textarea_adaptation(block);
-                                }
-            
-                                block.classList.add(the_classname);
-            
-                                let object = object_generation(block);
-            
-                                the_big_section.appendChild(object);
-                            }
-                        } else {
-                            // start / end
-                            data_num += 1;
-                            let start_animation = base_setup(block, j, "start");
-                            let generative_data_start = generationdata_setup(block, "start");
-            
-                            let final_animation_start = animationdata_setup(block, start_animation, generative_data_start);
-            
-                            animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_start;
-            
-                            data_num += 1;
-                            let end_animation = base_setup(block, j + 1, "end");
-                            let generative_data_end = generationdata_setup(block, "end");
-                            let final_animation_end = animationdata_setup(block, end_animation, generative_data_end);
-                            animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_end;
-                            // video
-                            if (block.classList.contains("video")) {
-                                data_num += 1;
-                                let video_animation = {};
-                                // When .
-                                video_animation["trigger_when"] = j * 5;
-                                video_animation["finish_when"] = video_animation["trigger_when"] + 5;
-                                video_animation["video_startpoint"] = Number(v_start_when);
-                                video_animation = ac_vi_adaptation(block, video_animation);
-            
-                                animation_data["section_" + i]["about_anims"]["data" + data_num] = video_animation;
-            
-                                iframe_adaptation(block);
-            
-                                the_big_section.appendChild(object);
-                            } else if (block.lastElementChild.tagName == "TEXTAREA") {
-                                textarea_adaptation(block);
-                            }
-            
-                            let object = object_generation(block);
-                            block.classList.add(the_classname);
-            
-                            the_big_section.appendChild(object);
-                        }
-                    }
+            for (let j = 0; j < verticals.length; j++) {
+                let block = verticals[j];
+    
+                if (block.classList.contains("same")) {
+                    if (block.classList.contains("same_start")) {
 
+                        data_num += 1;
+                        img_src_getter(block);
+
+                        // start_animationを構成する.
+
+                        let start_animation = base_setup(block, j, "start");
+                        let generative_data_start = generationdata_setup(block, "start");
+                        let final_animation_start = animationdata_setup(block, start_animation, generative_data_start);    
+                        animation_data["section_" + i]["about_anims"]["data" + data_num] = final_animation_start;
+    
+                        textarea_adaptation(block);
+                        block.classList.add(the_classname);
+                        let object = object_generation(block);
+    
+                        the_big_section.appendChild(object);
+    
+                    } else if (block.classList.contains("same_end")) {
+    
+                        data_num += 1;
+                        
+                        // end_animationを構成する.
+                        let end_animation = base_setup(block, j + 1, "end");
+                        let generative_data_end = generationdata_setup(block, "end");
+                        let final_animation_end = animationdata_setup(block, end_animation, generative_data_end);
+                        animation_data["section_" + i]["about_anims"]["data" + data_num] = final_animation_end;
+    
+                        // video属性の場合は、それ用のvideo_animationを追加で作成.
+                        if (block.classList.contains("video")) {         
+                            
+                            data_num += 1;
+    
+                            let video_animation = {};
+                            let the_same_name = "same_num_" + target_data(block, "same_num_");
+    
+                            // 同じ same_num_を持つ　same_start について処理.
+                            let the_start_elems = document.getElementsByClassName(the_same_name)[0];
+    
+                            let v_start_when = Number(target_data(the_start_elems, "this_video_st_"));
+                            let v_end_when = Number(target_data(block, "this_video_st_")) + 5;
+                            let v_duration = Number(v_end_when - v_start_when);
+                        
+                            video_animation["finish_when"] = (j * 5) + 5;
+                            video_animation["trigger_when"] = video_animation["finish_when"] - v_duration;
+                            video_animation["video_startpoint"] = v_start_when;
+    
+                            video_animation = ac_vi_adaptation(block, video_animation);
+                            video_animation["anim_name"] = data_num;
+    
+                            animation_data["section_" + i]["about_anims"]["data" + data_num] = video_animation;
+                            block.classList.add("anim_num_" + data_num);
+    
+                            // iframe の id を取得し、リストに加える.
+                            // そのリストの長さを測り、その数字を yt_？ というidに持ったdiv要素に置換.
+                            iframe_adaptation(block);
+    
+                        } else if (block.lastElementChild.tagName == "TEXTAREA") {
+                            textarea_adaptation(block);
+                        }
+    
+                        block.classList.add(the_classname);            
+                        let object = object_generation(block);
+                        the_big_section.appendChild(object);
+
+                    }
+                } else {
+                    // start_animationとend_animationの両方を構成する.
+                    data_num += 1;
+                    let start_animation = base_setup(block, j, "start");
+                    let generative_data_start = generationdata_setup(block, "start");
+    
+                    let final_animation_start = animationdata_setup(block, start_animation, generative_data_start);
+    
+                    animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_start;
+    
+                    data_num += 1;
+                    let end_animation = base_setup(block, j + 1, "end");
+                    let generative_data_end = generationdata_setup(block, "end");
+                    let final_animation_end = animationdata_setup(block, end_animation, generative_data_end);
+                    animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_end;
+                    
+                    // video属性の場合は追加で video_animation を作成.
+                    if (block.classList.contains("video")) {
+                        data_num += 1;
+                        let video_animation = {};
+
+                        video_animation["trigger_when"] = j * 5;
+                        video_animation["finish_when"] = video_animation["trigger_when"] + 5;
+                        video_animation["video_startpoint"] = Number(v_start_when);
+                        video_animation = ac_vi_adaptation(block, video_animation);
+    
+                        animation_data["section_" + i]["about_anims"]["data" + data_num] = video_animation;
+    
+                        iframe_adaptation(block);
+    
+                        the_big_section.appendChild(object);
+                    } else if (block.lastElementChild.tagName == "TEXTAREA") {
+                        textarea_adaptation(block);
+                    }
+    
+                    let object = object_generation(block);
+                    block.classList.add(the_classname);
+                    the_big_section.appendChild(object);
+                }
+            }
         }
     }
 
     caset.appendChild(the_big_section);
-
     // 最後の総召集.
     animation_data["section_" + i]["about_time"]["section_current_time"] = 0;
 }
-
 
 let be = screen.children;
 for (let i = be.length - 1; i >= 0 ; i--) {
@@ -475,62 +435,55 @@ for (let i = be.length - 1; i >= 0 ; i--) {
 }
 screen.appendChild(caset);
 
-// ** ------------------------------------------------------------------------------
-
-// **** HTML GENERATION .
+// HTMLファイルのエクスポート.
 let final_dom = String(screen.innerHTML);
-fetch('../js/exportable/commons/index_head.html') // (1) リクエスト送信
-.then(response => response.text()) // (2) レスポンスデータを取得
-.then(data => { // (3)レスポンスデータを処理
+fetch('../js/exportable/commons/index_head.html') 
+.then(response => response.text()) 
+.then(data => { 
     the_html += data;
     the_html += final_dom;
 
-    fetch('../js/exportable/commons/index_bottom.html') // (1) リクエスト送信
-    .then(response => response.text()) // (2) レスポンスデータを取得
-    .then(data_second => { // (3)レスポンスデータを処理
-
+    fetch('../js/exportable/commons/index_bottom.html')
+    .then(response => response.text()) 
+    .then(data_second => { 
         the_html += data_second;
         zip.file('index.html', the_html);
     });
     
 });
 
-// * Css GENERATION .
+// CSSファイルのエクスポート
 let css_url = '../js/exportable/commons/style.css';
 let css_res = await fetch(css_url);
 let cb = await css_res.text();
 zip.file('style.css', cb);
 
-// * ln JS GENERATION .
+// JavaScriptファイル群のエクスポート. (commons系列)
 let lnjs_url_list = ["../js/exportable/commons/javascript/anim.js", "../js/exportable/commons/javascript/states.js", "../js/exportable/commons/javascript/setup.js", "../js/exportable/commons/javascript/parts.js"];
-
 for (let i = 0; i < lnjs_url_list.length; i++) {
-
     let url = lnjs_url_list[i];
     let res = await fetch(url);
     let text = await res.text();
-
     if (i == 1) {
         let final_animation_generate_list =  "let animation_generate_list = " + JSON.stringify(animation_generate_list) + ";";
         text = final_animation_generate_list + text;
     }
-
     let the_e_num =  url.indexOf(".js");    
     let the_name =  url.slice(36, the_e_num) + ".js";
-
     zip.folder("javascript").file(the_name, text);
 }
 
-// **** MAIN GENERATION .
+// JavaScriptファイルのエクスポート. (main.js)
 let final_animation_data = "let animation_data = " + JSON.stringify(animation_data) + ";";
 let final_yt_id_list =  "let yt_id_list = " + JSON.stringify(yt_id_list);
-// ここでようやく成果物を書き込み。
 the_js = the_js + final_animation_data + final_yt_id_list;
 let main_res = await fetch("../js/exportable/commons/javascript/main.js");
 let main_text = await main_res.text();
 the_js = the_js + main_text;
 zip.folder("javascript").file("main.js", the_js);
 
+
+// 全体を包括する zipファイルのエクスポート.
 zip.generateAsync( 
     {type:"blob",
      compression: "DEFLATE",

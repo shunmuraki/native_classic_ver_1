@@ -5,16 +5,17 @@ const wheel = document.querySelector(".wheel");
 const the_pointer = document.querySelector(".pointer");
 const layer_base = document.querySelector(".layer_1");
 
-// layers
+// layers.
 const base_1 = document.querySelector(".base_1");
 const base_2 = document.querySelector(".base_2");
 const base_3 = document.querySelector(".base_3");
 
-// sub_layers
+// sub_layers.
 const ly_2_1 = document.querySelector(".layer_select_1");
 const ly_2_2 = document.querySelector(".layer_select_2");
 const ly_2_3 = document.querySelector(".layer_select_3");
-// selectors
+
+// selectors.
 const sl_1_1 = document.querySelector(".select_1_1");
 const sl_1_2 = document.querySelector(".select_1_2");
 const sl_1_3 = document.querySelector(".select_1_3");
@@ -24,29 +25,25 @@ const sl_2_3 = document.querySelector(".select_2_3");
 const sl_3_1 = document.querySelector(".select_3_1");
 const sl_3_2 = document.querySelector(".select_3_2");
 
-// * default
+// 以下デフォルトの表示設定.
 ly_2_1.style.display = "none";
 ly_2_2.style.display = "none";
 ly_2_3.style.display = "none";
 wheel.style.display = "none";
 
+// ホイールの状態をリセット（レイヤー１が表示されている状態）する関数.
 export const layer_resetter = () => {
     ly_2_1.style.display = "none";
     ly_2_2.style.display = "none";
     ly_2_3.style.display = "none";
 }
 
-// もともと HTML　として記述してあるものをコピーして、随所に貼り付けては remove していくようなフローはどう？
-// でも sp にも relative はあんまりつけたくない... 
-// やっぱり上から描画する、場所だけ移動するのが適切だと思う。毎回取り外しするのは重くてきついんじゃないかな。
+// ホイールの描画アニメーションの関数.
 export const wheel_seton = () => {
-    // * 多分支点になるのは「centering」クラスだから、それを毎度取得させることだろうね.
-    let centering_box = document.getElementsByClassName("centering")[0];
 
-    // * エディターのスクロールを禁止して、 pointer_and_wheel はposition で描画する。
+    let centering_box = document.getElementsByClassName("centering")[0];
     let the_focus_top = centering_box.getBoundingClientRect().top;
     let the_focus_left = centering_box.getBoundingClientRect().left;
-    
     pointer.style.top = the_focus_top - 10 + "px";
     pointer.style.left = the_focus_left - 10 + "px";
 
@@ -82,7 +79,6 @@ export const wheel_seton = () => {
 }
 
 base_1.addEventListener("click", () => {
-    // * ここが開店したら可愛い
     ly_2_1.style.display = "block";
 })
 base_2.addEventListener("click", () => {
@@ -92,12 +88,8 @@ base_3.addEventListener("click", () => {
     ly_2_2.style.display = "block";
 })
 
-// * スタイル取得して指定のやつだけ変えて返す関数。
-// f には変更するプロパティ(0123)、gにそのvalueを。
+// ホイールのクリックに応じて「styling_」クラスの内容を切り替える関数.
 const style_num_changer = (f, g) => {
-    // writing_area のクラス名の中を書き換えてしまっているのはどうして？？
-    // あとなぜか centering がついてこない。
-    // * これを変えたらいいのかな？？
     let target;
     let centering = document.getElementsByClassName("centering")[0];
 
@@ -118,8 +110,6 @@ const style_num_changer = (f, g) => {
     target.classList.add(final_name);
 }
 
-// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 sl_1_1.addEventListener("click", () => {
     style_num_changer(0, 0);
     ly_2_1.style.display = "none";
@@ -135,8 +125,6 @@ sl_1_3.addEventListener("click", () => {
     ly_2_1.style.display = "none";
 })
 
-// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 sl_2_1.addEventListener("click", () => {
     style_num_changer(1, 0);
     ly_2_2.style.display = "none";
@@ -151,8 +139,6 @@ sl_2_3.addEventListener("click", () => {
     style_num_changer(1, 2);
     ly_2_2.style.display = "none";
 })
-
-// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 sl_3_1.addEventListener("click", () => {
     style_num_changer(2, 0);

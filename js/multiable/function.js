@@ -1,11 +1,9 @@
-// ---------- VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE VIDEOBASE
 import { half_left_width } from "../base/elements.js";
 import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter } from "../base/tools.js";
 
-// *** ブロック内に iFrame を作成する関数, 引数に videoId と 挿入先のブロック
+// yt iframe　の読み込み
 export const block_multiable = (e, f) => {
 
-    // * さて、そろそろこの「player」についてまともに考えてもいい頃合いだが、いかがでしょうか。
     let the_box = document.getElementById(e).parentElement;
     the_box.style.height = 225 + "px";
 
@@ -29,7 +27,8 @@ export const block_multiable = (e, f) => {
     function onPlayerReady(event) {
         event.target.playVideo();
         duration_time = player.getDuration();
-        // * 初めて sessionStorage に頼った瞬間。
+        
+        // 時間差の存在を考慮してsessionStorageを唯一この箇所で利用.
         sessionStorage.removeItem("the_duration");
         sessionStorage.setItem("the_duration", duration_time);
         return duration_time;
@@ -43,25 +42,17 @@ export const block_multiable = (e, f) => {
             done = true;
         }
     }
-
     function stopVideo() {
         player.stopVideo();
     }
-
     onYouTubeIframeAPIReady(e, f);
 
-    // duration を返してもらう.
     return player;
 }
 
-// - * --------------------------------------------------------- 平常運転 --------------------------------------------------------------------------------------
-
-// - * special_cov 関連
-// ** centering でも new_layer_centering でも実行するものたちです。
-// !!! ***  same_alend から実行するようにする！！
-// *** 特定のsp のセンターマイクに被せるようにぴっちりと special_cov を敷く
+// same群のどこかがセンタリングしている際に、上に対象要素を被せて描画する関数.
 export const make_special_cov = (e, f) => {
-    // *　問題はどうやって描画するかだよね。
+
     let special_cov = document.createElement("div");
     special_cov.style.position = "fixed";
     
@@ -87,16 +78,14 @@ export const make_special_cov = (e, f) => {
     return special_cov;
 }
 
-// ** 上下移動で削除されてもいい.a
-
-// *** 左右上下の移動で使える、centering が same を持つか判定関数
+// 左右上下の移動で使える、centering が same を持つか判定する関数.
 export const is_it_same_start = (e) => {
-    // special_cov の生成からコンテントの挿入まで.
+    
+    // special_cov の生成からコンテントの挿入までを処理.
     if (e.classList.contains("same")) {
         let the_num = target_data(e, "same_num_");
         
         function the_state() {
-
             let the_name = "same_num_" + the_num;
             let special_cov = make_special_cov(e, the_num);
             let hit_target = document.getElementsByClassName(the_name)[document.getElementsByClassName(the_name).length - 1];
@@ -104,18 +93,15 @@ export const is_it_same_start = (e) => {
             let the_one = the_your_end.lastElementChild.cloneNode(true);  
             let spec = document.getElementsByClassName("this_cov_is_" + the_num)[0];
             spec.appendChild(the_one);
-
         }
-
         if (document.getElementsByClassName("this_cov_is_" + the_num)[0] == null) {
             the_state();
         }
     }
 }
 
+// となりのブロックが same_end クラスを持つ場合に対応する special_cov を削除する関数.
 export const is_it_same_alend = (e) => {
-    // * となりが same_endだったら.
-    // special_cov の削除.
     function the_state(e) {
         let the_name = "this_cov_is_" + target_data(e, "same_num_");
         let the_special_cov = document.getElementsByClassName(the_name)[0];
@@ -140,7 +126,7 @@ export const is_it_same_alend = (e) => {
     }
 }
 
-// **** だいぶ綺麗にかけたんじゃない？？？
+// special_cov関連の関数を束ねたもの.
 export const is_it_same_series = (e) => {
     
     let sp_cover = vertical_to_sp_cover(e);
@@ -149,7 +135,6 @@ export const is_it_same_series = (e) => {
     
     for (let i = 0; i < sps.length; i++) {
         if (i == 0 && sps[0].classList.contains("orange_space")) {
-            // orange_spaceが対象ってことになる
         } else {
             let vers = sps[i].lastElementChild.children;
             for (let o = 0; o < vers.length; o++) {
@@ -164,10 +149,9 @@ export const is_it_same_series = (e) => {
     }
 }
 
-// ** sameの途中で切っちゃった場合に対処する関数
+// sameの途中に挿入がされる場合への対処関数. (両サイドがsameであることが条件で、かつ両者が start , end は持たない場合にのみ実行)
 export const same_cutter = (e, f) => {
-    // * もしかして　その前の要素に end ,その次の要素にstart をつけたら済む話なのかもしかして？？
-    // * 両サイドがsameであることが条件で、かつ両者が start , end は持たない場合にのみ実行する。
+
     let the_target_left = e.previousElementSibling;
     let the_target_right;
 
@@ -184,14 +168,11 @@ export const same_cutter = (e, f) => {
                 
                 let spe_cont = document.querySelector(".special_cov").lastElementChild;
                 the_target_left.classList.add("same_end");
-                
-                // * 特徴的
                 the_target_left.appendChild(spe_cont);
                 the_target_right.classList.add("same_start");
-
                 let same_name = "same_num_" + target_data(the_target_right, "same_num_");
 
-                // * same_start　以降の same_num_ を更新せなあかんやんか。
+                // * same_start　以降の same_num_ を更新.
                 let sames = document.getElementsByClassName(same_name);
                 let breakpoint = [].slice.call(sames).indexOf(the_target_right);
                 
@@ -209,8 +190,7 @@ export const same_cutter = (e, f) => {
     }
 }
 
-// **** 画像のアップロードできるようにするぞぉおおおおおおおおお！！！！
-
+// 画像のアップロード処理を行う関数.
 export const make_it_img = (e, m) => {
     const input = document.createElement("input");
     const label = document.createElement("label");
@@ -230,7 +210,6 @@ export const make_it_img = (e, m) => {
     e.appendChild(multi_fragment);
     e.style.height = 225 +  "px";
     
-    // set the media type.
     if (m == "image") {
         input.setAttribute("accept", ".jpg, .jpeg, .png")
         label.classList.add("image_input");
@@ -242,14 +221,10 @@ export const make_it_img = (e, m) => {
 
         e.appendChild(multi_one_fragment);
         
-        input.addEventListener("change", function(o) {
-            // 選択されたファイルの内容を代入
+        input.addEventListener("change", function(o) {            
             var file = o.target.files;
-            // FileReaderクラスをインスタンス化し、ファイル出力の準備をする
             var reader = new FileReader()
-            // ファイルオブジェクトの一番最初のファイルのローカルURLを読み取り、それをreaderインスタンスのresultプロパティにセット
             reader.readAsDataURL(file[0])
-            //読み取り終了後、読み取ったローカルURLをimgタグのsrc属性に代入する。
             reader.onload = function() {
             label.remove();
             uploaded_multi_media.src = reader.result;

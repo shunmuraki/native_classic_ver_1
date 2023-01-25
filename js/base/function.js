@@ -65,8 +65,6 @@ export const horizontal_stripe_checker = (e) => {
     }   
 }
 
-// ------------------------------------------------------------------------------------------    
-
 // sp_cover の生成関数
 export const make_fragment = (e, f) => {
     const sp_cover = document.createElement("div");
@@ -169,8 +167,6 @@ export const make_dup_fragment = (e, f) => {
     }
 }
 
-// ------------------------------------------------------------------------------------------
-
 // Editモードにおけるスクロール位置の調整関数　(???)
 export const go_af_scroll = () => {
     let the_scrap = document.querySelector(".scrolled");
@@ -193,17 +189,15 @@ export const go_top = (e, f) => {
 
     if (f == "centering") {
         if (sibling) {
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
             if (ver.lastElementChild.tagName == "TEXTAREA") {
                 ver.lastElementChild.blur();
             }
+            
             let the_num = [].slice.call(vertical_to_hor(ver).children).indexOf(ver);
             sibling_height = sibling.clientHeight;
             let next_one = sibling.lastElementChild.children[the_num];
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
             centering_marker(ver, next_one, f);
+
             if (next_one.lastElementChild.tagName == "TEXTAREA") {
                 next_one.lastElementChild.focus();
             }
@@ -211,29 +205,24 @@ export const go_top = (e, f) => {
             is_it_same_series(next_one);
 
         } else if (pre_sibling) {
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
+
             if (ver.lastElementChild.tagName == "TEXTAREA") {
                 ver.lastElementChild.blur();
             }
+            
             sibling_height = pre_sibling.clientHeight;
-            // *** ここは new_layer とも同じだな。いや、そんなことないか。
             let next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
             centering_marker(ver, next_one, f);
 
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
             if (next_one.lastElementChild.tagName == "TEXTAREA") {
                 next_one.lastElementChild.focus();
             }
 
-            // * same_endの方を先に取得してみるか。
+            // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
             let ends = document.querySelectorAll(".same_end");
             for (let i = 0; i < ends.length; i++) {
                 if (vertical_to_sp_cover(ends[i]).isEqualNode(pre_sibling)) {
                     let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
-
-                    // * 同じ列に存在するsame_endを取得してそこから番号だけもらった上で、ループでその番号と対応するspecial_covを消すようにしたらどうだろう。
                     let the_special_cov = document.getElementsByClassName(the_name)[0];
                     
                     if (the_special_cov) {
@@ -253,9 +242,6 @@ export const go_top = (e, f) => {
             sibling_height = pre_sibling.clientHeight;
             let next_one = pre_sibling.children[1].lastElementChild.lastElementChild;
             centering_marker(ver, next_one, f);
-            
-            // * ここで pointer志向の左右移動と同じ関数を使い回したい.
-            // * 引数に　「対象となる scrap領域」と「移動距離」を与えるようにする.
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
@@ -263,6 +249,7 @@ export const go_top = (e, f) => {
         }
     }
 
+    // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
     if (sibling_height > to_the_distance) {
         window.scrollTo({
             bottom: your_height,
@@ -284,8 +271,6 @@ export const go_bottom = (e, f) => {
     if (f == "centering") {
 
         if (sibling) {
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
             if (ver.lastElementChild.tagName == "TEXTAREA") {
                 ver.lastElementChild.blur();
             }
@@ -294,8 +279,6 @@ export const go_bottom = (e, f) => {
             let next_one = sibling.lastElementChild.children[the_num];
             centering_marker(ver, next_one, f);
 
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
             if (next_one.lastElementChild.tagName == "TEXTAREA") {
                 next_one.lastElementChild.focus();
             }
@@ -303,8 +286,7 @@ export const go_bottom = (e, f) => {
             is_it_same_series(next_one);
 
         } else if (pre_sibling) {
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
+
             if (ver.lastElementChild.tagName == "TEXTAREA") {
                 ver.lastElementChild.blur();
             }
@@ -312,19 +294,15 @@ export const go_bottom = (e, f) => {
             let next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
            
             centering_marker(ver, next_one, f);
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
+
             if (next_one.lastElementChild.tagName == "TEXTAREA") {
                 next_one.lastElementChild.focus();
             }
 
-            // * same_endの方を先に取得してみるか。 同時に中身を移す処理も済ませる。
             let ends = document.querySelectorAll(".same_end");
             for (let i = 0; i < ends.length; i++) {
                 if (vertical_to_sp_cover(ends[i]).isEqualNode(pre_sibling)) {
                     let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
-
-                    // * 同じ列に存在するsame_endを取得してそこから番号だけもらった上で、ループでその番号と対応するspecial_covを消すようにしたらどうだろう。
                     let the_special_cov = document.getElementsByClassName(the_name)[0];
                     
                     if (the_special_cov) {
@@ -344,12 +322,8 @@ export const go_bottom = (e, f) => {
             sibling_height = pre_sibling.clientHeight;
             let next_one = pre_sibling.children[1].lastElementChild.children[1];
             centering_marker(ver, next_one, f);
-
-            // * ここで pointer志向の左右移動と同じ関数を使い回したい.
-            // * 引数に　「対象となる scrap領域」と「移動距離」を与えるようにする.
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_start_scrollwidth - now_position;
-            
             all_view_changer(pre_sibling, the_distance);            
             is_it_same_series(next_one);
         }
@@ -368,12 +342,8 @@ export const go_bottom = (e, f) => {
 export const go_left = (e, f) => {
     go_af_scroll();
     let ver = e;
-    // これがright と違うのは、adjusterにあたる可能性があるため。これを避けてる　←賢い.
+    // 中身が存在するかどうかでadjusterかどうかの判定を行っている.
     if (ver.previousElementSibling.lastElementChild) {
-        // e.lastElementChild.blur();
-
-        // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-        // ** あと移動この場所についても、だよね。そっちも大事。
         if (ver.lastElementChild) {
             if (ver.lastElementChild.tagName == "TEXTAREA") {
                 ver.lastElementChild.blur();
@@ -389,9 +359,6 @@ export const go_left = (e, f) => {
             if (next_one.lastElementChild.tagName == "TEXTAREA") {
                 var v = next_one.lastElementChild.value;
                 next_one.lastElementChild.value = "";
-    
-                // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-                // ** あと移動この場所についても、だよね。そっちも大事。
                 next_one.lastElementChild.focus();
                 next_one.lastElementChild.value = v; 
             }
@@ -407,11 +374,7 @@ export const go_right = (e, f) => {
     go_af_scroll();
     let ver = e;
 
-    // 一旦試験的に解除してみる。
     if (ver.nextElementSibling) {
-
-        // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-        // ** あと移動この場所についても、だよね。そっちも大事。
         if (ver.nextElementSibling.lastElementChild) {
             if (ver.lastElementChild.tagName == "TEXTAREA") {
                 ver.lastElementChild.blur();
@@ -425,8 +388,6 @@ export const go_right = (e, f) => {
         centering_marker(ver, next_one, f);
 
         if (f == "centering") {
-            // ** それが存在して TEXTAREA　だったらfocus、じゃなかったら何にもしない　っていう方向で一回全部書いてみる（上下左右。）
-            // ** あと移動この場所についても、だよね。そっちも大事。
             if (next_one.lastElementChild.tagName == "TEXTAREA") {
                 var v = next_one.lastElementChild.value; 
                 next_one.lastElementChild.value = "";
@@ -441,22 +402,17 @@ export const go_right = (e, f) => {
 }
 
 
-// ------------- MAGIC COMMAND ---------------
-
+// マジックコピーの関数.
 export const the_magic_copy = (e) => {
-
     // * 初期化
     magic_elms = [];   
-    // - 以降に残っているものを、動画に限らず全部コピーしての改行になる. 今のブロックが最後尾になる。innerHTMLをsessionStorageに保存しておいて最新を保つ.
+    // - 以降に残っているものを、動画に限らず全部コピー.
     let sp_cover = vertical_to_sp_cover(e);
     let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
-    
-    // - 各spごとにコピーして以前のブロックをまとめて削除してラインfragmentとして変数に格納しておく。それをリストにして「the_magic_fragment」とする。
+    // - 各spごとにコピーして以前のブロックをまとめて削除してラインfragmentとして変数に格納しておく.
     for (let i = 0; i < sp_cover.childElementCount; i++) {
         let line = sp_cover.children[i].lastElementChild.children;
-        
         let new_folder = new Array();
-    
         for (let o = line.length - 1; o >= c_num + 1; o--) {
             new_folder.unshift(line[o]);
             line[o].remove();
@@ -465,11 +421,12 @@ export const the_magic_copy = (e) => {
     }
 }
 
+// マジックペーストの関数.
 export const the_magic_paste = (e) => {
-    // - 最初に追加ライン分（関係性から算出）複製（全部空にする）
-    let the_line_num = magic_elms.length;
     
-    // 現在の位置はsp_coverのラインの中の何番目?
+    // コピーしてあるfragmentを貼り付ける. ラインが足りないなら追加し、あとはペースト対象のラインとそれ以外のラインとで条件分岐して適当なタイプのブロックを同じ数だけ挿入している.
+
+    let the_line_num = magic_elms.length;    
     let sp_cover = vertical_to_sp_cover(e);
     let whole_line_num = sp_cover.childElementCount;
 
@@ -489,7 +446,7 @@ export const the_magic_paste = (e) => {
     the_name_list.push("original_centering");
 
     
-    // * 足りないラインを新しく生成
+    // 足りないラインを新しく生成.
     if (the_additional_num > 0) {
 
         for (let i = 1; i < current_ver_num; i++) {
@@ -505,27 +462,16 @@ export const the_magic_paste = (e) => {
         for (let i = 0; i < the_additional_num; i++) {
             let final_copy = added_line.cloneNode(true);
             sp_cover.appendChild(final_copy);
-            // scroll
             final_copy.lastElementChild.scrollLeft = current_scrollleft;
         }
     }
 
-
-    // - そのまま中身を同じラインに追加
-    // * i が current_line_num -- the_line_num + current_line_num の間だったらmagic_elemsから挿入, 一応same_cutterとかやっとく必要ある？ is_itとかもさ.
-    // * i がその範囲の外にあったら、 same クラスを持っているかどうかで判定して、持っていたらひとつ前のを複製、持っていなかったらmake_ver_fragment()するといいのかな.
+    // 不足分を補ってライン数が十分なsp_coverに対して再度子要素を取得してループ. 条件分岐はここから.
     for (let i = 1; i <= sp_cover.childElementCount; i++) {
 
         if (i < current_line_num || i > bottom_line_num) {
-
-            // * ---------    ここまでですべての挿入は終わっていて、あとは数合わせ、っていう段階.   --------------------------------
-            // * 追加分のブロックも増やさないといけないでしょう？どこに挿入されるかによって、挿入先は異なってくるが。sameとかだったら大変だぞ....
-            // * 通常の追加分は make_ver_fragment() でいいわけやんか.
-            // * will_added_emls 分のブロックをすべてのsp-horに追加することは決まっている.
             for (let o = 0; o < magic_elms[0].length; o++) {
-            
                 let c_v = sp_cover.children[i - 1].lastElementChild.children[c_num + o];
-
                 if (c_v.classList.contains("same")) {
                     if (! c_v.classList.contains("same_end")) {
                         let addition = c_v.cloneNode(true);
@@ -540,12 +486,8 @@ export const the_magic_paste = (e) => {
 
         } else { 
             let will_added_elems = magic_elms[i - current_line_num];
-            
             for (let o = 0; o < will_added_elems.length; o++) {
-                // * そもそも after で純に追加していくと順番変わりそうじゃない？
-                // * それを考慮して c_num + o に after するようにした. これでどうだろう.
                 sp_cover.children[i - 1].lastElementChild.children[c_num + o].after(will_added_elems[o]);
-
             }    
         }
     }
@@ -555,18 +497,11 @@ export const the_magic_paste = (e) => {
 
     centering_marker(old_center, center, "centering");
     original_centering_checker(sp_cover, center);
-    // [[[ --- new_setup --- ]]]
-    original_centering_checker(sp_cover, center);
     vertical_stripe_checker(sp_cover);
     horizontal_stripe_checker(sp_cover);
 
-    // もし same の途中だったら　というケースを考える必要がある。ここでもう一度再構築が必要になる。
-
-    // SPECIAL COV
     same_cutter(center, "addon");
     is_it_same_series(center);
-
-    // * 400 分だけスクロール.
     all_view_changer(sp_cover, 400);
 
     if (center.lastElementChild.tagName == "TEXTAREA") {

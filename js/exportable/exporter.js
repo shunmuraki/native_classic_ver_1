@@ -1,6 +1,5 @@
 let the_values = new Array();
 
-// ** ページ遷移から
 let the_footer = document.createElement("div");
 the_footer.classList.add("statusbar");
 
@@ -20,25 +19,23 @@ let screen = document.querySelector(".screen");
 const button = document.querySelector(".button");
 
 button.addEventListener("click", () => {
-    // textarea が innerHTMLではコピーされないので、その配慮。
+    // textarea が innerHTMLではコピーされないため別に配列を用意して update.html側で再度同じ状況を再現.
     let write_areas = document.querySelectorAll(".write_area");
     for (let i = 0; i < write_areas.length; i++) {
         let the_value = write_areas[i].value;
         the_values.push(the_value);
     }
 
-    // ** ------------------------------------------------------------------------------
-
     let output_doms = screen.innerHTML;
     sessionStorage.setItem("output", output_doms);
     sessionStorage.setItem("the_values", JSON.stringify(the_values));
 
-    // * ここに一枚カバーが入るイメージかな。完成イメージとしてはそんな感じ。
+    // ここに一枚カバーが入る.
     let redirect_cover = document.createElement("div");
     redirect_cover.classList.add("redirect_cover");
     screen.after(redirect_cover);
 
-    // * animation ...
+    // ページ遷移のアニメーション.
     let rc = document.querySelector(".redirect_cover");
     rc.animate(
         [
@@ -50,7 +47,7 @@ button.addEventListener("click", () => {
         }
     );
 
-    // ** ボタンが押されたら、sessionStorageにDOMを保存して into.html へ遷移.   
+    // ボタンが押されたら、sessionStorageにDOMを保存して into.html へ遷移.
     setTimeout(() => {
         window.location.href = "update.html";
         rc.remove();
@@ -60,5 +57,3 @@ button.addEventListener("click", () => {
         }
     }, 800) 
 });
-
-// ** ------------------------------------------------------------------------------

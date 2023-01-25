@@ -1,12 +1,9 @@
 import { layer_resetter, wheel_seton } from "./function.js";
 
-// * これは別のイベントにする必要があるやろ。
-const pointer = document.querySelector(".pointer_and_wheel");
 const wheel = document.querySelector(".wheel");
 const the_pointer = document.querySelector(".pointer");
 const layer_base = document.querySelector(".layer_1");
 
-// * etc → （そもそもの編集モードを止める)　wheelを消す。
 document.addEventListener("keydown", (e) => {
     
     let current = document.activeElement;
@@ -16,13 +13,13 @@ document.addEventListener("keydown", (e) => {
     if (current.tagName == "TEXTAREA") {
         type_signiture = current.value;
 
+        // ホイールを起動する処理.
         if ( type_signiture.indexOf('style') != -1) {
 
             document.querySelector(".ms_area").remove();
             if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
                 document.querySelector(".centering").lastElementChild.focus();
             }
-            
             wheel_seton();
             current.value = current.value.slice(0, -6);
             current.blur();
@@ -61,8 +58,9 @@ document.addEventListener("keydown", (e) => {
           );
         layer_resetter();
         wheel.style.display = "none";
-        // * focusを返す
         let centering = document.querySelector(".centering");
-        centering.lastElementChild.focus();
+        if (centering.lastElementChild.tagName == "TEXTAREA") {
+          centering.lastElementChild.focus();
+        }
     }
 })
