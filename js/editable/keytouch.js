@@ -1,6 +1,6 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list } from "../base/elements.js";
 import { make_ver_fragment, go_top, go_left, go_right, go_bottom, vertical_stripe_checker, horizontal_stripe_checker, original_centering_checker, centering_marker} from "../base/function.js";
-import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter } from "../base/tools.js";
+import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { yt_player_getter, yt_resetter } from "../multiable/extends.js";
 import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
@@ -33,6 +33,8 @@ window.addEventListener("keydown", (e)=>{
         
         // Editモードを展開.
         if ( type_signiture.indexOf('edit') != -1) {
+
+            tracer_basis(document.querySelector(".centering"));
 
             document.querySelector(".ms_area").remove();
             if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {

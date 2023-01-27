@@ -98,6 +98,19 @@ export const same_data_counter = (e) => {
     }
 }
 
+export const tracer_basis = (e) => {
+    let the_name = "this_cov_is_" + target_data(e, "same_num_");
+    let special_cov = document.getElementsByClassName(the_name)[0];
+    
+    if (special_cov) {
+        let specon_cloned = special_cov.lastElementChild.cloneNode(true);
+        let same_name = "same_num_" + target_data(e, "same_num_");
+        let sames = document.getElementsByClassName(same_name);
+        sames[sames.length - 1].lastElementChild.remove();
+        sames[sames.length - 1].appendChild(specon_cloned);
+    }
+}
+
 // same がセンタリングしている間にスタイリングを変更した場合に、sameの外に出る時に対象となっていた special_cov の要素を複製して大元の same_end に格納する関数.
 export const same_change_tracer = (e) => {
     if (e.previousElementSibling) {
@@ -111,22 +124,11 @@ export const same_change_tracer = (e) => {
                 e.previousElementSibling.lastElementChild.remove();
                 e.previousElementSibling.appendChild(specon_cloned);
             }
-
         }
     } 
     if (e.nextElementSibling) {
         if (e.nextElementSibling.classList.contains("same_start")) {
-
-            let the_name = "this_cov_is_" + target_data(e.nextElementSibling, "same_num_");
-            let special_cov = document.getElementsByClassName(the_name)[0];
-
-            if (special_cov) {
-                let specon_cloned = special_cov.lastElementChild.cloneNode(true);
-                let same_name = "same_num_" + target_data(e.nextElementSibling, "same_num_");
-                let sames = document.getElementsByClassName(same_name);
-                sames[sames.length - 1].lastElementChild.remove();
-                sames[sames.length - 1].appendChild(specon_cloned);
-            }
+            tracer_basis(e.nextElementSibling);
         }
     }
 }

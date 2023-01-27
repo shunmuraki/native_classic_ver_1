@@ -1,6 +1,6 @@
 import { screen, the_name_list } from "../base/elements.js";
 import { horizontal_stripe_checker, make_ver_fragment, vertical_stripe_checker } from "../base/function.js";
-import { classmover, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
+import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
 
 window.addEventListener("keydown", (e)=>{
 
@@ -32,6 +32,8 @@ window.addEventListener("keydown", (e)=>{
 
         if (type_signiture) {
             if ( type_signiture.indexOf('connect') != -1) {
+                
+                tracer_basis(document.querySelector(".centering"));
                 document.querySelector(".ms_area").remove();
                 if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
                     document.querySelector(".centering").lastElementChild.focus();
