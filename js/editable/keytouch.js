@@ -782,7 +782,6 @@ window.addEventListener("keydown", (e)=>{
                     document.querySelector(".centering").classList.remove("centering");
                 }
                 let the_new_focusedblock = original_sp_cover.lastElementChild.lastElementChild.lastElementChild;
-                wheel_positioning(the_new_focusedblock);  
                 document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
                 the_new_focusedblock.classList.add("centering");
                 original_centering_checker(original_sp_cover, the_new_focusedblock);
@@ -813,6 +812,8 @@ window.addEventListener("keydown", (e)=>{
             
             bo.style.backgroundColor = "#121212";
             bo.classList.remove("edit_mode");
+
+            wheel_positioning(document.querySelector(".centering"));
         }
     }
 });
