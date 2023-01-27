@@ -1,7 +1,6 @@
+import { screen } from "../base/elements.js";
 import { adjust_target_pos } from "./function.js";
 
-// これはインポートできる.
-let screen = document.querySelector(".screen"); 
 let ms_adjust_target;
 
 window.addEventListener("keydown", (e)=>{

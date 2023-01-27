@@ -62,7 +62,7 @@ window.addEventListener("keydown", (e)=>{
             // Editモードの明示化. 編集レイヤー上での処理に限定.
             screen.classList.add("edit");
             new_layer.style.display = "block";
-            bo.style.backgroundColor = "#0077ff";
+            bo.style.backgroundColor = "#000000";
             bo.classList.add("edit_mode");
 
             // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.

@@ -1,4 +1,4 @@
-import { half_left_width } from "../base/elements.js";
+import { screen, half_left_width } from "../base/elements.js";
 
 let adjust_box;
 let pointer_position_top;

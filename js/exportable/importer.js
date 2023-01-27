@@ -1,3 +1,4 @@
+import { screen } from "../base/elements.js";
 import { target_data } from "../base/tools.js";
 
 const zip = new JSZip();
@@ -9,8 +10,6 @@ let data_num = 0;
 let animation_data = {};
 let animation_generate_list = [];
 let yt_id_list = [];
-
-let screen = document.querySelector(".screen");
 let caset = document.createDocumentFragment();
 
 

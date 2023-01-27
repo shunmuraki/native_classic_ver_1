@@ -1,10 +1,9 @@
-import { half_left_width } from "../base/elements.js";
+import { screen, half_left_width } from "../base/elements.js";
 import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter } from "../base/tools.js";
 import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper } from "./extends.js";
 
 let special_playerlist = {};
 let s_n = 100;
-let screen = document.querySelector(".screen");
 
 export const special_playlist_getter = () => {
     console.log(special_playerlist);

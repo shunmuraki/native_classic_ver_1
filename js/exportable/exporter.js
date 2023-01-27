@@ -1,3 +1,5 @@
+import { screen } from "../base/elements.js";
+
 let the_values = new Array();
 
 let the_footer = document.createElement("div");
@@ -15,7 +17,6 @@ the_footer.appendChild(the_text);
 let the_script = document.getElementsByTagName("script")[0];
 the_script.before(the_footer);
 
-let screen = document.querySelector(".screen");
 const button = document.querySelector(".button");
 
 button.addEventListener("click", () => {

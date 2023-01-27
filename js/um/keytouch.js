@@ -1,8 +1,8 @@
+import { screen } from "../base/elements.js";
 import { target_data } from "../base/tools.js";
 import { video_load_then } from "../multiable/extends.js";
 import { video_street_scroll, audio_street_scroll, um_positioning } from "./function.js";
 
-let screen = document.querySelector(".screen");
 let um = document.querySelector(".um_display");
 um.style.display = "none";
 

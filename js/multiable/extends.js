@@ -1,3 +1,4 @@
+import { screen } from "../base/elements.js";
 import { same_data_counter, same_data_getter, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
 import { make_ver_fragment, make_dup_fragment } from "../base/function.js";
 import { all_view_changer } from "../editable/function.js";
@@ -7,7 +8,6 @@ let players_list = {};
 let yt_loop;
 let same_data = 0;
 same_data_counter(same_data);
-let screen = document.querySelector(".screen");
 
 export const yt_player_getter = (e) => {
     let the_keyid = e.id;

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://use.typekit.net/shv1tpd.css");
 html,
 body,
@@ -181,7 +182,7 @@ p, span, a {
 
 .pointer_and_wheel {
   position: absolute;
-  z-index: 4000;
+  z-index: 5000;
 }
 .pointer_and_wheel .cover {
   position: relative;
@@ -289,7 +290,7 @@ p, span, a {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 50000;
+  z-index: 4500;
 }
 .um_display .relative {
   width: 100%;
@@ -319,7 +320,6 @@ p, span, a {
   content: "";
   position: absolute;
   height: 100%;
-  background-color: gray;
 }
 .um_display .relative .flex .box img, .um_display .relative .flex .box iframe {
   display: block;
@@ -329,7 +329,7 @@ p, span, a {
      object-fit: cover !important;
 }
 .um_display .relative .flex .um_centering {
-  border: 5px solid #00ff00;
+  border: 5px solid #0070D8;
 }
 .um_display .relative .flex .null_f {
   background-image: url("img/um_box.png");
@@ -380,17 +380,16 @@ p, span, a {
   margin: 0 auto 0 0;
   overflow-x: auto;
   white-space: nowrap;
-  background-color: #909090;
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line {
   display: inline-block;
   position: relative;
   width: calc(4000px + 200vw);
-  height: 10px;
+  height: 12px;
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_pointer, .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_stripe, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_pointer, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_stripe {
   position: absolute;
-  background-color: rgb(255, 166, 0);
+  background-color: #75bcff;
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_pointer, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_pointer {
   z-index: 999;
@@ -401,8 +400,8 @@ p, span, a {
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_stripe, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_stripe {
   z-index: 99;
-  height: 4px;
-  top: 3px;
+  height: 3px;
+  top: 4.5px;
 }
 .block_layer .sp_cover .sp {
   position: relative;
@@ -419,7 +418,7 @@ p, span, a {
 }
 .block_layer .sp_cover .sp .horizontal .adjuster {
   width: 100vw;
-  background-color: rgb(255, 0, 43);
+  background-color: rgb(0, 0, 0);
 }
 .block_layer .sp_cover .sp .horizontal .vertical {
   width: 400px;
@@ -427,8 +426,8 @@ p, span, a {
   margin: 0 auto;
   vertical-align: top;
   position: relative;
-  border-right: 0.5px solid #909090;
-  border-bottom: 0.5px solid #909090;
+  border-right: 2px solid #000000;
+  border-bottom: 2px solid #000000;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -436,7 +435,7 @@ p, span, a {
   position: absolute;
   width: 5px;
   height: 100%;
-  background-color: rgb(255, 0, 43);
+  background-color: rgb(0, 0, 0);
   top: 0;
   left: 0;
 }
@@ -444,7 +443,7 @@ p, span, a {
   position: absolute;
   width: 100%;
   height: 5px;
-  background-color: rgb(255, 0, 43);
+  background-color: rgb(0, 0, 0);
   top: 0;
   left: 0;
 }
@@ -476,10 +475,7 @@ p, span, a {
   padding: 30px 10px;
 }
 .block_layer .sp_cover .sp .horizontal .centering {
-  border: 5px solid #00ff00;
-}
-.block_layer .sp_cover .sp .horizontal .original_centering {
-  background-color: rgba(255, 73, 173, 0.1);
+  border: 5px solid #0070D8 !important;
 }
 .block_layer .sp_cover .sp .horizontal .video, .block_layer .sp_cover .sp .horizontal .img {
   height: 225px !important;
@@ -494,7 +490,10 @@ p, span, a {
   border-bottom: none !important;
 }
 .block_layer .connected .sp:last-of-type .horizontal .vertical {
-  border-bottom: 0.5px solid #909090 !important;
+  border-bottom: 2px solid #000000 !important;
+}
+.block_layer .connected .sp:last-of-type .horizontal .centering {
+  border-bottom: 5px solid #0070D8 !important;
 }
 
 .new_layer {
@@ -509,13 +508,13 @@ p, span, a {
   width: 100%;
 }
 .new_layer .sp_cover .sp .horizontal .new_layer_centering {
-  background-color: #0070D8;
+  background-color: #0070D8 !important;
 }
 .new_layer .principle_block .sp .horizontal {
-  background-color: #0070D8;
+  background-color: #121212;
 }
 .new_layer .principle_pointer .orange_space .orange_pointer_zone, .new_layer .principle_pointer .orange_space .orange_stripe_zone {
-  background-color: #0070D8;
+  background-color: #121212;
 }
 
 .statusbar {
@@ -655,6 +654,17 @@ img, iframe {
   letter-spacing: 0.05em;
   margin: 80px 0 0 0;
   display: block;
+}
+
+.horizontal, .orange_pointer_zone, .orange_stripe_zone {
+  /*IE(Internet Explorer)・Microsoft Edgeへの対応*/
+  -ms-overflow-style: none;
+  /*Firefoxへの対応*/
+  scrollbar-width: none;
+  /*Google Chrome、Safariへの対応*/
+}
+.horizontal::-webkit-scrollbar, .orange_pointer_zone::-webkit-scrollbar, .orange_stripe_zone::-webkit-scrollbar {
+  display: none;
 }
 
 .styling_1_0_0_0 {
