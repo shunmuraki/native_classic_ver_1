@@ -1,3 +1,5 @@
+import { adjust_target_pos } from "./function.js";
+
 // これはインポートできる.
 let screen = document.querySelector(".screen"); 
 let ms_adjust_target;
@@ -38,7 +40,8 @@ window.addEventListener("keydown", (e)=>{
               ms_adjust_target = centering.lastElementChild;
             }
             
-            ms_adjust_target.style.setProperty('top', '20%', 'important');
+            adjust_target_pos(ms_adjust_target, "on");
+
             ms.style.opacity = 1;
             ms.focus();
             setTimeout(() => {
@@ -61,7 +64,8 @@ window.addEventListener("keydown", (e)=>{
             } else {
               ms_adjust_target = document.querySelector(".centering").lastElementChild;
             }
-            ms_adjust_target.style.top = ''; 
+            
+            adjust_target_pos(ms_adjust_target, "off");
             screen.classList.remove("ms");
           }
         }

@@ -15,6 +15,8 @@ export const video_load_then = (e, f) => {
     the_box.lastElementChild.remove();
     let the_add_box = document.createElement("div");
     the_add_box.setAttribute("id","auth_video_same");
+
+    // contentが textarea から img, video に置換されるためスタリングもここで変更.
     the_add_box.classList.add("styling_1_1_1_1");
     the_box.appendChild(the_add_box);
     
@@ -25,7 +27,7 @@ export const video_load_then = (e, f) => {
         
         let the_duration = sessionStorage.getItem("the_duration");
         
-        // この時点でthe_add_boxはiframeに置換されているので再取得して消す.
+        // この時点でthe_add_boxはiframeに置換されているため、再取得して消す.
         document.getElementById("auth_video_same").removeAttribute("id");
         
         same_data = same_data_getter();
@@ -41,7 +43,7 @@ export const video_load_then = (e, f) => {
         
         let the_will_copied = the_box.previousElementSibling;
     
-        // *動画の尺 / 3　分のブロックが必要であるため算出.
+        // 動画の尺 / 3　分のブロックが必要であるため算出.
         let the_block_num = Math.floor(the_duration / 3);
         let the_fragment = document.createDocumentFragment();
         let the_fragment_stable = document.createDocumentFragment();

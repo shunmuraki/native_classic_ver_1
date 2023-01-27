@@ -85,7 +85,7 @@ export const make_fragment = (e, f) => {
     adjuster.classList.add("adjuster");
     vertical.classList.add("vertical");
     textarea.classList.add("write_area");
-    textarea.classList.add("styling_1_1_1_1");
+    textarea.classList.add("styling_1_1_0_1");
     adjuster.classList.add("horizontal_child");
     vertical.classList.add("horizontal_child");
     
@@ -120,7 +120,7 @@ export const make_ver_fragment = (e, f) => {
     stripe_hor.classList.add("stripe_hor");
     vertical.classList.add("vertical");
     textarea.classList.add("write_area");
-    textarea.classList.add("styling_1_1_1_1");
+    textarea.classList.add("styling_1_1_0_1");
     vertical.classList.add("horizontal_child");
 
     vertical.appendChild(stripe_ver);

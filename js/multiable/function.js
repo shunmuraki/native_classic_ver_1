@@ -207,14 +207,16 @@ export const make_it_img = (e, m) => {
 
     // 当初の textarea をリプレース。
     e.lastElementChild.remove();
+    e.classList.add("img");
     e.appendChild(multi_fragment);
     e.style.height = 225 +  "px";
     
     if (m == "image") {
         input.setAttribute("accept", ".jpg, .jpeg, .png")
         label.classList.add("image_input");
-
         const uploaded_multi_media = document.createElement("img");
+
+        // contentが textarea から img, video に置換されるためスタリングもここで変更.
         uploaded_multi_media.classList.add("styling_1_1_1_1");
         let multi_one_fragment = document.createDocumentFragment();
         multi_one_fragment.append(uploaded_multi_media);

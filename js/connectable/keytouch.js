@@ -126,7 +126,7 @@ window.addEventListener("keydown", (e)=>{
                             children_block[i].lastElementChild.remove();
                             let new_textarea = document.createElement("textarea");
                             new_textarea.classList.add("write_area")
-                            new_textarea.classList.add("styling_1_1_1_1");
+                            new_textarea.classList.add("styling_1_1_0_1");
                             children_block[i].appendChild(new_textarea);
                             
                             if (i <= the_this_loop_endpoint) {
