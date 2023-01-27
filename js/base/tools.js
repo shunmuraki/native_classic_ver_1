@@ -131,8 +131,8 @@ export const same_change_tracer = (e) => {
     }
 }
 
-export const block_pos_getter = (e) => {
-    let blocks = e.parentElement.children;
-    let the_num = [].slice.call(blocks).indexOf(e);
+export const elem_post_getter = (e) => {
+    let parent = e.parentElement;
+    let the_num = [].slice.call(parent.children).indexOf(e);
     return the_num;
 }

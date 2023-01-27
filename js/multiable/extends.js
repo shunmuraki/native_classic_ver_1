@@ -1,25 +1,36 @@
-import { same_data_counter, same_data_getter, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
+import { same_data_counter, same_data_getter, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
 import { make_ver_fragment, make_dup_fragment } from "../base/function.js";
 import { all_view_changer } from "../editable/function.js";
-import { block_multiable } from "./function.js";
+import { block_multiable, special_playlist_getter } from "./function.js";
 
 let players_list = {};
 let yt_loop;
 let same_data = 0;
 same_data_counter(same_data);
+let screen = document.querySelector(".screen");
 
 export const yt_player_getter = (e) => {
     let the_keyid = e.id;
-    console.log(the_keyid);
-    console.log(players_list);
-    let yt_iframe = players_list[the_keyid];
+    let yt_iframe;
+    
+    // 動画は必ずsameなのでspecialのみから検索.
+    let playlist = special_playlist_getter();
+    
+    yt_iframe = playlist[the_keyid];
     return yt_iframe;
 }
 
-export const yt_resetter = (e, f) => {
-    e.pauseVideo();
-    let yt_start_time = f * 3;
-    e.seekTo(yt_start_time);
+export const yt_resetter = (e) => {
+    let target;
+    if (screen.classList.contains("edit")) {
+        target = document.querySelector(".new_layer_centering");
+    } else {
+        target = document.querySelector(".centering");
+    }
+    let the_time = Number(target_data(target, "this_video_st_"));
+    console.log(the_time);
+    console.log(players_list);
+    return the_time;
 }
 
 // センタリングしたブロックの動画をブロック分再生（or ループ再生）する関数
@@ -113,6 +124,7 @@ export const video_load_then = (e, f) => {
         the_box.classList.add(the_v_en_name);
         the_box.classList.add(the_actuar_name);
         the_box.classList.add("same_end");
+        the_box.classList.add("id_is_" + the_code);
         
         // video製のsame群を適切な箇所へ挿入.
         let the_box_num = [].slice.call(vertical_to_hor(the_box).children).indexOf(the_box) - 1;
@@ -129,5 +141,6 @@ export const video_load_then = (e, f) => {
 
         let after_distance = 400 * (the_block_num);
         all_view_changer(current_sp_cover, after_distance);
-    }, 1000);
+
+    }, 1500);
 }

@@ -1,7 +1,6 @@
 import { target_data } from "../base/tools.js";
 import { video_load_then } from "../multiable/extends.js";
-import { video_street_scroll, audio_street_scroll } from "./function.js";
-import { block_multiable } from "../multiable/function.js";
+import { video_street_scroll, audio_street_scroll, um_positioning } from "./function.js";
 
 let screen = document.querySelector(".screen");
 let um = document.querySelector(".um_display");
@@ -27,6 +26,7 @@ document.addEventListener("keydown", (e) => {
             document.querySelector(".centering").style.height = 225 + "px";
             current.blur();
             um.style.display = "block";
+            um_positioning();
             screen.classList.remove("um_ready");
         }
     }

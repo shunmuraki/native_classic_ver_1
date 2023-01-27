@@ -1,6 +1,6 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list } from "../base/elements.js";
 import { make_ver_fragment, go_top, go_left, go_right, go_bottom, vertical_stripe_checker, horizontal_stripe_checker, original_centering_checker, centering_marker} from "../base/function.js";
-import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, block_pos_getter } from "../base/tools.js";
+import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { yt_player_getter, yt_resetter } from "../multiable/extends.js";
 import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
@@ -151,7 +151,7 @@ window.addEventListener("keydown", (e)=>{
             for (let i = 0; i < new_layer.childElementCount; i++) {
                 for (let o = 0; o < new_layer.children[i].childElementCount; o++) {
                     if (o > 0) {
-                        let the_target_start = new_layer.children[i].children[o].lastElementChild.firstElementChild.nextElementSibling.nextElementSibling;
+                        let the_target_start = new_layer.children[i].children[o].lastElementChild.firstElementChild.nextElementSibling;
                         let the_target_end = new_layer.children[i].children[o].lastElementChild.lastElementChild.previousElementSibling;
                         if (the_target_start.classList.contains("same") && the_target_start.classList.contains("same_start") == false) {
                             the_target_start.classList.add("same_start");
@@ -428,15 +428,19 @@ window.addEventListener("keydown", (e)=>{
             let scrap = vertical_to_sp_cover(centering);
             let hor = vertical_to_hor(centering);
             let the_seeking_time;
+            let sp_name = "this_cov_is_" + target_data(centering, "same_num_");
 
             // * この取り方はどうも推奨できない..
-            let special_cov = document.querySelector(".special_cov");
+            let special_cov = document.getElementsByClassName(sp_name)[0];
+            let player; 
             let play_when;
             let pause_when;
-            let player; 
 
-            if (special_cov.lastElementChild = "IFRAME") {
-                player = yt_player_getter(special_cov.lastElementChild);
+            if (special_cov) {
+                if (special_cov.lastElementChild.tagName == "IFRAME") {
+                    player = yt_player_getter(special_cov.lastElementChild);
+                    console.log(special_cov);
+                }
             }
 
             if (scrap.classList.contains("scrolled") == false) {
@@ -456,6 +460,20 @@ window.addEventListener("keydown", (e)=>{
                             centering_marker(centering_you, next_one_is_you, "new_layer_centering");
                             is_it_same_series(next_one_is_you);
                             the_timeout();
+
+                            centering = document.getElementsByClassName("new_layer_centering")[0];
+                            sp_name = "this_cov_is_" + target_data(centering, "same_num_");
+                            special_cov = document.getElementsByClassName(sp_name)[0];
+
+                            if (! special_cov.isEqualNode(document.getElementsByClassName(sp_name)[0])) {
+                                console.log(special_cov);
+                                if (special_cov) {
+                                    if (special_cov.lastElementChild.tagName == "IFRAME") {
+                                        player = yt_player_getter(special_cov.lastElementChild); 
+                                    }
+                                }
+                            }
+
                         } else {
                             clearTimeout(timeoutArray.shift()); 
                         }
@@ -527,19 +545,30 @@ window.addEventListener("keydown", (e)=>{
                     the_seeking_time = 3000 - ms;
 
                 } else if (scrap.classList.contains("pausing")) {
+
+                    console.log("an");
+                    
+                    if (player) {
+                        player.pauseVideo();
+                        let the_time = yt_resetter();
+                        player.seekTo(the_time, true);
+                        console.log(player.getCurrentTime());
+                    }
+
                     let start = new Date();
                     play_when = start.getTime();
-
-                    // 再実行.
-                    the_timeout();
-                    the_interval();
 
                     scrap.classList.remove("pausing");
                     scrap.classList.add("playing");
 
                     if (player) {
                         player.playVideo();
+                        console.log("ddde");
                     }
+
+                    // 再実行.
+                    the_timeout();
+                    the_interval();
                 } 
               }
            }
