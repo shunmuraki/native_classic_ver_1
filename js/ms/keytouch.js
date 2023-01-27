@@ -65,14 +65,8 @@ window.addEventListener("keydown", (e)=>{
               ms_adjust_target = document.querySelector(".centering").lastElementChild;
             }
             
-            adjust_target_pos(ms_adjust_target, "off");
-
-            // edit の場合を考慮.
-            if (document.querySelector(".new_layer_centering")) {
-              adjust_target_pos(document.querySelector(".new_layer_centering").lastElementChild, "off");
-            }
-            
             console.log(ms_adjust_target);
+            adjust_target_pos(ms_adjust_target, "off");
             screen.classList.remove("ms");
           }
         }

@@ -486,6 +486,12 @@ p, span, a {
 .block_layer .sp_cover .sp .horizontal .same_end .write_area, .block_layer .sp_cover .sp .horizontal .same_end img, .block_layer .sp_cover .sp .horizontal .same_end iframe {
   opacity: 1 !important;
 }
+.block_layer .connected .sp .horizontal .vertical {
+  border-bottom: none !important;
+}
+.block_layer .connected .sp:last-of-type .horizontal .vertical {
+  border-bottom: 0.5px solid #909090 !important;
+}
 
 .new_layer {
   height: 80vh;

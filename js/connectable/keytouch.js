@@ -43,14 +43,6 @@ window.addEventListener("keydown", (e)=>{
 
                 // 移動先にブロックたちを移動するために配列にブロックを格納.
                 if (the_sp_cover_a) {
-                    let the_current_contents = [];
-                    for (let i = 0; i < current_horizontal.length; i++) {
-                        // adjuster をスキップ.
-                        if (i != 0) {
-                            let the_content = current_horizontal[i].lastElementChild.cloneNode(true);
-                            the_current_contents.push(the_content);
-                        }
-                    } 
                 
                     // 移動を終えた上でスクロール位置が調整できるように centering の番号を控えておく.
                     let the_centering_num = 0;
@@ -149,7 +141,9 @@ window.addEventListener("keydown", (e)=>{
                                     if (current_horizontal.children[the_content_disi].classList.contains("centering")) {
                                         children_block[i].classList.add("centering")
                                     }
-                                    children_block[i].appendChild(the_content_embed);
+                                    if (! the_content_embed.classList.contains("stripe_hor")) {
+                                        children_block[i].appendChild(the_content_embed);
+                                    }
                                 }
                             }
                         }
@@ -157,6 +151,9 @@ window.addEventListener("keydown", (e)=>{
                 
                     //　ここで複製したラインを実際に sp_cover へ挿入.
                     the_sp_cover_a.appendChild(sp_copied);
+                    
+                    // sp_cover 内のスタイリングのため.
+                    the_sp_cover_a.classList.add("connected");
                 
                     // あとなんか番号を教えてほしいみたいだよ。
                     // * デフォルトで　０　をつけてあげなくちゃ！　→ ってことは "付け替え" なのか！
@@ -178,36 +175,23 @@ window.addEventListener("keydown", (e)=>{
                     
                     let the_redefault_scroll = the_b_a_gap * 400;
                     for (let i = 0; i < the_sp_cover_a.children.length; i++) {
-                        let blocks = the_sp_cover_a.children[i].lastElementChild.children;
                         the_sp_cover_a.children[i].lastElementChild.scrollLeft = the_default_leng + the_redefault_scroll;
-                        let right_side_blocks = blocks.length - the_center_num;
-                        
-                        // スタイリングの調整. (???)
-                        if (right_side_blocks > 0) {
-                            for (let o = 0; o < Math.abs(right_side_blocks); o++) {
-                                blocks[the_center_num - 1 + o].children[1].style.opacity = 1;
-                            }
-                            for (let o = 0; o < the_center_num; o++) {
-                                blocks[the_center_num - o].children[1].style.opacity = 1;
-                            }
-                        } else if (right_side_blocks == 0 && blocks.length > 2) {
-                            blocks[the_center_num - 2].children[1].style.opacity = 1;
-                        }
                     }
     
                     vertical_stripe_checker(the_sp_cover_a);
-
+                    horizontal_stripe_checker(the_sp_cover_a);
+                    
                     // フォーカスを当てる.
                     let last_one = the_sp_cover_a.lastElementChild.lastElementChild.children[the_center_num - 1];
                     let finish_form = last_one.lastElementChild;
                     if (finish_form.tagName == "TEXTAREA") {
+                        let va = finish_form.value;
+                        finish_form.value = "";
                         finish_form.focus();
+                        finish_form.value = va;
                     }
-                    horizontal_stripe_checker(the_sp_cover_a);
-                  }
                 }
-            
+            }
         }
-
     }
 });

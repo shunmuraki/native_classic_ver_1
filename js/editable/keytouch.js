@@ -132,7 +132,7 @@ window.addEventListener("keydown", (e)=>{
                         } else {
                             hor_side -= 1;
                         }
-    
+                        
                         new_layer.children[ver_side].children[i + 1].lastElementChild.children[10].classList.add("you!!!");
                         
                         // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
@@ -145,7 +145,12 @@ window.addEventListener("keydown", (e)=>{
                         if (screen_vers[o].classList.contains("centering")) {
                             the_block_into.classList.add("new_layer_centering");
                         } 
-                        the_block_into.appendChild(imp_content);
+                        // dupブロックの場合を考えて条件分岐.
+                        if (! imp_content.classList.contains("stripe_hor")) {
+        
+    
+                            the_block_into.appendChild(imp_content);
+                        }
                     }
                 } 
             }

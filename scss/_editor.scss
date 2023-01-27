@@ -333,6 +333,23 @@
             }
         }
     }
+
+    .connected {
+        .sp {
+            .horizontal {
+                .vertical {                    
+                    border-bottom: none !important;
+                }
+            }
+            &:last-of-type {
+                .horizontal {
+                    .vertical  {
+                        border-bottom: 0.5px solid #909090 !important;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .new_layer {
