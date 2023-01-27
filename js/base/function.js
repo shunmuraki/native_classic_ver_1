@@ -178,6 +178,23 @@ export const go_af_scroll = () => {
     }
 }
 
+export const special_cleaner = (e) => {
+    let ends = document.querySelectorAll(".same_end");
+    for (let i = 0; i < ends.length; i++) {
+        if (vertical_to_sp_cover(ends[i]).isEqualNode(e)) {
+            let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
+            let the_special_cov = document.getElementsByClassName(the_name)[0];
+            
+            if (the_special_cov) {
+                let cont = the_special_cov.lastElementChild.cloneNode(true);
+                ends[i].lastElementChild.remove();
+                ends[i].appendChild(cont);
+                the_special_cov.remove();
+            }
+        }
+    }
+}
+
 // topへの移動
 export const go_top = (e, f) => {
     let ver = e;
@@ -222,20 +239,7 @@ export const go_top = (e, f) => {
             }
 
             // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
-            let ends = document.querySelectorAll(".same_end");
-            for (let i = 0; i < ends.length; i++) {
-                if (vertical_to_sp_cover(ends[i]).isEqualNode(pre_sibling)) {
-                    let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
-                    let the_special_cov = document.getElementsByClassName(the_name)[0];
-                    
-                    if (the_special_cov) {
-                        let cont = the_special_cov.lastElementChild.cloneNode(true);
-                        ends[i].lastElementChild.remove();
-                        ends[i].appendChild(cont);
-                        the_special_cov.remove();
-                    }
-                }
-            }
+            special_cleaner(pre_sibling);
         }
 
     } else if (f == "new_layer_centering") {
@@ -248,9 +252,11 @@ export const go_top = (e, f) => {
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
+            // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
+            special_cleaner(vertical_to_sp_cover(ver));
+            
             is_it_same_series(next_one);
             wheel_positioning(next_one);
-            // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
         }
     }
 
@@ -306,20 +312,7 @@ export const go_bottom = (e, f) => {
                 next_one.lastElementChild.focus();
             }
 
-            let ends = document.querySelectorAll(".same_end");
-            for (let i = 0; i < ends.length; i++) {
-                if (vertical_to_sp_cover(ends[i]).isEqualNode(pre_sibling)) {
-                    let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
-                    let the_special_cov = document.getElementsByClassName(the_name)[0];
-                    
-                    if (the_special_cov) {
-                        let cont = the_special_cov.lastElementChild.cloneNode(true);
-                        ends[i].lastElementChild.remove();
-                        ends[i].appendChild(cont);
-                        the_special_cov.remove();
-                    }
-                }
-            }
+            special_cleaner(pre_sibling);
         }
 
     } else if (f == "new_layer_centering") {
@@ -332,12 +325,13 @@ export const go_bottom = (e, f) => {
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);            
+            
+            // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
+            special_cleaner(vertical_to_sp_cover(ver));
+            
             is_it_same_series(next_one);
             wheel_positioning(next_one);
-
-            // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
         }
-
     }
 
     if (sibling_height < to_the_distance) {

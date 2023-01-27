@@ -4,6 +4,7 @@ import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper } from "
 
 let special_playerlist = {};
 let s_n = 100;
+let screen = document.querySelector(".screen");
 
 export const special_playlist_getter = () => {
     console.log(special_playerlist);
@@ -92,8 +93,10 @@ export const is_it_same_start = (e) => {
     
     // special_cov の生成からコンテントの挿入までを処理.
     if (e.classList.contains("same")) {
+        console.log("ddd");
         let the_num = target_data(e, "same_num_");
-        let special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];;
+        let special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];
+        console.log(special_cov);
         
         function the_state() {
             let the_name = "same_num_" + the_num;
