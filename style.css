@@ -181,7 +181,7 @@ p, span, a {
 
 .pointer_and_wheel {
   position: absolute;
-  z-index: 10;
+  z-index: 4000;
 }
 .pointer_and_wheel .cover {
   position: relative;
@@ -191,7 +191,7 @@ p, span, a {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: #1b1b1b;
+  background-color: #000000;
 }
 .pointer_and_wheel .cover .wheel {
   position: absolute;
@@ -365,6 +365,7 @@ p, span, a {
 }
 .block_layer .sp_cover .orange_space {
   position: relative;
+  z-index: 200;
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone, .block_layer .sp_cover .orange_space .orange_stripe_zone {
   position: absolute;
@@ -396,6 +397,10 @@ p, span, a {
   z-index: 99;
   height: 4px;
   top: 3px;
+}
+.block_layer .sp_cover .sp {
+  position: relative;
+  z-index: 100;
 }
 .block_layer .sp_cover .sp .horizontal {
   width: calc((100% + 400px) / 2);
@@ -491,8 +496,15 @@ p, span, a {
   width: 100%;
 }
 .new_layer .sp_cover .sp .horizontal .new_layer_centering {
-  background-color: #0077ff;
+  background-color: #0070D8;
 }
+.new_layer .principle_block .sp .horizontal {
+  background-color: #0070D8;
+}
+.new_layer .principle_pointer .orange_space .orange_pointer_zone, .new_layer .principle_pointer .orange_space .orange_stripe_zone {
+  background-color: #0070D8;
+}
+
 .statusbar {
   width: 100%;
   padding: 10px 50px;
@@ -587,6 +599,13 @@ img, iframe {
   z-index: 100;
 }
 .special_cov .write_area, .special_cov img, .special_cov iframe {
+  padding: 30px 5px;
+}
+
+.edit_mode .special_cov {
+  background-color: #0070D8;
+}
+.edit_mode .special_cov .write_area, .edit_mode .special_cov img, .edit_mode .special_cov iframe {
   padding: 25px 5px;
 }
 

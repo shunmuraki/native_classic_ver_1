@@ -2,6 +2,7 @@ import { all_view_changer } from "../editable/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { full_start_scrollwidth, full_end_scrollwidth, the_name_list } from "./elements.js";
 import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
+import { wheel_positioning } from "../stylable/function.js";
 
 let magic_elms = new Array();
 
@@ -203,6 +204,7 @@ export const go_top = (e, f) => {
             }
 
             is_it_same_series(next_one);
+            wheel_positioning(next_one);
 
         } else if (pre_sibling) {
 
@@ -213,6 +215,7 @@ export const go_top = (e, f) => {
             sibling_height = pre_sibling.clientHeight;
             let next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
             centering_marker(ver, next_one, f);
+            wheel_positioning(next_one);
 
             if (next_one.lastElementChild.tagName == "TEXTAREA") {
                 next_one.lastElementChild.focus();
@@ -246,7 +249,7 @@ export const go_top = (e, f) => {
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
             is_it_same_series(next_one);
-
+            wheel_positioning(next_one);
             // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
         }
     }
@@ -286,6 +289,7 @@ export const go_bottom = (e, f) => {
             }
 
             is_it_same_series(next_one);
+            wheel_positioning(next_one);
 
         } else if (pre_sibling) {
 
@@ -296,6 +300,7 @@ export const go_bottom = (e, f) => {
             let next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
            
             centering_marker(ver, next_one, f);
+            wheel_positioning(next_one);
 
             if (next_one.lastElementChild.tagName == "TEXTAREA") {
                 next_one.lastElementChild.focus();
@@ -328,6 +333,7 @@ export const go_bottom = (e, f) => {
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);            
             is_it_same_series(next_one);
+            wheel_positioning(next_one);
 
             // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
         }

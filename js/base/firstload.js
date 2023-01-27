@@ -1,5 +1,6 @@
 import { make_fragment } from "./function.js";
 import { screen } from "../base/elements.js";
+import { wheel_positioning } from "../stylable/function.js";
 
 let all_writearea = document.getElementsByClassName("write_area");
 
@@ -15,4 +16,5 @@ screen.appendChild(damee);
     // 最初のcenteringを用意.
     all_writearea[0].parentElement.classList.add("centering");
     all_writearea[0].focus();
+    wheel_positioning(all_writearea[0].parentElement);
 }());

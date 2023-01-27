@@ -38,14 +38,15 @@ export const layer_resetter = () => {
     ly_2_3.style.display = "none";
 }
 
+export const wheel_positioning = (e) => {
+  let the_focus_top = e.getBoundingClientRect().top;
+  let the_focus_left = e.getBoundingClientRect().left;
+  pointer.style.top = the_focus_top - 10 + "px";
+  pointer.style.left = the_focus_left - 10 + "px";
+}
+
 // ホイールの描画アニメーションの関数.
 export const wheel_seton = () => {
-
-    let centering_box = document.getElementsByClassName("centering")[0];
-    let the_focus_top = centering_box.getBoundingClientRect().top;
-    let the_focus_left = centering_box.getBoundingClientRect().left;
-    pointer.style.top = the_focus_top - 10 + "px";
-    pointer.style.left = the_focus_left - 10 + "px";
 
     the_pointer.animate(
         [

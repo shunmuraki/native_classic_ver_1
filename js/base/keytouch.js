@@ -2,6 +2,7 @@ import { screen } from "../base/elements.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, vertical_stripe_checker, horizontal_stripe_checker, the_magic_copy, the_magic_paste } from "./function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
+import { wheel_positioning } from "../stylable/function.js";
 
 window.addEventListener("keydown", (e)=>{
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {
@@ -43,6 +44,7 @@ window.addEventListener("keydown", (e)=>{
                 centering_marker(current_vertical, next_one, "centering");
                 next_textarea.focus();
                 is_it_same_series(next_one);
+                wheel_positioning(next_one);
             }
         }
     

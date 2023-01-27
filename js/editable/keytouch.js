@@ -4,12 +4,15 @@ import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, gra
 import { is_it_same_series } from "../multiable/function.js";
 import { yt_player_getter, yt_resetter } from "../multiable/extends.js";
 import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
+import { wheel_positioning } from "../stylable/function.js";
 
 let orange_data = {};
 let timeoutArray = new Array();
 let intervalArray = new Array();
 let the_scrolled_distance = 0;
 let orange_block_counter = 0;
+
+let bo = document.getElementsByTagName("BODY")[0]
 
 window.addEventListener("keydown", (e)=>{
 
@@ -56,7 +59,8 @@ window.addEventListener("keydown", (e)=>{
             // Editモードの明示化. 編集レイヤー上での処理に限定.
             screen.classList.add("edit");
             new_layer.style.display = "block";
-            document.getElementsByTagName("BODY")[0].style.backgroundColor = "#0070D8";
+            bo.style.backgroundColor = "#0077ff";
+            bo.classList.add("edit_mode");
 
             // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
             let vh_count = current_horizontal.childElementCount - 1;
@@ -130,15 +134,15 @@ window.addEventListener("keydown", (e)=>{
                         
                         // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
                         let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];
-                        if (screen_vers[o].classList.contains("centering")) {
-                            the_block_into.classList.add("new_layer_centering");
-                        } 
     
                         the_block_into.lastElementChild.remove();
-                        the_block_into.appendChild(imp_content);
                         for (let j = 0; j < the_name_list.length; j++) {
                             classmover(screen_vers[o], the_block_into, the_name_list[j], "add");
                         }
+                        if (screen_vers[o].classList.contains("centering")) {
+                            the_block_into.classList.add("new_layer_centering");
+                        } 
+                        the_block_into.appendChild(imp_content);
                     }
                 } 
             }
@@ -163,7 +167,6 @@ window.addEventListener("keydown", (e)=>{
             let layer_centering = document.querySelector(".new_layer_centering");
             let default_scrap = vertical_to_sp_cover(layer_centering);
             default_scrap.classList.add("see");
-            layer_centering.classList.remove("new_layer_centering");
     
             // 画面の切り替え.
             screen.style.opacity = 0;
@@ -213,6 +216,8 @@ window.addEventListener("keydown", (e)=>{
             // 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
             orange_data = orange_pointer_make(new_see, orange_data); 
             new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
+
+            wheel_positioning(layer_centering);
         }
     }
 
@@ -268,6 +273,7 @@ window.addEventListener("keydown", (e)=>{
                     all_view_changer(the_see_centering, the_gap);
                     principle_management(the_see_centering, "principle_block");
                     is_it_same_series(new_one);
+                    wheel_positioning(new_one);
                 }
                 // principle_block だった場合は何もしない.
                 the_scrolled_distance = 0;
@@ -747,9 +753,9 @@ window.addEventListener("keydown", (e)=>{
                     document.querySelector(".centering").classList.remove("centering");
                 }
                 let the_new_focusedblock = original_sp_cover.lastElementChild.lastElementChild.lastElementChild;
+                wheel_positioning(the_new_focusedblock);  
                 document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
                 the_new_focusedblock.classList.add("centering");
-
                 original_centering_checker(original_sp_cover, the_new_focusedblock);
                 vertical_stripe_checker(original_sp_cover);
                 horizontal_stripe_checker(original_sp_cover);
@@ -775,7 +781,9 @@ window.addEventListener("keydown", (e)=>{
             for (let i = 0; i < covs.length; i++) {
                 covs[i].remove();
             }
-            document.getElementsByTagName("BODY")[0].style.backgroundColor = "#121212";
+            
+            bo.style.backgroundColor = "#121212";
+            bo.classList.remove("edit_mode");
         }
     }
 });

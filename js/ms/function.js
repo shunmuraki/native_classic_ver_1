@@ -15,10 +15,7 @@ export const adjust_target_pos = (e, f) => {
         let ms_st_code = ms_st + "px";
         e.style.setProperty('top', ms_st_code, 'important');
     } else if (f == "off") {
-        ms_st = default_pos;
-    }
-    if (f == "off") {
         e.style.top = '';
-        default_pos  = 0;
+        default_pos = 0;
     }
 }
