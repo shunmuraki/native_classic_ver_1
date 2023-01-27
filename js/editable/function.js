@@ -1,7 +1,7 @@
 // ---------------------------------- * - * - * - * Editable シリーズ * - * - * - * ----------------------------------
 import { half_left_width, half_right_width, full_start_scrollwidth, full_end_scrollwidth } from "../base/elements.js";
 import { grab_auto, sorter, target_data } from "../base/tools.js";
- 
+
 // * ポインターやブロックからして一番近いブロックかポインターを検出する関数.
 export const best_related_element = (e, f, g, h) => {
 

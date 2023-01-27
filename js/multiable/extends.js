@@ -3,37 +3,71 @@ import { make_ver_fragment, make_dup_fragment } from "../base/function.js";
 import { all_view_changer } from "../editable/function.js";
 import { block_multiable } from "./function.js";
 
-let players_list = [];
+let players_list = {};
+let yt_loop;
 let same_data = 0;
 same_data_counter(same_data);
 
+export const yt_player_getter = (e) => {
+    let the_keyid = e.id;
+    console.log(the_keyid);
+    console.log(players_list);
+    let yt_iframe = players_list[the_keyid];
+    return yt_iframe;
+}
+
+export const yt_resetter = (e, f) => {
+    e.pauseVideo();
+    let yt_start_time = f * 3;
+    e.seekTo(yt_start_time);
+}
+
+// センタリングしたブロックの動画をブロック分再生（or ループ再生）する関数
+export const yt_loop_player = (e, f) => {
+    // * ループ再生.
+    yt_loop = setInterval(() => {
+        e.pauseVideo();
+        yt_resetter(e, f);
+        e.playVideo();
+    }, 3000);
+}
+
+export const yt_loop_stopper = (e, f) => {
+    let duration;
+    e.pauseVideo();
+    if (f == "start") {
+        e.seekTo(0);
+    } else if (f == "end") {
+        duration = e.getDuration();
+        e.seekTo(duration);
+    }
+    clearInterval(yt_loop);
+}
+
 // 動画の読み込み・sp_cover内のラインの調整（ブロック数）などを行う関数. um と multiable にて共通利用.
 export const video_load_then = (e, f) => {
-    
+
+    same_data = same_data_getter();
+    same_data += 1;
+    same_data_counter(same_data);
+
+    let the_id_name = "yt_editor_" + same_data;
     let the_code = e.slice(-11);
     let the_box = f.parentElement;
     the_box.lastElementChild.remove();
     let the_add_box = document.createElement("div");
-    the_add_box.setAttribute("id","auth_video_same");
+    the_add_box.setAttribute("id",the_id_name);
 
     // contentが textarea から img, video に置換されるためスタリングもここで変更.
     the_add_box.classList.add("styling_1_1_1_1");
     the_box.appendChild(the_add_box);
-    
-    let pl = block_multiable("auth_video_same", the_code);
-    players_list.push(pl);
+
+    let pl = block_multiable(the_id_name, the_code);
+    players_list[the_id_name] = pl;
     
     setTimeout(() => {
         
-        let the_duration = sessionStorage.getItem("the_duration");
-        
-        // この時点でthe_add_boxはiframeに置換されているため、再取得して消す.
-        document.getElementById("auth_video_same").removeAttribute("id");
-        
-        same_data = same_data_getter();
-        same_data += 1;
-        same_data_counter(same_data);
-        
+        let the_duration = sessionStorage.getItem("the_duration");        
         let the_name = "same_num_" + same_data;
         the_box.classList.add("same");
         the_box.classList.add(the_name);
@@ -42,6 +76,9 @@ export const video_load_then = (e, f) => {
         make_dup_fragment(the_box, "before");
         
         let the_will_copied = the_box.previousElementSibling;
+        the_will_copied.classList.add("same");
+        the_will_copied.classList.add("video");
+        the_will_copied.classList.add(the_name);
     
         // 動画の尺 / 3　分のブロックが必要であるため算出.
         let the_block_num = Math.floor(the_duration / 3);
@@ -50,9 +87,6 @@ export const video_load_then = (e, f) => {
         
         for (let i = 0; i < the_block_num; i++) {
             let the_newone = the_will_copied.cloneNode(true);
-            the_newone.classList.add("same");
-            the_newone.classList.add("video");
-            the_newone.classList.add(the_name);
             
             // ブロックごとの動画再生位置を付与. (編集に備えて)
             let the_seek_num = 3 * i;
@@ -95,5 +129,5 @@ export const video_load_then = (e, f) => {
 
         let after_distance = 400 * (the_block_num);
         all_view_changer(current_sp_cover, after_distance);
-    }, 200);
+    }, 1000);
 }

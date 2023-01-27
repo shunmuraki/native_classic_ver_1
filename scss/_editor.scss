@@ -5,7 +5,6 @@
         position: relative;
         .pointer {
             position: absolute;
-            // ----
             width: 20px;
             height: 20px;
             border-radius: 50%;
@@ -311,10 +310,8 @@
                     background-color: rgba(255, 73, 173, 0.1);
                 }
 
-                .video, .image {
-                    .write_area {
-                        height: 225px !important;
-                    }
+                .video, .img {
+                    height: 225px !important;
                 }
 
                 .same {

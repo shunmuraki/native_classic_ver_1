@@ -469,7 +469,7 @@ p, span, a {
 .block_layer .sp_cover .sp .horizontal .original_centering {
   background-color: rgba(255, 73, 173, 0.1);
 }
-.block_layer .sp_cover .sp .horizontal .video .write_area, .block_layer .sp_cover .sp .horizontal .image .write_area {
+.block_layer .sp_cover .sp .horizontal .video, .block_layer .sp_cover .sp .horizontal .img {
   height: 225px !important;
 }
 .block_layer .sp_cover .sp .horizontal .same .write_area, .block_layer .sp_cover .sp .horizontal .same img, .block_layer .sp_cover .sp .horizontal .same iframe {

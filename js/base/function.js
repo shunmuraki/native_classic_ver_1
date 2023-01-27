@@ -246,6 +246,8 @@ export const go_top = (e, f) => {
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
             is_it_same_series(next_one);
+
+            // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
         }
     }
 
@@ -326,6 +328,8 @@ export const go_bottom = (e, f) => {
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);            
             is_it_same_series(next_one);
+
+            // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
         }
 
     }

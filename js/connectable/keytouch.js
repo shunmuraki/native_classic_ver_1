@@ -77,7 +77,6 @@ window.addEventListener("keydown", (e)=>{
                     let the_original_bottoms = the_sp_cover_a.lastElementChild.lastElementChild.childElementCount - original_centering_num;
                 
                     // ブロック数の最大値を算出するための一連の計算処理.
-                    
                     let the_triumph_tops = 0;
                     let the_triumph_bottoms = 0;
                  

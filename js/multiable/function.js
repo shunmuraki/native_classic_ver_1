@@ -1,11 +1,13 @@
 import { half_left_width } from "../base/elements.js";
-import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter } from "../base/tools.js";
+import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter, block_pos_getter } from "../base/tools.js";
+import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper } from "./extends.js";
 
 // yt iframe　の読み込み
 export const block_multiable = (e, f) => {
 
     let the_box = document.getElementById(e).parentElement;
     the_box.style.height = 225 + "px";
+    the_box.classList.add("video");
 
     var player;
     var duration_time;
@@ -84,6 +86,7 @@ export const is_it_same_start = (e) => {
     // special_cov の生成からコンテントの挿入までを処理.
     if (e.classList.contains("same")) {
         let the_num = target_data(e, "same_num_");
+        let special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];;
         
         function the_state() {
             let the_name = "same_num_" + the_num;
@@ -91,17 +94,32 @@ export const is_it_same_start = (e) => {
             let hit_target = document.getElementsByClassName(the_name)[document.getElementsByClassName(the_name).length - 1];
             let the_your_end = hit_target.cloneNode(true);
             let the_one = the_your_end.lastElementChild.cloneNode(true);  
-            let spec = document.getElementsByClassName("this_cov_is_" + the_num)[0];
-            spec.appendChild(the_one);
+            special_cov.appendChild(the_one);
         }
-        if (document.getElementsByClassName("this_cov_is_" + the_num)[0] == null) {
+        
+        if (special_cov == null) {
             the_state();
+            special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];
+        } 
+        
+        let player = yt_player_getter(special_cov.lastElementChild);
+
+        if (player) {
+            let block_pos = block_pos_getter(e);
+            yt_resetter(player, block_pos);
+            player.playVideo();
+            yt_loop_player(player, block_pos);
         }
     }
 }
 
 // となりのブロックが same_end クラスを持つ場合に対応する special_cov を削除する関数.
 export const is_it_same_alend = (e) => {
+    
+    let player;
+    let the_target_left = e.previousElementSibling;
+    let the_target_right = e.nextElementSibling;
+
     function the_state(e) {
         let the_name = "this_cov_is_" + target_data(e, "same_num_");
         let the_special_cov = document.getElementsByClassName(the_name)[0];
@@ -110,18 +128,30 @@ export const is_it_same_alend = (e) => {
         }
     }
 
-    let the_target_left = e.previousElementSibling;
-    let the_target_right = e.nextElementSibling;
+    function player_setup(e) {
+        player = yt_player_getter(e.lastElementChild);
+    }
 
     if (the_target_left) {
         if (the_target_left.classList.contains("same_end")) {
-            the_state(the_target_left);            
+            player_setup(the_target_left);
+
+            if (player) {
+                player.pauseVideo();
+                yt_loop_stopper(player, "end");
+                the_state(the_target_left);
+            }
         }
     }
 
     if (the_target_right) {
         if (the_target_right.classList.contains("same_start")) {
-            the_state(the_target_right);
+            player_setup(the_target_right);
+            if (player) {
+                player.playerVideo();
+                yt_loop_stopper(player, "start");
+                the_state(the_target_right);
+            }
         }
     }
 }
