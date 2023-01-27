@@ -107,8 +107,8 @@ export const is_it_same_start = (e) => {
         if (player) {
             let block_pos = block_pos_getter(e);
             yt_resetter(player, block_pos);
-            player.playVideo();
-            yt_loop_player(player, block_pos);
+            // player.playVideo();
+            // yt_loop_player(player, block_pos);
         }
     }
 }
@@ -124,6 +124,7 @@ export const is_it_same_alend = (e) => {
         let the_name = "this_cov_is_" + target_data(e, "same_num_");
         let the_special_cov = document.getElementsByClassName(the_name)[0];
         if (the_special_cov) {
+            console.log(the_special_cov);
             the_special_cov.remove();
         }
     }
@@ -138,9 +139,9 @@ export const is_it_same_alend = (e) => {
 
             if (player) {
                 player.pauseVideo();
-                yt_loop_stopper(player, "end");
-                the_state(the_target_left);
+                // yt_loop_stopper(player, "end");
             }
+            the_state(the_target_left);
         }
     }
 
@@ -148,10 +149,10 @@ export const is_it_same_alend = (e) => {
         if (the_target_right.classList.contains("same_start")) {
             player_setup(the_target_right);
             if (player) {
-                player.playerVideo();
-                yt_loop_stopper(player, "start");
-                the_state(the_target_right);
+                player.pauseVideo();
+                // yt_loop_stopper(player, "start");
             }
+            the_state(the_target_right);
         }
     }
 }

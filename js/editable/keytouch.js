@@ -56,6 +56,7 @@ window.addEventListener("keydown", (e)=>{
             // Editモードの明示化. 編集レイヤー上での処理に限定.
             screen.classList.add("edit");
             new_layer.style.display = "block";
+            document.getElementsByTagName("BODY")[0].style.backgroundColor = "#0070D8";
 
             // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
             let vh_count = current_horizontal.childElementCount - 1;
@@ -774,6 +775,7 @@ window.addEventListener("keydown", (e)=>{
             for (let i = 0; i < covs.length; i++) {
                 covs[i].remove();
             }
+            document.getElementsByTagName("BODY")[0].style.backgroundColor = "#121212";
         }
     }
 });

@@ -493,13 +493,6 @@ p, span, a {
 .new_layer .sp_cover .sp .horizontal .new_layer_centering {
   background-color: #0077ff;
 }
-.new_layer .principle_block .sp .horizontal {
-  background-color: #00a700;
-}
-.new_layer .principle_pointer .orange_space .orange_pointer_zone, .new_layer .principle_pointer .orange_space .orange_stripe_zone {
-  background-color: #009a00;
-}
-
 .statusbar {
   width: 100%;
   padding: 10px 50px;
