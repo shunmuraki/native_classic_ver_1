@@ -332,10 +332,13 @@ p, span, a {
   border: 5px solid #00ff00;
 }
 .um_display .relative .flex .null_f {
-  background-color: gray;
+  background-image: url("img/um_box.png");
+  background-size: cover;
+  background-position: 50% 50%;
   display: inline-block;
   min-width: 400px;
   min-height: 200px;
+  box-sizing: border-box;
 }
 .um_display .relative .um_image {
   width: 400px;
@@ -446,9 +449,8 @@ p, span, a {
   left: 0;
 }
 .block_layer .sp_cover .sp .horizontal .vertical label {
-  width: 300px;
-  height: 200px;
-  margin: 10px auto;
+  width: 100%;
+  height: 100%;
   display: block;
   text-align: center;
   display: flex;
@@ -460,7 +462,9 @@ p, span, a {
   display: none;
 }
 .block_layer .sp_cover .sp .horizontal .vertical .image_input {
-  background-color: red;
+  background-image: url("img/img_box.png");
+  background-size: cover;
+  background-position: 50% 50%;
 }
 .block_layer .sp_cover .sp .horizontal .vertical .video_input {
   background-color: purple;
@@ -622,7 +626,7 @@ img, iframe {
   height: 100vh;
   background-color: #0070D8;
   position: absolute;
-  z-index: 200;
+  z-index: 9999;
   top: 0;
   display: flex;
   flex-direction: row;

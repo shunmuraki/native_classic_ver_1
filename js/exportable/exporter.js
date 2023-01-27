@@ -19,7 +19,7 @@ let screen = document.querySelector(".screen");
 const button = document.querySelector(".button");
 
 button.addEventListener("click", () => {
-    // textarea が innerHTMLではコピーされないため別に配列を用意して update.html側で再度同じ状況を再現.
+    // textarea が innerHTMLではコピーされないため別に配列を用意して export.html側で再度同じ状況を再現.
     let write_areas = document.querySelectorAll(".write_area");
     for (let i = 0; i < write_areas.length; i++) {
         let the_value = write_areas[i].value;
@@ -43,17 +43,21 @@ button.addEventListener("click", () => {
         { opacity: 1 }
         ], {
         duration: 800,
-        fill: "both"
+        fill: "forwards"
         }
     );
 
     // ボタンが押されたら、sessionStorageにDOMを保存して into.html へ遷移.
     setTimeout(() => {
-        window.location.href = "update.html";
-        rc.remove();
+        window.location.href = "export.html";
         let centering_content = document.querySelector(".centering").lastElementChild;
         if (centering_content.tagName == "TEXTAREA") {
             centering_content.focus();
         }
-    }, 800) 
+    }, 1000) 
+
+    // エディターに戻った際にカバーを取り外す.
+    setTimeout(() => {
+        rc.remove();
+    }, 3000)
 });

@@ -74,9 +74,8 @@ function ac_vi_adaptation(e, f) {
 
 
 // change クラスから スタイリングの変化前と変化後の値をセットにして返す関数.
-function en_change_adaptation(e, f) {    
+function en_change_adaptation(e) {    
     let target = e.nextElementSibling;
-    let animation_data = f;
 
     if (target) {
         if (target.classList.contains("change")) {
@@ -281,7 +280,7 @@ function animationdata_setup(e, f, g) {
     }
 }
 
-// 変換の手前、update.htmlからadjuster をすべて除去する.
+// 変換の手前、export.htmlから adjuster をすべて除去する.
 let adjusters = document.querySelectorAll(".adjuster");
 for (let i = adjusters.length - 1; i >= 0 ; i--) {
     adjusters[i].remove();
