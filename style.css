@@ -412,7 +412,7 @@ p, span, a {
 }
 .block_layer .sp_cover .sp .horizontal .vertical {
   width: 400px;
-  height: 64px;
+  height: 86px;
   margin: 0 auto;
   vertical-align: top;
   position: relative;
@@ -544,6 +544,7 @@ p, span, a {
 .write_area {
   position: absolute;
   width: 80%;
+  height: 86px;
   box-sizing: border-box;
   font-size: 1.3rem;
   color: #ffffff;
