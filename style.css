@@ -288,7 +288,7 @@ p, span, a {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 50;
+  z-index: 50000;
 }
 .um_display .relative {
   width: 100%;
@@ -299,7 +299,7 @@ p, span, a {
   display: flex;
   flex-wrap: nowrap;
   position: absolute;
-  border: 2px solid red;
+  box-sizing: border-box;
 }
 .um_display .relative .flex .panc {
   min-width: 100vw;
@@ -311,22 +311,24 @@ p, span, a {
   min-height: 200px;
   -o-object-fit: cover;
      object-fit: cover;
-  background-color: #0070D8;
   position: relative;
+  box-sizing: border-box;
 }
 .um_display .relative .flex .box:after {
   content: "";
   position: absolute;
-  width: 1px;
   height: 100%;
   background-color: gray;
 }
-.um_display .relative .flex .box img, .um_display .relative .flex .box video, .um_display .relative .flex .box audio {
+.um_display .relative .flex .box img, .um_display .relative .flex .box iframe {
   display: block;
-  width: 80%;
+  width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  -o-object-fit: cover !important;
+     object-fit: cover !important;
+}
+.um_display .relative .flex .um_centering {
+  border: 5px solid #00ff00;
 }
 .um_display .relative .flex .null_f {
   background-color: gray;
@@ -341,7 +343,7 @@ p, span, a {
   white-space: nowrap;
 }
 .um_display .relative .um_video {
-  height: 200px;
+  height: 225px;
   width: calc((100% + 400px) / 2);
   left: 0;
   overflow-x: scroll;
@@ -349,7 +351,7 @@ p, span, a {
   flex-direction: row;
 }
 .um_display .relative .um_audio {
-  height: 200px;
+  height: 225px;
   width: calc((100% + 400px) / 2);
   right: 0;
   overflow-x: scroll;
@@ -589,7 +591,6 @@ img, iframe {
   resize: none;
   outline: none;
   padding: 5px 10px 28px 10px;
-  box-sizing: border-box;
   box-sizing: border-box;
   border-radius: 2px;
 }

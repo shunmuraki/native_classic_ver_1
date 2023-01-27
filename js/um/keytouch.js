@@ -1,6 +1,7 @@
 import { target_data } from "../base/tools.js";
 import { video_load_then } from "../multiable/extends.js";
 import { video_street_scroll, audio_street_scroll } from "./function.js";
+import { block_multiable } from "../multiable/function.js";
 
 let screen = document.querySelector(".screen");
 let um = document.querySelector(".um_display");
@@ -17,23 +18,23 @@ document.addEventListener("keydown", (e) => {
 
         // 以下ユニバーサルマークダウン機能の例として「"ted"」が検索された場合の処理.
         if ( type_signiture.indexOf('ted') != -1) {
-
             document.querySelector(".ms_area").remove();
             if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
                 document.querySelector(".centering").lastElementChild.focus();
             }
-            
             screen.classList.add("um");
-            current.value = current.value.slice(0, -4);
+            current.value = '';
+            document.querySelector(".centering").style.height = 225 + "px";
             current.blur();
             um.style.display = "block";
+            screen.classList.remove("um_ready");
         }
     }
 
     if (screen.classList.contains("um")) {
 
         if (k == "Escape") {
-            wheel.style.display = "none";
+            um.style.display = "none";
             let centering = document.querySelector(".centering");
             if (centering.lastElementChild.tagName == "TEXTAREA") {
                 centering.lastElementChild.focus();
@@ -114,8 +115,9 @@ document.addEventListener("keydown", (e) => {
         if (k == "Enter") { 
             let native_center = document.querySelector(".centering");    
             let um_centering = document.querySelector(".um_centering");
+            console.log(um_centering);
 
-            if (um_centering.lastElementChild.tagName == "IFRAME") {
+            if (um_centering.parentElement.classList.contains("um_video")) {
                 let the_uri = target_data(um_centering, "this_yt_id_");
                 video_load_then(the_uri, native_center.lastElementChild);
             } else {
@@ -127,7 +129,6 @@ document.addEventListener("keydown", (e) => {
 
             um.style.display = "none";
             screen.classList.remove("um");
-    
         }
     }
 });

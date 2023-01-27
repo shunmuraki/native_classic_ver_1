@@ -1,21 +1,20 @@
 import { half_left_width } from "../base/elements.js";
-import { block_multiable } from "../multiable/function.js";
 
-var adjust_box = document.querySelector(".centering");
+let adjust_box = document.querySelector(".centering");
 let pointer_position_top = adjust_box.getBoundingClientRect().top;
 
-var video_list = document.querySelector(".um_video");
-var audio_list = document.querySelector(".um_audio");
-var video_null = video_list.lastElementChild;
-var audio_null = audio_list.lastElementChild;
+let video_list = document.querySelector(".um_video");
+let audio_list = document.querySelector(".um_audio");
+let video_null = video_list.lastElementChild;
+let audio_null = audio_list.lastElementChild;
 
 video_list.style.top = pointer_position_top + "px";
 audio_list.style.top = pointer_position_top + "px";
 
-var the_video_width = 400 * 10;
+let the_video_width = 400 * 10;
 video_list.scrollLeft = the_video_width;
 
-var the_audio_width = - 400 * 10;
+let the_audio_width = - 400 * 10;
 audio_list.scrollLeft = the_audio_width;
 
 // videoゾーンにおける左右の移動を処理する関数.
@@ -51,20 +50,22 @@ export function clear_umdisplay() {
 }
 
 // * 仮で儲けている "TED" に関する動画のyt-ID のリスト. α版ならでは.
-let yt_videolist_ted = ["ddJvVf1eqwM", "O0CsyfiQr34", "ZHhmi2bS0hU", "iLc27nj8KrU", "hVclObff6fc", "H-vvS1zonI0", "ESAaz9v4mSU", "CrGpipgcfi4", "oQ1FDFMdYjM", "9OLxBvLvCoM", "441nwncPN28", "YddEiDSuOrY", "OlgcaYAO5VM", "5cbCYwgQkTE", "j-rw3x8VZxA", "abF_EfprTIE", "9XGm_uHit5g", "uEATpbQ9md4", "KYK6Tfb0snQ", "mYS2CcIdW1M"];
+let yt_videolist_ted = ["441nwncPN28", "YddEiDSuOrY", "OlgcaYAO5VM", "5cbCYwgQkTE", "j-rw3x8VZxA", "abF_EfprTIE", "9XGm_uHit5g", "uEATpbQ9md4", "KYK6Tfb0snQ", "mYS2CcIdW1M"];
 
 // UMレイヤーに yt iframe を流し込む.
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 10; i++) {
   let the_id = String(yt_videolist_ted[i]);
   let container = document.createElement("div");
   container.classList.add("box");
-  let inner = document.createElement("div");
-  inner.setAttribute("id", String("um_yt_" + i));
+  let inner = document.createElement("img");
+  // サムネイルだけを読み込む.
+  let the_srccode = 'http://img.youtube.com/vi/' + the_id + '/mqdefault.jpg';
+  inner.src = the_srccode;
   container.appendChild(inner);
   container.classList.add("this_yt_id_" + yt_videolist_ted[i]);
   let video_panc = document.querySelector(".video_panc");
   video_panc.after(container);
-  let pl = block_multiable(String("um_yt_" + i), the_id);
+
 }
 
 // UMレイヤーに画像を流し込む.
