@@ -8,7 +8,8 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background-color: #000000;
+            background-color: #121212;
+            border: 2px solid #3e3e3e;
         }
         .wheel {
             position: absolute;
@@ -200,6 +201,7 @@
         .orange_space {
             position: relative;
             z-index: 200;
+            // top: 2.5px;
             .orange_pointer_zone, .orange_stripe_zone {
                 position: absolute;
                 top: 0;

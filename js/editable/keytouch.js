@@ -13,6 +13,7 @@ let the_scrolled_distance = 0;
 let orange_block_counter = 0;
 
 let bo = document.getElementsByTagName("BODY")[0]
+let pri_pointer = document.querySelector(".pointer");
 
 window.addEventListener("keydown", (e)=>{
 
@@ -586,21 +587,56 @@ window.addEventListener("keydown", (e)=>{
                     }                         
                 }
 
+                function pointer_anim() {
+                    pri_pointer.animate(
+                        [
+                          { scale: 1, backgroundColor: "#121212" },
+                          { scale: 0.8, backgroundColor: "transparent" }
+                        ], {
+                          duration: 200,
+                          fill: "both",
+                        }
+                    );
+
+                    pri_pointer.animate(
+                        [
+                            { scale: 0.8, backgroundColor: "transparent" },
+                            { scale: 1, backgroundColor: "#121212" }
+                        ], {
+                          duration: 200,
+                          fill: "both",
+                          delay: 200,
+                        }
+                    );
+                }
+
                 if (centering) {
                     if (the_see_centering.firstElementChild.firstElementChild.scrollLeft == Number(target_data(centering, "scroll_left_"))) {
                         if (the_see_centering.classList.contains("principle_pointer") && centering.classList.contains("opac_cam") == false){
                             delete_opacam(); 
-                            orange_data = delete_orange_p(orange_data);
+                            pointer_anim();
+                            setTimeout(() => {
+                                orange_data = delete_orange_p(orange_data);
+                            }, 200)
                         } else if (centering.classList.contains("opac_cam") == true) {
-                            delete_opacam();              
-                            orange_data = orange_pointer_make(the_see_centering, orange_data);
+                            delete_opacam();
+                            pointer_anim();
+                            setTimeout(() => {
+                                orange_data = orange_pointer_make(the_see_centering, orange_data);
+                            }, 200)
                         }
                     } else {
-                        delete_opacam();         
-                        orange_data = orange_pointer_make(the_see_centering, orange_data);
+                        delete_opacam();   
+                        pointer_anim();
+                        setTimeout(() => {
+                            orange_data = orange_pointer_make(the_see_centering, orange_data);
+                        }, 200)
                     }
                 } else {
-                    orange_data = orange_pointer_make(the_see_centering, orange_data);
+                    pointer_anim();
+                    setTimeout(() => {
+                        orange_data = orange_pointer_make(the_see_centering, orange_data);
+                    }, 200)
                 }
             }
         }

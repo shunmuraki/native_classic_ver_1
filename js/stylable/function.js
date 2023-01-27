@@ -47,14 +47,14 @@ export const wheel_positioning = (e) => {
 
 // ホイールの描画アニメーションの関数.
 export const wheel_seton = () => {
-
     the_pointer.animate(
         [
-          { transform: 'scale(1)', },
-          { transform: 'scale(5)', },
+          { transform: 'scale(1)', backgroundColor: "#121212", border: "2px solid #3c3c3c" },
+          { transform: 'scale(5)', backgroundColor: "#3e3e3e", border: "0px solid #3c3c3c" },
         ], {
-          duration: 500,
-          fill: "both"
+          duration: 300,
+          fill: "both",
+          easing: "ease-in-out"
         }
       );
     wheel.style.display = "block";
@@ -63,8 +63,10 @@ export const wheel_seton = () => {
           { transform: 'rotate(270)', },
           { transform: 'rotate(360deg) ' }
         ], {
-          duration: 1000,        
-          fill: "both"
+          duration: 700,        
+          fill: "both",
+          easing: "ease-in-out",
+          delay: 200,
         }
       );
     wheel.animate(
@@ -72,9 +74,10 @@ export const wheel_seton = () => {
           { opacity: 0, },
           { opacity: 1, }, 
         ], {
-          duration: 500,
-          delay: 500,
-          fill: "both"
+          duration: 400,
+          delay: 200,
+          fill: "both",
+          easing: "ease-in-out"
         }
       );
 }

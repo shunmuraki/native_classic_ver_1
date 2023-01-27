@@ -29,11 +29,12 @@ document.addEventListener("keydown", (e) => {
     if (k == "Escape") {
         the_pointer.animate(
             [
-              { transform: 'scale(5)', },
-              { transform: 'scale(1)', },
+              { transform: 'scale(5)', backgroundColor: "#3e3e3e", border: "0px solid #3c3c3c" },
+              { transform: 'scale(1)', backgroundColor: "#121212", border: "2px solid #3c3c3c" }
             ], {
-              duration: 300,
-              fill: "both"
+              duration: 200,
+              fill: "both",
+              delay: 100,
             }
           );
 
@@ -42,7 +43,7 @@ document.addEventListener("keydown", (e) => {
               { transform: 'rotate(360deg)', },
               { transform: 'rotate(270deg) ' }
             ], {
-              duration: 800,
+              duration: 300,
               fill: "both"
             }
           );
@@ -51,7 +52,7 @@ document.addEventListener("keydown", (e) => {
               { opacity: 1, },
               { opacity: 0, }, 
             ], {
-              duration: 500,
+              duration: 300,
               delay: 200,
               fill: "both"
             }
