@@ -201,8 +201,8 @@ p, span, a {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: #121212;
-  border: 2px solid #3e3e3e;
+  background: linear-gradient(145deg, #101010, #131313) !important;
+  box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #1a1a1a !important;
 }
 .p_w .pointer_and_wheel .cover .wheel {
   position: absolute;
@@ -372,6 +372,19 @@ p, span, a {
   width: 100vw;
   padding: 100vh 0;
 }
+.block_layer::after {
+  content: "";
+  width: 1.5px;
+  background-color: #0a0a0a;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: calc((100% + 400.5px) / 2);
+}
+.block_layer .sp_cover {
+  max-width: calc((100% + 400px) / 2);
+  border: 1.5px solid #0a0a0a;
+}
 .block_layer .sp_cover .orange_space {
   position: relative;
   z-index: 200;
@@ -411,7 +424,7 @@ p, span, a {
   z-index: 100;
 }
 .block_layer .sp_cover .sp .horizontal {
-  width: calc((100% + 400px) / 2);
+  width: 100%;
   margin: 0 auto 0 0;
   overflow-x: auto;
   white-space: nowrap;
@@ -429,8 +442,6 @@ p, span, a {
   margin: 0 auto;
   vertical-align: top;
   position: relative;
-  border-right: 2px solid #000000;
-  border-bottom: 2px solid #000000;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -438,7 +449,6 @@ p, span, a {
   position: absolute;
   width: 5px;
   height: 100%;
-  background-color: rgb(0, 0, 0);
   top: 0;
   left: 0;
 }
@@ -446,7 +456,6 @@ p, span, a {
   position: absolute;
   width: 100%;
   height: 5px;
-  background-color: rgb(0, 0, 0);
   top: 0;
   left: 0;
 }
@@ -478,7 +487,7 @@ p, span, a {
   padding: 30px 10px;
 }
 .block_layer .sp_cover .sp .horizontal .centering {
-  border: 5px solid #0070D8 !important;
+  box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #171717 !important;
 }
 .block_layer .sp_cover .sp .horizontal .video, .block_layer .sp_cover .sp .horizontal .img {
   height: 225px !important;
@@ -489,16 +498,6 @@ p, span, a {
 .block_layer .sp_cover .sp .horizontal .same_end .write_area, .block_layer .sp_cover .sp .horizontal .same_end img, .block_layer .sp_cover .sp .horizontal .same_end iframe {
   opacity: 1 !important;
 }
-.block_layer .connected .sp .horizontal .vertical {
-  border-bottom: none !important;
-}
-.block_layer .connected .sp:last-of-type .horizontal .vertical {
-  border-bottom: 2px solid #000000 !important;
-}
-.block_layer .connected .sp:last-of-type .horizontal .centering {
-  border-bottom: 5px solid #0070D8 !important;
-}
-
 .new_layer .sp_cover .orange_space .orange_pointer_zone, .new_layer .sp_cover .orange_space .orange_stripe_zone {
   width: 100%;
 }
@@ -584,13 +583,13 @@ img, iframe {
 
 .ms_area {
   position: absolute;
-  top: 7%;
-  left: 2%;
-  width: 95%;
+  top: 10%;
+  left: 3%;
+  width: 93%;
   height: 28px;
   font-size: 1.2rem;
   color: #ffffff;
-  background-color: #0070D8;
+  background-color: #171717;
   font-weight: 500;
   letter-spacing: 0.1em;
   font-family: "Brandon-Grotesque", sans-serif;

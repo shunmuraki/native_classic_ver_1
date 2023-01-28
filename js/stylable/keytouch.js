@@ -31,8 +31,8 @@ document.addEventListener("keydown", (e) => {
           if (k == "Escape") {
               the_pointer.animate(
                   [
-                    { transform: 'scale(5)', backgroundColor: "#3e3e3e", border: "0px solid #3c3c3c" },
-                    { transform: 'scale(1)', backgroundColor: "#121212", border: "2px solid #3c3c3c" }
+                    { transform: 'scale(5)', },
+                    { transform: 'scale(1)', }
                   ], {
                     duration: 200,
                     fill: "both",
@@ -62,6 +62,7 @@ document.addEventListener("keydown", (e) => {
               layer_resetter();
               wheel.style.display = "none";
               let centering = document.querySelector(".centering");
+              screen.classList.remove("style");
               if (centering.lastElementChild.tagName == "TEXTAREA") {
                 centering.lastElementChild.focus();
               }

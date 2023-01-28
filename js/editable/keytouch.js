@@ -1,10 +1,10 @@
-import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list } from "../base/elements.js";
+import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, window_height } from "../base/elements.js";
 import { make_ver_fragment, go_top, go_left, go_right, go_bottom, vertical_stripe_checker, horizontal_stripe_checker, original_centering_checker, centering_marker} from "../base/function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { yt_player_getter, yt_resetter } from "../multiable/extends.js";
 import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
-import { wheel_positioning } from "../stylable/function.js";
+import { wheel_positioning, edit_mode_wheel_positioning } from "../stylable/function.js";
 
 let orange_data = {};
 let timeoutArray = new Array();
@@ -62,7 +62,8 @@ window.addEventListener("keydown", (e)=>{
             // Editモードの明示化. 編集レイヤー上での処理に限定.
             screen.classList.add("edit");
             new_layer.style.display = "block";
-            bo.style.backgroundColor = "#000000";
+            screen.style.display = "none";
+            bo.style.backgroundColor = "#121212";
             bo.classList.add("edit_mode");
 
             // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
@@ -224,8 +225,7 @@ window.addEventListener("keydown", (e)=>{
             // 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
             orange_data = orange_pointer_make(new_see, orange_data); 
             new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
-
-            wheel_positioning(layer_centering);
+            edit_mode_wheel_positioning();
         }
     }
 
@@ -855,7 +855,7 @@ window.addEventListener("keydown", (e)=>{
             
             bo.style.backgroundColor = "#121212";
             bo.classList.remove("edit_mode");
-
+            screen.style.display = "block";
             let final_centering = document.querySelector(".centering");
             wheel_positioning(final_centering);
             

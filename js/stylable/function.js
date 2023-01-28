@@ -46,12 +46,20 @@ export const wheel_positioning = () => {
   pointer.style.left = the_focus_left - 10 + "px";
 }
 
+export const edit_mode_wheel_positioning = () => {
+  let centering = document.querySelector(".new_layer_centering");
+  let the_focus_top = centering.getBoundingClientRect().top;
+  let the_focus_left = centering.getBoundingClientRect().left;
+  pointer.style.top = the_focus_top - 10 + "px";
+  pointer.style.left = the_focus_left - 10 + "px";
+}
+
 // ホイールの描画アニメーションの関数.
 export const wheel_seton = () => {
     the_pointer.animate(
         [
-          { transform: 'scale(1)', backgroundColor: "#121212", border: "2px solid #3c3c3c" },
-          { transform: 'scale(5)', backgroundColor: "#3e3e3e", border: "0px solid #3c3c3c" },
+          { transform: 'scale(1)' },
+          { transform: 'scale(5)', },
         ], {
           duration: 300,
           fill: "both",
