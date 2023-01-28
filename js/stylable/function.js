@@ -1,3 +1,4 @@
+import { screen } from "../base/elements.js";
 import {classmover, target_data} from "../base/tools.js";
 
 const pointer = document.querySelector(".pointer_and_wheel");
@@ -39,19 +40,21 @@ export const layer_resetter = () => {
 }
 
 export const wheel_positioning = () => {
-  let centering = document.querySelector(".centering");
+  let centering;
+  if (screen.classList.contains("edit")) {
+    if (document.getElementsByClassName("principle_block")[0]) {
+      centering = document.querySelector(".new_layer_centering");
+    } else if (document.getElementsByClassName("principle_pointer")[0]) {
+      centering = document.querySelector(".comesin");
+    }
+  } else {
+    centering = document.querySelector(".centering");
+  }
   let the_focus_top = centering.getBoundingClientRect().top;
   let the_focus_left = centering.getBoundingClientRect().left;
   pointer.style.top = the_focus_top - 10 + "px";
   pointer.style.left = the_focus_left - 10 + "px";
-}
 
-export const edit_mode_wheel_positioning = () => {
-  let centering = document.querySelector(".new_layer_centering");
-  let the_focus_top = centering.getBoundingClientRect().top;
-  let the_focus_left = centering.getBoundingClientRect().left;
-  pointer.style.top = the_focus_top - 10 + "px";
-  pointer.style.left = the_focus_left - 10 + "px";
 }
 
 // ホイールの描画アニメーションの関数.
@@ -59,7 +62,7 @@ export const wheel_seton = () => {
     the_pointer.animate(
         [
           { transform: 'scale(1)' },
-          { transform: 'scale(5)', },
+          { transform: 'scale(5)' },
         ], {
           duration: 300,
           fill: "both",

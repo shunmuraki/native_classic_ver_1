@@ -192,8 +192,10 @@ p, span, a {
 }
 .p_w .pointer_and_wheel {
   position: absolute;
+  z-index: 10;
 }
 .p_w .pointer_and_wheel .cover {
+  z-index: 30;
   position: relative;
 }
 .p_w .pointer_and_wheel .cover .pointer {
@@ -201,7 +203,7 @@ p, span, a {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #101010, #131313) !important;
+  background-color: #0a0a0a;
   box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #1a1a1a !important;
 }
 .p_w .pointer_and_wheel .cover .wheel {
@@ -388,6 +390,7 @@ p, span, a {
 .block_layer .sp_cover .orange_space {
   position: relative;
   z-index: 200;
+  top: -6px;
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone, .block_layer .sp_cover .orange_space .orange_stripe_zone {
   position: absolute;
@@ -405,14 +408,14 @@ p, span, a {
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_pointer, .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_stripe, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_pointer, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_stripe {
   position: absolute;
-  background-color: #75bcff;
+  background-color: #0070D8;
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_pointer, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_pointer {
   z-index: 999;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  top: 1px;
+  top: 2px;
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_stripe, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_stripe {
   z-index: 99;
@@ -498,25 +501,35 @@ p, span, a {
 .block_layer .sp_cover .sp .horizontal .same_end .write_area, .block_layer .sp_cover .sp .horizontal .same_end img, .block_layer .sp_cover .sp .horizontal .same_end iframe {
   opacity: 1 !important;
 }
+.new_layer {
+  z-index: 5000;
+}
+.new_layer .sp_cover {
+  max-width: 100vw;
+  z-index: 1 !important;
+}
+.new_layer .sp_cover .orange_space {
+  z-index: 15;
+}
 .new_layer .sp_cover .orange_space .orange_pointer_zone, .new_layer .sp_cover .orange_space .orange_stripe_zone {
   width: 100%;
 }
-.new_layer .sp_cover .sp .horizontal {
-  width: 100%;
+.new_layer .sp_cover .sp {
+  z-index: 1 !important;
+}
+.new_layer .sp_cover .sp .horizontal .centering {
+  box-shadow: none !important;
 }
 .new_layer .sp_cover .sp .horizontal .new_layer_centering {
-  background-color: #0070D8 !important;
+  box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #171717 !important;
 }
-.new_layer .principle_block .sp .horizontal {
-  background-color: #121212;
+.new_layer .sp_cover .sp .horizontal .vertical {
+  border: 1px solid #0a0a0a;
 }
-.new_layer .principle_pointer .orange_space .orange_pointer_zone, .new_layer .principle_pointer .orange_space .orange_stripe_zone {
-  background-color: #121212;
-}
-
 .statusbar {
   width: 100%;
-  padding: 10px 50px;
+  padding: 0px 50px;
+  height: 80px;
   background-color: #0a0a0a;
   box-sizing: border-box;
   position: fixed;
@@ -526,8 +539,7 @@ p, span, a {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  z-index: 8000;
-  filter: drop-shadow(0px -3px 5px #000000);
+  z-index: 9999;
 }
 .statusbar p, .statusbar a {
   font-size: 12px;
@@ -610,19 +622,16 @@ img, iframe {
   padding: 30px 5px;
 }
 
-.edit_mode .special_cov {
-  background-color: #0070D8;
-}
 .edit_mode .special_cov .write_area, .edit_mode .special_cov img, .edit_mode .special_cov iframe {
   padding: 25px 5px;
 }
 
 .redirect_cover {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 80px);
   background-color: #0070D8;
-  position: absolute;
-  z-index: 9999;
+  position: fixed;
+  z-index: 8000;
   top: 0;
   display: flex;
   flex-direction: row;
@@ -633,24 +642,30 @@ img, iframe {
   z-index: 300;
   text-align: center;
   opacity: 0;
+  display: flex;
+  width: 50%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
 }
 .redirect_cover .contents .download_button {
   padding: 15px 25px;
   border-radius: 3px;
-  background-color: #00ff00;
   line-height: 1;
   color: #fff;
   font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  border: 0.8px solid #fff;
 }
 .redirect_cover .contents .additional {
   color: #fff;
   font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: 0.05em;
-  margin: 80px 0 0 0;
+  margin: 0 0 0 80px;
   display: block;
+  border-bottom: 0.6px solid #fff;
 }
 
 .horizontal, .orange_pointer_zone, .orange_stripe_zone {

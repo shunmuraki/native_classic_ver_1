@@ -4,7 +4,7 @@ import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, gra
 import { is_it_same_series } from "../multiable/function.js";
 import { yt_player_getter, yt_resetter } from "../multiable/extends.js";
 import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
-import { wheel_positioning, edit_mode_wheel_positioning } from "../stylable/function.js";
+import { wheel_positioning } from "../stylable/function.js";
 
 let orange_data = {};
 let timeoutArray = new Array();
@@ -176,6 +176,7 @@ window.addEventListener("keydown", (e)=>{
             let layer_centering = document.querySelector(".new_layer_centering");
             let default_scrap = vertical_to_sp_cover(layer_centering);
             default_scrap.classList.add("see");
+            layer_centering.classList.remove("new_layer_centering");
     
             // 画面の切り替え.
             screen.style.opacity = 0;
@@ -225,7 +226,7 @@ window.addEventListener("keydown", (e)=>{
             // 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
             orange_data = orange_pointer_make(new_see, orange_data); 
             new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
-            edit_mode_wheel_positioning();
+            wheel_positioning();
         }
     }
 
@@ -250,7 +251,7 @@ window.addEventListener("keydown", (e)=>{
             let orange_pointer_list = orange_pointer_space.firstElementChild;
 
             // 以下ブロック移動モードとポインター移動モードの切り替え処理.
-            if (k == "ArrowUp") {
+            if (k == "ArrowLeft") {
                 if (the_see_centering.classList.contains("principle_block")) {
                     if (centering.classList.contains("opac_cam")) {
                         centering.remove();
@@ -266,11 +267,12 @@ window.addEventListener("keydown", (e)=>{
                         let the_gap = scroll_distance - vertical_to_hor(new_layer_centering).scrollLeft;
                         all_view_changer(the_see_centering, the_gap);                        
                         principle_management(the_see_centering, "principle_pointer");
+                        wheel_positioning();
                     }
                 } 
                 // sprinciple_pointer だった場合は何もしない.
             }
-            if (k == "ArrowDown") {
+            if (k == "ArrowRight") {
                 if (the_see_centering.classList.contains("principle_pointer")) {
 
                     let nextstep = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data);
@@ -281,7 +283,7 @@ window.addEventListener("keydown", (e)=>{
                     all_view_changer(the_see_centering, the_gap);
                     principle_management(the_see_centering, "principle_block");
                     is_it_same_series(new_one);
-                    wheel_positioning(new_one);
+                    wheel_positioning();
                 }
                 // principle_block だった場合は何もしない.
                 the_scrolled_distance = 0;
@@ -354,6 +356,7 @@ window.addEventListener("keydown", (e)=>{
                             let new_one = nextstep[0];
                             is_it_same_series(new_one);
                             the_scrolled_distance = 0;
+                            wheel_positioning();
                         }
                     }
                 }
@@ -422,6 +425,7 @@ window.addEventListener("keydown", (e)=>{
                             let nextstep = best_related_element(the_see_centering.nextElementSibling, orange_pointer_space.scrollLeft, "block", orange_data);
                             let new_one = nextstep[0];
                             is_it_same_series(new_one);
+                            wheel_positioning();
                             the_scrolled_distance = 0;
                         }
                     }
@@ -592,25 +596,24 @@ window.addEventListener("keydown", (e)=>{
                     }                         
                 }
 
-                function pointer_anim() {
+                function pointer_anim() {                    
                     pri_pointer.animate(
                         [
-                          { scale: 1, backgroundColor: "#121212" },
-                          { scale: 0.8, backgroundColor: "transparent" }
+                          { scale: 1 },
+                          { scale: 0.6 }
                         ], {
-                          duration: 200,
+                          duration: 400,
                           fill: "both",
                         }
                     );
-
                     pri_pointer.animate(
                         [
-                            { scale: 0.8, backgroundColor: "transparent" },
-                            { scale: 1, backgroundColor: "#121212" }
+                            { scale: 0.6 },
+                            { scale: 1,  }
                         ], {
-                          duration: 200,
+                          duration: 300,
                           fill: "both",
-                          delay: 200,
+                          delay: 400,
                         }
                     );
                 }

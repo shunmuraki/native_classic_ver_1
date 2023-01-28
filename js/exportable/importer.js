@@ -2,6 +2,7 @@ import { screen } from "../base/elements.js";
 import { target_data } from "../base/tools.js";
 
 const zip = new JSZip();
+
 let the_html = "";
 let the_js = "";
 let the_img_blob_list = {};
@@ -11,7 +12,6 @@ let animation_data = {};
 let animation_generate_list = [];
 let yt_id_list = [];
 let caset = document.createDocumentFragment();
-
 
 // ページ遷移アニメーション.
 let button = document.querySelector(".button");
