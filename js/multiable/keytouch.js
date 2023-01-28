@@ -1,6 +1,7 @@
 import { same_data_counter } from "../base/tools.js";
 import { make_it_img } from "./function.js";
 import { video_load_then } from "./extends.js";
+import { adjust_box } from "../base/function.js";
 
 window.addEventListener("keydown", (e) => {
     let k = e.key;
@@ -18,6 +19,7 @@ window.addEventListener("keydown", (e) => {
         // 以下YouTubeの動画のURLがペーストされた場合の処理.
         if ( type_signiture.indexOf('youtube.com') != -1) {
             video_load_then(type_signiture, current);
+            adjust_box(document.querySelector(".centering"));
         }
 
         if ( type_signiture.indexOf('image') != -1) {
@@ -26,6 +28,7 @@ window.addEventListener("keydown", (e) => {
             if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
                 document.querySelector(".centering").lastElementChild.focus();
             }
+            adjust_box(document.querySelector(".centering"));
         }
     }
     

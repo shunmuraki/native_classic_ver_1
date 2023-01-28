@@ -137,8 +137,7 @@ html, body {
   font-size: 10px;
   background-color: #121212;
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .inner {
@@ -180,14 +179,24 @@ p, span, a {
   font-weight: 400;
 }
 
-.pointer_and_wheel {
-  position: absolute;
+.p_w, .um_display {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.p_w {
   z-index: 5000;
 }
-.pointer_and_wheel .cover {
+.p_w .pointer_and_wheel {
+  position: absolute;
+}
+.p_w .pointer_and_wheel .cover {
   position: relative;
 }
-.pointer_and_wheel .cover .pointer {
+.p_w .pointer_and_wheel .cover .pointer {
   position: absolute;
   width: 20px;
   height: 20px;
@@ -195,15 +204,15 @@ p, span, a {
   background-color: #121212;
   border: 2px solid #3e3e3e;
 }
-.pointer_and_wheel .cover .wheel {
+.p_w .pointer_and_wheel .cover .wheel {
   position: absolute;
   top: -40px;
   left: -40px;
 }
-.pointer_and_wheel .cover .wheel .container {
+.p_w .pointer_and_wheel .cover .wheel .container {
   position: relative;
 }
-.pointer_and_wheel .cover .wheel .container .layer_1, .pointer_and_wheel .cover .wheel .container .layer_2, .pointer_and_wheel .cover .wheel .container .layer_3 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_1, .p_w .pointer_and_wheel .cover .wheel .container .layer_2, .p_w .pointer_and_wheel .cover .wheel .container .layer_3 {
   position: absolute;
   top: 0;
   left: 0;
@@ -211,85 +220,80 @@ p, span, a {
   height: 100px;
   background-size: contain;
 }
-.pointer_and_wheel .cover .wheel .container .list {
+.p_w .pointer_and_wheel .cover .wheel .container .list {
   position: relative;
   width: 100%;
   height: 100%;
 }
-.pointer_and_wheel .cover .wheel .container .list a {
+.p_w .pointer_and_wheel .cover .wheel .container .list a {
   position: absolute;
   background-color: #1b1b1b;
   opacity: 0;
 }
-.pointer_and_wheel .cover .wheel .container .list .select_1 {
+.p_w .pointer_and_wheel .cover .wheel .container .list .select_1 {
   width: 50px;
   height: 50px;
 }
-.pointer_and_wheel .cover .wheel .container .list .select_2 {
+.p_w .pointer_and_wheel .cover .wheel .container .list .select_2 {
   width: 100px;
   height: 50px;
 }
-.pointer_and_wheel .cover .wheel .container .list .select_3 {
+.p_w .pointer_and_wheel .cover .wheel .container .list .select_3 {
   width: 50px;
   height: 50px;
 }
-.pointer_and_wheel .cover .wheel .container .layer_1 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_1 {
   background-image: url("img/new_wheel_1.png");
 }
-.pointer_and_wheel .cover .wheel .container .layer_1 .list .select_1 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_1 .list .select_1 {
   top: 0;
   right: 0;
 }
-.pointer_and_wheel .cover .wheel .container .layer_1 .list .select_2 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_1 .list .select_2 {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
 }
-.pointer_and_wheel .cover .wheel .container .layer_1 .list .select_3 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_1 .list .select_3 {
   top: 0;
   left: 0;
 }
-.pointer_and_wheel .cover .wheel .container .layer_2 .list .select_1 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_2 .list .select_1 {
   bottom: 0;
   left: 0;
 }
-.pointer_and_wheel .cover .wheel .container .layer_2 .list .select_2 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_2 .list .select_2 {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
 }
-.pointer_and_wheel .cover .wheel .container .layer_2 .list .select_3 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_2 .list .select_3 {
   bottom: 0;
   right: 0;
 }
-.pointer_and_wheel .cover .wheel .container .layer_3 .list .select_1 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_3 .list .select_1 {
   bottom: 0;
   left: 0;
   width: 50px;
   height: 100px;
 }
-.pointer_and_wheel .cover .wheel .container .layer_3 .list .select_2 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_3 .list .select_2 {
   top: 0;
   right: 0;
   width: 50px;
   height: 100px;
 }
-.pointer_and_wheel .cover .wheel .container .layer_select_1 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_select_1 {
   background-image: url("img/new_wheel_3.png");
 }
-.pointer_and_wheel .cover .wheel .container .layer_select_2 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_select_2 {
   background-image: url("img/new_wheel_2.png");
 }
-.pointer_and_wheel .cover .wheel .container .layer_select_3 {
+.p_w .pointer_and_wheel .cover .wheel .container .layer_select_3 {
   background-image: url("img/new_wheel_4.png");
 }
 
 .um_display {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
   z-index: 4500;
 }
 .um_display .relative {
@@ -364,10 +368,9 @@ p, span, a {
 }
 
 .block_layer {
+  position: relative;
   width: 100vw;
-  min-height: 100vh;
-  position: absolute;
-  top: 100px;
+  padding: 100vh 0;
 }
 .block_layer .sp_cover .orange_space {
   position: relative;
@@ -496,11 +499,6 @@ p, span, a {
   border-bottom: 5px solid #0070D8 !important;
 }
 
-.new_layer {
-  height: 80vh;
-  overflow: hidden;
-  overflow-y: scroll;
-}
 .new_layer .sp_cover .orange_space .orange_pointer_zone, .new_layer .sp_cover .orange_space .orange_stripe_zone {
   width: 100%;
 }
@@ -529,7 +527,7 @@ p, span, a {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  z-index: 5;
+  z-index: 8000;
   filter: drop-shadow(0px -3px 5px #000000);
 }
 .statusbar p, .statusbar a {

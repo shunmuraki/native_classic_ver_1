@@ -38,9 +38,10 @@ export const layer_resetter = () => {
     ly_2_3.style.display = "none";
 }
 
-export const wheel_positioning = (e) => {
-  let the_focus_top = e.getBoundingClientRect().top;
-  let the_focus_left = e.getBoundingClientRect().left;
+export const wheel_positioning = () => {
+  let centering = document.querySelector(".centering");
+  let the_focus_top = centering.getBoundingClientRect().top;
+  let the_focus_left = centering.getBoundingClientRect().left;
   pointer.style.top = the_focus_top - 10 + "px";
   pointer.style.left = the_focus_left - 10 + "px";
 }

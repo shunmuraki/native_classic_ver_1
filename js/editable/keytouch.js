@@ -856,7 +856,11 @@ window.addEventListener("keydown", (e)=>{
             bo.style.backgroundColor = "#121212";
             bo.classList.remove("edit_mode");
 
-            wheel_positioning(document.querySelector(".centering"));
+            let final_centering = document.querySelector(".centering");
+            wheel_positioning(final_centering);
+            
+            // 編集直後のMS起動への対策.
+            is_it_same_series(final_centering);
         }
     }
 });

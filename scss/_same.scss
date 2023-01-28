@@ -4,8 +4,7 @@ html,body {
     font-size: 10px;
     background-color: #121212;
     width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 .inner {
     max-width: 776px;
@@ -40,4 +39,3 @@ p,span,a {
     font-size: 1.2rem;
     font-weight: 400;
 }
-

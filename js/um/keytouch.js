@@ -1,5 +1,6 @@
 import { screen } from "../base/elements.js";
 import { target_data } from "../base/tools.js";
+import { adjust_box } from "../base/function.js";
 import { video_load_then } from "../multiable/extends.js";
 import { video_street_scroll, audio_street_scroll, um_positioning } from "./function.js";
 
@@ -11,23 +12,27 @@ document.addEventListener("keydown", (e) => {
     let current = document.activeElement;
     let k = e.key;
     let type_signiture;
-    
+    let centering;
+
     if (current.tagName == "TEXTAREA") {
         type_signiture = current.value;
 
         // 以下ユニバーサルマークダウン機能の例として「"ted"」が検索された場合の処理.
         if ( type_signiture.indexOf('ted') != -1) {
+            centering = document.querySelector(".centering");
             document.querySelector(".ms_area").remove();
-            if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
-                document.querySelector(".centering").lastElementChild.focus();
+            if (centering.lastElementChild == "TEXTAREA") {
+                centering.lastElementChild.focus();
             }
             screen.classList.add("um");
             current.value = '';
-            document.querySelector(".centering").style.height = 225 + "px";
-            current.blur();
             um.style.display = "block";
-            um_positioning();
+            centering.style.height = 225 + "px";
+            current.blur();
             screen.classList.remove("um_ready");
+
+            adjust_box(centering);
+            um_positioning();
         }
     }
 
@@ -35,7 +40,7 @@ document.addEventListener("keydown", (e) => {
 
         if (k == "Escape") {
             um.style.display = "none";
-            let centering = document.querySelector(".centering");
+            centering = document.querySelector(".centering");
             if (centering.lastElementChild.tagName == "TEXTAREA") {
                 centering.lastElementChild.focus();
             }

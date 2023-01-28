@@ -1,24 +1,14 @@
 import { screen, half_left_width } from "../base/elements.js";
-
-let adjust_box;
-let pointer_position_top;
-let video_list;
-let audio_list;
-let video_null;
-let audio_null;
+let video_list = document.querySelector(".um_video");
+let audio_list = document.querySelector(".um_audio");
+let video_null = video_list.lastElementChild;
+let audio_null = audio_list.lastElementChild;
 
 export const um_positioning = () => {
-  adjust_box = document.querySelector(".centering");
-  pointer_position_top = adjust_box.getBoundingClientRect().top;
-  video_list = document.querySelector(".um_video");
-  audio_list = document.querySelector(".um_audio");
-  video_null = video_list.lastElementChild;
-  audio_null = audio_list.lastElementChild;
-  video_list.style.top = pointer_position_top + "px";
-  audio_list.style.top = pointer_position_top + "px";
+  let adjust_box = document.querySelector(".centering");
+  let pointer_position_top = adjust_box.getBoundingClientRect().top;
+  document.querySelector(".um_display").style.top = pointer_position_top + "px";
 }
-
-um_positioning();
 
 let the_video_width = 400 * 10;
 video_list.scrollLeft = the_video_width;
