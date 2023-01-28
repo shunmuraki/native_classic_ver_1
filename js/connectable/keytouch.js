@@ -1,4 +1,4 @@
-import { screen, the_name_list } from "../base/elements.js";
+import { screen, the_name_list, blocksize } from "../base/elements.js";
 import { horizontal_stripe_checker, make_ver_fragment, vertical_stripe_checker } from "../base/function.js";
 import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
 
@@ -173,7 +173,7 @@ window.addEventListener("keydown", (e)=>{
                     let the_center_num = [].slice.call(latest_hor.children).indexOf(center) + 1;
                     let the_b_a_gap = the_center_num - the_center_num_b;
                     
-                    let the_redefault_scroll = the_b_a_gap * 400;
+                    let the_redefault_scroll = the_b_a_gap * blocksize;
                     for (let i = 0; i < the_sp_cover_a.children.length; i++) {
                         the_sp_cover_a.children[i].lastElementChild.scrollLeft = the_default_leng + the_redefault_scroll;
                     }

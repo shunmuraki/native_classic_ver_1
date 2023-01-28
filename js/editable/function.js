@@ -1,5 +1,5 @@
 // ---------------------------------- * - * - * - * Editable シリーズ * - * - * - * ----------------------------------
-import { half_left_width, half_right_width, full_start_scrollwidth, full_end_scrollwidth } from "../base/elements.js";
+import { half_left_width, half_right_width, full_start_scrollwidth, full_end_scrollwidth, blocksize } from "../base/elements.js";
 import { grab_auto, sorter, target_data } from "../base/tools.js";
 
 // * ポインターやブロックからして一番近いブロックかポインターを検出する関数.
@@ -15,10 +15,10 @@ export const best_related_element = (e, f, g, h) => {
     if (g == "block") {
         let vers = scrap.firstElementChild.nextElementSibling.lastElementChild.children;
         let exact_distance = f + half_left_width - window.innerWidth;
-        let the_num = Math.round(exact_distance / 400);
+        let the_num = Math.round(exact_distance / blocksize);
         the_elem = vers[the_num + 1];
 
-        let boxes_width = 400 * the_num;
+        let boxes_width = blocksize * the_num;
         let the_final_num = window.innerWidth + boxes_width - half_left_width;
         the_left = the_final_num;
 

@@ -1,4 +1,4 @@
-import { screen, half_left_width } from "../base/elements.js";
+import { screen, half_left_width, blocksize } from "../base/elements.js";
 import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter } from "../base/tools.js";
 import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper } from "./extends.js";
 
@@ -24,7 +24,7 @@ export const block_multiable = (e, f) => {
         window.YT.ready(function() {
             player = new window.YT.Player(g, {
                 height: '225',
-                width: '400',
+                width: blocksize,
                 videoId: h,
                 events: {
                 'onReady': onPlayerReady,
@@ -74,7 +74,7 @@ export const make_special_cov = (e, f) => {
 
     let height_siz = e.clientHeight - 10;
 
-    special_cov.style.width = 380 + "px";
+    special_cov.style.width = (blocksize - 20) + "px";
     special_cov.style.height = height_siz + "px";
 
     let the_name = "this_cov_is_" + f;

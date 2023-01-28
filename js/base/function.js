@@ -1,6 +1,6 @@
 import { all_view_changer } from "../editable/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
-import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_middline, the_sunsetline } from "./elements.js";
+import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_middline, the_sunsetline, blocksize, blocktime } from "./elements.js";
 import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
 
@@ -173,7 +173,7 @@ export const go_af_scroll = () => {
     let the_scrap = document.querySelector(".scrolled");
     if (the_scrap) {
         the_scrap.classList.remove("scrolled");
-        let the_dis = (Number(target_data(the_scrap, "scroll_over_")) * 400) / 3;
+        let the_dis = (Number(target_data(the_scrap, "scroll_over_")) * blocksize) / blocktime;
         all_view_changer(the_scrap, -the_dis);
     }
 }
@@ -352,7 +352,7 @@ export const go_left = (e, f) => {
             }
         }
         let sp_cover = vertical_to_sp_cover(ver);
-        all_view_changer(sp_cover, -400);
+        all_view_changer(sp_cover, - blocksize);
 
         let next_one = ver.previousElementSibling;
         centering_marker(ver, next_one, f);
@@ -384,7 +384,7 @@ export const go_right = (e, f) => {
         }
         let sp_cover = vertical_to_sp_cover(ver);
         
-        all_view_changer(sp_cover, 400);
+        all_view_changer(sp_cover, blocksize);
 
         let next_one = ver.nextElementSibling;
         centering_marker(ver, next_one, f);
@@ -504,7 +504,7 @@ export const the_magic_paste = (e) => {
 
     same_cutter(center, "addon");
     is_it_same_series(center);
-    all_view_changer(sp_cover, 400);
+    all_view_changer(sp_cover, blocksize);
 
     if (center.lastElementChild.tagName == "TEXTAREA") {
         center.lastElementChild.focus();

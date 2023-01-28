@@ -1,14 +1,18 @@
 export const screen = document.querySelector(".screen");
 
-let the_b = window.innerWidth - 400;
-let the_a = the_b / 2;
-let the_c = the_a + 400;
+export const blocksize = 360;
+export const linesize = 24;
+export const blocktime = 5;
 
-let default_block_length = 400 * 10;
+let the_b = window.innerWidth - blocksize;
+let the_a = the_b / 2;
+let the_c = the_a + blocksize;
+
+let default_block_length = blocksize * linesize;
 let default_length = default_block_length + window.innerWidth;
 
 export const full_start_scrollwidth = window.innerWidth - the_a;
-export const full_end_scrollwidth = default_length - the_c + 400;
+export const full_end_scrollwidth = default_length - the_c + blocksize;
 
 export const half_left_width = the_a;
 export const half_right_width = the_c;

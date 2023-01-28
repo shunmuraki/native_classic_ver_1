@@ -1,4 +1,4 @@
-import { screen } from "../base/elements.js";
+import { screen, blocksize, blocktime } from "../base/elements.js";
 import { same_data_counter, same_data_getter, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
 import { make_ver_fragment, make_dup_fragment } from "../base/function.js";
 import { all_view_changer } from "../editable/function.js";
@@ -40,7 +40,7 @@ export const yt_loop_player = (e, f) => {
         e.pauseVideo();
         yt_resetter(e, f);
         e.playVideo();
-    }, 3000);
+    }, blocktime * 1000);
 }
 
 export const yt_loop_stopper = (e, f) => {
@@ -92,7 +92,7 @@ export const video_load_then = (e, f) => {
         the_will_copied.classList.add(the_name);
     
         // 動画の尺 / 3　分のブロックが必要であるため算出.
-        let the_block_num = Math.floor(the_duration / 3);
+        let the_block_num = Math.floor(the_duration / blocktime);
         let the_fragment = document.createDocumentFragment();
         let the_fragment_stable = document.createDocumentFragment();
         
@@ -100,7 +100,7 @@ export const video_load_then = (e, f) => {
             let the_newone = the_will_copied.cloneNode(true);
             
             // ブロックごとの動画再生位置を付与. (編集に備えて)
-            let the_seek_num = 3 * i;
+            let the_seek_num = blocktime * i;
             let the_v_st_name = "this_video_st_" + the_seek_num;
             the_newone.classList.add(the_v_st_name);
             // 最初のsameには始点を与えておく.
@@ -118,7 +118,7 @@ export const video_load_then = (e, f) => {
         let the_v_en_name = "this_video_st_" + the_duration;
         
         // ACTUAR分を考慮.
-        let the_actuar = the_duration - (the_block_num * 3);
+        let the_actuar = the_duration - (the_block_num * blocktime);
         let the_actuar_name =  "actuar_time_" + the_actuar;
         the_box.classList.add("actuar_en");
         the_box.classList.add(the_v_en_name);
@@ -139,7 +139,7 @@ export const video_load_then = (e, f) => {
             }
         }
 
-        let after_distance = 400 * (the_block_num);
+        let after_distance = blocksize * (the_block_num);
         all_view_changer(current_sp_cover, after_distance);
 
     }, 1500);

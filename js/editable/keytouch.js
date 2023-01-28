@@ -1,4 +1,4 @@
-import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, window_height } from "../base/elements.js";
+import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, window_height, blocksize, linesize, blocktime } from "../base/elements.js";
 import { make_ver_fragment, go_top, go_left, go_right, go_bottom, vertical_stripe_checker, horizontal_stripe_checker, original_centering_checker, centering_marker} from "../base/function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
@@ -68,7 +68,7 @@ window.addEventListener("keydown", (e)=>{
 
             // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
             let vh_count = current_horizontal.childElementCount - 1;
-            let sp_cover_will_num = Math.ceil(vh_count / 10);
+            let sp_cover_will_num = Math.ceil(vh_count / linesize);
             let new_sp_cov = current_sp_cover.cloneNode(true); 
             
             // すでに sp_cover には適切なラインが築かれているので、これを崩さずにそのまま再利用する. (中身のブロックはクリア.)
@@ -85,7 +85,7 @@ window.addEventListener("keydown", (e)=>{
                         bye_once[o].remove();
                     }
                 }
-                for (let o = 0; o < 10; o++) {
+                for (let o = 0; o < linesize; o++) {
                     // scrap(sp_cover) のclone の　horizontal に ver を10個詰める.
                     make_ver_fragment(newla_sps[i].lastElementChild.lastElementChild, "after");
                 }
@@ -121,8 +121,8 @@ window.addEventListener("keydown", (e)=>{
                     if (o > 0) {
                         let imp_content = screen_vers[o].lastElementChild.cloneNode(true);
                         let the_num = o;
-                        let ver_side = Math.trunc(the_num / 10);
-                        let hor_side = the_num % 10;
+                        let ver_side = Math.trunc(the_num / linesize);
+                        let hor_side = the_num % linesize;
                         
                         // 割り切れてしまった場合.
                         if (ver_side == 0 && hor_side == 1) {
@@ -134,7 +134,7 @@ window.addEventListener("keydown", (e)=>{
                             hor_side -= 1;
                         }
                         
-                        new_layer.children[ver_side].children[i + 1].lastElementChild.children[10].classList.add("you!!!");
+                        new_layer.children[ver_side].children[i + 1].lastElementChild.children[linesize].classList.add("you!!!");
                         
                         // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
                         let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];
@@ -187,7 +187,7 @@ window.addEventListener("keydown", (e)=>{
             let see = document.querySelector(".see");
             let see_num = [].slice.call(new_layer.children).indexOf(see);
             let scraps = new_layer.children;
-            let the_default_scrollleft = 400 * centering_num + window.innerWidth - half_left_width;
+            let the_default_scrollleft = blocksize * centering_num + window.innerWidth - half_left_width;
             
             for (let i = 0; i < scraps.length; i++) {
                 let scrap = scraps[i];
@@ -462,7 +462,7 @@ window.addEventListener("keydown", (e)=>{
             if (hor.scrollLeft < full_end_scrollwidth) {
 
                 // 初期値のセット.
-                the_seeking_time = 3000;
+                the_seeking_time = linesize * 1000;
 
                 function the_timeout() {
                     timeoutArray.push(setTimeout(() => {
@@ -494,9 +494,9 @@ window.addEventListener("keydown", (e)=>{
 
                 function the_interval() {
                     intervalArray.push(setInterval(() => {
-                        all_view_changer(scrap, 400 / 3);
-                        let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / 400);                        
-                        let the_pri_distance = window.innerWidth + (the_block_num * 400) - half_left_width;
+                        all_view_changer(scrap, blocksize / blocktime);
+                        let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);                        
+                        let the_pri_distance = window.innerWidth + (the_block_num * blocksize) - half_left_width;
                         let the_block = hor.children[the_block_num + 1];
                         
                         // 現在の、実際のhorのscrollLeft とそれがどれくらい離れているかの算出.
@@ -539,7 +539,7 @@ window.addEventListener("keydown", (e)=>{
                     scrap.classList.add("pausing");
                 
                     let the_b_name = "scroll_over_" + the_scrolled_distance;
-                    let the_a = the_scrolled_distance % 3;
+                    let the_a = the_scrolled_distance % blocktime;
                     let the_a_name = "scroll_over_" + the_a;
                     if (scrap.classList.contains(the_b_name)) {
                         scrap.classList.remove(the_b_name);
@@ -554,7 +554,7 @@ window.addEventListener("keydown", (e)=>{
 
                     // 経過時間をミリ秒で取得.
                     let ms = pause_when - play_when;
-                    the_seeking_time = 3000 - ms;
+                    the_seeking_time = (blocktime * 1000) - ms;
 
                 } else if (scrap.classList.contains("pausing")) {
 
@@ -731,8 +731,8 @@ window.addEventListener("keydown", (e)=>{
 
 
                         // １つのorange_stripe の中に乗っかっているブロックを検出する処理.
-                        let thisblock_scrollleft_st = (400 * block_num) + full_start_scrollwidth - 400;
-                        let thisblock_scrollleft_en = thisblock_scrollleft_st + 400;
+                        let thisblock_scrollleft_st = (blocksize * block_num) + full_start_scrollwidth - blocksize;
+                        let thisblock_scrollleft_en = thisblock_scrollleft_st + blocksize;
 
                         for (let o = 0; o < po_and_st.length; o++) {
                             if (po_and_st[o].classList.contains("orange_pointer_s")) {
@@ -773,14 +773,14 @@ window.addEventListener("keydown", (e)=>{
                                     fif();
                                 } else if (the_desition_one == true && the_desition_second == false) {
                                     let gap = the_pointer_scrollleft_en - thisblock_scrollleft_st;
-                                    if (gap > 10 && gap < 400) {
+                                    if (gap > 10 && gap < blocksize) {
                                         if (gap > 50) {
                                             fif("actuar_en", gap - 5);
                                         }
                                     }
                                 } else if (the_desition_one == false && the_desition_second == true) {
                                     let gap = thisblock_scrollleft_en - the_pointer_scrollleft_st;
-                                    if (gap > 10 && gap < 400) {                                       
+                                    if (gap > 10 && gap < blocksize) {                                       
                                         if (gap > 50) {
                                             fif("actuar_st", 405 - gap);
                                         }

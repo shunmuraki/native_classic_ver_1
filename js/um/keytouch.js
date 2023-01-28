@@ -1,4 +1,4 @@
-import { screen } from "../base/elements.js";
+import { screen, blocksize } from "../base/elements.js";
 import { target_data } from "../base/tools.js";
 import { adjust_box } from "../base/function.js";
 import { video_load_then } from "../multiable/extends.js";
@@ -68,7 +68,7 @@ document.addEventListener("keydown", (e) => {
 
                         if (the_um_current.previousElementSibling) {
                             if (! the_um_current.previousElementSibling.classList.contains("panc")) {
-                                video_list.scrollLeft -= 400;
+                                video_list.scrollLeft -= blocksize;
                                 the_um_current.classList.remove("um_centering");
                                 the_um_current.previousElementSibling.classList.add("um_centering");
                             }
@@ -76,7 +76,7 @@ document.addEventListener("keydown", (e) => {
                     } else if (the_now_parent.classList.contains("um_audio")){
                         if (the_um_current.nextElementSibling) {
                             if (! the_um_current.nextElementSibling.classList.contains("panc")) {
-                                audio_list.scrollLeft -= 400;
+                                audio_list.scrollLeft -= blocksize;
                                 the_um_current.classList.remove("um_centering");
                                 the_um_current.nextElementSibling.classList.add("um_centering");
                             }
@@ -95,7 +95,7 @@ document.addEventListener("keydown", (e) => {
                     if (the_now_parent.classList.contains("um_audio")) {
                         if (the_um_current.previousElementSibling) {
                             if (! the_um_current.previousElementSibling.classList.contains("panc")) {
-                                audio_list.scrollLeft += 400;
+                                audio_list.scrollLeft += blocksize;
                                 the_um_current.classList.remove("um_centering");
                                 the_um_current.previousElementSibling.classList.add("um_centering");
                             }
@@ -103,7 +103,7 @@ document.addEventListener("keydown", (e) => {
                     } else if (the_now_parent.classList.contains("um_video")){
                         if (the_um_current.nextElementSibling) {
                             if (! the_um_current.nextElementSibling.classList.contains("panc")) {
-                                video_list.scrollLeft += 400;
+                                video_list.scrollLeft += blocksize;
                                 the_um_current.classList.remove("um_centering");
                                 the_um_current.nextElementSibling.classList.add("um_centering");
                             }

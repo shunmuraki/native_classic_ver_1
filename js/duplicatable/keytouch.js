@@ -1,4 +1,5 @@
 // * command = K
+import { blocksize } from "../base/elements.js"
 import { same_data_getter, target_data, vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, same_data_counter, classmover } from "../base/tools.js";
 import { make_fragment, make_ver_fragment, make_dup_fragment , go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, vertical_stripe_checker, horizontal_stripe_checker } from "../base/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
@@ -99,7 +100,7 @@ window.addEventListener("keydown", (e)=>{
  
           balanc = the_center_num_b - c_v_num;
           for (let i = 0; i < sps.length; i++) {
-              sps[i].lastElementChild.scrollLeft = balanc * 400 + scrollleft_b;
+              sps[i].lastElementChild.scrollLeft = balanc * blocksize + scrollleft_b;
           }
 
           original_centering_checker(current_sp_cover, center);

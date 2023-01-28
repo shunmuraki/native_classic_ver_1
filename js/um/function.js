@@ -1,4 +1,4 @@
-import { screen, half_left_width } from "../base/elements.js";
+import { screen, half_left_width, blocksize } from "../base/elements.js";
 let video_list = document.querySelector(".um_video");
 let audio_list = document.querySelector(".um_audio");
 let video_null = video_list.lastElementChild;
@@ -10,10 +10,10 @@ export const um_positioning = () => {
   document.querySelector(".um_display").style.top = pointer_position_top + "px";
 }
 
-let the_video_width = 400 * 10;
+let the_video_width = blocksize * 10;
 video_list.scrollLeft = the_video_width;
 
-let the_audio_width = - 400 * 10;
+let the_audio_width = - blocksize * 10;
 audio_list.scrollLeft = the_audio_width;
 
 // videoゾーンにおける左右の移動を処理する関数.
@@ -25,7 +25,7 @@ export function video_street_scroll() {
 
   video_null.style.opacity = 1;
   audio_null.style.opacity = 0;
-  video_list.scrollLeft -= 400;
+  video_list.scrollLeft -= blocksize;
 }
 
 // null_elementを選択している状態で「右」を押した場合の処理をする関数.
@@ -36,7 +36,7 @@ export function audio_street_scroll() {
   after_choose.classList.add("um_centering");
   video_null.style.opacity = 0;
   audio_null.style.opacity = 1;
-  audio_list.scrollLeft += 400;
+  audio_list.scrollLeft += blocksize;
 }
 
 // UMレイヤーをクリアする関数.
