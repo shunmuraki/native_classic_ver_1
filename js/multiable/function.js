@@ -1,6 +1,6 @@
 import { screen, half_left_width, blocksize } from "../base/elements.js";
 import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter } from "../base/tools.js";
-import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper } from "./extends.js";
+import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper, just_clear_yt_loop } from "./extends.js";
 
 let special_playerlist = {};
 let s_n = 100;
@@ -71,13 +71,14 @@ export const make_special_cov = (e, f) => {
     let bottom_distance = e.getBoundingClientRect().top;
     let left_distance = half_left_width;
     
-    special_cov.style.top = bottom_distance + "px";
-    special_cov.style.left = left_distance + "px";
+    special_cov.style.top = bottom_distance + 20 + "px";
+    // borderの有無の違いから 1px を調整....
+    special_cov.style.left = left_distance + 21 + "px";
 
     let height_siz = e.clientHeight;
 
-    special_cov.style.width = (blocksize) + "px";
-    special_cov.style.height = height_siz + "px";
+    special_cov.style.width = blocksize - 40 + "px";
+    special_cov.style.height = height_siz - 40 + "px";
 
     let the_name = "this_cov_is_" + f;
     special_cov.classList.add("special_cov");
@@ -105,22 +106,24 @@ export const is_it_same_start = (e) => {
             let hit_target = document.getElementsByClassName(the_name)[document.getElementsByClassName(the_name).length - 1];
             
             // もし iframe だったら、yt idを取得して、新しく yt playerを生成するようにする。cloneNodeはしない.            
-            if (hit_target.lastElementChild.tagName == "IFRAME") {
-                let the_code = target_data(hit_target, "id_is_");
-                console.log(hit_target);
-                console.log(the_code);
-                s_n += 1;
-                let the_keyname = String("yt_editor_" + s_n);
-                let the_sp_if = document.createElement("div");
-                the_sp_if.setAttribute("id", the_keyname); 
-                special_cov.appendChild(the_sp_if);
-                let pl = block_multiable(the_keyname, the_code);
-                special_playerlist[the_keyname] = pl;
-                console.log(pl);
-                console.log(special_playerlist);
-            } else {
-                let the_one = hit_target.lastElementChild.cloneNode(true);
-                special_cov.appendChild(the_one);
+            if (hit_target.lastElementChild) {
+                if (hit_target.lastElementChild.tagName == "IFRAME") {
+                    let the_code = target_data(hit_target, "id_is_");
+                    console.log(hit_target);
+                    console.log(the_code);
+                    s_n += 1;
+                    let the_keyname = String("yt_editor_" + s_n);
+                    let the_sp_if = document.createElement("div");
+                    the_sp_if.setAttribute("id", the_keyname); 
+                    special_cov.appendChild(the_sp_if);
+                    let pl = block_multiable(the_keyname, the_code);
+                    special_playerlist[the_keyname] = pl;
+                    console.log(pl);
+                    console.log(special_playerlist);
+                } else {
+                    let the_one = hit_target.lastElementChild.cloneNode(true);
+                    special_cov.appendChild(the_one);
+                }
             }
         }
         
@@ -135,14 +138,17 @@ export const is_it_same_start = (e) => {
             player = yt_player_getter(special_cov.lastElementChild);
         }
 
-        if (player) {
-            setTimeout(() => {
-                let the_time = yt_resetter();
-                player.seekTo(the_time);
-                console.log(player);
-                player.playVideo();
-                yt_loop_player(player);
-            },1000)
+        if (document.querySelector(".pausing")) {
+            if (player) {
+                just_clear_yt_loop();
+                setTimeout(() => {
+                    let the_time = yt_resetter();
+                    player.seekTo(the_time);
+                    console.log(player);
+                    player.playVideo();
+                    yt_loop_player(player);
+                }, 1000)
+            }
         }
     }
 }
@@ -172,11 +178,14 @@ export const is_it_same_alend = (e) => {
     if (the_target_left) {
         if (the_target_left.classList.contains("same_end")) {
             player_setup(the_target_left);
-            if (player) {
-                player.pauseVideo();
-                let the_time = yt_resetter();
-                player.seekTo(the_time);
-                yt_loop_stopper(player, "end");
+
+            if (document.querySelector(".pausing")) {
+                if (player) {
+                    player.pauseVideo();
+                    let the_time = yt_resetter();
+                    player.seekTo(the_time);
+                    yt_loop_stopper(player, "end");
+                }
             }
             the_state(the_target_left);
         }
@@ -185,11 +194,13 @@ export const is_it_same_alend = (e) => {
     if (the_target_right) {
         if (the_target_right.classList.contains("same_start")) {
             player_setup(the_target_right);
-            if (player) {
-                player.pauseVideo();
-                let the_time = yt_resetter();
-                player.seekTo(the_time);
-                yt_loop_stopper(player, "start");
+            if (document.querySelector(".pausing")) {
+                if (player) {
+                    player.pauseVideo();
+                    let the_time = yt_resetter();
+                    player.seekTo(the_time);
+                    yt_loop_stopper(player, "start");
+                }
             }
             the_state(the_target_right);
         }

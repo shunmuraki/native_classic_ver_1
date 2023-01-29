@@ -1,7 +1,7 @@
 import { same_data_counter } from "../base/tools.js";
 import { make_it_img } from "./function.js";
 import { video_load_then } from "./extends.js";
-import { adjust_box } from "../base/function.js";
+import { adjust_box, focus_checker } from "../base/function.js";
 
 window.addEventListener("keydown", (e) => {
     let k = e.key;
@@ -22,7 +22,7 @@ window.addEventListener("keydown", (e) => {
             adjust_box(document.querySelector(".centering"));
         }
 
-        if ( type_signiture.indexOf('image') != -1) {
+        if ( type_signiture.indexOf('imag') != -1) {
             document.querySelector(".ms_area").remove();
             make_it_img(document.querySelector(".centering"), "image");
             focus_checker(document.querySelector(".centering"));        

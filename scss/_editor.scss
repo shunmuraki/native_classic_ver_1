@@ -1,8 +1,8 @@
 .pointer_and_wheel {
     position: fixed;
-    z-index: 5000;
+    z-index: 5001;
     .cover {
-    z-index: 30;
+        z-index: 30;
         position: relative;
         .pointer {
             position: absolute;
@@ -13,8 +13,8 @@
             // border: 2px solid #3e3e3e;
             // background: linear-gradient(145deg, #101010, #131313) !important;
             background-color: #0a0a0a;
-                box-shadow: inset 5px 5px 12px #0a0a0a,
-                                inset -5px -5px 12px #1a1a1a !important;
+            box-shadow: inset 5px 5px 12px #0a0a0a,
+                            inset -5px -5px 12px #1a1a1a !important;
         }
         .wheel {
             position: absolute;
@@ -427,6 +427,7 @@
 
                 .vertical {
                     border: 1px solid #0a0a0a;
+                    box-sizing: border-box;
                     .stripe_ver {
                         // background-color: #1a1a1a;
                     }
@@ -557,9 +558,15 @@ img, iframe {
 }
 
 .special_cov {
-    z-index: 5200;
-    box-shadow:  inset 5px 5px 12px #0a0a0a,
-                    inset -5px -5px 12px #171717 !important;
+    z-index: 5000;
+    // box-shadow:  inset 5px 5px 12px #0a0a0a,
+    //                 inset -5px -5px 12px #171717 !important;
+    background-color: #121212;
+        .write_area, img, iframe {
+            // blocksizeと関与. なぜか textareaだけが1pxずれるので条件分岐せざるを得ず.
+            padding: 20px 10px;
+            width: calc(360px * 0.9) !important;
+        }
 }
 .edit_mode {
     .sp_cover {
@@ -585,9 +592,11 @@ img, iframe {
     }
     .special_cov {
         // background-color: #0070D8;
-        // .write_area, img, iframe {
-        //     padding: 15.5px 2.5px;
-        // }
+        background-color: #121212;
+        .write_area, img, iframe {
+            padding: 20px 10px;
+            width: calc(360px * 0.9) !important;
+        }
     }
 }
 

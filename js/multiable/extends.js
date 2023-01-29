@@ -5,7 +5,7 @@ import { all_view_changer } from "../editable/function.js";
 import { block_multiable, special_playlist_getter } from "./function.js";
 
 let players_list = {};
-let yt_loop;
+let yt_loop = new Array();
 let same_data = 0;
 same_data_counter(same_data);
 
@@ -13,13 +13,11 @@ same_data_counter(same_data);
 export const yt_player_getter = (e) => {
     let the_keyid = e.id;
     let yt_iframe = null;
-    
     if (the_keyid) {
         // 動画は必ずsameなのでspecialのみから検索.
         let playlist = special_playlist_getter();
         yt_iframe = playlist[the_keyid];
     }
-
     return yt_iframe;
 }
 
@@ -38,13 +36,14 @@ export const yt_resetter = () => {
 }
 
 // センタリングしたブロックの動画をブロック分再生（or ループ再生）する関数
-export const yt_loop_player = (e, f) => {
-    yt_loop = setInterval(() => {
-        e.pauseVideo();
-        let the_time = yt_resetter(e);
-        e.seekTo(the_time);
-        e.playVideo();
-    }, blocktime * 1000);
+export const yt_loop_player = (e) => {
+    let the_time = yt_resetter(e);
+    yt_loop.push(
+        setInterval(() => {
+            // e.pauseVideo();
+            e.seekTo(the_time);
+            e.playVideo();
+        }, blocktime * 1000));
 }
 
 // 上の関数によってセットされた interval 処理をクリアする関数.
@@ -57,8 +56,19 @@ export const yt_loop_stopper = (e, f) => {
         duration = e.getDuration();
         e.seekTo(duration);
     }
-    clearInterval(yt_loop);
+    clearInterval(yt_loop.shift());
 }
+
+export const just_clear_yt_loop = () => {
+    console.log("be");
+    console.log(yt_loop);
+    // e.pauseVideo();
+    for (let i = yt_loop.length; i >= 0; i--)  {
+        clearInterval(yt_loop.shift());
+    }
+    console.log(yt_loop);
+}
+
 
 // 動画の読み込み・sp_cover内のラインの調整（ブロック数）などを行う関数. um と multiable にて共通利用.
 export const video_load_then = (e, f) => {

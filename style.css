@@ -181,7 +181,7 @@ p, span, a {
 
 .pointer_and_wheel {
   position: fixed;
-  z-index: 5000;
+  z-index: 5001;
 }
 .pointer_and_wheel .cover {
   z-index: 30;
@@ -519,6 +519,7 @@ p, span, a {
 }
 .new_layer .sp_cover .sp .horizontal .vertical {
   border: 1px solid #0a0a0a;
+  box-sizing: border-box;
 }
 .statusbar {
   width: 100%;
@@ -622,8 +623,20 @@ img, iframe {
 }
 
 .special_cov {
-  z-index: 5200;
-  box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #171717 !important;
+  z-index: 5000;
+  background-color: #121212;
+}
+.special_cov .write_area, .special_cov img, .special_cov iframe {
+  padding: 20px 10px;
+  width: 324px !important;
+}
+
+.edit_mode .special_cov {
+  background-color: #121212;
+}
+.edit_mode .special_cov .write_area, .edit_mode .special_cov img, .edit_mode .special_cov iframe {
+  padding: 20px 10px;
+  width: 324px !important;
 }
 
 .redirect_cover, .cheet_sheet {
