@@ -492,7 +492,7 @@ p, span, a {
 .block_layer .sp_cover .sp .horizontal .same .write_area, .block_layer .sp_cover .sp .horizontal .same img, .block_layer .sp_cover .sp .horizontal .same iframe {
   opacity: 0 !important;
 }
-.block_layer .sp_cover .sp .horizontal .same_end .write_area, .block_layer .sp_cover .sp .horizontal .same_end img, .block_layer .sp_cover .sp .horizontal .same_end iframe {
+.block_layer .sp_cover .sp .horizontal .same_start .write_area, .block_layer .sp_cover .sp .horizontal .same_start img, .block_layer .sp_cover .sp .horizontal .same_start iframe, .block_layer .sp_cover .sp .horizontal .same_end .write_area, .block_layer .sp_cover .sp .horizontal .same_end img, .block_layer .sp_cover .sp .horizontal .same_end iframe {
   opacity: 1 !important;
 }
 .new_layer {

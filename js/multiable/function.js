@@ -4,6 +4,7 @@ import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper, just_cl
 
 let special_playerlist = {};
 let s_n = 100;
+let same_start_content = null;
 
 // special_cov用に毎度作成する yt のリストを外部のJSファイルへ渡す関数.
 export const special_playlist_getter = () => {
@@ -94,6 +95,7 @@ export const is_it_same_start = (e) => {
     
     // special_cov の生成からコンテントの挿入までを処理.
     if (e.classList.contains("same")) {
+
         let the_num = target_data(e, "same_num_");
         let special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];
 
@@ -119,13 +121,14 @@ export const is_it_same_start = (e) => {
                     let the_one = hit_target.lastElementChild.cloneNode(true);
                     special_cov.appendChild(the_one);
                 }
+                hit_target.lastElementChild.style.setProperty('opacity', 0, 'important');
             }
         }
         
         if (special_cov == null) {
             the_state();
             special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];
-        } 
+        }
         
         let player;
         // dupブロックであるケースを配慮.
@@ -157,7 +160,15 @@ export const is_it_same_alend = (e) => {
     function the_state(e) {
         let the_name = "this_cov_is_" + target_data(e, "same_num_");
         let the_special_cov = document.getElementsByClassName(the_name)[0];
+        let content = null;
+
+        // 削除する前に same_start が右隣の場合にコンテントを一時的に same_startへ移してあげる.
+        // そして再度 same_start が centering した時にその中身を取り除くようにする.
         if (the_special_cov) {
+            if (the_special_cov.lastElementChild) {
+                content = the_special_cov.lastElementChild.cloneNode(true);
+                same_start_content = content;
+            }
             the_special_cov.remove();
         }
     }
@@ -166,7 +177,7 @@ export const is_it_same_alend = (e) => {
         if (e.lastElementChild) {
             player = yt_player_getter(e.lastElementChild);
         }
-    }
+    }    
 
     if (the_target_left) {
         if (the_target_left.classList.contains("same_end")) {
@@ -181,6 +192,16 @@ export const is_it_same_alend = (e) => {
                 }
             }
             the_state(the_target_left);
+            // the_target_left.lastElementChild.style.setProperty('opacity', 0, 'important');
+            if (the_target_left.lastElementChild) {
+                // the_target_left.lastElementChild.style.opacity = 1;
+                the_target_left.lastElementChild.style.setProperty('opacity', 1, 'important');
+            } 
+        } else if (the_target_left.classList.contains("same_start")) {
+            // 同 same_num を持つ same_start の content があれば削除.
+            if (the_target_left.lastElementChild) {
+                the_target_left.lastElementChild.remove();
+            }
         }
     }
 
@@ -195,7 +216,23 @@ export const is_it_same_alend = (e) => {
                     yt_loop_stopper(player, "start");
                 }
             }
+            // same_start に special_cov の content を一時的に複製して格納.
             the_state(the_target_right);
+            the_target_right.appendChild(same_start_content);
+
+
+
+        } else if (the_target_right.classList.contains("same_end")) {
+            if (the_target_right.lastElementChild) {
+                // the_target_right.lastElementChild.style.opacity = 0;
+                the_target_right.lastElementChild.style.setProperty('opacity', 0, 'important');
+            }
+        }
+    }
+
+    if (e.classList.contains("same_start") ||  e.classList.contains("same_end")) {
+        if (e.lastElementChild) {
+            e.lastElementChild.style.setProperty('opacity', 0, 'important');
         }
     }
 }
@@ -213,8 +250,8 @@ export const is_it_same_series = (e) => {
             for (let o = 0; o < vers.length; o++) {
                 if (o > 0) {
                     if (o == centering_num) {
-                        is_it_same_alend(vers[o]);
                         is_it_same_start(vers[o]);
+                        is_it_same_alend(vers[o]);
                     }
                 }
             }

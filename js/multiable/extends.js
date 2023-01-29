@@ -63,7 +63,6 @@ export const just_clear_yt_loop = () => {
     }
 }
 
-
 // 動画の読み込み・sp_cover内のラインの調整（ブロック数）などを行う関数. um と multiable にて共通利用.
 export const video_load_then = (e, f) => {
 
