@@ -70,7 +70,6 @@ function ac_vi_adaptation(e, f) {
     return animation_data;
 }
 
-
 // change クラスから スタイリングの変化前と変化後の値をセットにして返す関数.
 function en_change_adaptation(e) {    
     let target = e.nextElementSibling;

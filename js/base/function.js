@@ -426,6 +426,7 @@ export const the_magic_paste = (e) => {
 
 }
 
+// * センタリングしているブロックの位置から window のスクロール位置を調整する関数.
 export const adjust_box = (e) => {
     if (window_height - e.getBoundingClientRect().bottom < the_sunsetline) {
         let the_adjust_num = the_sunsetline + e.getBoundingClientRect().bottom - window_height;

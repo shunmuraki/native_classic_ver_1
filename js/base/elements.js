@@ -23,11 +23,13 @@ export const window_height = window.innerHeight;
 export const the_middline = window_height * 0.5;
 export const the_sunsetline = window_height * 0.3;
 
+
+// * 以下チートシートの表示について.
+
 let cs = document.querySelector(".cheet_sheet");
 if (cs) {
     cs.style.top = 100 + "%";
 }
-
 let csb = document.querySelector(".usage_button");
 
 // デフォルトのセットアップ.

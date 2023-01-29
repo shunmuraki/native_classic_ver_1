@@ -105,16 +105,13 @@ window.addEventListener("keydown", (e)=>{
             if (k == "ArrowUp") {
                 original_centering_checker(current_sp_cover, current_vertical);
                 go_top(current_vertical, "centering");
-            }
-    
+            }   
             if (k == "ArrowLeft") {
                 go_left(current_vertical, "centering");
-            }
-    
+            }  
             if (k == "ArrowRight") {
                 go_right(current_vertical, "centering");
             }
-    
             if (k == "ArrowDown") {
                 original_centering_checker(current_sp_cover, current_vertical);
                 go_bottom(current_vertical, "centering");

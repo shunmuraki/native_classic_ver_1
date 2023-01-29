@@ -9,6 +9,7 @@ let yt_loop;
 let same_data = 0;
 same_data_counter(same_data);
 
+// special_cov 向けでない、通常の yt プレイヤーの束から該当するプレイヤーを返す関数.
 export const yt_player_getter = (e) => {
     let the_keyid = e.id;
     let yt_iframe = null;
@@ -22,7 +23,8 @@ export const yt_player_getter = (e) => {
     return yt_iframe;
 }
 
-export const yt_resetter = (e) => {
+// yt のプレイヤーのシークポイントを最適化する関数.
+export const yt_resetter = () => {
     let target;
     if (screen.classList.contains("edit")) {
         target = document.querySelector(".new_layer_centering");
@@ -37,14 +39,15 @@ export const yt_resetter = (e) => {
 
 // センタリングしたブロックの動画をブロック分再生（or ループ再生）する関数
 export const yt_loop_player = (e, f) => {
-    // * ループ再生.
     yt_loop = setInterval(() => {
         e.pauseVideo();
-        yt_resetter(e, f);
+        let the_time = yt_resetter(e);
+        e.seekTo(the_time);
         e.playVideo();
     }, blocktime * 1000);
 }
 
+// 上の関数によってセットされた interval 処理をクリアする関数.
 export const yt_loop_stopper = (e, f) => {
     let duration;
     e.pauseVideo();

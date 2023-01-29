@@ -49,7 +49,7 @@ export function clear_umdisplay() {
   focus_checker(native_center);
 }
 
-// * 仮で儲けている "TED" に関する動画のyt-ID のリスト. α版ならでは.
+// 仮で儲けている "TED" に関する動画のyt-ID のリスト. α版ならでは.
 let yt_videolist_ted = ["441nwncPN28", "YddEiDSuOrY", "OlgcaYAO5VM", "5cbCYwgQkTE", "j-rw3x8VZxA", "abF_EfprTIE", "9XGm_uHit5g", "uEATpbQ9md4", "KYK6Tfb0snQ", "mYS2CcIdW1M"];
 
 // UMレイヤーに yt iframe を流し込む.

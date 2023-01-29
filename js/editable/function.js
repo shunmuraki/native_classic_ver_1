@@ -156,7 +156,7 @@ export const pre_pointing_in = (e, f) => {
        
     if (orange.classList.contains("now_pointer_f")) {
 
-        // *** 一番最後のpointerのクラスが s　なら以下を実行.
+        // 以下一番最後のpointerのクラスが s なら以下を実行.
         if (orange_pointer_space_store.lastElementChild.classList.contains("orange_pointer_s")) {
 
             let start_point = Number(target_data(orange_pointer_space_store.lastElementChild, "scroll_left_"));
@@ -164,8 +164,7 @@ export const pre_pointing_in = (e, f) => {
             orange_stripe_space_store.lastElementChild.style.width = re_stripe_width + "px";
             let orange_pointer = document.createElement("div");
             orange_pointer.classList.add("orange_pointer");
-            orange_pointer.classList.add("orange_pointer_f");
-            
+            orange_pointer.classList.add("orange_pointer_f");        
             orange_pointer.style.left = full_end_scrollwidth + half_left_width + "px";
             orange_pointer.classList.add("num_" + orange_data[orange_num]["s_count"]);
             orange_pointer.classList.add("scroll_left_" + full_end_scrollwidth);
@@ -189,10 +188,11 @@ export const pre_pointing_in = (e, f) => {
                 }
             }
         }
-        // 通常ぶる.
+        
+        // 通常の状態を模す.
         orange.classList.remove("now_pointer_f");
         orange.classList.add("now_pointer_s");
-        // 通常ぶる.
+        
         // pre_pointer_out（） へ繋げる.
         orange.classList.add("pre_pointer_s");   
     }

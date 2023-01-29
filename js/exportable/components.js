@@ -1,4 +1,4 @@
-// エクスポート機能を担うステータスバーを index.htmlとリンク先の export.html に挿入,
+// 以下エクスポート機能を担うステータスバーを index.html とリンク先の export.html に挿入,
 let the_footer = document.createElement("div");
 the_footer.classList.add("statusbar");
 

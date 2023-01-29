@@ -36,6 +36,7 @@ export const block_multiable = (e, f) => {
     }
 
     function onPlayerReady(event) {
+        event.target.mute();
         event.target.playVideo();
         duration_time = player.getDuration();
         
@@ -135,10 +136,13 @@ export const is_it_same_start = (e) => {
         }
 
         if (player) {
-            // yt_resetter(player);
-            // console.log(player);
-            // player.playVideo();
-            // yt_loop_player(player, block_pos);
+            setTimeout(() => {
+                let the_time = yt_resetter();
+                player.seekTo(the_time);
+                console.log(player);
+                player.playVideo();
+                yt_loop_player(player);
+            },1000)
         }
     }
 }
@@ -168,11 +172,11 @@ export const is_it_same_alend = (e) => {
     if (the_target_left) {
         if (the_target_left.classList.contains("same_end")) {
             player_setup(the_target_left);
-
             if (player) {
                 player.pauseVideo();
-                // yt_resetter(player);
-                // yt_loop_stopper(player, "end");
+                let the_time = yt_resetter();
+                player.seekTo(the_time);
+                yt_loop_stopper(player, "end");
             }
             the_state(the_target_left);
         }
@@ -183,8 +187,9 @@ export const is_it_same_alend = (e) => {
             player_setup(the_target_right);
             if (player) {
                 player.pauseVideo();
-                // yt_resetter(player);
-                // yt_loop_stopper(player, "start");
+                let the_time = yt_resetter();
+                player.seekTo(the_time);
+                yt_loop_stopper(player, "start");
             }
             the_state(the_target_right);
         }

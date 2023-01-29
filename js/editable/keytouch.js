@@ -229,6 +229,7 @@ window.addEventListener("keydown", (e)=>{
             }
             
             let new_see = document.getElementsByClassName("see")[0];
+            
             // 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
             orange_data = orange_pointer_make(new_see, orange_data); 
             new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
