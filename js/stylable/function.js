@@ -39,6 +39,7 @@ export const layer_resetter = () => {
     ly_2_3.style.display = "none";
 }
 
+// ホイールをブロックやポインター（編集時）に追従させる関数.
 export const wheel_positioning = () => {
   let centering;
   if (screen.classList.contains("edit")) {

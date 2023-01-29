@@ -20,8 +20,7 @@ document.addEventListener("keydown", (e) => {
         if ( type_signiture.indexOf('styl') != -1) {
 
             document.querySelector(".ms_area").remove();
-            focus_checker(document.querySelector(".centering"));          
-            // current.value = current.value.slice(0, -6);
+            focus_checker(document.querySelector(".centering"));
             screen.classList.add("style");
             wheel_seton();
             current.blur();

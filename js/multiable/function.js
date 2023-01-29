@@ -5,6 +5,7 @@ import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper } from "
 let special_playerlist = {};
 let s_n = 100;
 
+// special_cov用に毎度作成する yt のリストを外部のJSファイルへ渡す関数.
 export const special_playlist_getter = () => {
     console.log(special_playerlist);
     return special_playerlist;
@@ -192,7 +193,6 @@ export const is_it_same_alend = (e) => {
 
 // special_cov関連の関数を束ねたもの.
 export const is_it_same_series = (e) => {
-    
     let sp_cover = vertical_to_sp_cover(e);
     let sps= sp_cover.children;
     let centering_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);

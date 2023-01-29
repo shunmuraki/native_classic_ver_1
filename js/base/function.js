@@ -147,6 +147,7 @@ export const go_af_scroll = () => {
     }
 }
 
+// 上下左右の移動の際に special_cov を same_end に反映させて special_cov を描画上の都合からも削除する関数.
 export const special_cleaner = (e) => {
     let ends = document.querySelectorAll(".same_end");
     for (let i = 0; i < ends.length; i++) {
@@ -289,7 +290,6 @@ export const go_left = (e, f) => {
             blur_checker(ver);
             let sp_cover = vertical_to_sp_cover(ver);
             all_view_changer(sp_cover, - blocksize);
-    
             let next_one = ver.previousElementSibling;
             centering_marker(ver, next_one, f);
             
@@ -310,10 +310,8 @@ export const go_right = (e, f) => {
 
     if (ver.nextElementSibling) {
         blur_checker(ver);
-        let sp_cover = vertical_to_sp_cover(ver);
-        
+        let sp_cover = vertical_to_sp_cover(ver);   
         all_view_changer(sp_cover, blocksize);
-
         let next_one = ver.nextElementSibling;
         centering_marker(ver, next_one, f);
 
@@ -350,7 +348,6 @@ export const the_magic_copy = (e) => {
 export const the_magic_paste = (e) => {
     
     // コピーしてあるfragmentを貼り付ける. ラインが足りないなら追加し、あとはペースト対象のラインとそれ以外のラインとで条件分岐して適当なタイプのブロックを同じ数だけ挿入している.
-
     let the_line_num = magic_elms.length;    
     let sp_cover = vertical_to_sp_cover(e);
     let whole_line_num = sp_cover.childElementCount;

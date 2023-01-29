@@ -34,15 +34,8 @@ screen.appendChild(damee);
         d.remove();
         // 最初のcenteringを用意.
         all_writearea[0].parentElement.classList.add("centering");
-        // const targetElement = document.querySelector(".centering");
-        // const targetOffsetTop = window.pageYOffset + targetElement.getBoundingClientRect().top;
-        // window.scrollTo({
-        //     top: targetOffsetTop,
-        //     behavior: "smooth"
-        // });
         window.scroll({ top: window_height * 0.8 });
         all_writearea[0].focus();
         wheel_positioning();
-        // window.scroll({ top: 500, behavior: "smooth" });
     }
 }());

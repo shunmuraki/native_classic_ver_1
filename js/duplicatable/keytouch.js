@@ -113,7 +113,6 @@ window.addEventListener("keydown", (e)=>{
       if ( type_signiture.indexOf('ind') != -1) {
         
         document.querySelector(".ms_area").remove();
-
         let centering = document.querySelector(".centering");
         focus_checker(centering);
 

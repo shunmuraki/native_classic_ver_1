@@ -46,7 +46,6 @@ function ac_vi_adaptation(e, f) {
     let animation_data = f;
 
     for (let i = 0; i < classlist.length; i++) {
-
         let classname = classlist[i];
         if (classname.indexOf("this_video_st_") != -1) {
             animation_data["video_startpoint"] = Number(target_data(e, "this_video_st_"));
@@ -319,7 +318,6 @@ for (let i = 0; i < sp_covers.length; i++) {
                         img_src_getter(block);
 
                         // start_animationを構成する.
-
                         let start_animation = base_setup(block, j, "start");
                         let generative_data_start = generationdata_setup(block, "start");
                         let final_animation_start = animationdata_setup(block, start_animation, generative_data_start);    

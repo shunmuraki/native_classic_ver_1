@@ -27,9 +27,9 @@ let cs = document.querySelector(".cheet_sheet");
 if (cs) {
     cs.style.top = 100 + "%";
 }
-// cs.style.display = "none";
 
 let csb = document.querySelector(".usage_button");
+
 // デフォルトのセットアップ.
 csb.classList.add("off");
 

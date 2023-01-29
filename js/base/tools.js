@@ -52,7 +52,6 @@ export function grab_auto(e) {
             }
         }
     }
-
     const grabed = [partner_stripe, partner_pointer];
     return grabed;
 }
@@ -98,6 +97,7 @@ export const same_data_counter = (e) => {
     }
 }
 
+// 左右の移動でspecial_covの変更内容を same_end に反映させる関数
 export const tracer_basis = (e) => {
     let the_name = "this_cov_is_" + target_data(e, "same_num_");
     let special_cov = document.getElementsByClassName(the_name)[0];
@@ -133,6 +133,7 @@ export const same_change_tracer = (e) => {
     }
 }
 
+// 何番目のブロックかをカウントして返す関数.
 export const elem_post_getter = (e) => {
     let parent = e.parentElement;
     let the_num = [].slice.call(parent.children).indexOf(e);

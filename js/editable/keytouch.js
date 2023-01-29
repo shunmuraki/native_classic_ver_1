@@ -728,7 +728,9 @@ window.addEventListener("keydown", (e)=>{
 
                 for (let i = 0; i < scraps.length; i++) {
                     let stripe_inner_or_out = (e, f) => {
+                        
                         let you_are_on_orange = null;
+                        
                         // 先頭が orange_space, それ以外の場所に sp が並ぶ。
                         
                         // orange_spaceについて
