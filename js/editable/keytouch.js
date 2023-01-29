@@ -1,5 +1,5 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, window_height, blocksize, linesize, blocktime } from "../base/elements.js";
-import { make_ver_fragment, go_top, go_left, go_right, go_bottom, vertical_stripe_checker, horizontal_stripe_checker, original_centering_checker, centering_marker} from "../base/function.js";
+import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker} from "../base/function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { yt_player_getter, yt_resetter } from "../multiable/extends.js";
@@ -39,12 +39,12 @@ window.addEventListener("keydown", (e)=>{
             tracer_basis(document.querySelector(".centering"));
 
             document.querySelector(".ms_area").remove();
-            if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
-                document.querySelector(".centering").lastElementChild.focus();
-            }
+            focus_checker(document.querySelector(".centering"));
     
             // デフォルトレイヤーからの離脱.
-            document.activeElement.blur();
+            if (current.tagName == "TEXTAREA") {
+                current.blur();
+              }
     
             // 下準備.
             let current_vertical = document.querySelector(".centering");
@@ -120,7 +120,6 @@ window.addEventListener("keydown", (e)=>{
                   
                     // adjuster をスキップ  
                     if (o > 0) {
-                        let imp_content = screen_vers[o].lastElementChild.cloneNode(true);
                         let the_num = o;
                         let ver_side = Math.trunc(the_num / linesize);
                         let hor_side = the_num % linesize;
@@ -139,7 +138,7 @@ window.addEventListener("keydown", (e)=>{
                         
                         // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
                         let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];
-    
+                        
                         the_block_into.lastElementChild.remove();
                         for (let j = 0; j < the_name_list.length; j++) {
                             classmover(screen_vers[o], the_block_into, the_name_list[j], "add");
@@ -147,10 +146,10 @@ window.addEventListener("keydown", (e)=>{
                         if (screen_vers[o].classList.contains("centering")) {
                             the_block_into.classList.add("new_layer_centering");
                         } 
+                        
                         // dupブロックの場合を考えて条件分岐.
-                        if (! imp_content.classList.contains("stripe_hor")) {
-        
-    
+                        if (screen_vers[o].lastElementChild) {
+                            let imp_content = screen_vers[o].lastElementChild.cloneNode(true);
                             the_block_into.appendChild(imp_content);
                         }
                     }
@@ -838,18 +837,12 @@ window.addEventListener("keydown", (e)=>{
                 document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
                 the_new_focusedblock.classList.add("centering");
                 original_centering_checker(original_sp_cover, the_new_focusedblock);
-                vertical_stripe_checker(original_sp_cover);
-                horizontal_stripe_checker(original_sp_cover);
 
                 original_sp_cover.classList.remove("see");
                 original_sp_cover.classList.remove("target_of_edition");
 
                 // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
-                if (the_new_focusedblock.lastElementChild) {
-                    if (the_new_focusedblock.lastElementChild.tagName == "TEXTAREA") {
-                        the_new_focusedblock.lastElementChild.focus();
-                    }
-                }
+                focus_checker(the_new_focusedblock);
             } 
             // edit モードをリセット.
             orange_data = {};

@@ -11,12 +11,14 @@ same_data_counter(same_data);
 
 export const yt_player_getter = (e) => {
     let the_keyid = e.id;
-    let yt_iframe;
+    let yt_iframe = null;
     
-    // 動画は必ずsameなのでspecialのみから検索.
-    let playlist = special_playlist_getter();
-    
-    yt_iframe = playlist[the_keyid];
+    if (the_keyid) {
+        // 動画は必ずsameなのでspecialのみから検索.
+        let playlist = special_playlist_getter();
+        yt_iframe = playlist[the_keyid];
+    }
+
     return yt_iframe;
 }
 

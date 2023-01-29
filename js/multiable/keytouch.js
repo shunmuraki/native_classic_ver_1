@@ -25,9 +25,7 @@ window.addEventListener("keydown", (e) => {
         if ( type_signiture.indexOf('image') != -1) {
             document.querySelector(".ms_area").remove();
             make_it_img(document.querySelector(".centering"), "image");
-            if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
-                document.querySelector(".centering").lastElementChild.focus();
-            }
+            focus_checker(document.querySelector(".centering"));        
             adjust_box(document.querySelector(".centering"));
         }
     }

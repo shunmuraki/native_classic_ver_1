@@ -66,15 +66,15 @@ export const make_special_cov = (e, f) => {
     let special_cov = document.createElement("div");
     special_cov.style.position = "fixed";
     
-    let bottom_distance = e.getBoundingClientRect().top + 10;
+    let bottom_distance = e.getBoundingClientRect().top;
     let left_distance = half_left_width;
     
     special_cov.style.top = bottom_distance + "px";
-    special_cov.style.left = left_distance + 10 + "px";
+    special_cov.style.left = left_distance + "px";
 
-    let height_siz = e.clientHeight - 10;
+    let height_siz = e.clientHeight;
 
-    special_cov.style.width = (blocksize - 20) + "px";
+    special_cov.style.width = (blocksize) + "px";
     special_cov.style.height = height_siz + "px";
 
     let the_name = "this_cov_is_" + f;
@@ -127,7 +127,11 @@ export const is_it_same_start = (e) => {
             special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];
         } 
         
-        let player = yt_player_getter(special_cov.lastElementChild);
+        let player;
+        // dupブロックであるケースを配慮.
+        if (special_cov.lastElementChild) {
+            player = yt_player_getter(special_cov.lastElementChild);
+        }
 
         if (player) {
             // yt_resetter(player);
@@ -155,7 +159,9 @@ export const is_it_same_alend = (e) => {
     }
 
     function player_setup(e) {
-        player = yt_player_getter(e.lastElementChild);
+        if (e.lastElementChild) {
+            player = yt_player_getter(e.lastElementChild);
+        }
     }
 
     if (the_target_left) {

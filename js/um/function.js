@@ -1,4 +1,5 @@
 import { screen, half_left_width, blocksize } from "../base/elements.js";
+import { focus_checker } from "../base/function.js";
 let video_list = document.querySelector(".um_video");
 let audio_list = document.querySelector(".um_audio");
 let video_null = video_list.lastElementChild;
@@ -45,7 +46,7 @@ export function clear_umdisplay() {
   display_will_hidden.style.display = "none";
   screen.classList.remove("um");
   var native_center = document.querySelector(".centering");
-  native_center.lastElementChild.focus();
+  focus_checker(native_center);
 }
 
 // * 仮で儲けている "TED" に関する動画のyt-ID のリスト. α版ならでは.

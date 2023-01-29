@@ -33,45 +33,40 @@ export const original_centering_checker = (e, f) => {
     }    
 }
 
-// 縦のストライプの調整関数
-export const vertical_stripe_checker = (e) => {
-    let sps = e.children;
-    for (let i = 0; i < sps.length; i++) {
-        let vers = sps[i].lastElementChild.children;
-        for (let o = 0; o < vers.length; o++) {
-            if (o > 0) {
-                vers[o].children[0].style.opacity = 0;
-                if (o == vers.length - 1) {
-                    vers[o].children[0].style.opacity = 1;
-                }
-            }
+// textarea の存在を確認してfocusを挿れる関数.
+export const focus_checker = (e) => {
+    let bol = false;
+    let content = e.lastElementChild;
+    if (content) {
+        if (content.tagName == "TEXTAREA") {
+            bol = true;
+            let v = content.value;
+            content.value = "";
+            content.focus();
+            content.value = v;
         }
     }
+    return bol;
 }
 
-// 横のストライプの調整関数
-export const horizontal_stripe_checker = (e) => {
-    let sps = e.children;
-    for (let i = 0; i < sps.length; i++) {
-        let vers = sps[i].lastElementChild.children;
-        for (let o = 0; o < vers.length; o++) {
-            if (o > 0) {
-                if (i == 0) {
-                    vers[o].children[1].style.opacity = 1;
-                } else {
-                    vers[o].children[1].style.opacity = 0;
-                }
-            }
+// textarea の存在を確認してblurする関数.
+export const blur_checker = (e) => {
+    let bol = false;
+    let content = e.lastElementChild;
+    if (content) {
+        if (content.tagName == "TEXTAREA") {
+            bol = true;
+            content.blur();
         }
-    }   
+    }
+    return bol;
 }
 
 // sp_cover の生成関数
 export const make_fragment = (e, f) => {
+
     const sp_cover = document.createElement("div");
     const sp = document.createElement("div");
-    const stripe_ver = document.createElement("div");
-    const stripe_hor = document.createElement("div");
     const horizontal = document.createElement("div");
     const adjuster = document.createElement("div");
     const vertical = document.createElement("div");
@@ -80,8 +75,6 @@ export const make_fragment = (e, f) => {
     sp_cover.classList.add("sp_cover");
     sp.classList.add("sp");
 
-    stripe_ver.classList.add("stripe_ver");
-    stripe_hor.classList.add("stripe_hor");
     horizontal.classList.add("horizontal");
     adjuster.classList.add("adjuster");
     vertical.classList.add("vertical");
@@ -89,17 +82,12 @@ export const make_fragment = (e, f) => {
     textarea.classList.add("styling_1_1_0_1");
     adjuster.classList.add("horizontal_child");
     vertical.classList.add("horizontal_child");
-    
-    vertical.appendChild(stripe_ver);
-    vertical.appendChild(stripe_hor);
+
     vertical.appendChild(textarea);
     horizontal.appendChild(adjuster);
     horizontal.appendChild(vertical);
     sp.appendChild(horizontal);
     sp_cover.appendChild(sp);
-    
-    stripe_ver.style.opacity = 0;
-    stripe_hor.style.opacity = 0;
     
     let fragment = document.createDocumentFragment();
     fragment.append(sp_cover);
@@ -112,24 +100,16 @@ export const make_fragment = (e, f) => {
 
 // ブロックの生成関数
 export const make_ver_fragment = (e, f) => {
-    const stripe_ver = document.createElement("div");
-    const stripe_hor = document.createElement("div");
+
     const vertical = document.createElement("div");
     const textarea = document.createElement("textarea");
 
-    stripe_ver.classList.add("stripe_ver");
-    stripe_hor.classList.add("stripe_hor");
     vertical.classList.add("vertical");
     textarea.classList.add("write_area");
     textarea.classList.add("styling_1_1_0_1");
     vertical.classList.add("horizontal_child");
 
-    vertical.appendChild(stripe_ver);
-    vertical.appendChild(stripe_hor);
     vertical.appendChild(textarea);
-
-    stripe_ver.style.opacity = 0;
-    stripe_hor.style.opacity = 0;
 
     let fragment = document.createDocumentFragment();
     fragment.append(vertical);
@@ -143,21 +123,10 @@ export const make_ver_fragment = (e, f) => {
 
 // 空のブロックの生成関数（sameの場合に使用）
 export const make_dup_fragment = (e, f) => {
-    const stripe_ver = document.createElement("div");
-    const stripe_hor = document.createElement("div");
-    const vertical = document.createElement("div");
 
-    stripe_ver.classList.add("stripe_ver");
-    stripe_hor.classList.add("stripe_hor");
+    const vertical = document.createElement("div");
     vertical.classList.add("vertical");
     vertical.classList.add("horizontal_child");
-
-    vertical.appendChild(stripe_ver);
-    vertical.appendChild(stripe_hor);
-
-    stripe_ver.style.opacity = 0;
-    stripe_hor.style.opacity = 0;
-
     let fragment = document.createDocumentFragment();
     fragment.append(vertical);
 
@@ -208,37 +177,21 @@ export const go_top = (e, f) => {
 
     if (f == "centering") {
         if (sibling) {
-            if (ver.lastElementChild.tagName == "TEXTAREA") {
-                ver.lastElementChild.blur();
-            }
-            
+            blur_checker(ver);
             let the_num = [].slice.call(vertical_to_hor(ver).children).indexOf(ver);
             sibling_height = sibling.clientHeight;
             next_one = sibling.lastElementChild.children[the_num];
             centering_marker(ver, next_one, f);
-
-            if (next_one.lastElementChild.tagName == "TEXTAREA") {
-                next_one.lastElementChild.focus();
-            }
-
+            focus_checker(next_one);
             is_it_same_series(next_one);
             wheel_positioning();
-
         } else if (pre_sibling) {
-
-            if (ver.lastElementChild.tagName == "TEXTAREA") {
-                ver.lastElementChild.blur();
-            }
-            
+            blur_checker(ver);            
             sibling_height = pre_sibling.clientHeight;
             next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
             centering_marker(ver, next_one, f);
             wheel_positioning();
-
-            if (next_one.lastElementChild.tagName == "TEXTAREA") {
-                next_one.lastElementChild.focus();
-            }
-
+            focus_checker(next_one);
             // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
             special_cleaner(pre_sibling);
         }
@@ -282,36 +235,22 @@ export const go_bottom = (e, f) => {
     if (f == "centering") {
 
         if (sibling) {
-            if (ver.lastElementChild.tagName == "TEXTAREA") {
-                ver.lastElementChild.blur();
-            }
+            blur_checker(ver);
             let the_num = [].slice.call(vertical_to_hor(ver).children).indexOf(ver);
             sibling_height = sibling.clientHeight;
             next_one = sibling.lastElementChild.children[the_num];
             centering_marker(ver, next_one, f);
-
-            if (next_one.lastElementChild.tagName == "TEXTAREA") {
-                next_one.lastElementChild.focus();
-            }
-
+            focus_checker(next_one);
             is_it_same_series(next_one);
             wheel_positioning();
-
         } else if (pre_sibling) {
-
-            if (ver.lastElementChild.tagName == "TEXTAREA") {
-                ver.lastElementChild.blur();
-            }
+            blur_checker(ver);
             sibling_height = pre_sibling.clientHeight;
             next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
            
             centering_marker(ver, next_one, f);
             wheel_positioning();
-
-            if (next_one.lastElementChild.tagName == "TEXTAREA") {
-                next_one.lastElementChild.focus();
-            }
-
+            focus_checker(next_one);
             special_cleaner(pre_sibling);
         }
 
@@ -345,29 +284,22 @@ export const go_left = (e, f) => {
     go_af_scroll();
     let ver = e;
     // 中身が存在するかどうかでadjusterかどうかの判定を行っている.
-    if (ver.previousElementSibling.lastElementChild) {
-        if (ver.lastElementChild) {
-            if (ver.lastElementChild.tagName == "TEXTAREA") {
-                ver.lastElementChild.blur();
+    if (ver.previousElementSibling) {
+        if (! ver.previousElementSibling.classList.contains("adjuster")) {
+            blur_checker(ver);
+            let sp_cover = vertical_to_sp_cover(ver);
+            all_view_changer(sp_cover, - blocksize);
+    
+            let next_one = ver.previousElementSibling;
+            centering_marker(ver, next_one, f);
+            
+            if (f == "centering") {
+                focus_checker(next_one);
             }
+    
+            same_change_tracer(next_one);
+            is_it_same_series(next_one);
         }
-        let sp_cover = vertical_to_sp_cover(ver);
-        all_view_changer(sp_cover, - blocksize);
-
-        let next_one = ver.previousElementSibling;
-        centering_marker(ver, next_one, f);
-        
-        if (f == "centering") {
-            if (next_one.lastElementChild.tagName == "TEXTAREA") {
-                var v = next_one.lastElementChild.value;
-                next_one.lastElementChild.value = "";
-                next_one.lastElementChild.focus();
-                next_one.lastElementChild.value = v; 
-            }
-        }
-
-        same_change_tracer(next_one);
-        is_it_same_series(next_one);
     }
 }
 
@@ -377,11 +309,7 @@ export const go_right = (e, f) => {
     let ver = e;
 
     if (ver.nextElementSibling) {
-        if (ver.nextElementSibling.lastElementChild) {
-            if (ver.lastElementChild.tagName == "TEXTAREA") {
-                ver.lastElementChild.blur();
-            }
-        }
+        blur_checker(ver);
         let sp_cover = vertical_to_sp_cover(ver);
         
         all_view_changer(sp_cover, blocksize);
@@ -390,12 +318,7 @@ export const go_right = (e, f) => {
         centering_marker(ver, next_one, f);
 
         if (f == "centering") {
-            if (next_one.lastElementChild.tagName == "TEXTAREA") {
-                var v = next_one.lastElementChild.value; 
-                next_one.lastElementChild.value = "";
-                next_one.lastElementChild.focus();
-                next_one.lastElementChild.value = v; 
-            }
+            focus_checker(next_one);
         }
 
         same_change_tracer(next_one);
@@ -499,16 +422,10 @@ export const the_magic_paste = (e) => {
 
     centering_marker(old_center, center, "centering");
     original_centering_checker(sp_cover, center);
-    vertical_stripe_checker(sp_cover);
-    horizontal_stripe_checker(sp_cover);
-
     same_cutter(center, "addon");
     is_it_same_series(center);
     all_view_changer(sp_cover, blocksize);
-
-    if (center.lastElementChild.tagName == "TEXTAREA") {
-        center.lastElementChild.focus();
-    }
+    focus_checker(center);
 
 }
 

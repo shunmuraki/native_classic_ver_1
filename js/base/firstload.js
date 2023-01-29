@@ -1,4 +1,4 @@
-import { make_fragment } from "./function.js";
+import { focus_checker, make_fragment } from "./function.js";
 import { screen, the_middline, the_sunsetline, window_height } from "../base/elements.js";
 import { wheel_positioning } from "../stylable/function.js";
 
@@ -25,9 +25,7 @@ screen.appendChild(damee);
             hors[i].scrollLeft = hors[i].scrollWidth;
         }
 
-        if (document.querySelector(".centering").lastElementChild.tagName == "TEXTAREA") {
-            document.querySelector(".centering").lastElementChild.focus();
-        }
+        focus_checker(document.querySelector(".centering"));
         sessionStorage.clear();
 
     } else {

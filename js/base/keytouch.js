@@ -1,6 +1,6 @@
 import { screen, window_height, the_middline, blocksize } from "../base/elements.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
-import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, vertical_stripe_checker, horizontal_stripe_checker, the_magic_copy, the_magic_paste, adjust_box } from "./function.js";
+import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, the_magic_copy, the_magic_paste, adjust_box } from "./function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
 
@@ -37,8 +37,6 @@ window.addEventListener("keydown", (e)=>{
         if(e.metaKey) {
             if (k == "Enter") {
                 original_centering_checker(current_sp_cover, current_vertical);
-                vertical_stripe_checker(current_sp_cover);
-                horizontal_stripe_checker(current_sp_cover);
 
                 console.log(window_height - current_vertical.getBoundingClientRect().bottom);
                 console.log(the_middline);
@@ -97,8 +95,6 @@ window.addEventListener("keydown", (e)=>{
                 }
     
                 original_centering_checker(current_sp_cover, center);
-                vertical_stripe_checker(current_sp_cover);
-                horizontal_stripe_checker(current_sp_cover);
                 same_cutter(center, "addon");
                 is_it_same_series(center);
             }
@@ -109,8 +105,6 @@ window.addEventListener("keydown", (e)=>{
             if (k == "ArrowUp") {
                 original_centering_checker(current_sp_cover, current_vertical);
                 go_top(current_vertical, "centering");
-                vertical_stripe_checker(current_sp_cover);
-                horizontal_stripe_checker(current_sp_cover);
             }
     
             if (k == "ArrowLeft") {
@@ -124,8 +118,6 @@ window.addEventListener("keydown", (e)=>{
             if (k == "ArrowDown") {
                 original_centering_checker(current_sp_cover, current_vertical);
                 go_bottom(current_vertical, "centering");
-                vertical_stripe_checker(current_sp_cover);
-                horizontal_stripe_checker(current_sp_cover);
             }
         }
         

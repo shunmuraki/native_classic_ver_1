@@ -1,6 +1,6 @@
 import { screen, blocksize } from "../base/elements.js";
 import { target_data } from "../base/tools.js";
-import { adjust_box } from "../base/function.js";
+import { adjust_box, focus_checker } from "../base/function.js";
 import { video_load_then } from "../multiable/extends.js";
 import { video_street_scroll, audio_street_scroll, um_positioning } from "./function.js";
 
@@ -21,9 +21,7 @@ document.addEventListener("keydown", (e) => {
         if ( type_signiture.indexOf('ted') != -1) {
             centering = document.querySelector(".centering");
             document.querySelector(".ms_area").remove();
-            if (centering.lastElementChild == "TEXTAREA") {
-                centering.lastElementChild.focus();
-            }
+            focus_checker(centering);
             screen.classList.add("um");
             current.value = '';
             um.style.display = "block";
@@ -41,9 +39,7 @@ document.addEventListener("keydown", (e) => {
         if (k == "Escape") {
             um.style.display = "none";
             centering = document.querySelector(".centering");
-            if (centering.lastElementChild.tagName == "TEXTAREA") {
-                centering.lastElementChild.focus();
-            }
+            focus_checker(centering);        
             screen.classList.remove("um");
         }
     

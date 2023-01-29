@@ -1,4 +1,5 @@
 import { screen } from "../base/elements.js";
+import { focus_checker } from "../base/function.js";
 
 let the_values = new Array();
 
@@ -37,10 +38,7 @@ button.addEventListener("click", () => {
     // ボタンが押されたら、sessionStorageにDOMを保存して into.html へ遷移.
     setTimeout(() => {
         window.location.href = "export.html";
-        let centering_content = document.querySelector(".centering").lastElementChild;
-        if (centering_content.tagName == "TEXTAREA") {
-            centering_content.focus();
-        }
+        focus_checker(document.querySelector(".centering"));
     }, 1000) 
 
     // エディターに戻った際にカバーを取り外す.

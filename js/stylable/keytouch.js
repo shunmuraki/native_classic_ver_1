@@ -1,6 +1,7 @@
 import { screen } from "../base/elements.js";
 import { layer_resetter, wheel_seton } from "./function.js";
 import { adjust_target_pos } from "../ms/function.js";
+import { focus_checker } from "../base/function.js";
 
 const wheel = document.querySelector(".wheel");
 const the_pointer = document.querySelector(".pointer");
@@ -19,9 +20,7 @@ document.addEventListener("keydown", (e) => {
         if ( type_signiture.indexOf('styl') != -1) {
 
             document.querySelector(".ms_area").remove();
-            if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
-                document.querySelector(".centering").lastElementChild.focus();
-            }
+            focus_checker(document.querySelector(".centering"));          
             // current.value = current.value.slice(0, -6);
             screen.classList.add("style");
             wheel_seton();
@@ -65,9 +64,7 @@ document.addEventListener("keydown", (e) => {
               wheel.style.display = "none";
               let centering = document.querySelector(".centering");
               screen.classList.remove("style");
-              if (centering.lastElementChild.tagName == "TEXTAREA") {
-                centering.lastElementChild.focus();
-              }
+              focus_checker(centering);
           }
     }
 })

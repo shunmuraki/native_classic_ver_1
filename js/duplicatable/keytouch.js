@@ -1,7 +1,7 @@
 // * command = K
 import { blocksize } from "../base/elements.js"
 import { same_data_getter, target_data, vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, same_data_counter, classmover } from "../base/tools.js";
-import { make_fragment, make_ver_fragment, make_dup_fragment , go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, vertical_stripe_checker, horizontal_stripe_checker } from "../base/function.js";
+import { make_fragment, make_ver_fragment, make_dup_fragment , go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, focus_checker } from "../base/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 
 window.addEventListener("keydown", (e)=>{ 
@@ -70,9 +70,7 @@ window.addEventListener("keydown", (e)=>{
                   next_one.classList.add(the_name);
                   
                   // command + U では必要なかったが配慮.
-                  if (next_one.lastElementChild.tagName == "TEXTAREA") {
-                    next_one.lastElementChild.focus();
-                  }
+                  focus_checker(next_one);
 
               } else {
                 
@@ -104,8 +102,6 @@ window.addEventListener("keydown", (e)=>{
           }
 
           original_centering_checker(current_sp_cover, center);
-          vertical_stripe_checker(current_sp_cover);
-          horizontal_stripe_checker(current_sp_cover);
           is_it_same_series(center);
         }
     }
@@ -117,11 +113,9 @@ window.addEventListener("keydown", (e)=>{
       if ( type_signiture.indexOf('ind') != -1) {
         
         document.querySelector(".ms_area").remove();
-        if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
-          document.querySelector(".centering").lastElementChild.focus();
-        }
 
         let centering = document.querySelector(".centering");
+        focus_checker(centering);
 
         // same群の中で　command + u をした場合に same が２つに分裂するのと近いため、処理を same_cutter に共通化してある.
         same_cutter(centering, "replace");
