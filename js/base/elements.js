@@ -22,3 +22,41 @@ export const the_name_list = ['same_start', 'same_end', 'same_num_', 'same', 'ac
 export const window_height = window.innerHeight;
 export const the_middline = window_height * 0.5;
 export const the_sunsetline = window_height * 0.3;
+
+let cs = document.querySelector(".cheet_sheet");
+if (cs) {
+    cs.style.top = 100 + "%";
+}
+// cs.style.display = "none";
+
+let csb = document.querySelector(".usage_button");
+// デフォルトのセットアップ.
+csb.classList.add("off");
+
+csb.addEventListener("click", () => {
+    if (csb.classList.contains("on")) {
+        cs.animate(
+            [
+                { top: '0%' },
+                { top: '100%' }
+            ], {
+            duration: 800,
+            fill: "forwards",
+            easing: "ease-in-out"
+            }
+        );
+    } else if (csb.classList.contains("off")) {
+        cs.animate(
+            [
+            { top: '100%' },
+            { top: '0%' }
+            ], {
+            duration: 800,
+            fill: "forwards",
+            easing: "ease-in-out"
+            }
+        );
+    }
+    csb.classList.toggle("on");
+    csb.classList.toggle("off");
+})

@@ -2,7 +2,7 @@ import { screen } from "../base/elements.js";
 
 let the_values = new Array();
 
-const button = document.querySelector(".button");
+const button = document.querySelector(".export_button");
 
 button.addEventListener("click", () => {
     // textarea が innerHTMLではコピーされないため別に配列を用意して export.html側で再度同じ状況を再現.

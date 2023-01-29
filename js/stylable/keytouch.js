@@ -1,5 +1,6 @@
 import { screen } from "../base/elements.js";
 import { layer_resetter, wheel_seton } from "./function.js";
+import { adjust_target_pos } from "../ms/function.js";
 
 const wheel = document.querySelector(".wheel");
 const the_pointer = document.querySelector(".pointer");
@@ -15,16 +16,17 @@ document.addEventListener("keydown", (e) => {
         type_signiture = current.value;
 
         // ホイールを起動する処理.
-        if ( type_signiture.indexOf('style') != -1) {
+        if ( type_signiture.indexOf('styl') != -1) {
 
             document.querySelector(".ms_area").remove();
             if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
                 document.querySelector(".centering").lastElementChild.focus();
             }
+            // current.value = current.value.slice(0, -6);
             screen.classList.add("style");
             wheel_seton();
-            current.value = current.value.slice(0, -6);
             current.blur();
+            adjust_target_pos(document.querySelector(".centering").lastElementChild, "off");
         }
     }
     if (screen.classList.contains("style")) {

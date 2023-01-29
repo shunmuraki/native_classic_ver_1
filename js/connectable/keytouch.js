@@ -1,6 +1,7 @@
 import { screen, the_name_list, blocksize } from "../base/elements.js";
 import { horizontal_stripe_checker, make_ver_fragment, vertical_stripe_checker } from "../base/function.js";
 import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
+import { adjust_target_pos } from "../ms/function.js";
 
 window.addEventListener("keydown", (e)=>{
 
@@ -31,7 +32,7 @@ window.addEventListener("keydown", (e)=>{
         let current_sp_cover = vertical_to_sp_cover(current_vertical);
 
         if (type_signiture) {
-            if ( type_signiture.indexOf('connect') != -1) {
+            if ( type_signiture.indexOf('connec') != -1) {
                 
                 tracer_basis(document.querySelector(".centering"));
                 document.querySelector(".ms_area").remove();
@@ -183,12 +184,19 @@ window.addEventListener("keydown", (e)=>{
                     
                     // フォーカスを当てる.
                     let last_one = the_sp_cover_a.lastElementChild.lastElementChild.children[the_center_num - 1];
+
+                    // msスペース分の調整.
+                    adjust_target_pos(last_one.lastElementChild, "off");
+
                     let finish_form = last_one.lastElementChild;
                     if (finish_form.tagName == "TEXTAREA") {
                         let va = finish_form.value;
                         finish_form.value = "";
-                        finish_form.focus();
                         finish_form.value = va;
+                        finish_form.focus();
+                        setTimeout(() => {
+                            finish_form.value = finish_form.value.slice(0, -1);
+                        }, 10)
                     }
                 }
             }

@@ -5,6 +5,7 @@ import { is_it_same_series } from "../multiable/function.js";
 import { yt_player_getter, yt_resetter } from "../multiable/extends.js";
 import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
 import { wheel_positioning } from "../stylable/function.js";
+import { adjust_target_pos } from "../ms/function.js";
 
 let orange_data = {};
 let timeoutArray = new Array();
@@ -33,7 +34,7 @@ window.addEventListener("keydown", (e)=>{
         }        
         
         // Editモードを展開.
-        if ( type_signiture.indexOf('edit') != -1) {
+        if ( type_signiture.indexOf('edi') != -1) {
 
             tracer_basis(document.querySelector(".centering"));
 
@@ -176,6 +177,12 @@ window.addEventListener("keydown", (e)=>{
             let layer_centering = document.querySelector(".new_layer_centering");
             let default_scrap = vertical_to_sp_cover(layer_centering);
             default_scrap.classList.add("see");
+
+            // 移行先でのms分のスペースを調整.
+            adjust_target_pos(layer_centering.lastElementChild, "off");
+
+            console.log(layer_centering);
+
             layer_centering.classList.remove("new_layer_centering");
     
             // 画面の切り替え.

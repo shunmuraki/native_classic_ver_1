@@ -14,7 +14,7 @@ let yt_id_list = [];
 let caset = document.createDocumentFragment();
 
 // ページ遷移アニメーション.
-let button = document.querySelector(".button");
+let button = document.querySelector(".export_button");
 let contents = document.querySelector(".contents");
 contents.animate(
     [

@@ -61,15 +61,22 @@ window.addEventListener("keydown", (e)=>{
                 document.querySelector(".ms_area").remove();
               }
             }, 10)
+            
             // connect の場合を考慮し再取得.
-            if (document.querySelector(".centering").classList.contains("same")) {
-              ms_adjust_target = document.querySelector(".special_cov").lastElementChild;
-            } else {
-              ms_adjust_target = document.querySelector(".centering").lastElementChild;
-            }
+            // if (document.querySelector(".centering").classList.contains("same")) {
+            //   ms_adjust_target = document.querySelector(".special_cov").lastElementChild;
+            // } else {
+            //   ms_adjust_target = document.querySelector(".centering").lastElementChild;
+            // }
             
             console.log(ms_adjust_target);
             adjust_target_pos(ms_adjust_target, "off");
+
+            if (ms_adjust_target.tagName == "TEXTAREA") {
+              ms_adjust_target.focus();
+            }
+
+            // ms_adjust_target.classList.add(".after_adjust_target");
             screen.classList.remove("ms");
           }
         }
