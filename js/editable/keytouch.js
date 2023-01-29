@@ -181,9 +181,7 @@ window.addEventListener("keydown", (e)=>{
 
             // 移行先でのms分のスペースを調整.
             adjust_target_pos(layer_centering.lastElementChild, "off");
-
-            console.log(layer_centering);
-
+            
             layer_centering.classList.remove("new_layer_centering");
     
             // 画面の切り替え.
@@ -469,7 +467,6 @@ window.addEventListener("keydown", (e)=>{
                         if (special_cov.lastElementChild) {
                             if (special_cov.lastElementChild.tagName == "IFRAME") {
                                 player = yt_player_getter(special_cov.lastElementChild);
-                                console.log(special_cov);
                                 player.pauseVideo();
                                 // この時点で動画が再生されていたらループをストップ.
                                 just_clear_yt_loop();
@@ -517,7 +514,6 @@ window.addEventListener("keydown", (e)=>{
                                                     player.pauseVideo();
                                                     let the_time = yt_resetter();
                                                     player.seekTo(the_time);
-                                                    console.log(player.getCurrentTime());
                                                     play_when.playVideo();
                                                 }        
 
@@ -606,7 +602,6 @@ window.addEventListener("keydown", (e)=>{
                                 player.pauseVideo();
                                 let the_time = yt_resetter();
                                 player.seekTo(the_time);
-                                console.log(player.getCurrentTime());
                             }
         
                             let start = new Date();
@@ -617,7 +612,6 @@ window.addEventListener("keydown", (e)=>{
         
                             if (player) {
                                 player.playVideo();
-                                console.log("ddde");
                             }
         
                             // 再実行.

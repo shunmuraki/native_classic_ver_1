@@ -37,12 +37,7 @@ window.addEventListener("keydown", (e)=>{
         if(e.metaKey) {
             if (k == "Enter") {
                 original_centering_checker(current_sp_cover, current_vertical);
-
-                console.log(window_height - current_vertical.getBoundingClientRect().bottom);
-                console.log(the_middline);
-                
                 adjust_box(current_vertical);
-
                 make_fragment(current_sp_cover, "after");    
                 let next_one = current_sp_cover.nextElementSibling.lastElementChild.lastElementChild.lastElementChild;
                 var next_textarea = next_one.lastElementChild;

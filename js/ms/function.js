@@ -3,7 +3,6 @@ let default_pos;
 // styling_ クラスを取り外すことで content の位置を ms のスペースに対応させる関数.
 export const adjust_target_pos = (e, f) => {
     let ms_top = getComputedStyle(e).top;
-    console.log(ms_top);
     let ms_st;
     if (f == "on") {
         default_pos = Number(ms_top.substring(0, ms_top.length - 2));

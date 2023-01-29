@@ -115,7 +115,6 @@ document.addEventListener("keydown", (e) => {
         if (k == "Enter") { 
             let native_center = document.querySelector(".centering");    
             let um_centering = document.querySelector(".um_centering");
-            console.log(um_centering);
 
             if (um_centering.parentElement.classList.contains("um_video")) {
                 let the_uri = target_data(um_centering, "this_yt_id_");

@@ -30,8 +30,6 @@ export const yt_resetter = () => {
         target = document.querySelector(".centering");
     }
     let the_time = Number(target_data(target, "this_video_st_"));
-    console.log(the_time);
-    console.log(players_list);
     return the_time;
 }
 
@@ -60,13 +58,9 @@ export const yt_loop_stopper = (e, f) => {
 }
 
 export const just_clear_yt_loop = () => {
-    console.log("be");
-    console.log(yt_loop);
-    // e.pauseVideo();
     for (let i = yt_loop.length; i >= 0; i--)  {
         clearInterval(yt_loop.shift());
     }
-    console.log(yt_loop);
 }
 
 

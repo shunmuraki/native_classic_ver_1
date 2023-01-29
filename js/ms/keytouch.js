@@ -62,7 +62,6 @@ window.addEventListener("keydown", (e)=>{
               }
             }, 10)
             
-            console.log(ms_adjust_target);
             adjust_target_pos(ms_adjust_target, "off");
 
             if (ms_adjust_target.tagName == "TEXTAREA") {
