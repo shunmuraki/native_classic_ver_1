@@ -36,7 +36,7 @@ window.addEventListener("keydown", (e)=>{
               if (document.activeElement.tagName == "BODY") {
                 centering.lastElementChild.before(ms);
               } else {
-                current.value = current.value.slice(0, -1);
+                // current.value = current.value.slice(0, -1);
                 current.blur();
                 current.before(ms);
               }
@@ -56,18 +56,20 @@ window.addEventListener("keydown", (e)=>{
         if (screen.classList.contains("ms")) {
           // ms の終了処理.
           if (k == "Escape" || k == "Enter") {
-            setTimeout(() => {
-              if (document.querySelector(".ms_area")) {
-                document.querySelector(".ms_area").remove();
+            if (! screen.classList.contains("style")) {
+              setTimeout(() => {
+                if (document.querySelector(".ms_area")) {
+                  document.querySelector(".ms_area").remove();
+                }
+              }, 10)
+              
+              adjust_target_pos(ms_adjust_target, "off");
+  
+              if (ms_adjust_target.tagName == "TEXTAREA") {
+                ms_adjust_target.focus();
               }
-            }, 10)
-            
-            adjust_target_pos(ms_adjust_target, "off");
-
-            if (ms_adjust_target.tagName == "TEXTAREA") {
-              ms_adjust_target.focus();
+              screen.classList.remove("ms");
             }
-            screen.classList.remove("ms");
           }
         }
     }

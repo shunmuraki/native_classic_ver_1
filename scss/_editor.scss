@@ -11,8 +11,8 @@
             border-radius: 50%;
             // background-color: #121212;
             // border: 2px solid #3e3e3e;
-            // background: linear-gradient(145deg, #101010, #131313) !important;
-            background-color: #0a0a0a;
+            background: linear-gradient(145deg, #101010, #131313) !important;
+            background-color: rgba(10, 10, 10, 1);
             box-shadow: inset 5px 5px 12px #0a0a0a,
                             inset -5px -5px 12px #1a1a1a !important;
         }
@@ -54,7 +54,7 @@
                     }
                 }
                 .layer_1 {
-                    background-image: url("img/new_wheel_1.png");
+                    background-image: url("img/wheel_img.png");
                     .list {
                         .select_1 {
                             top: 0;
@@ -105,13 +105,13 @@
                     }
                 }
                 .layer_select_1 {
-                    background-image: url("img/new_wheel_3.png");
+                    background-image: url("img/wheel_2.png");
                 }
                 .layer_select_2 {
-                    background-image: url("img/new_wheel_2.png");
+                    background-image: url("img/wheel_3.png");
                 }
                 .layer_select_3 {
-                    background-image: url("img/new_wheel_4.png");
+                    background-image: url("img/wheel_4.png");
                 }
             }
         }
@@ -562,6 +562,7 @@ img, iframe {
     // box-shadow:  inset 5px 5px 12px #0a0a0a,
     //                 inset -5px -5px 12px #171717 !important;
     background-color: #121212;
+    // overflow: hidden;
         .write_area, img, iframe {
             // blocksizeと関与. なぜか textareaだけが1pxずれるので条件分岐せざるを得ず.
             padding: 20px 10px;

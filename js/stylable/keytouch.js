@@ -12,27 +12,32 @@ document.addEventListener("keydown", (e) => {
     let current = document.activeElement;
     let k = e.key;
     let type_signiture;
+    let centering = document.querySelector(".centering");
     
     if (current.tagName == "TEXTAREA") {
         type_signiture = current.value;
 
         // ホイールを起動する処理.
         if ( type_signiture.indexOf('styl') != -1) {
-
             document.querySelector(".ms_area").remove();
-            focus_checker(document.querySelector(".centering"));
             screen.classList.add("style");
             wheel_seton();
             current.blur();
-            adjust_target_pos(document.querySelector(".centering").lastElementChild, "off");
+            adjust_target_pos(centering.lastElementChild, "off");
         }
     }
     if (screen.classList.contains("style")) {
           if (k == "Escape") {
+            let w_w = document.querySelector(".waiting_wheel");
+
+            if (w_w) {
+              w_w.classList.remove("waiting_wheel");
+              w_w.style.display = "none";
+            } else {
               the_pointer.animate(
                   [
-                    { transform: 'scale(5)', },
-                    { transform: 'scale(1)', }
+                    { transform: 'scale(5)', opacity: 1 },
+                    { transform: 'scale(1)', opacity: 1 },
                   ], {
                     duration: 200,
                     fill: "both",
@@ -61,9 +66,9 @@ document.addEventListener("keydown", (e) => {
                 );
               layer_resetter();
               wheel.style.display = "none";
-              let centering = document.querySelector(".centering");
               screen.classList.remove("style");
-              focus_checker(centering);
+              // focus_checker(centering);
+            }
           }
     }
 })

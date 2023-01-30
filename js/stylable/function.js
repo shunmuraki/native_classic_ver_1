@@ -62,8 +62,8 @@ export const wheel_positioning = () => {
 export const wheel_seton = () => {
     the_pointer.animate(
         [
-          { transform: 'scale(1)' },
-          { transform: 'scale(5)' },
+          { transform: 'scale(1)', opacity: 1, },
+          { transform: 'scale(5)', opacity: 1 },
         ], {
           duration: 300,
           fill: "both",
@@ -95,16 +95,6 @@ export const wheel_seton = () => {
       );
 }
 
-base_1.addEventListener("click", () => {
-    ly_2_1.style.display = "block";
-})
-base_2.addEventListener("click", () => {
-    ly_2_3.style.display = "block";
-})
-base_3.addEventListener("click", () => {
-    ly_2_2.style.display = "block";
-})
-
 // ホイールのクリックに応じて「styling_」クラスの内容を切り替える関数.
 const style_num_changer = (f, g) => {
     let target;
@@ -127,42 +117,68 @@ const style_num_changer = (f, g) => {
     target.classList.add(final_name);
 }
 
+const pre_wheel_management = (e) =>{
+  e.classList.toggle("waiting_wheel");
+}
+
+base_1.addEventListener("click", () => {
+    pre_wheel_management(ly_2_1);
+    ly_2_1.style.display = "block";
+})
+base_2.addEventListener("click", () => {
+    pre_wheel_management(ly_2_3);
+    ly_2_3.style.display = "block";
+})
+base_3.addEventListener("click", () => {
+    pre_wheel_management(ly_2_2);
+    ly_2_2.style.display = "block";
+})
+
+
 sl_1_1.addEventListener("click", () => {
     style_num_changer(0, 0);
     ly_2_1.style.display = "none";
+    pre_wheel_management(ly_2_1);
 })
 
 sl_1_2.addEventListener("click", () => {
     style_num_changer(0, 1);
     ly_2_1.style.display = "none";
+    pre_wheel_management(ly_2_1);
 })
 
 sl_1_3.addEventListener("click", () => {
     style_num_changer(0, 2);
     ly_2_1.style.display = "none";
+    pre_wheel_management(ly_2_1);
 })
 
 sl_2_1.addEventListener("click", () => {
     style_num_changer(1, 0);
     ly_2_2.style.display = "none";
+    pre_wheel_management(ly_2_2);
 })
 
 sl_2_2.addEventListener("click", () => {
     style_num_changer(1, 1);
     ly_2_2.style.display = "none";
+    pre_wheel_management(ly_2_2);
 })
 
 sl_2_3.addEventListener("click", () => {
     style_num_changer(1, 2);
     ly_2_2.style.display = "none";
+    pre_wheel_management(ly_2_2);
 })
 
 sl_3_1.addEventListener("click", () => {
     style_num_changer(2, 0);
     ly_2_3.style.display = "none";
+    pre_wheel_management(ly_2_3);
 })
 
 sl_3_2.addEventListener("click", () => {
     style_num_changer(2, 1);
     ly_2_3.style.display = "none";
+    pre_wheel_management(ly_2_3);
 })

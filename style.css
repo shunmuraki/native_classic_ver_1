@@ -192,7 +192,8 @@ p, span, a {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: #0a0a0a;
+  background: linear-gradient(145deg, #101010, #131313) !important;
+  background-color: rgb(10, 10, 10);
   box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #1a1a1a !important;
 }
 .pointer_and_wheel .cover .wheel {
@@ -234,7 +235,7 @@ p, span, a {
   height: 50px;
 }
 .pointer_and_wheel .cover .wheel .container .layer_1 {
-  background-image: url("img/new_wheel_1.png");
+  background-image: url("img/wheel_img.png");
 }
 .pointer_and_wheel .cover .wheel .container .layer_1 .list .select_1 {
   top: 0;
@@ -275,13 +276,13 @@ p, span, a {
   height: 100px;
 }
 .pointer_and_wheel .cover .wheel .container .layer_select_1 {
-  background-image: url("img/new_wheel_3.png");
+  background-image: url("img/wheel_2.png");
 }
 .pointer_and_wheel .cover .wheel .container .layer_select_2 {
-  background-image: url("img/new_wheel_2.png");
+  background-image: url("img/wheel_3.png");
 }
 .pointer_and_wheel .cover .wheel .container .layer_select_3 {
-  background-image: url("img/new_wheel_4.png");
+  background-image: url("img/wheel_4.png");
 }
 
 .um_display {
