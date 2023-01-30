@@ -12,7 +12,7 @@ screen.appendChild(damee);
 (function () {
     if (sessionStorage.getItem("output")) {
 
-        // * 以下 export.htmlから回帰したケースへの対応.
+        // 以下 export.htmlから回帰したケースへの対応.
         let doms = sessionStorage.getItem("output");
         screen.innerHTML = doms;
         let the_values = sessionStorage.getItem("the_values");

@@ -182,6 +182,8 @@ p, span, a {
 .pointer_and_wheel {
   position: fixed;
   z-index: 5001;
+  top: -100px;
+  left: -100px;
 }
 .pointer_and_wheel .cover {
   z-index: 30;
@@ -288,7 +290,7 @@ p, span, a {
 .um_display {
   z-index: 4500;
   position: fixed;
-  top: 0;
+  top: 100vh;
   left: 0;
   width: 100vw;
   height: 100vh;
@@ -307,6 +309,7 @@ p, span, a {
 .um_display .relative .flex .panc {
   min-width: 100vw;
   display: inline-block;
+  background-color: #121212;
 }
 .um_display .relative .flex .box {
   display: inline-block;
@@ -330,7 +333,8 @@ p, span, a {
      object-fit: cover !important;
 }
 .um_display .relative .flex .um_centering {
-  border: 5px solid #0070D8;
+  border-left: 3px solid #1a1a1a;
+  border-right: 3px solid #1a1a1a;
 }
 .um_display .relative .flex .null_f {
   background-image: url("img/um_box.png");
@@ -341,11 +345,17 @@ p, span, a {
   min-height: 200px;
   box-sizing: border-box;
 }
+.um_display .relative .um_audio, .um_display .relative .um_image, .um_display .relative .um_video {
+  border-top: 3px solid #1a1a1a;
+  border-bottom: 3px solid #1a1a1a;
+  box-sizing: border-box;
+}
 .um_display .relative .um_image {
   width: 360px;
   flex-direction: column;
   overflow-y: scroll;
   white-space: nowrap;
+  border-right: 3px solid #1a1a1a;
 }
 .um_display .relative .um_video {
   height: 225px;
@@ -362,6 +372,7 @@ p, span, a {
   overflow-x: scroll;
   white-space: nowrap;
   flex-direction: row-reverse;
+  border-left: 3px solid #1a1a1a;
 }
 
 .block_layer {
@@ -443,20 +454,6 @@ p, span, a {
   box-sizing: border-box;
   overflow: hidden;
 }
-.block_layer .sp_cover .sp .horizontal .vertical .stripe_ver {
-  position: absolute;
-  width: 5px;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-.block_layer .sp_cover .sp .horizontal .vertical .stripe_hor {
-  position: absolute;
-  width: 100%;
-  height: 5px;
-  top: 0;
-  left: 0;
-}
 .block_layer .sp_cover .sp .horizontal .vertical label {
   width: 100%;
   height: 100%;
@@ -496,6 +493,7 @@ p, span, a {
 .block_layer .sp_cover .sp .horizontal .same_start .write_area, .block_layer .sp_cover .sp .horizontal .same_start img, .block_layer .sp_cover .sp .horizontal .same_start iframe, .block_layer .sp_cover .sp .horizontal .same_end .write_area, .block_layer .sp_cover .sp .horizontal .same_end img, .block_layer .sp_cover .sp .horizontal .same_end iframe {
   opacity: 1 !important;
 }
+
 .new_layer {
   z-index: 5000;
 }
@@ -522,6 +520,7 @@ p, span, a {
   border: 1px solid #0a0a0a;
   box-sizing: border-box;
 }
+
 .statusbar {
   width: 100%;
   padding: 0px 50px;
@@ -625,19 +624,12 @@ img, iframe {
 
 .special_cov {
   z-index: 5000;
+  box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #171717 !important;
   background-color: #121212;
+  overflow: hidden;
 }
 .special_cov .write_area, .special_cov img, .special_cov iframe {
   padding: 20px 10px;
-  width: 324px !important;
-}
-
-.edit_mode .special_cov {
-  background-color: #121212;
-}
-.edit_mode .special_cov .write_area, .edit_mode .special_cov img, .edit_mode .special_cov iframe {
-  padding: 20px 10px;
-  width: 324px !important;
 }
 
 .redirect_cover, .cheet_sheet {
@@ -645,7 +637,7 @@ img, iframe {
   height: calc(100vh - 80px);
   position: fixed;
   z-index: 8000;
-  top: 0;
+  top: 100vh;
 }
 
 .redirect_cover {
@@ -686,9 +678,9 @@ img, iframe {
 }
 
 .cheet_sheet {
-  -webkit-backdrop-filter: blur(5px); /* ぼかしエフェクト */
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 20px;
   box-sizing: border-box;
 }
@@ -699,26 +691,27 @@ img, iframe {
   align-items: flex-start;
 }
 .cheet_sheet .flex .box {
-  margin: 20px;
-  border-radius: 5px;
-  width: 200px;
-  padding: 10px;
+  margin: 10px;
+  border-radius: 4px;
+  width: 250px;
+  padding: 10px 15px 15px 15px;
   box-sizing: border-box;
   color: #fff !important;
-  border: 0.5px solid #fff;
+  background-color: rgba(10, 10, 10, 0.5);
+  font-family: "Brandon-Grotesque", sans-serif;
 }
 .cheet_sheet .flex .box h4 {
-  font-size: 2rem;
-  letter-spacing: 0.1em;
-  font-weight: 500;
-  line-height: 2.2;
-}
-.cheet_sheet .flex .box p {
-  margin: 5px 0 0 0;
-  font-size: 1.4rem;
-  letter-spacing: 0 0.6em;
+  font-size: 1.7rem;
+  letter-spacing: 0.07em;
   font-weight: 400;
   line-height: 2;
+}
+.cheet_sheet .flex .box p {
+  margin: 7px 0 0 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+  line-height: 1.5;
 }
 
 .horizontal, .orange_pointer_zone, .orange_stripe_zone {

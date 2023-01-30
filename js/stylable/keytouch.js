@@ -29,11 +29,12 @@ document.addEventListener("keydown", (e) => {
     if (screen.classList.contains("style")) {
           if (k == "Escape") {
             let w_w = document.querySelector(".waiting_wheel");
-
             if (w_w) {
+              // セカンドレイヤーが表示中の場合の処理.
               w_w.classList.remove("waiting_wheel");
               w_w.style.display = "none";
             } else {
+              // ファーストレイヤーが表示中の場合の処理.
               the_pointer.animate(
                   [
                     { transform: 'scale(5)', opacity: 1 },
@@ -67,7 +68,6 @@ document.addEventListener("keydown", (e) => {
               layer_resetter();
               wheel.style.display = "none";
               screen.classList.remove("style");
-              // focus_checker(centering);
             }
           }
     }

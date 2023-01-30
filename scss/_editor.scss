@@ -1,6 +1,10 @@
 .pointer_and_wheel {
     position: fixed;
     z-index: 5001;
+
+    // 初期設定. ロード画面を綺麗にしたい狙い.
+    top: -100px;
+    left: -100px;
     .cover {
         z-index: 30;
         position: relative;
@@ -9,8 +13,6 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            // background-color: #121212;
-            // border: 2px solid #3e3e3e;
             background: linear-gradient(145deg, #101010, #131313) !important;
             background-color: rgba(10, 10, 10, 1);
             box-shadow: inset 5px 5px 12px #0a0a0a,
@@ -121,7 +123,9 @@
 .um_display {
     z-index: 4500;
     position: fixed;
-    top: 0;
+
+    // 読み込んだ瞬間のビジュアルを整える要因.
+    top: 100vh;
     left: 0;
     width: 100vw;
     height: 100vh;
@@ -134,11 +138,11 @@
         display: flex;
         flex-wrap: nowrap;
         position: absolute;
-        // border: 2px solid red;
         box-sizing: border-box;
         .panc {
             min-width: 100vw;
             display: inline-block;
+            background-color: #121212;
         }
         .box {
           display: inline-block;
@@ -150,9 +154,7 @@
            &:after {
              content: '';
              position: absolute;
-            //  width: 1px;
              height: 100%;
-            //  background-color: gray;
            }
           img, iframe {
              display: block;
@@ -162,7 +164,8 @@
           }
         }
         .um_centering {
-            border: 5px solid #0070D8;
+            border-left: 3px solid #1a1a1a;
+            border-right: 3px solid #1a1a1a;
         }     
         .null_f {
            background-image: url("img/um_box.png");
@@ -174,11 +177,17 @@
            box-sizing: border-box;
         }
       }
+      .um_audio, .um_image, .um_video {
+        border-top: 3px solid #1a1a1a;
+        border-bottom: 3px solid #1a1a1a;
+        box-sizing: border-box;
+      }
       .um_image {
         width: 360px;
         flex-direction: column;
         overflow-y: scroll;
         white-space: nowrap;
+        border-right: 3px solid #1a1a1a;
       }
       .um_video {
         height: 225px;
@@ -195,6 +204,7 @@
         overflow-x: scroll;
         white-space: nowrap;
         flex-direction: row-reverse;
+        border-left: 3px solid #1a1a1a;
       }
     }
 }  
@@ -222,12 +232,10 @@
             .orange_pointer_zone, .orange_stripe_zone {
                 position: absolute;
                 top: 0;
-                // とりあえず horizontal をパクってみる。
                 width: calc(calc(100% + 360px) / 2);
                 margin: 0 auto 0 0;
                 overflow-x: auto;
-                white-space: nowrap;
-                // background-color: #909090;
+                white-space: nowrap; 
                 .orange_line {
                     display: inline-block;
                     position: relative;
@@ -236,8 +244,6 @@
                     .orange_pointer, .orange_stripe {
                         position: absolute;
                         background-color: #0070D8;
-                        // top: 50%;
-                        // transform: translateY((-50%));
                     }
                     .orange_pointer {
                         z-index: 999;
@@ -267,7 +273,7 @@
                 }    
                 .adjuster {
                     width: 100vw;
-                    background-color: rgb(0, 0, 0);
+                    background-color: rgb(0, 0, 0, 1);
                 }
                 .vertical {
                     width: 360px;
@@ -275,35 +281,11 @@
                     margin: 0 auto;
                     vertical-align: top;
                     position: relative;
-                    // border-right: 2px solid #000000;
-                    // border-bottom: 2px solid #000000;
-                    // background: linear-gradient(145deg, #101010, #131313) !important;
-                    // box-shadow:  inset 5px 0px 12px #0a0a0a,
-                    //                 inset -5px 0px 12px #1a1a1a !important;
-                    // border: 2px solid #0a0a0a;
                     box-sizing: border-box;
-                    overflow: hidden;
-                    // padding: 30px 0;
-                    .stripe_ver {
-                        position: absolute;
-                        width: 5px;
-                        height: 100%;
-                        // background-color: rgb(0, 0, 0);
-                        top: 0;
-                        left: 0;
-                    }
-                    .stripe_hor {
-                        position: absolute;
-                        width: 100%;
-                        height: 5px;
-                        // background-color: rgb(0, 0, 0);
-                        top: 0;
-                        left: 0;
-                    }
+                    overflow: hidden; 
                     label {
                         width: 100%;
                         height: 100%;
-                        // margin: 10px auto;
                         display: block;
                         text-align:center;
                         display: flex;
@@ -331,16 +313,9 @@
                 }
 
                 .centering {
-                    // background-color: #d1ffd1;
-                    // border: 5px solid #0070D8 !important;
-                    // background: linear-gradient(145deg, #101010, #131313) !important;
                     box-shadow:  inset 5px 5px 12px #0a0a0a,
                                     inset -5px -5px 12px #171717 !important;
-                }
-
-                .original_centering {
-                    // background-color: rgba(255, 73, 173, 0.1);
-                }
+                }           
 
                 .video, .img {
                     height: 225px !important;
@@ -356,45 +331,6 @@
                         opacity: 1 !important;
                     }
                 }                
-            }
-        }
-    }
-
-    .connected {
-        // box-shadow:  inset 0px 8px 12px #0a0a0a,
-        //                 inset 0px -8px 12px #1a1a1a !important;
-        .sp {
-            .horizontal {
-                .vertical {                    
-                    // box-shadow:  inset 8px 0px 12px #0a0a0a,
-                    //     inset -8px 0px 12px #1a1a1a !important;
-                }
-            }
-            &:first-of-type {
-                .horizontal {
-                    .vertical  {
-                        // border-bottom: 2px solid #000000 !important;
-                        // box-shadow:  inset 10px 0px 10px #0a0a0a,
-                        // inset -10px 0px 10px #1a1a1a !important;
-                    }
-                    .centering {
-                        // border-bottom: 5px solid #0070D8 !important;
-                    }
-                }
-            }
-            &:last-of-type {
-                .horizontal {
-                    .vertical  {
-                        // border-bottom: 2px solid #000000 !important;
-                        // box-shadow:  inset 0px -5px 12px #0a0a0a,
-                        // inset 0px -5px 12px #1a1a1a !important;
-                        // box-shadow:  inset -10px 0px 10px #1a1a1a,
-                        // inset 10px 0px 10px #0a0a0a !important;
-                    }
-                    .centering {
-                        // border-bottom: 5px solid #0070D8 !important;
-                    }
-                }
             }
         }
     }
@@ -414,42 +350,17 @@
         .sp {
             z-index: 1 !important;
             .horizontal {
-                // max-width: calc(calc(100% + 360px) / 2);
-                // max-width: 100%;
                 .centering {
                     box-shadow: none !important;
                 }
                 .new_layer_centering {
-                    // background-color: #0070D8 !important;
                     box-shadow:  inset 5px 5px 12px #0a0a0a,
                                     inset -5px -5px 12px #171717 !important;
                 }
-
                 .vertical {
                     border: 1px solid #0a0a0a;
                     box-sizing: border-box;
-                    .stripe_ver {
-                        // background-color: #1a1a1a;
-                    }
-                    .stripe_hor {
-                        // background-color: #1a1a1a;
-
-                    }
                 }
-            }
-        }
-    }
-    .principle_block {
-        .sp {
-            .horizontal {
-                // background-color: #121212;
-            }
-        }
-    }
-    .principle_pointer {
-        .orange_space {
-            .orange_pointer_zone, .orange_stripe_zone {
-                // background-color: #121212;
             }
         }
     }
@@ -468,8 +379,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    z-index: 9999;
-    // filter: drop-shadow(0px -3px 5px #000000);
+    z-index: 9999; 
     
     p, a {
         font-size: 12px;
@@ -555,60 +465,25 @@ img, iframe {
     outline: none;
     padding: 5px 10px 20px 10px;
     box-sizing: border-box;
-    // border-radius: 2px;
 }
 
 .special_cov {
     z-index: 5000;
-    // box-shadow:  inset 5px 5px 12px #0a0a0a,
-    //                 inset -5px -5px 12px #171717 !important;
-    background-color: #121212;
-    // overflow: hidden;
-        .write_area, img, iframe {
-            // blocksizeと関与. なぜか textareaだけが1pxずれるので条件分岐せざるを得ず.
-            padding: 20px 10px;
-            width: calc(360px * 0.9) !important;
-        }
-}
-.edit_mode {
-    .sp_cover {
-        .sp {
-            .horizontal {
-                .vertical {
-                    // border-right: 2px solid #121212;
-                    // border-bottom: 2px solid #121212;
-                }
-            }
-        }
-    }
-    .connected {
-        .sp {
-            &:last-of-type {
-                .horizontal {
-                    .vertical  {
-                        // border-bottom: 2px solid #121212 !important;
-                    }
-                }
-            }
-        }
-    }
-    .special_cov {
-        // background-color: #0070D8;
-        background-color: #121212;
+    box-shadow:  inset 5px 5px 12px #0a0a0a,
+                    inset -5px -5px 12px #171717 !important;
+    background-color: #121212; 
+    overflow: hidden;
         .write_area, img, iframe {
             padding: 20px 10px;
-            width: calc(360px * 0.9) !important;
         }
-    }
 }
-
 
 .redirect_cover, .cheet_sheet {
     width: 100vw;
     height: calc(100vh - 80px);
     position: fixed;
     z-index: 8000;
-    top: 0;
+    top: 100vh;
 }
 
 .redirect_cover {
@@ -653,9 +528,9 @@ img, iframe {
 
 
 .cheet_sheet {
-    -webkit-backdrop-filter: blur(5px); /* ぼかしエフェクト */
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.1);
     padding: 20px;
     box-sizing: border-box;
 
@@ -666,25 +541,26 @@ img, iframe {
         align-items: flex-start;
 
         .box {
-            margin: 20px;
-            border-radius: 5px;
-            width: 200px;
-            padding: 10px;
+            margin: 10px;
+            border-radius: 4px;
+            width: 250px;
+            padding: 10px 15px 15px 15px;
             box-sizing: border-box;
             color: #fff !important;
-            border: 0.5px solid #fff;
+            background-color: rgba(10, 10, 10, 0.5);
+            font-family: "Brandon-Grotesque", sans-serif;
             h4 {
-                font-size: 2rem;
-                letter-spacing: 0.1em;
-                font-weight: 500;
-                line-height: 2.2;
-            }
-            p {
-                margin: 5px 0 0 0;
-                font-size: 1.4rem;
-                letter-spacing: 0.0.6em;
+                font-size: 1.7rem;
+                letter-spacing: 0.07em;
                 font-weight: 400;
                 line-height: 2;
+            }
+            p {
+                margin: 7px 0 0 0;
+                font-size: 1.2rem;
+                letter-spacing: 0.05em;
+                font-weight: 300;
+                line-height: 1.5;
             }
         }
     }
@@ -704,8 +580,6 @@ img, iframe {
   }
 }
 
-
-// *** wheel .... long, long, and long....
 
 // * あくまでエディター上の描画が目的の
 // vertical | horizontal | scale | opacity

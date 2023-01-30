@@ -5,6 +5,7 @@ let audio_list = document.querySelector(".um_audio");
 let video_null = video_list.lastElementChild;
 let audio_null = audio_list.lastElementChild;
 
+// ユニバーサルマークダウンの表示位置をセンタリングしている要素へ調整する関数.
 export const um_positioning = () => {
   let adjust_box = document.querySelector(".centering");
   let pointer_position_top = adjust_box.getBoundingClientRect().top;

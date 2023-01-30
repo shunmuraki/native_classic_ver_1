@@ -71,14 +71,12 @@ export const make_special_cov = (e, f) => {
     let bottom_distance = e.getBoundingClientRect().top;
     let left_distance = half_left_width;
     
-    special_cov.style.top = bottom_distance + 20 + "px";
+    special_cov.style.top = bottom_distance + "px";
     // borderの有無の違いから 1px を調整....
-    special_cov.style.left = left_distance + 21 + "px";
+    special_cov.style.left = left_distance + 1 + "px";
 
-    let height_siz = e.clientHeight;
-
-    special_cov.style.width = blocksize - 40 + "px";
-    special_cov.style.height = height_siz - 40 + "px";
+    special_cov.style.width = blocksize + "px";
+    special_cov.style.height = e.clientHeight + "px";
 
     let the_name = "this_cov_is_" + f;
     special_cov.classList.add("special_cov");
@@ -192,9 +190,7 @@ export const is_it_same_alend = (e) => {
                 }
             }
             the_state(the_target_left);
-            // the_target_left.lastElementChild.style.setProperty('opacity', 0, 'important');
             if (the_target_left.lastElementChild) {
-                // the_target_left.lastElementChild.style.opacity = 1;
                 the_target_left.lastElementChild.style.setProperty('opacity', 1, 'important');
             } 
         } else if (the_target_left.classList.contains("same_start")) {
@@ -224,7 +220,6 @@ export const is_it_same_alend = (e) => {
 
         } else if (the_target_right.classList.contains("same_end")) {
             if (the_target_right.lastElementChild) {
-                // the_target_right.lastElementChild.style.opacity = 0;
                 the_target_right.lastElementChild.style.setProperty('opacity', 0, 'important');
             }
         }

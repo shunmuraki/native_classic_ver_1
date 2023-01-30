@@ -637,7 +637,7 @@ window.addEventListener("keydown", (e)=>{
                     pri_pointer.animate(
                         [
                           { scale: 1 },
-                          { scale: 0.6 }
+                          { scale: 0.8 }
                         ], {
                           duration: 400,
                           fill: "both",
@@ -645,7 +645,7 @@ window.addEventListener("keydown", (e)=>{
                     );
                     pri_pointer.animate(
                         [
-                            { scale: 0.6 },
+                            { scale: 0.8 },
                             { scale: 1,  }
                         ], {
                           duration: 300,
@@ -767,7 +767,6 @@ window.addEventListener("keydown", (e)=>{
                         // orange_spaceについて
                         let po_and_st = scraps[i].firstElementChild.firstElementChild.firstElementChild.children;
                         let block_num = f;
-
 
                         // １つのorange_stripe の中に乗っかっているブロックを検出する処理.
                         let thisblock_scrollleft_st = (blocksize * block_num) + full_start_scrollwidth - blocksize;

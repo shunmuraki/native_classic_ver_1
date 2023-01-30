@@ -57,6 +57,7 @@ export const yt_loop_stopper = (e, f) => {
     clearInterval(yt_loop.shift());
 }
 
+// 現在センタリングしているブロックが yt でループされているのを停止する関数.
 export const just_clear_yt_loop = () => {
     for (let i = yt_loop.length; i >= 0; i--)  {
         clearInterval(yt_loop.shift());
