@@ -608,19 +608,19 @@ img, iframe {
   left: 3%;
   width: 93%;
   height: 28px;
-  font-size: 1.2rem;
-  color: #ffffff;
-  background-color: #171717;
+  font-size: 1rem;
+  color: #808080;
+  background-color: transparent;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   font-family: "Brandon-Grotesque", sans-serif;
   line-height: 2;
   border: none;
+  border-bottom: 1px solid #222222;
   resize: none;
   outline: none;
-  padding: 5px 10px 28px 10px;
+  padding: 5px 10px 20px 10px;
   box-sizing: border-box;
-  border-radius: 2px;
 }
 
 .special_cov {
@@ -701,8 +701,8 @@ img, iframe {
 .cheet_sheet .flex .box {
   margin: 20px;
   border-radius: 5px;
-  width: 300px;
-  padding: 30px;
+  width: 200px;
+  padding: 10px;
   box-sizing: border-box;
   color: #fff !important;
   border: 0.5px solid #fff;
