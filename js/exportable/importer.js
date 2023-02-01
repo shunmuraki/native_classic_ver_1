@@ -1,5 +1,15 @@
-import { screen } from "../base/elements.js";
-import { target_data } from "../base/tools.js";
+const screen = document.querySelector(".screen");
+
+export function target_data(e, f) {
+    const list = e.classList;
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].includes(f)) {
+         var the_num = list[i].replace(f, '');
+        }
+    }
+    return the_num;
+}
+
 
 const zip = new JSZip();
 
@@ -16,6 +26,12 @@ let caset = document.createDocumentFragment();
 // ページ遷移アニメーション.
 let button = document.querySelector(".export_button");
 let contents = document.querySelector(".contents");
+
+let rc = document.querySelector(".redirect_cover");
+
+console.log(rc);
+rc.style.top = 0 + "%";
+
 contents.animate(
     [
       { opacity: 0, },

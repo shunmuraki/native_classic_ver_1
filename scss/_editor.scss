@@ -419,6 +419,7 @@
             padding: 5px;
             border-radius: 2px;
             letter-spacing: 0.1em;
+            cursor: default;
         }
         .export_button {
             background-color: #0070D8;
@@ -526,6 +527,7 @@ img, iframe {
             font-weight: 500; 
             letter-spacing: 0.06em;
             border: 0.8px solid #fff;
+            cursor: default;
         }
         .additional {
             color: #fff;
@@ -535,6 +537,7 @@ img, iframe {
             margin: 0 0 0 80px;
             display: block;
             border-bottom: 0.6px solid #fff;
+            cursor: default;
         }
     }
 }

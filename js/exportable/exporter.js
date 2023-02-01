@@ -24,6 +24,7 @@ button.addEventListener("click", () => {
 
     // ページ遷移のアニメーション.
     let rc = document.querySelector(".redirect_cover");
+    rc.style.top = 0 + "%";
     rc.animate(
         [
         { opacity: 0, },
