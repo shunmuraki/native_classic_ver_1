@@ -430,7 +430,7 @@ export const the_magic_paste = (e) => {
     is_it_same_series(center);
     all_view_changer(sp_cover, blocksize);
     focus_checker(center);
-
+    adjust_box(center);
 }
 
 // センタリングしているブロックの位置から window のスクロール位置を調整する関数.

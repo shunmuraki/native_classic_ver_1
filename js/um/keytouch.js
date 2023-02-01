@@ -41,6 +41,7 @@ document.addEventListener("keydown", (e) => {
             centering = document.querySelector(".centering");
             focus_checker(centering);        
             screen.classList.remove("um");
+            screen.classList.remove("um_ready");
         }
     
         let the_um_current = document.querySelector(".um_centering");
