@@ -87,6 +87,7 @@ export const same_data_getter = () => {
 
 // screen 要素に付与されている same　の数を更新する関数.
 export const same_data_counter = (e) => { 
+    let screen = document.querySelector(".screen");
     let screen_classlist = screen.classList;
     for (let i = 0; i < screen_classlist.length; i++) {
         let classname = screen_classlist[i];

@@ -197,8 +197,8 @@ export const go_top = (e, f) => {
             // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
             if (sibling_height > to_the_distance) {
                 scrollBy(0, - your_height);
-                wheel_positioning();
             } 
+            wheel_positioning();
         }
 
     } else if (f == "new_layer_centering") {
@@ -259,8 +259,8 @@ export const go_bottom = (e, f) => {
                 console.log(sibling_height);
                 console.log(to_the_distance);
                 scrollBy(0, your_height);
-                wheel_positioning();
             } 
+            wheel_positioning();
         }
 
     } else if (f == "new_layer_centering") {

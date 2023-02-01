@@ -1,5 +1,6 @@
-export const screen = document.querySelector(".screen");
+import { blur_checker, focus_checker } from "./function.js";
 
+export let screen = document.querySelector(".screen");
 export const blocksize = 360;
 export const linesize = 24;
 export const blocktime = 5;
@@ -35,6 +36,8 @@ let csb = document.querySelector(".usage_button");
 csb.classList.add("off");
 
 csb.addEventListener("click", () => {
+    let centering = document.querySelector(".centering");
+    blur_checker(centering);
     if (csb.classList.contains("on")) {
         cs.animate(
             [
@@ -58,6 +61,7 @@ csb.addEventListener("click", () => {
             }
         );
     }
+    focus_checker(centering);
     csb.classList.toggle("on");
     csb.classList.toggle("off");
 })
