@@ -95,6 +95,7 @@ export const is_it_same_start = (e) => {
     if (e.classList.contains("same")) {
 
         let special_cov = which_special_is(e);
+        let the_num = target_data(e, "same_num_");
 
         function the_state() {
             let the_name = "same_num_" + the_num;

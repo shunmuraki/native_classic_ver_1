@@ -578,7 +578,8 @@ p, span, a {
   background-color: #0070D8;
 }
 .statusbar .bc .usage_button {
-  background-color: #00d80e;
+  background-color: #0a0a0a;
+  border: 0.5px solid #ffffff;
 }
 .statusbar p {
   width: 30%;
@@ -693,7 +694,7 @@ img, iframe {
 .cheet_sheet {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
   padding: 20px;
   box-sizing: border-box;
 }
@@ -710,11 +711,11 @@ img, iframe {
   padding: 10px 15px 15px 15px;
   box-sizing: border-box;
   color: #fff !important;
-  background-color: rgba(10, 10, 10, 0.5);
+  background-color: rgba(28, 28, 28, 0.3);
   font-family: "Brandon-Grotesque", sans-serif;
 }
 .cheet_sheet .flex .box h4 {
-  font-size: 1.7rem;
+  font-size: 2rem;
   letter-spacing: 0.07em;
   font-weight: 400;
   line-height: 2;
@@ -725,6 +726,16 @@ img, iframe {
   letter-spacing: 0.05em;
   font-weight: 300;
   line-height: 1.5;
+  opacity: 0.8;
+}
+.cheet_sheet .flex .m_b {
+  background-color: rgba(255, 0, 212, 0.3);
+}
+.cheet_sheet .flex .u_b {
+  background-color: rgba(255, 123, 0, 0.3);
+}
+.cheet_sheet .flex .e_b {
+  background-color: rgba(60, 255, 0, 0.3);
 }
 
 .horizontal, .orange_pointer_zone, .orange_stripe_zone {

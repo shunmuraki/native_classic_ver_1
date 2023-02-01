@@ -128,6 +128,7 @@ document.addEventListener("keydown", (e) => {
             }
             um.style.display = "none";
             screen.classList.remove("um");
+            screen.classList.remove("um_ready");
         }
     }
 });
