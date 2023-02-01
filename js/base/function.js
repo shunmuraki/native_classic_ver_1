@@ -186,15 +186,21 @@ export const go_top = (e, f) => {
             focus_checker(next_one);
             is_it_same_series(next_one);
             wheel_positioning();
+            
         } else if (pre_sibling) {
             blur_checker(ver);            
             sibling_height = pre_sibling.clientHeight;
             next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
             centering_marker(ver, next_one, f);
-            wheel_positioning();
             focus_checker(next_one);
             // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
             special_cleaner(pre_sibling);
+
+            // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
+            if (sibling_height > to_the_distance) {
+                scrollBy(0, - your_height);
+                wheel_positioning();
+            } 
         }
 
     } else if (f == "new_layer_centering") {
@@ -209,17 +215,13 @@ export const go_top = (e, f) => {
             all_view_changer(pre_sibling, the_distance);
             // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
             special_cleaner(vertical_to_sp_cover(ver));
-            
+        
+            // edit モードは「see」ラインの位置を固定したい狙い.
+            scrollBy(0, - your_height);
             is_it_same_series(next_one);
             wheel_positioning();
         }
     }
-
-    // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
-    if (sibling_height > to_the_distance) {
-        scrollBy(0, - your_height);
-        wheel_positioning();
-    } 
 }
 
 // bottomへの移動
@@ -244,15 +246,23 @@ export const go_bottom = (e, f) => {
             focus_checker(next_one);
             is_it_same_series(next_one);
             wheel_positioning();
+
         } else if (pre_sibling) {
             blur_checker(ver);
             sibling_height = pre_sibling.clientHeight;
             next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
            
             centering_marker(ver, next_one, f);
-            wheel_positioning();
             focus_checker(next_one);
             special_cleaner(pre_sibling);
+
+            // * ここが改良ポイントになるかも.
+            if (sibling_height > to_the_distance) {
+                console.log(sibling_height);
+                console.log(to_the_distance);
+                scrollBy(0, your_height);
+                wheel_positioning();
+            } 
         }
 
     } else if (f == "new_layer_centering") {
@@ -266,18 +276,15 @@ export const go_bottom = (e, f) => {
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);            
             
-            // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
             special_cleaner(vertical_to_sp_cover(ver));
             
+            // edit モードは「see」ラインの位置を固定したい狙い.
+            scrollBy(0, your_height);
             is_it_same_series(next_one);
             wheel_positioning();
         }
     }
 
-    if (sibling_height < to_the_distance) {
-        scrollBy(0, your_height);
-        wheel_positioning();
-    } 
 }
 
 // leftへの移動
@@ -327,9 +334,9 @@ export const go_right = (e, f) => {
 
 // マジックコピーの関数.
 export const the_magic_copy = (e) => {
-    // * 初期化
+    // 初期化
     magic_elms = [];   
-    // - 以降に残っているものを、動画に限らず全部コピー.
+    // 以降に残っているものを、動画に限らず全部コピー.
     let sp_cover = vertical_to_sp_cover(e);
     let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
     // - 各spごとにコピーして以前のブロックをまとめて削除してラインfragmentとして変数に格納しておく.

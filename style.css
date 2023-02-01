@@ -520,6 +520,9 @@ p, span, a {
   border: 1px solid #0a0a0a;
   box-sizing: border-box;
 }
+.new_layer .see {
+  box-sizing: border-box;
+}
 
 .statusbar {
   width: 100%;

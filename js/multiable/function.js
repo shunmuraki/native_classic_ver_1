@@ -132,17 +132,16 @@ export const is_it_same_start = (e) => {
         // dupブロックであるケースを配慮.
         if (special_cov.lastElementChild) {
             player = yt_player_getter(special_cov.lastElementChild);
-        }
-
-        if (document.querySelector(".pausing")) {
-            if (player) {
-                just_clear_yt_loop();
-                setTimeout(() => {
-                    let the_time = yt_resetter();
-                    player.seekTo(the_time);
-                    player.playVideo();
-                    yt_loop_player(player);
-                }, 1000)
+            if (document.querySelector(".pausing")) {
+                if (player) {
+                    just_clear_yt_loop();
+                    setTimeout(() => {
+                        let the_time = yt_resetter();
+                        player.seekTo(the_time);
+                        player.playVideo();
+                        yt_loop_player(player);
+                    }, 1000)
+                }
             }
         }
     }
@@ -215,8 +214,6 @@ export const is_it_same_alend = (e) => {
             // same_start に special_cov の content を一時的に複製して格納.
             the_state(the_target_right);
             the_target_right.appendChild(same_start_content);
-
-
 
         } else if (the_target_right.classList.contains("same_end")) {
             if (the_target_right.lastElementChild) {

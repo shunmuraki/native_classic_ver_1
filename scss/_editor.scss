@@ -355,7 +355,7 @@
                 }
                 .new_layer_centering {
                     box-shadow:  inset 5px 5px 12px #0a0a0a,
-                                    inset -5px -5px 12px #171717 !important;
+                                    inset -5px -5px 12px #171717 !important; 
                 }
                 .vertical {
                     border: 1px solid #0a0a0a;
@@ -363,6 +363,10 @@
                 }
             }
         }
+    }
+    .see {
+        // background-color: #001120;
+        box-sizing: border-box;
     }
 }
 

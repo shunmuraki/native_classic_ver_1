@@ -1,9 +1,9 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, window_height, blocksize, linesize, blocktime } from "../base/elements.js";
-import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker} from "../base/function.js";
-import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis } from "../base/tools.js";
+import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box} from "../base/function.js";
+import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { just_clear_yt_loop, yt_player_getter, yt_resetter } from "../multiable/extends.js";
-import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
+import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, edit_mode_default_adjust, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
 import { wheel_positioning } from "../stylable/function.js";
 import { adjust_target_pos } from "../ms/function.js";
 
@@ -233,7 +233,9 @@ window.addEventListener("keydown", (e)=>{
             // 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
             orange_data = orange_pointer_make(new_see, orange_data); 
             new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
-            wheel_positioning();
+
+            // 「see」ラインを画面中央に配置.
+            edit_mode_default_adjust(new_see);
         }
     }
 
@@ -338,15 +340,20 @@ window.addEventListener("keydown", (e)=>{
 
                 // ポインターによる上下左右移動の処理.
                 if (k == "ArrowUp") {
-                    if (the_see_centering.previousElementSibling) {
-                        if (the_see_centering.previousElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
-                            var the_see_centering_height = the_see_centering.clientHeight;
-                            let orange_pointer_space = the_see_centering.previousElementSibling.firstElementChild.firstElementChild;
+                    let the_countingstart_top = elem_post_getter(the_see_centering);
+                    // スクロール位置の調整のため現在地を控えておく.
+                    let the_countingnow_pos = the_see_centering.getBoundingClientRect().top;
+                    while (the_countingstart_top >= 1) {
+                        if (new_layer.children[the_countingstart_top].previousElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
+                            
+                            // もとのthe_see_centeringからクラスを外す.
+                            the_see_centering.classList.toggle("see");
+                            // 更新.
+                            the_see_centering = new_layer.children[the_countingstart_top];
 
-                            new_layer.scrollTo({
-                                top: - the_see_centering_height,
-                                behavior: "smooth",
-                            })
+                            console.log("did!");
+
+                            let orange_pointer_space = the_see_centering.previousElementSibling.firstElementChild.firstElementChild;
                             
                             comesin_management("top", centering, the_see_centering);
 
@@ -360,14 +367,27 @@ window.addEventListener("keydown", (e)=>{
                             let the_gap = target_data(document.querySelector(".comesin"), "scroll_left_") - default_distance;
                             all_view_changer(the_see_centering.previousElementSibling, the_gap);
                             principle_management(the_see_centering.previousElementSibling, "principle_pointer");
-                            the_see_centering.classList.toggle("see");
-                            the_see_centering.previousElementSibling.classList.toggle("see");
                             let nextstep = best_related_element(the_see_centering.previousElementSibling, orange_pointer_space.scrollLeft, "block", orange_data);
+
+                            // 再度更新.
+                            the_see_centering.previousElementSibling.classList.toggle("see");
+                            the_see_centering = the_see_centering.previousElementSibling;
+                            let the_see_centering_height = the_see_centering.getBoundingClientRect().top - the_countingnow_pos;
+
+                            console.log(the_see_centering_height);
+                            
+                            // edit モードでは「see」ラインの高さを固定したい狙い.
+                            console.log(the_see_centering_height);
+                            scrollBy(0, the_see_centering_height);
+                            wheel_positioning();
+                            
                             let new_one = nextstep[0];
                             is_it_same_series(new_one);
                             the_scrolled_distance = 0;
-                            wheel_positioning();
+
+                            break;
                         }
+                        the_countingstart_top -= 1;
                     }
                 }
                 if (k == "ArrowLeft") {
@@ -407,18 +427,24 @@ window.addEventListener("keydown", (e)=>{
                     }
                 }
                 if (k == "ArrowDown") {
-                    if (the_see_centering.nextElementSibling) {
-                        if (the_see_centering.nextElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
+                    let the_bottom_num = new_layer.childElementCount - 1;
+                    let the_countingstart_bottom = elem_post_getter(the_see_centering);
+
+                    console.log(the_countingstart_bottom);
+                    // スクロール位置の調整のため現在地を控えておく.
+                    let the_countingnow_pos = the_see_centering.getBoundingClientRect().top;
+                    while (the_countingstart_bottom < the_bottom_num) {
+                        if (new_layer.children[the_countingstart_bottom].nextElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
+                            
+                            // もとのthe_see_centeringからクラスを外す.
+                            the_see_centering.classList.toggle("see");
+                            // 更新.
+                            the_see_centering = new_layer.children[the_countingstart_bottom];
+                            console.log("did!");
 
                             let orange_pointer_space = the_see_centering.nextElementSibling.firstElementChild.firstElementChild;
-                            var the_see_centering_height = the_see_centering.clientHeight;
                             orange_data = pre_pointing_in(the_see_centering, orange_data);
                             orange_data = pre_pointing_out(the_see_centering, the_see_centering.nextElementSibling, orange_data);
-            
-                            new_layer.scrollTo({
-                                top: the_see_centering_height,
-                                behavior: "smooth",
-                            })
                         
                             comesin_management("bottom", centering, the_see_centering);
                         
@@ -430,14 +456,25 @@ window.addEventListener("keydown", (e)=>{
                             let the_gap = target_data(document.querySelector(".comesin"), "scroll_left_") - default_distance;
                             all_view_changer(the_see_centering.nextElementSibling, the_gap);
                             principle_management(the_see_centering.nextElementSibling, "principle_pointer");
-                            the_see_centering.classList.toggle("see");
-                            the_see_centering.nextElementSibling.classList.toggle("see");
                             let nextstep = best_related_element(the_see_centering.nextElementSibling, orange_pointer_space.scrollLeft, "block", orange_data);
+                            // 再度更新.
+                            the_see_centering.nextElementSibling.classList.toggle("see");
+                            the_see_centering = the_see_centering.nextElementSibling;
+                            let the_see_centering_height = the_see_centering.getBoundingClientRect().top - the_countingnow_pos;
+                            
+                            // edit モードでは「see」ラインの高さを固定したい狙い.
+                            console.log(the_see_centering_height);
+                            scrollBy(0, the_see_centering_height);
+                            wheel_positioning();
+                            
+                            console.log(the_see_centering_height);
                             let new_one = nextstep[0];
                             is_it_same_series(new_one);
-                            wheel_positioning();
                             the_scrolled_distance = 0;
+
+                            break;
                         }
+                        the_countingstart_bottom += 1;
                     }
                 }
             }
@@ -525,7 +562,6 @@ window.addEventListener("keydown", (e)=>{
                                             }, 1000)
                                         }
                                     }
-        
                                 } else {
                                     clearTimeout(timeoutArray.shift()); 
                                 }
@@ -892,8 +928,7 @@ window.addEventListener("keydown", (e)=>{
             bo.classList.remove("edit_mode");
             screen.style.display = "block";
             let final_centering = document.querySelector(".centering");
-            wheel_positioning(final_centering);
-            
+            wheel_positioning();
             // 編集直後のMS起動への対策.
             is_it_same_series(final_centering);
         }

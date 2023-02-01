@@ -43,13 +43,19 @@ export const layer_resetter = () => {
 export const wheel_positioning = () => {
   let centering;
   if (screen.classList.contains("edit")) {
-    if (document.getElementsByClassName("principle_block")[0]) {
-      centering = document.querySelector(".new_layer_centering");
-    } else if (document.getElementsByClassName("principle_pointer")[0]) {
-      centering = document.querySelector(".comesin");
+    if (document.getElementsByClassName("see")[0]) {
+      let seeing = document.getElementsByClassName("see")[0];
+      if (seeing.classList.contains("principle_block")) {
+        console.log("block mode!")
+        centering = document.getElementsByClassName("new_layer_centering")[0];
+      } else if (seeing.classList.contains("principle_pointer")) {
+        console.log("pointer mode!")
+        centering = document.getElementsByClassName("comesin")[0];
+      }
     }
   } else {
-    centering = document.querySelector(".centering");
+    console.log("default mode!")
+    centering = document.getElementsByClassName("centering")[0];
   }
   let the_focus_top = centering.getBoundingClientRect().top;
   let the_focus_left = centering.getBoundingClientRect().left;
