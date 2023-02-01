@@ -1,7 +1,7 @@
 import { all_view_changer } from "../editable/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_middline, the_sunsetline, blocksize, blocktime } from "./elements.js";
-import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
+import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, which_special_is } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
 
 let magic_elms = new Array();
@@ -152,9 +152,7 @@ export const special_cleaner = (e) => {
     let ends = document.querySelectorAll(".same_end");
     for (let i = 0; i < ends.length; i++) {
         if (vertical_to_sp_cover(ends[i]).isEqualNode(e)) {
-            let the_name = "this_cov_is_" + target_data(ends[i], "same_num_");
-            let the_special_cov = document.getElementsByClassName(the_name)[0];
-            
+            let the_special_cov = which_special_is(ends[i]);
             if (the_special_cov) {
                 let cont = the_special_cov.lastElementChild.cloneNode(true);
                 ends[i].lastElementChild.remove();

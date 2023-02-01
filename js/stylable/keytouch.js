@@ -2,6 +2,7 @@ import { screen } from "../base/elements.js";
 import { layer_resetter, wheel_seton } from "./function.js";
 import { adjust_target_pos } from "../ms/function.js";
 import { focus_checker } from "../base/function.js";
+import { target_data, which_special_is } from "../base/tools.js";
 
 const wheel = document.querySelector(".wheel");
 const the_pointer = document.querySelector(".pointer");
@@ -12,7 +13,11 @@ document.addEventListener("keydown", (e) => {
     let current = document.activeElement;
     let k = e.key;
     let type_signiture;
-    let centering = document.querySelector(".centering");
+    let centering = document.querySelector(".centering");;
+
+    if (centering.classList.contains("same")) {
+      centering = which_special_is(centering);
+    } 
     
     if (current.tagName == "TEXTAREA") {
         type_signiture = current.value;

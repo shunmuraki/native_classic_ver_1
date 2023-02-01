@@ -1,5 +1,6 @@
 import { screen } from "../base/elements.js";
 import { adjust_target_pos } from "./function.js";
+import { target_data, which_special_is } from "../base/tools.js";
 
 let ms_adjust_target;
 
@@ -29,7 +30,7 @@ window.addEventListener("keydown", (e)=>{
               // special_cov がなかったからエラーになってる.
               // 確かに編集直後とかは存在しないのかもしれないね...... 想定外.
               // * シンプルに先に make_special_cov() を走らせたらどうか. 
-              ms_adjust_target = document.querySelector(".special_cov").lastElementChild;
+              ms_adjust_target = which_special_is(centering).lastElementChild;
               ms_adjust_target.before(ms);
 
             } else {

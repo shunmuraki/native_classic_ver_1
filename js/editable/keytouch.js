@@ -1,6 +1,6 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, window_height, blocksize, linesize, blocktime } from "../base/elements.js";
 import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box} from "../base/function.js";
-import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter } from "../base/tools.js";
+import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter, which_special_is } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { just_clear_yt_loop, yt_player_getter, yt_resetter } from "../multiable/extends.js";
 import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, edit_mode_default_adjust, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
@@ -488,8 +488,7 @@ window.addEventListener("keydown", (e)=>{
                     let scrap = vertical_to_sp_cover(centering);
                     let hor = vertical_to_hor(centering);
                     let the_seeking_time;
-                    let sp_name = "this_cov_is_" + target_data(centering, "same_num_");
-        
+
                     // * この取り方はどうも推奨できない.
                     let special_cov = null;
                     let player; 
@@ -497,7 +496,7 @@ window.addEventListener("keydown", (e)=>{
                     let pause_when;
 
                     if (centering.classList.contains("same")) {
-                        special_cov = document.getElementsByClassName("this_cov_is_" + target_data(centering, "same_num_"))[0];
+                        special_cov = which_special_is(centering);
                     }
         
                     if (special_cov) {
@@ -530,12 +529,11 @@ window.addEventListener("keydown", (e)=>{
                                     the_timeout();
         
                                     centering = document.getElementsByClassName("new_layer_centering")[0];
-                                    sp_name = "this_cov_is_" + target_data(centering, "same_num_");
                                     
                                     if (special_cov) {
-                                        if (! special_cov.isEqualNode(document.getElementsByClassName(sp_name)[0])) {
+                                        if (! special_cov.isEqualNode(which_special_is(centering))) {
                                             // 新しいspecial_covが台頭する時.
-                                            special_cov = document.getElementsByClassName(sp_name)[0];
+                                            special_cov = which_special_is(centering);                                            
 
                                             clearTimeout(timeoutArray.shift());
                                             clearInterval(intervalArray.shift());

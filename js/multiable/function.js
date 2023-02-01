@@ -1,5 +1,5 @@
 import { screen, half_left_width, blocksize } from "../base/elements.js";
-import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter } from "../base/tools.js";
+import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter, which_special_is } from "../base/tools.js";
 import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper, just_clear_yt_loop } from "./extends.js";
 
 let special_playerlist = {};
@@ -24,8 +24,8 @@ export const block_multiable = (e, f) => {
     function onYouTubeIframeAPIReady(g, h) {
         window.YT.ready(function() {
             player = new window.YT.Player(g, {
-                height: '225',
                 width: blocksize,
+                height: '202.5',
                 videoId: h,
                 events: {
                 'onReady': onPlayerReady,
@@ -94,8 +94,7 @@ export const is_it_same_start = (e) => {
     // special_cov の生成からコンテントの挿入までを処理.
     if (e.classList.contains("same")) {
 
-        let the_num = target_data(e, "same_num_");
-        let special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];
+        let special_cov = which_special_is(e);
 
         function the_state() {
             let the_name = "same_num_" + the_num;
@@ -111,13 +110,22 @@ export const is_it_same_start = (e) => {
                     let the_keyname = String("yt_editor_" + s_n);
                     let the_sp_if = document.createElement("div");
                     the_sp_if.setAttribute("id", the_keyname); 
+                    classmover(hit_target.lastElementChild, the_sp_if, "styling_", "add");
                     special_cov.appendChild(the_sp_if);
                     let pl = block_multiable(the_keyname, the_code);
                     special_playerlist[the_keyname] = pl;
 
+                    // スタイル維持のため.
+                    special_cov.classList.add("video");
+
                 } else {
                     let the_one = hit_target.lastElementChild.cloneNode(true);
                     special_cov.appendChild(the_one);
+
+                    if (the_one.tagName == "IMG") {
+                        // スタイル維持のため.
+                        special_cov.classList.add("img");
+                    }
                 }
                 hit_target.lastElementChild.style.setProperty('opacity', 0, 'important');
             }
@@ -155,8 +163,7 @@ export const is_it_same_alend = (e) => {
     let the_target_right = e.nextElementSibling;
 
     function the_state(e) {
-        let the_name = "this_cov_is_" + target_data(e, "same_num_");
-        let the_special_cov = document.getElementsByClassName(the_name)[0];
+        let the_special_cov = which_special_is(e);
         let content = null;
 
         // 削除する前に same_start が右隣の場合にコンテントを一時的に same_startへ移してあげる.

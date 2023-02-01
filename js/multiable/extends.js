@@ -78,8 +78,9 @@ export const video_load_then = (e, f) => {
     let the_add_box = document.createElement("div");
     the_add_box.setAttribute("id",the_id_name);
 
-    // contentが textarea から img, video に置換されるためスタリングもここで変更.
     the_add_box.classList.add("styling_1_1_1_1");
+
+    // contentが textarea から img, video に置換されるためスタリングもここで変更.
     the_box.appendChild(the_add_box);
 
     let pl = block_multiable(the_id_name, the_code);

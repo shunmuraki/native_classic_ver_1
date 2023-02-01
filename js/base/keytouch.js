@@ -15,7 +15,7 @@ window.addEventListener("keydown", (e)=>{
         if (document.activeElement.tagName != "BODY") {
             current = document.activeElement;
             type_signiture = current.value;
-            current_vertical = current.parentElement;
+            current_vertical = document.querySelector(".centering");
 
             if (document.activeElement.classList.contains("ms_area") == false) {
                 current.style.height = 24 + 'px';
