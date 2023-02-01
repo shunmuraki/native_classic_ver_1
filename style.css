@@ -337,13 +337,19 @@ p, span, a {
   border-right: 3px solid #1a1a1a;
 }
 .um_display .relative .flex .null_f {
-  background-image: url("img/um_box.png");
   background-size: cover;
   background-position: 50% 50%;
   display: inline-block;
   min-width: 360px;
   min-height: 200px;
   box-sizing: border-box;
+  box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #171717 !important;
+}
+.um_display .relative .flex .video_null {
+  background-image: url("img/um_box_1.png");
+}
+.um_display .relative .flex .audio_null {
+  background-image: url("img/um_box_2.png");
 }
 .um_display .relative .um_audio, .um_display .relative .um_image, .um_display .relative .um_video {
   border-top: 3px solid #1a1a1a;
@@ -471,6 +477,7 @@ p, span, a {
   background-image: url("img/img_box.png");
   background-size: cover;
   background-position: 50% 50%;
+  box-shadow: inset 5px 5px 12px #0a0a0a, inset -5px -5px 12px #171717 !important;
 }
 .block_layer .sp_cover .sp .horizontal .vertical .video_input {
   background-color: purple;
