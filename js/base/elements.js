@@ -37,31 +37,31 @@ csb.classList.add("off");
 
 csb.addEventListener("click", () => {
     let centering = document.querySelector(".centering");
-    blur_checker(centering);
     if (csb.classList.contains("on")) {
         cs.animate(
             [
                 { top: '0%' },
                 { top: '100%' }
             ], {
-            duration: 800,
+            duration: 500,
             fill: "forwards",
             easing: "ease-in-out"
             }
         );
+        focus_checker(centering);
     } else if (csb.classList.contains("off")) {
+        blur_checker(centering);
         cs.animate(
             [
             { top: '100%' },
             { top: '0%' }
             ], {
-            duration: 800,
+            duration: 600,
             fill: "forwards",
             easing: "ease-in-out"
-            }
+        }
         );
     }
-    focus_checker(centering);
     csb.classList.toggle("on");
     csb.classList.toggle("off");
 })
