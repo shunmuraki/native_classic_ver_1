@@ -23,7 +23,7 @@ export const yt_player_getter = (e) => {
 }
 
 // yt のプレイヤーのシークポイントを最適化する関数.
-export const yt_resetter = () => {
+export const yt_resetter = (e) => {
     let target;
     if (screen.classList.contains("edit")) {
         let the_see_centering = document.querySelector(".see");
@@ -35,8 +35,9 @@ export const yt_resetter = () => {
             target = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data)[0];
           }
     } else {
-        target = document.querySelector(".centering");
+        target = e;
     }
+
     let the_time = Number(target_data(target, "this_video_st_"));
     return the_time;
 }
@@ -108,6 +109,10 @@ export const video_load_then = (e, f) => {
         the_will_copied.classList.add("same");
         the_will_copied.classList.add("video");
         the_will_copied.classList.add(the_name);
+
+        // Escape後にiframeが復活するように id_is_ を複製したすべてにセット.
+        let the_id_name = "id_is_" + the_code;
+        the_will_copied.classList.add(the_id_name);
     
         // 動画の尺 / 3　分のブロックが必要であるため算出.
         let the_block_num = Math.floor(the_duration / blocktime);
@@ -160,6 +165,5 @@ export const video_load_then = (e, f) => {
 
         let after_distance = blocksize * (the_block_num);
         all_view_changer(current_sp_cover, after_distance);
-
     }, 1500);
 }

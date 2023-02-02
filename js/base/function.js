@@ -155,7 +155,9 @@ export const special_cleaner = (e) => {
             let the_special_cov = which_special_is(ends[i]);
             if (the_special_cov) {
                 let cont = the_special_cov.lastElementChild.cloneNode(true);
-                ends[i].lastElementChild.remove();
+                if (ends[i].lastElementChild) {
+                    ends[i].lastElementChild.remove();
+                }
                 ends[i].appendChild(cont);
                 the_special_cov.remove();
             }

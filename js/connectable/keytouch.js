@@ -117,11 +117,14 @@ window.addEventListener("keydown", (e)=>{
                                 classmover(children_block[i], children_block[i], the_name_list[o], "remove");
                             }
 
-                            children_block[i].lastElementChild.remove();
+                            if (children_block[i].lastElementChild) {
+                                children_block[i].lastElementChild.remove();
+                            }
                             let new_textarea = document.createElement("textarea");
                             new_textarea.classList.add("write_area")
                             new_textarea.classList.add("styling_1_1_0_1");
                             children_block[i].appendChild(new_textarea);
+                            children_block[i].style.height = 66 + "px";
                             
                             if (i <= the_this_loop_endpoint) {
                                 let the_content_disi = i - the_triumph_tops + the_centering_num;
@@ -134,6 +137,10 @@ window.addEventListener("keydown", (e)=>{
                                     
                                     for (let o = 0; o < the_name_list.length; o++) {
                                         classmover(old_block, children_block[i], the_name_list[o], "add");
+
+                                        // 表示上のスタイルも引き継ぐ.
+                                        let s_h = getComputedStyle(old_block);
+                                        children_block[i].style.height = s_h.height;
                                     }
 
                                     children_block[i].lastElementChild.remove();
@@ -188,6 +195,7 @@ window.addEventListener("keydown", (e)=>{
                             last_one.lastElementChild.value = last_one.lastElementChild.value.slice(0, -1);
                         }, 10)
                     }
+                    screen.classList.remove("ms");
                     
                 }
             }

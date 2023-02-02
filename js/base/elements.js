@@ -18,7 +18,7 @@ export const full_end_scrollwidth = default_length - the_c + blocksize;
 export const half_left_width = the_a;
 export const half_right_width = the_c;
 
-export const the_name_list = ['same_start', 'same_end', 'same_num_', 'same', 'actuar_time_', 'actuar_st', 'actuar_en', 'this_video_st', 'this_video_en', "video", "img", "id_is"];
+export const the_name_list = ['same_start', 'same_end', 'same_num_', 'same', 'actuar_time_', 'actuar_st', 'actuar_en', 'this_video_st', 'this_video_en', "video", "img", "id_is_"];
 
 export const window_height = window.innerHeight;
 export const the_middline = window_height * 0.5;

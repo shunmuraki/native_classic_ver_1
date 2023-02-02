@@ -23,7 +23,7 @@ let yt_id_list = [];
 let caset = document.createDocumentFragment();
 
 // ページ遷移アニメーション.
-let button = document.querySelector(".export_button");
+let button = document.querySelector(".download_button");
 let contents = document.querySelector(".contents");
 
 let rc = document.querySelector(".redirect_cover");

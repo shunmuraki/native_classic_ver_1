@@ -1,4 +1,4 @@
-import { half_left_width, blocksize } from "../base/elements.js";
+import { screen, half_left_width, blocksize } from "../base/elements.js";
 import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter, which_special_is } from "../base/tools.js";
 import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper, just_clear_yt_loop } from "./extends.js";
 
@@ -110,6 +110,7 @@ export const is_it_same_start = (e) => {
                     let the_keyname = String("yt_editor_" + s_n);
                     let the_sp_if = document.createElement("div");
                     the_sp_if.setAttribute("id", the_keyname); 
+                    
                     classmover(hit_target.lastElementChild, the_sp_if, "styling_", "add");
                     special_cov.appendChild(the_sp_if);
                     let pl = block_multiable(the_keyname, the_code);
@@ -118,6 +119,9 @@ export const is_it_same_start = (e) => {
                     // スタイル維持のため.
                     special_cov.classList.add("video");
 
+                    // Escape後にiframeが復活するように id_is_ を複製したすべてにセット.
+                    special_cov.classList.add("id_is_" + the_code);
+
                 } else {
                     let the_one = hit_target.lastElementChild.cloneNode(true);
                     special_cov.appendChild(the_one);
@@ -125,6 +129,7 @@ export const is_it_same_start = (e) => {
                     if (the_one.tagName == "IMG") {
                         // スタイル維持のため.
                         special_cov.classList.add("img");
+                        special_cov.style.height = 225 + "px";
                     }
                 }
                 hit_target.lastElementChild.style.setProperty('opacity', 0, 'important');
@@ -137,19 +142,28 @@ export const is_it_same_start = (e) => {
         }
         
         let player;
+
+        function play_around() {
+            if (player) {
+                just_clear_yt_loop();
+                setTimeout(() => {
+                    let the_time = yt_resetter(e);
+                    player.seekTo(the_time);
+                    player.playVideo();
+                    yt_loop_player(player);
+                }, 1000)
+            }
+        }
+
         // dupブロックであるケースを配慮.
         if (special_cov.lastElementChild) {
             player = yt_player_getter(special_cov.lastElementChild);
-            if (document.querySelector(".pausing")) {
-                if (player) {
-                    just_clear_yt_loop();
-                    setTimeout(() => {
-                        let the_time = yt_resetter();
-                        player.seekTo(the_time);
-                        player.playVideo();
-                        yt_loop_player(player);
-                    }, 1000)
+            if (screen.classList.contains("edit")) {
+                if (document.querySelector(".pausing")) {
+                    play_around();
                 }
+            } else {
+                play_around();
             }
         }
     }
@@ -277,11 +291,14 @@ export const same_cutter = (e, f) => {
                 
                 let spe_cont = document.querySelector(".special_cov").lastElementChild;
                 the_target_left.classList.add("same_end");
+                if (spe_cont.tagName == "IMG") {
+                    the_target_left.style.height = 225 + "px";
+                }
                 the_target_left.appendChild(spe_cont);
                 the_target_right.classList.add("same_start");
                 let same_name = "same_num_" + target_data(the_target_right, "same_num_");
 
-                // * same_start　以降の same_num_ を更新.
+                // same_start　以降の same_num_ を更新.
                 let sames = document.getElementsByClassName(same_name);
                 let breakpoint = [].slice.call(sames).indexOf(the_target_right);
                 

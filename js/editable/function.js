@@ -497,9 +497,10 @@ export const comesin_management = (e, f, g) => {
 
 // センタリングしているブロックの位置から window のスクロール位置を調整する関数.
 export const edit_mode_default_adjust = (e) => {
-    let the_up_comming = (window_height - e.clientHeight) / 2;
-    if (window_height - e.getBoundingClientRect().bottom < the_up_comming) {
-        let the_adjust_num = the_up_comming + e.getBoundingClientRect().bottom - window_height;
+    let editor_height = window_height - 100;
+    let the_up_comming = (editor_height - e.clientHeight) / 2;
+    if (editor_height - e.getBoundingClientRect().bottom < the_up_comming) {
+        let the_adjust_num = the_up_comming + e.getBoundingClientRect().bottom - editor_height;
         scrollBy(0, the_adjust_num);
         wheel_positioning();
     }

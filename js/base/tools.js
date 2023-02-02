@@ -120,7 +120,9 @@ export const same_change_tracer = (e) => {
 
             if (special_cov) {
                 let specon_cloned = special_cov.lastElementChild.cloneNode(true);
-                e.previousElementSibling.lastElementChild.remove();
+                if (e.previousElementSibling.lastElementChild) {
+                    e.previousElementSibling.lastElementChild.remove();
+                }
                 e.previousElementSibling.appendChild(specon_cloned);
             }
         }

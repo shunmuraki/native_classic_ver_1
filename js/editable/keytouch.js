@@ -1,5 +1,5 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, blocksize, linesize, blocktime } from "../base/elements.js";
-import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker} from "../base/function.js";
+import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box} from "../base/function.js";
 import { vertical_to_hor, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter, which_special_is } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { just_clear_yt_loop, yt_player_getter, yt_resetter } from "../multiable/extends.js";
@@ -134,12 +134,12 @@ window.addEventListener("keydown", (e)=>{
                             hor_side = 0;
                         } else if (ver_side > 0 && hor_side == 0) {
                             ver_side -= 1;
-                            hor_side = 9;
+                            hor_side = 23;
                         } else {
                             hor_side -= 1;
                         }
                         
-                        new_layer.children[ver_side].children[i + 1].lastElementChild.children[linesize].classList.add("you!!!");
+                        new_layer.children[ver_side].children[i + 1].lastElementChild.children[linesize].classList.add("you");
                         
                         // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
                         let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];
@@ -173,7 +173,7 @@ window.addEventListener("keydown", (e)=>{
                             the_target_start.classList.add("same_start");
                         }
                         if (the_target_end.classList.contains("same") && the_target_end.classList.contains("same_end") == false) {
-                            the_target_end.classList.add("same_end");
+                            the_target_end.classList.add("same_end"); 
                         }
                     }
                 }
@@ -724,7 +724,7 @@ window.addEventListener("keydown", (e)=>{
                 // 編集していた もともとの sp_coverを取得. 
                 let original_sp_cover = document.querySelector(".target_of_edition");
 
-                // * 最初に sp_coverをクリーンアップ。
+                // 最初に sp_coverをクリーンアップ。
                 for (let i = 0; i < original_sp_cover.children.length; i++) {
                     let vers = original_sp_cover.children[i].lastElementChild.children;
                     for (let o = vers.length - 1; o >= 0 ; o--) {
@@ -921,7 +921,9 @@ window.addEventListener("keydown", (e)=>{
             let final_centering = document.querySelector(".centering");
             // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
             focus_checker(final_centering);
-            wheel_positioning();
+            let the_e_n = final_centering.getBoundingClientRect().top + window.pageYOffset - (window.innerHeight * 0.6);
+            scrollBy(0, - the_e_n);
+
             // 編集直後のMS起動への対策.
             is_it_same_series(final_centering);
         }
