@@ -1,4 +1,4 @@
-import { screen, half_left_width, blocksize } from "../base/elements.js";
+import { half_left_width, blocksize } from "../base/elements.js";
 import { target_data, vertical_to_sp_cover, vertical_to_hor, classmover, same_data_getter, same_data_counter, which_special_is } from "../base/tools.js";
 import { yt_player_getter, yt_resetter, yt_loop_player, yt_loop_stopper, just_clear_yt_loop } from "./extends.js";
 
@@ -13,7 +13,6 @@ export const special_playlist_getter = () => {
 
 // yt iframe　の読み込み
 export const block_multiable = (e, f) => {
-
     let the_box = document.getElementById(e).parentElement;
     the_box.style.height = 225 + "px";
     the_box.classList.add("video");

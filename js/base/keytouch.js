@@ -1,4 +1,4 @@
-import { screen, window_height, the_middline, blocksize } from "../base/elements.js";
+import { screen, blocksize } from "../base/elements.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, the_magic_copy, the_magic_paste, adjust_box } from "./function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";

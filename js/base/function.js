@@ -1,6 +1,6 @@
 import { all_view_changer } from "../editable/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
-import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_middline, the_sunsetline, blocksize, blocktime } from "./elements.js";
+import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_sunsetline, blocksize, blocktime } from "./elements.js";
 import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, which_special_is } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
 
@@ -256,8 +256,6 @@ export const go_bottom = (e, f) => {
 
             // * ここが改良ポイントになるかも.
             if (sibling_height > to_the_distance) {
-                console.log(sibling_height);
-                console.log(to_the_distance);
                 scrollBy(0, your_height);
             } 
             wheel_positioning();
@@ -273,7 +271,6 @@ export const go_bottom = (e, f) => {
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);            
-            
             special_cleaner(vertical_to_sp_cover(ver));
             
             // edit モードは「see」ラインの位置を固定したい狙い.
@@ -289,7 +286,6 @@ export const go_bottom = (e, f) => {
 export const go_left = (e, f) => {
     go_af_scroll();
     let ver = e;
-    // 中身が存在するかどうかでadjusterかどうかの判定を行っている.
     if (ver.previousElementSibling) {
         if (! ver.previousElementSibling.classList.contains("adjuster")) {
             blur_checker(ver);
@@ -312,7 +308,6 @@ export const go_left = (e, f) => {
 export const go_right = (e, f) => {
     go_af_scroll();
     let ver = e;
-
     if (ver.nextElementSibling) {
         blur_checker(ver);
         let sp_cover = vertical_to_sp_cover(ver);   
@@ -337,7 +332,7 @@ export const the_magic_copy = (e) => {
     // 以降に残っているものを、動画に限らず全部コピー.
     let sp_cover = vertical_to_sp_cover(e);
     let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
-    // - 各spごとにコピーして以前のブロックをまとめて削除してラインfragmentとして変数に格納しておく.
+    // 各spごとにコピーして以前のブロックをまとめて削除してラインfragmentとして変数に格納しておく.
     for (let i = 0; i < sp_cover.childElementCount; i++) {
         let line = sp_cover.children[i].lastElementChild.children;
         let new_folder = new Array();

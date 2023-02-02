@@ -1,7 +1,6 @@
-// * command = K
 import { blocksize, screen } from "../base/elements.js"
-import { same_data_getter, target_data, vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, same_data_counter, classmover, which_special_is } from "../base/tools.js";
-import { make_fragment, make_ver_fragment, make_dup_fragment , go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, focus_checker, blur_checker } from "../base/function.js";
+import { same_data_getter, vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, same_data_counter, which_special_is } from "../base/tools.js";
+import { make_ver_fragment, make_dup_fragment, original_centering_checker, focus_checker, blur_checker } from "../base/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { adjust_target_pos } from "../ms/function.js";
 
@@ -112,7 +111,6 @@ window.addEventListener("keydown", (e)=>{
 
       // ind コマンドの処理.
       if ( type_signiture.indexOf('in') != -1) {
-
         document.querySelector(".ms_area").remove();
         let centering = document.querySelector(".centering");
         // same群の中で　command + u をした場合に same が２つに分裂するのと近いため、処理を same_cutter に共通化してある.

@@ -1,6 +1,6 @@
 import { screen, blocksize, blocktime } from "../base/elements.js";
 import { same_data_counter, same_data_getter, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
-import { make_ver_fragment, make_dup_fragment } from "../base/function.js";
+import { make_dup_fragment } from "../base/function.js";
 import { all_view_changer, best_related_element } from "../editable/function.js";
 import { block_multiable, special_playlist_getter } from "./function.js";
 import { orange_data_getter } from "../editable/keytouch.js";
@@ -28,7 +28,6 @@ export const yt_resetter = () => {
     if (screen.classList.contains("edit")) {
         let the_see_centering = document.querySelector(".see");
         if (the_see_centering.classList.contains("principle_block")) {
-            console.log("block mode!")
             target = document.getElementsByClassName("new_layer_centering")[0];
           } else if (the_see_centering.classList.contains("principle_pointer")) {
             let orange_data = orange_data_getter();
@@ -128,11 +127,12 @@ export const video_load_then = (e, f) => {
             }
             // 本ライン用fragmentの生成
             the_fragment.appendChild(the_newone); 
-            // * 本ライン以外が対象のfragmentの生成
+            // 本ライン以外が対象のfragmentの生成
             let the_newone_stable = the_will_copied.cloneNode(true);
             the_fragment_stable.appendChild(the_newone_stable);
         }
         the_will_copied.remove();
+        
         // 最後の中身を伴うsameには終点を与える.
         let the_v_en_name = "this_video_st_" + the_duration;
         

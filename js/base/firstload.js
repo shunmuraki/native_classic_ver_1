@@ -1,5 +1,5 @@
+import { screen, window_height } from "../base/elements.js";
 import { focus_checker, make_fragment } from "./function.js";
-import { screen, the_middline, the_sunsetline, window_height } from "../base/elements.js";
 import { wheel_positioning } from "../stylable/function.js";
 
 let all_writearea = document.getElementsByClassName("write_area");
@@ -11,7 +11,6 @@ screen.appendChild(damee);
 
 (function () {
     if (sessionStorage.getItem("output")) {
-
         // 以下 export.htmlから回帰したケースへの対応.
         let doms = sessionStorage.getItem("output");
         screen.innerHTML = doms;

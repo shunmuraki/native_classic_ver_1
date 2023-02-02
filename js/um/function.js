@@ -80,7 +80,7 @@ for (let i = 0; i < 10; i++) {
   audio_panc.after(container);
 }
 
-// * デフォルトの設定.
+// デフォルトの設定.
 audio_list.lastElementChild.classList.add("um_centering");
 
 // ** 以下デフォルトのスクロール位置の調整。

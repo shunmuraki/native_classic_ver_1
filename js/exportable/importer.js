@@ -10,7 +10,6 @@ export function target_data(e, f) {
     return the_num;
 }
 
-
 const zip = new JSZip();
 
 let the_html = "";
@@ -28,8 +27,6 @@ let button = document.querySelector(".export_button");
 let contents = document.querySelector(".contents");
 
 let rc = document.querySelector(".redirect_cover");
-
-console.log(rc);
 rc.style.top = 0 + "%";
 
 contents.animate(
@@ -248,7 +245,6 @@ function generationdata_setup(e, f) {
     
     return final_data;
 }
-
 
 // 土台のanimationを作る関数 (VIDEOを除く)
 function base_setup(e, f, g) {

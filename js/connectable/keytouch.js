@@ -1,6 +1,6 @@
 import { screen, the_name_list, blocksize } from "../base/elements.js";
 import { focus_checker, make_ver_fragment } from "../base/function.js";
-import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
+import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp_cover } from "../base/tools.js";
 import { adjust_target_pos } from "../ms/function.js";
 
 window.addEventListener("keydown", (e)=>{
@@ -155,9 +155,7 @@ window.addEventListener("keydown", (e)=>{
                     
                     // sp_cover 内のスタイリングのため.
                     the_sp_cover_a.classList.add("connected");
-                
-                    // あとなんか番号を教えてほしいみたいだよ。
-                    // * デフォルトで　０　をつけてあげなくちゃ！　→ ってことは "付け替え" なのか！
+            
                     let before_in_sp_num = the_sp_cover_a.childElementCount;
                     let the_ined_name = "inner_sp_num_" + before_in_sp_num + 1;
                     sp_copied.classList.add(the_ined_name);

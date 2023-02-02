@@ -1,6 +1,6 @@
 import { screen } from "../base/elements.js";
 import { adjust_target_pos } from "./function.js";
-import { target_data, which_special_is } from "../base/tools.js";
+import { which_special_is } from "../base/tools.js";
 
 let ms_adjust_target;
 

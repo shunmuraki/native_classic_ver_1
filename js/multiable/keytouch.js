@@ -1,5 +1,4 @@
 import { screen } from "../base/elements.js";
-import { same_data_counter } from "../base/tools.js";
 import { make_it_img } from "./function.js";
 import { video_load_then } from "./extends.js";
 import { adjust_box, focus_checker } from "../base/function.js";

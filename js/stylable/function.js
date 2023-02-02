@@ -46,15 +46,12 @@ export const wheel_positioning = () => {
     if (document.getElementsByClassName("see")[0]) {
       let seeing = document.getElementsByClassName("see")[0];
       if (seeing.classList.contains("principle_block")) {
-        console.log("block mode!")
         centering = document.getElementsByClassName("new_layer_centering")[0];
       } else if (seeing.classList.contains("principle_pointer")) {
-        console.log("pointer mode!")
         centering = document.getElementsByClassName("comesin")[0];
       }
     }
   } else {
-    console.log("default mode!")
     centering = document.getElementsByClassName("centering")[0];
   }
   let the_focus_top = centering.getBoundingClientRect().top;
