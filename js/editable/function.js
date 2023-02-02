@@ -200,7 +200,7 @@ export const pre_pointing_in = (e, f) => {
 }
 
 
-// * s - f　の関係を pre_pointer_in で scrap 内は解消したものの、直下のscrapに本来は orange_sripe が全体へ続くはずなので、これを標準的なpointerの追加によってクリアする処理.
+// s - f　の関係を pre_pointer_in で scrap 内は解消したものの、直下のscrapに本来は orange_sripe が全体へ続くはずなので、これを標準的なpointerの追加によってクリアする処理.
 export const pre_pointing_out = (e, f, g) => {
 
     let orange_num = target_data(f.firstElementChild, "orange_num_");

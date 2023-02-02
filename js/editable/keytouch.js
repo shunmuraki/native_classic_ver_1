@@ -185,6 +185,9 @@ window.addEventListener("keydown", (e)=>{
             default_scrap.classList.add("see");
 
             // 移行先でのms分のスペースを調整.
+            if (layer_centering.classList.contains("same")) {
+                layer_centering = which_special_is(layer_centering);
+            }
             adjust_target_pos(layer_centering.lastElementChild, "off");
             
             layer_centering.classList.remove("new_layer_centering");
@@ -485,7 +488,7 @@ window.addEventListener("keydown", (e)=>{
                     let hor = vertical_to_hor(centering);
                     let the_seeking_time;
 
-                    // * この取り方はどうも推奨できない.
+                    // この取り方はどうも推奨できない.
                     let special_cov = null;
                     let player; 
                     let play_when;
