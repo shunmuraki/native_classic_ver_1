@@ -507,6 +507,7 @@ p, span, a {
 .new_layer .sp_cover {
   max-width: 100vw;
   z-index: 1 !important;
+  border: 1.5px solid #0a0a0a;
 }
 .new_layer .sp_cover .orange_space {
   z-index: 15;

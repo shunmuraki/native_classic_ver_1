@@ -66,7 +66,6 @@ for (let i = 0; i < 10; i++) {
   container.classList.add("this_yt_id_" + yt_videolist_ted[i]);
   let video_panc = document.querySelector(".video_panc");
   video_panc.after(container);
-
 }
 
 // UMレイヤーに画像を流し込む.
@@ -74,6 +73,7 @@ for (let i = 0; i < 10; i++) {
   let container = document.createElement("div");
   container.classList.add("box");
   let inner = document.createElement("img");
+  inner.classList.add("styling_1_1_1_1");
   inner.src = "img/ted_" + i + ".png";
   container.appendChild(inner);
   let audio_panc = document.querySelector(".audio_panc");

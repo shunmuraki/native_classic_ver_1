@@ -346,10 +346,11 @@
 }
 
 .new_layer {
-    z-index: 5000;
+    z-index: 5000; 
     .sp_cover {
         max-width: 100vw;
         z-index: 1 !important;
+        border: 1.5px solid #0a0a0a;
         .orange_space {
             z-index: 15;
             .orange_pointer_zone, .orange_stripe_zone {
@@ -359,6 +360,9 @@
         .sp {
             z-index: 1 !important;
             .horizontal {
+                .adjuster {
+                    // background-color: #000000;
+                }
                 .centering {
                     box-shadow: none !important;
                 }
@@ -374,7 +378,6 @@
         }
     }
     .see {
-        // background-color: #001120;
         box-sizing: border-box;
     }
 }

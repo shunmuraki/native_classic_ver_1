@@ -340,7 +340,7 @@ export const make_it_img = (e, m) => {
             reader.onload = function() {
             label.remove();
             uploaded_multi_media.src = reader.result;
-            }
+        }
         }, false);
     } 
 };

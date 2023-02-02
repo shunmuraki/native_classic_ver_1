@@ -1,8 +1,9 @@
 import { screen, blocksize, blocktime } from "../base/elements.js";
 import { same_data_counter, same_data_getter, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
 import { make_ver_fragment, make_dup_fragment } from "../base/function.js";
-import { all_view_changer } from "../editable/function.js";
+import { all_view_changer, best_related_element } from "../editable/function.js";
 import { block_multiable, special_playlist_getter } from "./function.js";
+import { orange_data_getter } from "../editable/keytouch.js";
 
 let players_list = {};
 let yt_loop = new Array();
@@ -25,7 +26,15 @@ export const yt_player_getter = (e) => {
 export const yt_resetter = () => {
     let target;
     if (screen.classList.contains("edit")) {
-        target = document.querySelector(".new_layer_centering");
+        let the_see_centering = document.querySelector(".see");
+        if (the_see_centering.classList.contains("principle_block")) {
+            console.log("block mode!")
+            target = document.getElementsByClassName("new_layer_centering")[0];
+          } else if (the_see_centering.classList.contains("principle_pointer")) {
+            let orange_data = orange_data_getter();
+            let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
+            target = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data)[0];
+          }
     } else {
         target = document.querySelector(".centering");
     }

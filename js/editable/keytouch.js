@@ -16,6 +16,11 @@ let orange_block_counter = 0;
 let bo = document.getElementsByTagName("BODY")[0]
 let pri_pointer = document.querySelector(".pointer");
 
+// 外部ファイルに orange_data を共有する関数.
+export const orange_data_getter = () => {
+    return orange_data;
+}
+
 window.addEventListener("keydown", (e)=>{
 
     let k = e.key;
@@ -906,9 +911,6 @@ window.addEventListener("keydown", (e)=>{
 
                 original_sp_cover.classList.remove("see");
                 original_sp_cover.classList.remove("target_of_edition");
-
-                // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
-                focus_checker(the_new_focusedblock);
             } 
             // edit モードをリセット.
             orange_data = {};
@@ -926,6 +928,8 @@ window.addEventListener("keydown", (e)=>{
             bo.classList.remove("edit_mode");
             screen.style.display = "block";
             let final_centering = document.querySelector(".centering");
+            // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
+            focus_checker(final_centering);
             wheel_positioning();
             // 編集直後のMS起動への対策.
             is_it_same_series(final_centering);
