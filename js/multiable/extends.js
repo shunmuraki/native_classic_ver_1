@@ -2,7 +2,7 @@ import { screen, blocksize, blocktime } from "../base/elements.js";
 import { same_data_counter, same_data_getter, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "../base/tools.js";
 import { make_dup_fragment } from "../base/function.js";
 import { all_view_changer, best_related_element } from "../editable/function.js";
-import { block_multiable, special_playlist_getter } from "./function.js";
+import { block_multiable, special_playlist_getter, is_it_same_series } from "./function.js";
 import { orange_data_getter } from "../editable/keytouch.js";
 
 let players_list = {};
@@ -43,8 +43,8 @@ export const yt_resetter = (e) => {
 }
 
 // センタリングしたブロックの動画をブロック分再生（or ループ再生）する関数
-export const yt_loop_player = (e) => {
-    let the_time = yt_resetter(e);
+export const yt_loop_player = (e, f) => {
+    let the_time = yt_resetter(f);
     yt_loop.push(
         setInterval(() => {
             // e.pauseVideo();
@@ -165,5 +165,6 @@ export const video_load_then = (e, f) => {
 
         let after_distance = blocksize * (the_block_num);
         all_view_changer(current_sp_cover, after_distance);
+        is_it_same_series(document.querySelector(".centering"));
     }, 1500);
 }

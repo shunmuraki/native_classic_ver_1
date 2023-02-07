@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;700&family=Lato:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap");
 html,
 body,
 div,
@@ -130,59 +131,215 @@ table {
 
 html {
   font-size: 10px;
+  background-color: #FFFBF8;
 }
 
-.margin {
-  height: 50vh;
+.native_load_cover {
+  width: 100vw;
+  height: 100vh;
+  background-color: #0070D8;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+}
+.native_load_cover::before {
+  content: "";
+  width: 80vw;
+  height: 80vw;
+  background-image: url("images/olo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 10%;
+  right: -5%;
+}
+.native_load_cover .content, .native_load_cover .desc {
+  width: 800px;
+  margin: 20vh auto 90px auto;
+}
+.native_load_cover .content h1, .native_load_cover .content h3, .native_load_cover .content p, .native_load_cover .content a, .native_load_cover .desc h1, .native_load_cover .desc h3, .native_load_cover .desc p, .native_load_cover .desc a {
+  font-family: "Josefin Sans";
+  color: #ffffff;
+}
+.native_load_cover .content h1, .native_load_cover .content h3, .native_load_cover .desc h1, .native_load_cover .desc h3 {
+  font-size: 3rem;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  font-weight: 300;
+  margin: 0 0 50px 0;
+}
+.native_load_cover .content p, .native_load_cover .content a, .native_load_cover .desc p, .native_load_cover .desc a {
+  font-size: 1.5rem;
+  line-height: 2.1;
+  width: 600px;
+  letter-spacing: 0.09em;
+  font-weight: 300;
+}
+.native_load_cover .content .box, .native_load_cover .desc .box {
+  margin: 40px 0 0 0;
+  width: 100%;
+}
+.native_load_cover .content .box .flex, .native_load_cover .desc .box .flex {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.native_load_cover .content .box .flex img, .native_load_cover .desc .box .flex img {
+  margin: 0 20px 0 0;
+  width: 48px;
+}
+.native_load_cover .content .box .flex .texts h3, .native_load_cover .desc .box .flex .texts h3 {
+  font-size: 1.6rem;
+  margin: 0 0 10px 0;
+}
+.native_load_cover .content .box .flex .texts h3 span, .native_load_cover .desc .box .flex .texts h3 span {
+  display: block;
+  font-size: 1rem;
+  margin: 5px 0 0 0;
+}
+.native_load_cover .content .box .flex .texts a, .native_load_cover .desc .box .flex .texts a {
+  opacity: 0.7;
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+}
+.native_load_cover .loading {
+  width: 100%;
+}
+.native_load_cover .loading img {
+  display: block;
+  margin: 0 auto;
+  width: 50px;
+}
+.native_load_cover .desc {
+  position: absolute;
+  margin: 30px auto 0 auto;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.native_load_cover .desc p {
+  font-size: 1rem;
+  opacity: 0.6;
+}
+.native_load_cover .desc p a {
+  font-size: 1rem;
 }
 
 .section {
   width: 100vw;
   display: block;
   margin: 0 auto;
+  transform-origin: top;
+  color: #1f1f1f;
 }
-.section .video {
-  width: 500px;
-  margin: 0 auto;
+.section h2, .section p {
+  font-family: "Noto Sans JP", sans-serif, "Lato", sans-serif;
 }
-.section .video video {
-  width: 100%;
-}
-.section .image {
-  width: 500px;
-  margin: 0 auto;
-}
-.section .image img {
-  width: 100%;
+.section h2 {
+  font-size: 2.5rem;
+  line-height: 1.7;
+  width: 600px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin: 30px auto 20px auto;
 }
 .section p {
-  font-size: 15px;
+  font-size: 1.4rem;
   line-height: 2;
-  width: 500px;
-  margin: 0 auto;
+  width: 600px;
+  letter-spacing: 0.08em;
+  font-weight: 400;
+  margin: 0 auto 15px auto;
 }
 
 .linear {
   position: relative;
   width: 100vw;
-  height: 99vh;
-  background-color: bisque;
+  height: 98vh;
   z-index: 1;
 }
-.linear .object {
+.linear::after {
+  content: "------------ Linear startpoint. ------------";
   position: absolute;
-  width: 500px;
-  top: 50%;
+  top: 0px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+  font-weight: 300;
+  color: #00d877;
+  font-family: "Josefin Sans";
+  z-index: 2;
+  opacity: 0.6;
+}
+.linear .object {
+  overflow: hidden;
+  position: absolute;
 }
 .linear .object img, .linear .object video, .linear .object iframe {
   width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
+.linear .fire {
+  opacity: 1;
+}
+
 .non {
-  background-color: aqua;
-  margin: -20vh auto 0 auto;
+  margin: -50vh auto 0 auto;
   position: relative;
   z-index: 100;
+  padding: 60px 0;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
-/*# sourceMappingURL=style.css.map */
+.non::after {
+  content: "------------ This space must be longer than this line at this time.. sorry. ------------";
+  position: absolute;
+  top: calc(100vh - 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+  font-weight: 300;
+  color: #0070D8;
+  font-family: "Josefin Sans";
+  z-index: 2;
+  opacity: 0.6;
+}
+.non .video {
+  width: 600px;
+}
+.non .video video {
+  width: 100%;
+}
+.non .image {
+  width: 600px;
+}
+.non .image img {
+  width: 100%;
+}
+.non .video, .non .image {
+  margin: 15px auto;
+}
+
+.statusbar_outer {
+  padding: 5px 4px;
+  background-color: #ffffff;
+  filter: drop-shadow(3px 3px 4px #f1f1f1);
+  border-radius: 2px;
+  height: 95vh;
+  position: fixed;
+  top: 2.5vh;
+  left: -20px;
+  z-index: 50;
+}
+.statusbar_outer .statusbar {
+  width: 3px;
+  height: auto;
+  background-color: #44a5ff;
+  border-radius: 3px;
+}/*# sourceMappingURL=style.css.map */

@@ -1,7 +1,6 @@
 // *** ブロック内に iFrame を作成する関数, 引数に videoId と 挿入先のブロック
 export const block_multiable = (e, f, z) => {
-
-    // * さて、そろそろこの「player」についてまともに考えてもいい頃合いだが、いかがでしょうか。
+ 
     let the_box = document.getElementById(e).parentElement;
     let the_related_name = "yt_num_" + z;
     the_box.classList.add(the_related_name);
@@ -23,6 +22,7 @@ export const block_multiable = (e, f, z) => {
     }
 
     function onPlayerReady(event) {
+        event.target.mute();
         event.target.playVideo();
     }
 
@@ -30,7 +30,7 @@ export const block_multiable = (e, f, z) => {
 
     function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PLAYING && !done) {
-            setTimeout(pauseVideo, 10000);
+            setTimeout(pauseVideo, 5000);
             done = true;
         }
     }

@@ -150,7 +150,7 @@ export const is_it_same_start = (e) => {
                     let the_time = yt_resetter(e);
                     player.seekTo(the_time);
                     player.playVideo();
-                    yt_loop_player(player);
+                    yt_loop_player(player, e);
                 }, 1000)
             }
         }

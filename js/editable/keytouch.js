@@ -1,5 +1,5 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, blocksize, linesize, blocktime } from "../base/elements.js";
-import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box} from "../base/function.js";
+import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box, special_cleaner} from "../base/function.js";
 import { vertical_to_hor, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter, which_special_is } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { just_clear_yt_loop, yt_player_getter, yt_resetter } from "../multiable/extends.js";
@@ -55,6 +55,13 @@ window.addEventListener("keydown", (e)=>{
             let current_vertical = document.querySelector(".centering");
             let current_horizontal = vertical_to_hor(current_vertical);
             let current_sp_cover = vertical_to_sp_cover(current_vertical);
+
+            let special_cov_will_die = document.getElementsByTagName("script")[0].previousElementSibling;
+            if (special_cov_will_die.classList.contains("special_cov")) {
+                console.log(special_cov_will_die);
+                special_cov_will_die.remove();
+            }
+
     
             // 編集レイヤーの生成と挿入.
             const add_new_layer = document.createElement("div");
@@ -184,13 +191,8 @@ window.addEventListener("keydown", (e)=>{
             let default_scrap = vertical_to_sp_cover(layer_centering);
             default_scrap.classList.add("see");
 
-            // 移行先でのms分のスペースを調整.
-            if (layer_centering.classList.contains("same")) {
-                layer_centering = which_special_is(layer_centering);
-            }
+            // 移行先でのms分のスペースを調整.            
             adjust_target_pos(layer_centering.lastElementChild, "off");
-            
-            layer_centering.classList.remove("new_layer_centering");
     
             // 画面の切り替え.
             screen.style.opacity = 0;
@@ -244,6 +246,9 @@ window.addEventListener("keydown", (e)=>{
 
             // 「see」ラインを画面中央に配置.
             edit_mode_default_adjust(new_see);
+            console.log(document.querySelector(".new_layer_centering"));
+            is_it_same_series(document.querySelector(".new_layer_centering"));
+            layer_centering.classList.remove("new_layer_centering");
         }
     }
 

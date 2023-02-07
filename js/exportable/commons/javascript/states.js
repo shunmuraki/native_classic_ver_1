@@ -1,19 +1,20 @@
-// ↓ from Native Exportable.
-// let animation_generate_list = [];
-// let animation_data = {section_2:{about_time:{section_current_time:0,section_duration:30,},about_anims:{data_1:{trigger_when:5,finish_when:7,anim_name:1,},data_2:{trigger_when:9,finish_when:11,anim_name:2,},data_3:{trigger_when:14,finish_when:16,anim_name:3,},data_4:{trigger_when:18,finish_when:20,anim_name:4,},data_5:{trigger_when:16,finish_when:18,anim_name:9,},data_6:{trigger_when:20,finish_when:22,anim_name:10,},data_7:{trigger_when:24,finish_when:26,anim_name:11,},data_8:{trigger_when:28,finish_when:30,anim_name:12,},}},section_4:{about_time:{section_current_time:0,section_duration:40,},about_anims:{data_1:{trigger_when:5,finish_when:7,anim_name:5,},data_2:{trigger_when:9,finish_when:11,anim_name:6,},data_3:{trigger_when:14,finish_when:16,anim_name:7,},data_4:{trigger_when:18,finish_when:20,anim_name:8,},data_5:{trigger_when:16,finish_when:18,anim_name:13,},data_6:{trigger_when:20,finish_when:22,anim_name:14,},data_7:{trigger_when:24,finish_when:26,anim_name:15,},data_8:{trigger_when:28,finish_when:30,anim_name:16,},}},section_8:{about_time:{section_current_time:0,section_duration:50,},about_anims:{data_1:{trigger_when:3,finish_when:46,anim_name:17,},}},section_10:{about_time:{section_current_time:0,section_duration:50,},about_anims:{data_1:{trigger_when:3,finish_when: 46,anim_name:18,},}},section_14:{about_time:{section_current_time:0,section_duration:95,},about_anims:{data_1:{trigger_when:3,finish_when:93,anim_name:19,},}},section_16:{about_time:{section_current_time:0,section_duration:118,},about_anims:{data_1:{trigger_when:3,finish_when: 116,anim_name:20,},}}};
-// let yt_id_list = ["4LJVtdvtuwU", "ttCMssrSHY"];
-
 import { target_data } from "./base/tools.js";
-import { animation_make, Animation_show_make, Animation_hide_make, Animation_scale_make, Animation_position_make, Animation_complex_make } from "./anim.js";
+import { animation_make } from "./anim.js";
 
 let animation_list = {};
 
-// change　もそうじゃないものも一元化を試みた。
-let anim_list_num = animation_generate_list.length;
+// * イメージとしては
+// -- animation_generate_list を取得してループを設置.
+// -- Animation_complex_make() に通して 返ってくる animation を受け取り
+// -- animation_list[i] に格納するようにする.
+let animation_generate_list = [[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1], [["scale", 2], 1], [["horizontal", 0], 1]];
 
-for (let i = 0; i < anim_list_num; i++) {
-    let generated_animation = animation_make(i, animation_generate_list[i]);
-    animation_list.push(generated_animation);
+for (let i = 0; i < animation_generate_list.length; i++) {
+    // video_animation の数合わせをスキップしている.
+    if (animation_generate_list[i][0]) {
+        let animation_part = animation_make(String("anim_num_" + i), animation_generate_list[i]);
+        animation_list[i] = animation_part;
+    }
 }
 
 export const play_pause_classi = (e, f) => {
@@ -66,59 +67,65 @@ export const the_states = (e, f, g, h) => {
 
         let anim_name = Number(loop_anims[String("data_" + i)]["anim_name"]);
         let the_object = document.getElementsByClassName(String("anim_num_" + anim_name))[0];
-        var trigger_when = loop_anims[String("data_" + i)]["trigger_when"];
+        let trigger_when = loop_anims[String("data_" + i)]["trigger_when"];
         let finish_when = loop_anims[String("data_" + i)]["finish_when"];
+        let seekt = loop_anims[String("data_" + i)]["seekto"];
         
-        var object_content = yt_elem_list[Number(target_data(the_object, "yt_num_"))];
         var loop_object_tag = the_object.lastElementChild.tagName;
-        let the_animations = animation_list[anim_name];
 
-        for (var o = 0; o < the_animations.length; o++) {
+        let the_animation = animation_list[anim_name];
 
-            let the_animation = the_animations[o];
+        var object_content = yt_elem_list[Number(target_data(the_object, "yt_num_"))];
 
-            if (g == "allstop") {
+        if (g == "allstop") {
+
+            if (loop_object_tag == "IFRAME") {
+                if (the_object.classList.contains("playing")) {
+                    play_pause_classi(the_object, "paused");
+                    object_content.pauseVideo();
+                }
     
-                if (loop_object_tag == "IFRAME") {
-    
-                    if (the_object.classList.contains("playing")) {
-                        play_pause_classi(the_object, "paused");
-                        object_content.pauseVideo();
-                    }
-        
-                } else {
-    
-                    let the_classlist = the_object.classList;
-    
-                    if ( the_animation.playState == "running" ) {
-                        the_animation.pause();
-                        the_animation.cancel();
-    
-                        for ( let o = 0; o < the_classlist.length; o++ ) {
-                            if (the_classlist[o].indexOf("running") != -1) {
-                                the_object.classList.remove(the_classlist[o]);
-                            }
-                        }
-                    }
-    
+            } else {
+                let the_classlist = the_object.classList;
+
+                if ( the_animation.playState == "running" ) {
+                    the_animation.pause();
+                    the_animation.cancel();
+
                     for ( let o = 0; o < the_classlist.length; o++ ) {
-                        if (the_classlist[o].indexOf("finish") != -1) {
+                        if (the_classlist[o].indexOf("running") != -1) {
                             the_object.classList.remove(the_classlist[o]);
                         }
                     }
-                }    
-    
-            } else if (g == "autoseek") {
-    
-                if (loop_object_tag == "IFRAME") {
-    
-                    if (the_object.classList.contains("playing") == false) {
-    
-                        object_content.seekTo(0);
-    
-                        if (current_time > trigger_when && current_time < finish_when) {
-    
-                            object_content.seekTo(current_time - trigger_when);
+                }
+
+                for ( let o = 0; o < the_classlist.length; o++ ) {
+                    if (the_classlist[o].indexOf("finish") != -1) {
+                        the_object.classList.remove(the_classlist[o]);
+                    }
+                }
+            }    
+
+        } else if (g == "autoseek") {
+
+            if (loop_object_tag == "IFRAME") {
+
+                    if (current_time > trigger_when && current_time < finish_when) {
+                        
+                        if (the_object.classList.contains("seekto_ready")) {
+                            object_content.seekTo(current_time - trigger_when + seekt);
+                            the_object.classList.remove("seekto_ready");
+                            the_object.classList.add("seek_did");
+                        }
+
+                        if (the_object.classList.contains("playing") == false) { 
+
+                            if (! the_object.classList.contains("seek_did")) {
+                                object_content.seekTo(current_time - trigger_when + seekt);
+                            } else {
+                                the_object.classList.remove("seek_did");
+                            }
+                                
                             object_content.playVideo();
                             play_pause_classi(the_object, "playing");
     
@@ -126,48 +133,49 @@ export const the_states = (e, f, g, h) => {
                                 object_content.pauseVideo();
                                 play_pause_classi(the_object, "paused");
                             })
-                            
-                        } else if (current_time >= finish_when) {
-    
-                            object_content.seekTo(finish_when - trigger_when);
+                        }
+                    } else if (current_time >= finish_when) {
+                        if (the_object.classList.contains("playing") == false) {
+                            object_content.seekTo(0);
+                            object_content.seekTo(finish_when - trigger_when + seekt);
                             object_content.pauseVideo();
                             play_pause_classi(the_object, "paused");
-    
-                        }  
-                    }                
-    
-                } else {
-    
-                    if (the_animation.playState != "running" && the_object.classList.contains(String("running" + anim_name)) == false) {
-    
-                        if (the_object.classList.contains(String("finished" + anim_name)) == false) {
-    
-                            the_animation.cancel();
-                            the_animation.effect.updateTiming({ fill: 'none' }); 
-    
-                            if (current_time > trigger_when && current_time < finish_when){
-    
-                                let the_duration_saving = current_time - trigger_when;
-                                the_animation.currentTime = the_duration_saving;
-                                run_finish_classi(the_object, "running", anim_name);
-    
-                                the_animation.play();
-                                the_animation.effect.updateTiming({ fill: 'forwards' }); 
-                                the_animation.onfinish = () => {
-                                    run_finish_classi(the_object, "finished", anim_name); 
-                                    the_animation.persist();
-                                };
-    
-                            } else if (current_time >= finish_when) {
-                                run_finish_classi(the_object, "finished", anim_name);
-                                the_animation.effect.updateTiming({ fill: 'forwards' }); 
-                                the_animation.finish();
+                        }
+                        the_object.classList.add("seekto_ready");
+                    }  
+                
+            } else {
+
+                if (the_animation.playState != "running" && the_object.classList.contains(String("running" + anim_name)) == false) {
+
+                    if (the_object.classList.contains(String("finished" + anim_name)) == false) {
+
+                        the_animation.cancel();
+                        the_animation.effect.updateTiming({ fill: 'none' }); 
+
+                        if (current_time > trigger_when && current_time < finish_when){
+                            let the_duration_saving = current_time - trigger_when;
+                            the_animation.currentTime = the_duration_saving;
+                            run_finish_classi(the_object, "running", anim_name);
+
+                            the_animation.play();
+                            the_animation.effect.updateTiming({ fill: 'forwards' }); 
+
+                            the_animation.onfinish = () => {
+                                run_finish_classi(the_object, "finished", anim_name); 
                                 the_animation.persist();
-                            }
-                        }       
-                    }
-                }    
-            }
+                            };
+
+                        } else if (current_time >= finish_when) {
+                            run_finish_classi(the_object, "finished", anim_name);
+                            the_animation.effect.updateTiming({ fill: 'forwards' }); 
+                            the_animation.finish();
+                            the_animation.persist();
+                        }
+                    }       
+                }
+            }    
         }
+
     }
 }

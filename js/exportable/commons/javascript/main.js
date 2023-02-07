@@ -1,10 +1,8 @@
-// ↑ from Native Exportable .
-
 // ***** ---------- * -  インポーターゾーン  ------------ - - - - -  -------------------------------
 import { target_data, classmover } from "./base/tools.js";
 import { the_states } from "./states.js";
-import { on_preventer, off_preventer, transition_animation_start, transition_animation_end, all_player, all_pauser, suppression } from "./parts.js";
-import { block_multiable } from "./ytp.js";
+import { on_preventer, off_preventer, all_pauser, suppression, sr_assign, status_update, transition_animation_start, transition_animation_end } from "./parts.js";
+import { ytelemlist_getter } from "./setup.js";
 // ***** ---------- * -  インポーターゾーン  ------------ - - - - -  -------------------------------
 
 let current_time = 0;
@@ -15,21 +13,12 @@ let additional_time = 0;
 let the_section = null;
 
 // ***** ---------- * -  基本データセット  ------------ - - - - -  -------------------------------
+// テスト用. [ + seekto prop. ]
+let animation_data = {section_2:{about_time:{section_current_time:0,section_duration:30,},about_anims:{data_1:{trigger_when:5,finish_when:7,anim_name:0,},data_2:{trigger_when:9,finish_when:11,anim_name:1,},data_3:{trigger_when:14,finish_when:16,anim_name:2,},data_4:{trigger_when:18,finish_when:20,anim_name:3,},data_5:{trigger_when:16,finish_when:18,anim_name:8,},data_6:{trigger_when:20,finish_when:22,anim_name:9,},data_7:{trigger_when:24,finish_when:26,anim_name:10,},data_8:{trigger_when:28,finish_when:30,anim_name:11,},data_9:{trigger_when:9,finish_when:11,anim_name:16,}, data_10:{trigger_when:20,finish_when:22,anim_name:17} }},section_4:{about_time:{section_current_time:0,section_duration:40,},about_anims:{data_1:{trigger_when:5,finish_when:7,anim_name:4,},data_2:{trigger_when:9,finish_when:11,anim_name:5,},data_3:{trigger_when:14,finish_when:16,anim_name:6,},data_4:{trigger_when:18,finish_when:20,anim_name:7,},data_5:{trigger_when:16,finish_when:18,anim_name:12,},data_6:{trigger_when:20,finish_when:22,anim_name:13,},data_7:{trigger_when:24,finish_when:26,anim_name:14,},data_8:{trigger_when:28,finish_when:30,anim_name:15},}}};
 
 // youtube id list. これをdomに昇華させます(in states.js). 
 let state_classies = ["running", "playing", "finished", "paused"];
-
-// let yt_id_list = [];
-let yt_elem_list = [];
-let animation_type_list = {};
-
-for (let i = 0; i < yt_id_list.length; i++) {
-    // * id と 親（<object>）を紐付ける.let the_num = yt_id_list.length + 1;
-    let the_name = String("yt_" + i);
-    let pl = block_multiable(the_name, yt_id_list[i], i);
-    // * ここで挿入！！（昇華）.
-    yt_elem_list.push(pl);
-}
+let yt_elem_list = ytelemlist_getter();
 // ***** ---------- * -  基本データセット  ------------ - - - - -  -------------------------------
 
 
@@ -55,8 +44,6 @@ const default_timeout = (e) => {
         }
 
         clear_shu();
-
-        // * ここで特別なクラスを付与、かな？？
         outer_inte(e);
 
     }, duration_use));
@@ -70,8 +57,10 @@ const aries = (e) => {
     // interval 形式にする必要があるあよね.
     intervalArray.push(setInterval(() => {
         animation_data[String(trigger_name)]["about_time"]["section_current_time"] += 0.5;
-        the_states(e, animation_data, "autoseek", yt_elem_list);    
-    }, 500)); 
+        // * ここで statusbar の調整をかけたい.
+        status_update(trigger_name, animation_data);
+        the_states(e, animation_data, "autoseek", yt_elem_list);
+    }, 500));
 }
 // ***** ---------- * -  毎秒監視要員  ------------ - - - - -  -------------------------------
 
@@ -94,7 +83,7 @@ const outer_inte = (e) => {
         animation_data[String(the_name)]["about_time"]["section_current_time"] = 0;            
         current_time = 0;
         the_states(e, animation_data, "auto_seek", yt_elem_list);
-    } else if (current_time >= duration) { 
+    } else if (current_time >= duration) {
         animation_data[String(the_name)]["about_time"]["section_current_time"] = duration;            
         current_time = duration;
         the_states(e, animation_data, "auto_seek", yt_elem_list);     
@@ -120,7 +109,8 @@ const outer_inte = (e) => {
             }
 
             remove_wheel();
-            off_preventer();
+            off_preventer(e);
+            transition_animation_end(e);
 
         } 
 
@@ -143,8 +133,8 @@ const outer_inte = (e) => {
             }
 
             remove_wheel();
-            off_preventer();
-
+            off_preventer(e);
+            transition_animation_start(e);
         } 
     }
 }
@@ -162,7 +152,7 @@ const the_arrows = (event) => {
     duration = section_duration;
     
     let distance = event.deltaY;
-    let plus = distance / 100;
+    let plus = distance / 200;
 
     current_time = animation_data[the_name]["about_time"]["section_current_time"]; 
     
@@ -178,7 +168,7 @@ const the_arrows = (event) => {
 
         the_states(the_section, animation_data, "allstop", yt_elem_list);
 
-        // * additional_time によって上下が決まるし、この時点で特別なクラスを持っているなら、それは下の要素について対応する必要があるってこと。
+        // * additional_time によって上下が決まるし、この時点で特別なクラスを持っているなら、それは下の要素について対応する必要がある。
         if (the_section.classList.contains("special_med_zero")) {
             if (additional_time > 0) {
                 if (the_next_section) {
@@ -226,9 +216,10 @@ const the_arrows = (event) => {
         }
 
         timeoutArray.push(setTimeout(() => {
+            off_preventer(the_section);
+            transition_animation_end(the_section);
 
             let the_next_section = the_section.nextElementSibling; 
-
             if (the_next_section) {
                 the_next_section.style.opacity = 1;
             }
@@ -240,8 +231,11 @@ const the_arrows = (event) => {
 
         }, duration_use));
 
+        
+        // iframe で seekto を処理させるのはこっちなんじゃないかと考えた.
 
         if (current_time < 0 || current_time > duration) {
+
             clear_shu();
 
             // * ここで特別なクラスを付与、かな？？
@@ -252,6 +246,7 @@ const the_arrows = (event) => {
             }
 
             outer_inte(the_section);
+
         } else {
             aries(the_section);
         }
@@ -301,8 +296,10 @@ const cropper = () => {
 
                 // * remove_wheel のため。
                 the_section = nowElement;
+                sr_assign(nowElement);
 
-                on_preventer();
+                on_preventer(nowElement);
+                transition_animation_start(nowElement);
 
                 let the_next_section = nowElement.nextElementSibling;
 
@@ -314,7 +311,6 @@ const cropper = () => {
                 default_timeout(nowElement);
                 nowElement.classList.remove("iwatchyou");
                 nowElement.classList.add("state_on");
-
                 seek_by_wheel();
 
             } 

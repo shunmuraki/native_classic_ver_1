@@ -23,7 +23,7 @@ right_container.classList.add("rightside");
 let icon_img = document.createElement("img");
 let the_text = document.createElement("p");
 icon_img.src = "img/icon.png";
-the_text.innerHTML = "Native, brand new writing interface produced by Odds Inc. <br>Corporate Site: <a href='https://odds-inc.com' class='url'>odds-inc.com</a>";
+the_text.innerHTML = "Native, a brand new writing interface produced by Odds Inc. <br>Corporate Site: <a href='https://odds-inc.com' class='url'>odds-inc.com</a>";
 right_container.appendChild(icon_img);
 right_container.appendChild(the_text);
 the_footer.appendChild(right_container);

@@ -1,23 +1,19 @@
-// touch * ここは最終的にはループで処理するようになる。sectionタグによる全取得で。
-// document.querySelector("#section_1").classList.add("iwatchyou");
-// document.querySelector("#section_2").classList.add("iwatchyou");
-// document.querySelector("#section_3").classList.add("iwatchyou");
-// document.querySelector("#section_4").classList.add("iwatchyou");
 import { pragm_stylies, style_data_trace } from "./parts.js";
+import { block_multiable } from "./ytp.js";
 
-// * STYlE from Native.
-let sections = document.querySelectorAll(".section");
-for (let i = 0; i < sections.length; i++) {
-    let objects = sections[i].children;
-    for (let o = 0; o < objects.length; o++) {
-        let object = objects[o];
-        let style_data = pragm_stylies(o);
-        // * デフォルトの適応.
-        style_data_trace(object, style_data);
+let bo = document.getElementsByTagName("body")[0];
+let section_elms = document.querySelectorAll(".linear");
+
+let the_pathes = ["anim.js", "states.js", "base/tools.js", "main.js"];
+export const script_load = () => {
+    for (let i = 0; i < the_pathes.length; i++) {
+        let the_sctag = document.createElement("script");
+        the_sctag.src = String("javascript/" + String(the_pathes[i]));
+        the_sctag.type = "module";
+        bo.appendChild(the_sctag);
     }
 }
-
-let section_elms = document.querySelectorAll(".linear");
+// touch * ここは最終的にはループで処理するようになる。sectionタグによる全取得で.
 for (let i = 0; i < section_elms.length; i++) {
     section_elms[i].classList.add("iwatchyou");
     section_elms[i].classList.add("ikuneko");
@@ -27,7 +23,92 @@ for (let i = 0; i < section_elms.length; i++) {
         the_next_section.style.opacity = 0;
     }
 }
-// * video, Animation などについて管理をするデータリスト
-// ** 仮置きのsampleデータをここに書いてみますね！（本番と同じ形式）
 
-// ** 要はこっちは手書きしろってことね.
+// yt-iframe の読み込み
+let yt_elem_list = new Array();
+let yt_id_list = [];
+
+function yt_load() {
+    for (let i = 0; i < yt_id_list.length; i++) {
+        // * id と 親（<object>）を紐付ける.
+        let the_name = String("yt_" + i);
+        let pl = block_multiable(the_name, yt_id_list[i], i);
+        // * ここで挿入！！（昇華）.
+        yt_elem_list.push(pl);
+    }
+}
+
+export const ytelemlist_getter = () => {
+    return yt_elem_list;
+}
+
+
+// 最初の section が non 属性だったら margin を 50vh とって場所を戻してあげるようにする.
+let the_first = document.querySelector(".inner").firstElementChild;
+if (the_first.classList.contains("non")) {
+    the_first.style.marginTop = window.innerHeight / 50 + "px";
+}
+
+// ローディングスピナーの infinite アニメーション
+let loader = document.querySelector(".loader");
+loader.animate(
+    [
+        {transform: "rotate(0deg)", opacity: 0},
+        {transform: "rotate(180deg)", opacity: 1},
+        {transform: "rotate(360deg)", opacity: 0},
+    ],
+    {
+        iterations: 8,
+        duration: 1000,
+        easing: "ease-in-out",
+        offset: 500
+    }
+)
+
+let loading_screen = document.querySelector(".native_load_cover");
+
+window.onload = () => {
+    // scrollTo がうまくいかないので仕方なく利用.
+    $(function() {
+        $('html,body').animate({ scrollTop: 0 }, '1');
+    });
+};
+
+// DOMへのスタイリングのトレース.
+for (let i = 0; i < section_elms.length; i++) {
+    let objects = section_elms[i].children;
+    console.log(objects);
+    for (let o = 0; o < objects.length; o++) {
+        let object = objects[o];
+        let style_data = pragm_stylies(object);
+        console.log(style_data);
+        style_data_trace(object, style_data);
+    }
+}
+
+
+window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        yt_load();
+    }, 1000)
+
+    setTimeout(() => {
+        loading_screen.animate(
+        [
+            {opacity: 1},
+            {opacity: 0}
+        ],
+        {
+            duration: 1000,
+            easing: "linear", 
+        }
+        )
+
+        setTimeout(() => {
+            // その他の JS の動的な読み込み.
+            // & yt のセットアップ（YT.playerが準備できた頃.）
+            script_load(); 
+            loading_screen.style.display = "none";
+        }, 1000)
+    }, 6000)
+})
