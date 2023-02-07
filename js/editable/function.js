@@ -486,11 +486,6 @@ export const comesin_management = (e, f, g) => {
             f.classList.toggle("comesin");
             next_one.classList.toggle("comesin");
 
-        } else if (e == "space") {
-
-            f.classList.toggle("comesin");
-            f.classList.toggle("pre_comesin");
-
         }
     }
 }
@@ -503,5 +498,33 @@ export const edit_mode_default_adjust = (e) => {
         let the_adjust_num = the_up_comming + e.getBoundingClientRect().bottom - editor_height;
         scrollBy(0, the_adjust_num);
         wheel_positioning();
+    }
+}
+
+export const actuar_st_allon = () => {
+    let sts = document.querySelectorAll("actuar_st");
+    for (let i = 0; i < sts.length; i++) {
+        if (sts[i].lastElementChild) {
+            sts[i].lastElementChild.style.opacity = 0.5;
+        }
+    }
+}
+
+export const actuar_st_alloff = () => {
+    let sts = document.querySelectorAll("actuar_st");
+    for (let i = 0; i < sts.length; i++) {
+        if (sts[i].lastElementChild) {
+            sts[i].lastElementChild.style.opacity = 1;
+        }
+    }
+}
+
+export const actuar_en_alloff = () => {
+    let ens = document.querySelectorAll("actuar_en");
+    for (let i = 0; i < ens.length; i++) {
+        ens[i].style.opacity = 1;
+        if (ens[i].lastElementChild) {
+            ens[i].lastElementChild.style.opacity = 1;
+        }
     }
 }

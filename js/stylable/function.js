@@ -120,68 +120,87 @@ const style_num_changer = (f, g) => {
     target.classList.add(final_name);
 }
 
+const wheel_1_management = (e) => {
+  if (e == "go") {
+    layer_base.style.opacity = 0;
+  } else if (e == "back") {
+    layer_base.style.opacity = 1;
+  }
+}
+
 const pre_wheel_management = (e) =>{
   e.classList.toggle("waiting_wheel");
 }
 
 base_1.addEventListener("click", () => {
     pre_wheel_management(ly_2_1);
+    wheel_1_management("go");
     ly_2_1.style.display = "block";
 })
 base_2.addEventListener("click", () => {
     pre_wheel_management(ly_2_3);
+    wheel_1_management("go");
     ly_2_3.style.display = "block";
 })
 base_3.addEventListener("click", () => {
     pre_wheel_management(ly_2_2);
+    wheel_1_management("go");
     ly_2_2.style.display = "block";
 })
 
 
 sl_1_1.addEventListener("click", () => {
     style_num_changer(0, 0);
+    wheel_1_management("back");
     ly_2_1.style.display = "none";
     pre_wheel_management(ly_2_1);
 })
 
 sl_1_2.addEventListener("click", () => {
     style_num_changer(0, 1);
+    wheel_1_management("back");
     ly_2_1.style.display = "none";
     pre_wheel_management(ly_2_1);
 })
 
 sl_1_3.addEventListener("click", () => {
     style_num_changer(0, 2);
+    wheel_1_management("back");
     ly_2_1.style.display = "none";
     pre_wheel_management(ly_2_1);
 })
 
 sl_2_1.addEventListener("click", () => {
     style_num_changer(1, 0);
+    wheel_1_management("back");
     ly_2_2.style.display = "none";
     pre_wheel_management(ly_2_2);
 })
 
 sl_2_2.addEventListener("click", () => {
     style_num_changer(1, 1);
+    wheel_1_management("back");
     ly_2_2.style.display = "none";
     pre_wheel_management(ly_2_2);
 })
 
 sl_2_3.addEventListener("click", () => {
     style_num_changer(1, 2);
+    wheel_1_management("back");
     ly_2_2.style.display = "none";
     pre_wheel_management(ly_2_2);
 })
 
 sl_3_1.addEventListener("click", () => {
     style_num_changer(2, 0);
+    wheel_1_management("back");
     ly_2_3.style.display = "none";
     pre_wheel_management(ly_2_3);
 })
 
 sl_3_2.addEventListener("click", () => {
     style_num_changer(2, 1);
+    wheel_1_management("back");
     ly_2_3.style.display = "none";
     pre_wheel_management(ly_2_3);
 })

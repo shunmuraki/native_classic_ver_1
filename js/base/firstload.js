@@ -9,6 +9,18 @@ let damee = document.createElement("div");
 damee.classList.add("first_load_dame");
 screen.appendChild(damee);
 
+window.onload = () => {
+    // scrollTo がうまくいかないので仕方なく利用.
+    $(function() {
+        $('html,body').animate({ scrollTop: window_height - 200 });
+        setTimeout(() => {
+            wheel_positioning();
+        }, 1000)
+    });
+    document.getElementsByTagName("html")[0].style.overflow = "hidden";
+    document.getElementsByTagName("body")[0].style.overflow = "hidden";
+};     
+
 (function () {
     if (sessionStorage.getItem("output")) {
         // 以下 export.htmlから回帰したケースへの対応.
@@ -35,8 +47,6 @@ screen.appendChild(damee);
         d.remove();
         // 最初のcenteringを用意.
         all_writearea[0].parentElement.classList.add("centering");
-        window.scroll({ top: window_height * 0.8 });
         all_writearea[0].focus();
-        wheel_positioning();
     }
 }());

@@ -80,6 +80,9 @@ for (let i = 0; i < 10; i++) {
   audio_panc.after(container);
 }
 
+audio_list.lastElementChild.previousElementSibling.classList.add("edge");
+video_list.lastElementChild.previousElementSibling.classList.add("edge");
+
 // デフォルトの設定.
 audio_list.lastElementChild.classList.add("um_centering");
 

@@ -3,7 +3,7 @@ import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_cente
 import { vertical_to_hor, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter, which_special_is } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { just_clear_yt_loop, yt_player_getter, yt_resetter } from "../multiable/extends.js";
-import { add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, edit_mode_default_adjust, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
+import { actuar_st_alloff, actuar_en_alloff, actuar_st_allon, add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, edit_mode_default_adjust, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "./function.js";
 import { wheel_positioning } from "../stylable/function.js";
 import { adjust_target_pos } from "../ms/function.js";
 
@@ -39,7 +39,7 @@ window.addEventListener("keydown", (e)=>{
         }        
         
         // Editモードを展開.
-        if ( type_signiture.indexOf('edi') != -1) {
+        if (type_signiture.indexOf('edi') != -1) {
 
             tracer_basis(document.querySelector(".centering"));
 
@@ -61,7 +61,6 @@ window.addEventListener("keydown", (e)=>{
                 console.log(special_cov_will_die);
                 special_cov_will_die.remove();
             }
-
     
             // 編集レイヤーの生成と挿入.
             const add_new_layer = document.createElement("div");
@@ -76,7 +75,7 @@ window.addEventListener("keydown", (e)=>{
             screen.classList.add("edit");
             new_layer.style.display = "block";
             screen.style.display = "none";
-            bo.style.backgroundColor = "#121212";
+            bo.style.backgroundColor = "#0070D8";
             bo.classList.add("edit_mode");
 
             // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
@@ -263,10 +262,7 @@ window.addEventListener("keydown", (e)=>{
 
         if (document.querySelector(".comesin")) {
             centering = document.querySelector(".comesin");
-        } else if (document.querySelector(".pre_comesin")) {
-            // spaceキーの直後は comesin クラスが存在しないケースを考慮. 代替的に 「pre_comesin」クラスを設ける.
-            centering = document.querySelector(".pre_comesin");
-        }
+        } 
 
         if(! e.shiftKey) { 
             let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
@@ -488,10 +484,14 @@ window.addEventListener("keydown", (e)=>{
         if(! e.shiftKey) {
             if (e.ctrlKey) {
                 if (k == "s") {
+                    screen.classList.add("autoseekingmode");
                     let centering = document.getElementsByClassName("new_layer_centering")[0];
                     let scrap = vertical_to_sp_cover(centering);
                     let hor = vertical_to_hor(centering);
                     let the_seeking_time;
+
+                    // actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
+                    actuar_st_allon();
 
                     // この取り方はどうも推奨できない.
                     let special_cov = null;
@@ -512,10 +512,6 @@ window.addEventListener("keydown", (e)=>{
                                 just_clear_yt_loop();
                             }
                         }
-                    }
-        
-                    if (scrap.classList.contains("scrolled") == false) {
-                        scrap.classList.add("scrolled");
                     }
         
                     if (hor.scrollLeft < full_end_scrollwidth) {
@@ -553,7 +549,7 @@ window.addEventListener("keydown", (e)=>{
                                                     player.pauseVideo();
                                                     let the_time = yt_resetter();
                                                     player.seekTo(the_time);
-                                                    play_when.playVideo();
+                                                    player.playVideo();
                                                 }        
 
                                                 // この setTimeout １秒分を考慮したい/
@@ -580,16 +576,23 @@ window.addEventListener("keydown", (e)=>{
                                 // 現在の、実際のhorのscrollLeft とそれがどれくらい離れているかの算出.
                                 let the_gap =  hor.scrollLeft - the_pri_distance;
         
-                                if (special_cov) {
-                                    if (the_block.classList.contains("actuar_st")) {
-                                        let the_actuar_distance = Number(target_data(the_block, "actuar_time_"));
-                                        if (the_gap > the_actuar_distance - 10) {
+                                // 自動シーキング中のacutar 描画.    
+                                if (the_block.classList.contains("actuar_st")) {
+                                    let the_actuar_distance = Math.floor(Number(target_data(the_block, "actuar_time_")));
+                                    if (the_gap > the_actuar_distance - 10) {
+                                        if (special_cov) {
                                             special_cov.lastElementChild.style.opacity = 1;
+                                        } else {
+                                            the_block.lastElementChild.style.opacity = 1;
                                         }
-                                    } else if (the_block.classList.contains("actuar_en")) {
-                                        let the_actuar_distance = Number(target_data(the_block, "actuar_time_"));
-                                        if (the_gap > the_actuar_distance - 10) {
-                                            special_cov.lastElementChild.style.opacity = 0;
+                                    }
+                                } else if (the_block.classList.contains("actuar_en")) {
+                                    let the_actuar_distance = Math.floor(Number(target_data(the_block, "actuar_time_")));
+                                    if (the_gap > the_actuar_distance - 10) {
+                                        if (special_cov) {
+                                            special_cov.lastElementChild.style.opacity = 0.5;
+                                        } else {
+                                            the_blockv.lastElementChild.style.opacity = 0.5;
                                         }
                                     }
                                 }
@@ -726,214 +729,255 @@ window.addEventListener("keydown", (e)=>{
 
         // Edit モードを終了.
         if (k == "Escape") {
-            // 編集を終了する時点でorange_pointer_f が存在したら初めて実行。存在しなかったら周辺のorange群を放棄する.
-            if (document.querySelector(".orange_pointer_f")) {
-                
-                // 編集していた もともとの sp_coverを取得. 
-                let original_sp_cover = document.querySelector(".target_of_edition");
 
-                // 最初に sp_coverをクリーンアップ。
-                for (let i = 0; i < original_sp_cover.children.length; i++) {
-                    let vers = original_sp_cover.children[i].lastElementChild.children;
-                    for (let o = vers.length - 1; o >= 0 ; o--) {
-                        // adjusterを残しておく.
-                        if (o > 0) { 
-                            vers[o].remove();
-                        }
-                    }
+            // このギャップすごいけどw
+            if (screen.classList.contains("autoseekingmode")) {
+
+                the_scrolled_distance = 0;
+                actuar_st_alloff();
+                actuar_en_alloff();
+                
+                // 一番近いブロックを探させてcenteringを渡すようにする.
+                let see_target = document.querySelector(".see");
+                let orange_pointer_space = see_target.firstElementChild.firstElementChild;
+                
+                // comesin があるなら 無条件で クラスを取り外す.
+                let current_comesin = document.querySelector(".comesin");
+                if (current_comesin) {
+                    current_comesin.classList.remove("comesin");
                 }
 
-                let scraps = document.querySelector(".new_layer").children;
+                if (see_target.classList.contains("principle_pointer")) {
+                    let nextstep = best_related_element(see_target, orange_pointer_space.scrollLeft, "pointer", orange_data);
+                    let new_one = nextstep[0];
+                    let scroll_distance = nextstep[1];
+                    new_one.classList.add("comesin");
+                    let the_gap = scroll_distance - orange_pointer_space.scrollLeft;
+                    all_view_changer(see_target, the_gap);                   
+                } else if (see_target.classList.contains("principle_block")) {
+                    let nextstep = best_related_element(see_target, orange_pointer_space.scrollLeft, "block", orange_data);
+                    let new_one = nextstep[0];
+                    let scroll_distance = nextstep[1];
+                    document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
+                    new_one.classList.add("new_layer_centering");            
+                    let the_gap = scroll_distance - orange_pointer_space.scrollLeft;
+                    all_view_changer(see_target, the_gap);
+                    is_it_same_series(new_one);
+                }
+                
+                wheel_positioning();
+                screen.classList.remove("autoseekingmode");
 
-                // 本来same_endではなかったが、編集の結果same_endとなるブロックへの対処。中身にvideo本来を格納. 
-                // ブロックの content が video で左隣は船内のsameで右隣は船外のsame、そして、same_end を持っていないなら実行. 
-                let special_menu = (e, f, g) => {
-                    let f_p = g;
-                    if (e.previousElementSibling) {
-                        if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in")) {
-                            if (e.nextElementSibling) {
-                                if (e.nextElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in") == false) {                                                     
-                                    if (f.classList.contains("same") && f.classList.contains("same_end") == false) {
-                                        let the_t = "same_num_" + target_data(e, "same_num_");
-                                        let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
-                                        let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
-                                        the_natural_cont.style.opacity = 1;
-                                        // dupブロックだった場合を想定.                                        
-                                        if (f.lastElementChild) {
-                                            f.lastElementChild.remove();
-                                        }
-                                        f.appendChild(the_natural_cont);
-                                        f.classList.add("same_end");
-                                    } 
+            } else {
+                // 編集を終了する時点でorange_pointer_f が存在したら初めて実行。存在しなかったら周辺のorange群を放棄する.
+                if (document.querySelector(".orange_pointer_f")) {
+                    
+                    // 編集していた もともとの sp_coverを取得. 
+                    let original_sp_cover = document.querySelector(".target_of_edition");
+
+                    // 最初に sp_coverをクリーンアップ。
+                    for (let i = 0; i < original_sp_cover.children.length; i++) {
+                        let vers = original_sp_cover.children[i].lastElementChild.children;
+                        for (let o = vers.length - 1; o >= 0 ; o--) {
+                            // adjusterを残しておく.
+                            if (o > 0) { 
+                                vers[o].remove();
+                            }
+                        }
+                    }
+
+                    let scraps = document.querySelector(".new_layer").children;
+
+                    // 本来same_endではなかったが、編集の結果same_endとなるブロックへの対処。中身にvideo本来を格納. 
+                    // ブロックの content が video で左隣は船内のsameで右隣は船外のsame、そして、same_end を持っていないなら実行. 
+                    let special_menu = (e, f, g) => {
+                        let f_p = g;
+                        if (e.previousElementSibling) {
+                            if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in")) {
+                                if (e.nextElementSibling) {
+                                    if (e.nextElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in") == false) {                                                     
+                                        if (f.classList.contains("same") && f.classList.contains("same_end") == false) {
+                                            let the_t = "same_num_" + target_data(e, "same_num_");
+                                            let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
+                                            let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
+                                            the_natural_cont.style.opacity = 1;
+                                            // dupブロックだった場合を想定.                                        
+                                            if (f.lastElementChild) {
+                                                f.lastElementChild.remove();
+                                            }
+                                            f.appendChild(the_natural_cont);
+                                            f.classList.add("same_end");
+                                        } 
+                                    }
+                                }
+                            }
+                            if (e.previousElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in")) {
+                                if (e.previousElementSibling) {
+                                    if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in") == false) {                                                     
+                                        if (f.classList.contains("same") && f.classList.contains("same_start") == false) {
+                                            f.classList.add("same_start");
+
+                                            let same_name = "same_num_" + target_data(f, "same_num_");
+                                            let breakpoint = [].slice.call(f_p.children).indexOf(f);                                                        
+                                            
+                                            let same_data = same_data_getter();
+                                            same_data += 1;
+                                            same_data_counter(same_data);
+                                    
+                                            for (let i = f_p.children.length - 1; i >= breakpoint; i--) {
+                                                if (f_p.children[i].classList.contains(same_name)) {
+                                                    let same_block = f_p.children[i];
+                                                    classmover(same_block, same_block, "same_num_", "remove");
+                                                    same_block.classList.add("same_num_" + same_data);
+                                                }
+                                            }
+                                        } 
+                                    }
                                 }
                             }
                         }
-                        if (e.previousElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in")) {
-                            if (e.previousElementSibling) {
-                                if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in") == false) {                                                     
-                                    if (f.classList.contains("same") && f.classList.contains("same_start") == false) {
-                                        f.classList.add("same_start");
+                    }
 
-                                        let same_name = "same_num_" + target_data(f, "same_num_");
-                                        let breakpoint = [].slice.call(f_p.children).indexOf(f);                                                        
-                                        
-                                        let same_data = same_data_getter();
-                                        same_data += 1;
-                                        same_data_counter(same_data);
-                                
-                                        for (let i = f_p.children.length - 1; i >= breakpoint; i--) {
-                                            if (f_p.children[i].classList.contains(same_name)) {
-                                                let same_block = f_p.children[i];
-                                                classmover(same_block, same_block, "same_num_", "remove");
-                                                same_block.classList.add("same_num_" + same_data);
+                    for (let i = 0; i < scraps.length; i++) {
+                        let stripe_inner_or_out = (e, f) => {
+                            
+                            let you_are_on_orange = null;
+                            
+                            // 先頭が orange_space, それ以外の場所に sp が並ぶ。
+                            
+                            // orange_spaceについて
+                            let po_and_st = scraps[i].firstElementChild.firstElementChild.firstElementChild.children;
+                            let block_num = f;
+
+                            // １つのorange_stripe の中に乗っかっているブロックを検出する処理.
+                            let thisblock_scrollleft_st = (blocksize * block_num) + full_start_scrollwidth - blocksize;
+                            let thisblock_scrollleft_en = thisblock_scrollleft_st + blocksize;
+
+                            for (let o = 0; o < po_and_st.length; o++) {
+                                if (po_and_st[o].classList.contains("orange_pointer_s")) {
+                                    let the_pointer_s = po_and_st[o];
+                                    let the_pointer_f = grab_auto(the_pointer_s)[1];
+                                    let the_pointer_scrollleft_st = Number(target_data(the_pointer_s, "scroll_left_")) + 5;
+                                    let the_pointer_scrollleft_en = Number(target_data(the_pointer_f, "scroll_left_")) + 5;
+                                    let the_desition_one = false;
+                                    let the_desition_second = false;
+
+                                    // s - f　上に "st" が乗っかっているかどうか判定.
+                                    if (the_pointer_scrollleft_st <= thisblock_scrollleft_st && thisblock_scrollleft_st < the_pointer_scrollleft_en) {
+                                        the_desition_one = true;
+                                    }
+                                    // s - f　上に "en" が乗っかっているかどうか判定.
+                                    if (the_pointer_scrollleft_st < thisblock_scrollleft_en && thisblock_scrollleft_en <= the_pointer_scrollleft_en) {
+                                        the_desition_second = true;
+                                    }
+
+                                    // 以下「完全に orange_stripe の上に乗っかっていたわけではないブロック」への対応処理.
+                                    let fif = (f, g) => {
+                                        orange_block_counter += 1;
+                                        e.classList.add("you_in");
+                                        e.classList.add("you_" + orange_block_counter);
+                                        you_are_on_orange = e.cloneNode(true);
+
+                                        if (f == "actuar_st") {
+                                            you_are_on_orange.classList.add("actuar_st");
+                                            you_are_on_orange.classList.add("actuar_time_" + g);
+
+                                        } else if (f == "actuar_en") {
+                                            you_are_on_orange.classList.add("actuar_en");
+                                            you_are_on_orange.classList.add("actuar_time_" + g);
+                                        }
+                                    }
+                                    
+                                    if (the_desition_one == true && the_desition_second == true) {
+                                        fif();
+                                    } else if (the_desition_one == true && the_desition_second == false) {
+                                        let gap = the_pointer_scrollleft_en - thisblock_scrollleft_st;
+                                        if (gap > 10 && gap < blocksize) {
+                                            if (gap > 50) {
+                                                fif("actuar_en", gap - 5);
                                             }
                                         }
-                                    } 
-                                }
-                            }
-                        }
-                    }
-                }
-
-                for (let i = 0; i < scraps.length; i++) {
-                    let stripe_inner_or_out = (e, f) => {
-                        
-                        let you_are_on_orange = null;
-                        
-                        // 先頭が orange_space, それ以外の場所に sp が並ぶ。
-                        
-                        // orange_spaceについて
-                        let po_and_st = scraps[i].firstElementChild.firstElementChild.firstElementChild.children;
-                        let block_num = f;
-
-                        // １つのorange_stripe の中に乗っかっているブロックを検出する処理.
-                        let thisblock_scrollleft_st = (blocksize * block_num) + full_start_scrollwidth - blocksize;
-                        let thisblock_scrollleft_en = thisblock_scrollleft_st + blocksize;
-
-                        for (let o = 0; o < po_and_st.length; o++) {
-                            if (po_and_st[o].classList.contains("orange_pointer_s")) {
-                                let the_pointer_s = po_and_st[o];
-                                let the_pointer_f = grab_auto(the_pointer_s)[1];
-                                let the_pointer_scrollleft_st = Number(target_data(the_pointer_s, "scroll_left_")) + 5;
-                                let the_pointer_scrollleft_en = Number(target_data(the_pointer_f, "scroll_left_")) + 5;
-                                let the_desition_one = false;
-                                let the_desition_second = false;
-
-                                // s - f　上に "st" が乗っかっているかどうか判定.
-                                if (the_pointer_scrollleft_st <= thisblock_scrollleft_st && thisblock_scrollleft_st < the_pointer_scrollleft_en) {
-                                    the_desition_one = true;
-                                }
-                                // s - f　上に "en" が乗っかっているかどうか判定.
-                                if (the_pointer_scrollleft_st < thisblock_scrollleft_en && thisblock_scrollleft_en <= the_pointer_scrollleft_en) {
-                                    the_desition_second = true;
-                                }
-
-                                // 以下「完全に orange_stripe の上に乗っかっていたわけではないブロック」への対応処理.
-                                let fif = (f, g) => {
-                                    orange_block_counter += 1;
-                                    e.classList.add("you_in");
-                                    e.classList.add("you_" + orange_block_counter);
-                                    you_are_on_orange = e.cloneNode(true);
-
-                                    if (f == "actuar_st") {
-                                        you_are_on_orange.classList.add("actuar_st");
-                                        you_are_on_orange.classList.add("actuar_time_" + g);
-
-                                    } else if (f == "actuar_en") {
-                                        you_are_on_orange.classList.add("actuar_en");
-                                        you_are_on_orange.classList.add("actuar_time_" + g);
-                                    }
-                                }
-                                
-                                if (the_desition_one == true && the_desition_second == true) {
-                                    fif();
-                                } else if (the_desition_one == true && the_desition_second == false) {
-                                    let gap = the_pointer_scrollleft_en - thisblock_scrollleft_st;
-                                    if (gap > 10 && gap < blocksize) {
-                                        if (gap > 50) {
-                                            fif("actuar_en", gap - 5);
-                                        }
-                                    }
-                                } else if (the_desition_one == false && the_desition_second == true) {
-                                    let gap = thisblock_scrollleft_en - the_pointer_scrollleft_st;
-                                    if (gap > 10 && gap < blocksize) {                                       
-                                        if (gap > 50) {
-                                            fif("actuar_st", 405 - gap);
+                                    } else if (the_desition_one == false && the_desition_second == true) {
+                                        let gap = thisblock_scrollleft_en - the_pointer_scrollleft_st;
+                                        if (gap > 10 && gap < blocksize) {                                       
+                                            if (gap > 50) {
+                                                fif("actuar_st", 405 - gap);
+                                            }
                                         }
                                     }
                                 }
                             }
+                            return you_are_on_orange;
                         }
-                        return you_are_on_orange;
-                    }
 
-                    // 以下scap ごとにorange_stripeの上にあるブロックを検出して Fragment に束ねていく処理.
-                    let sps = scraps[i].children;
-                    for (let o = 0; o < sps.length; o++) {
-                        
-                        // 先頭のOrange_spaceをスキップ.
-                        let scrap_sp_hor_fragment = document.createDocumentFragment();
-                        let sp_hor_blocks = sps[o].lastElementChild.children;
+                        // 以下scap ごとにorange_stripeの上にあるブロックを検出して Fragment に束ねていく処理.
+                        let sps = scraps[i].children;
+                        for (let o = 0; o < sps.length; o++) {
+                            
+                            // 先頭のOrange_spaceをスキップ.
+                            let scrap_sp_hor_fragment = document.createDocumentFragment();
+                            let sp_hor_blocks = sps[o].lastElementChild.children;
 
-                        for (let l = 0; l < sp_hor_blocks.length; l++) {
-                            // 最初と最後の adjuster を省く.
-                            if (l != 0 && l != sp_hor_blocks.length - 1) {
-                                let active_block = stripe_inner_or_out(sp_hor_blocks[l], l);
-                                if (active_block) {                                    
-                                    scrap_sp_hor_fragment.appendChild(active_block);
+                            for (let l = 0; l < sp_hor_blocks.length; l++) {
+                                // 最初と最後の adjuster を省く.
+                                if (l != 0 && l != sp_hor_blocks.length - 1) {
+                                    let active_block = stripe_inner_or_out(sp_hor_blocks[l], l);
+                                    if (active_block) {                                    
+                                        scrap_sp_hor_fragment.appendChild(active_block);
+                                    }
                                 }
                             }
-                        }
 
-                        // 新たな same群 の生成.
-                        for (let l = 0; l < scrap_sp_hor_fragment.children.length; l++) {
-                            let the_ob_name = "you_" + target_data(scrap_sp_hor_fragment.children[l], "you_");
-                            let its_you = document.getElementsByClassName(the_ob_name)[0];
-                            special_menu(its_you, scrap_sp_hor_fragment.children[l], scrap_sp_hor_fragment);
-                        }
-                        
-                        // デフォルトレイヤーにおける編集対象だったsp_coverへFragmentたちを挿入. 編集モードから回帰.
-                        if (o != 0) {
-                            original_sp_cover.children[o - 1].lastElementChild.appendChild(scrap_sp_hor_fragment);
+                            // 新たな same群 の生成.
+                            for (let l = 0; l < scrap_sp_hor_fragment.children.length; l++) {
+                                let the_ob_name = "you_" + target_data(scrap_sp_hor_fragment.children[l], "you_");
+                                let its_you = document.getElementsByClassName(the_ob_name)[0];
+                                special_menu(its_you, scrap_sp_hor_fragment.children[l], scrap_sp_hor_fragment);
+                            }
+                            
+                            // デフォルトレイヤーにおける編集対象だったsp_coverへFragmentたちを挿入. 編集モードから回帰.
+                            if (o != 0) {
+                                original_sp_cover.children[o - 1].lastElementChild.appendChild(scrap_sp_hor_fragment);
+                            }
                         }
                     }
-                }
 
-                // スタイリングやクラスの付け替えなどの新調.
-                if (document.querySelector(".centering")) {
-                    document.querySelector(".centering").classList.remove("centering");
-                }
-                let the_new_focusedblock = original_sp_cover.lastElementChild.lastElementChild.lastElementChild;
-                document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
-                the_new_focusedblock.classList.add("centering");
-                original_centering_checker(original_sp_cover, the_new_focusedblock);
+                    // スタイリングやクラスの付け替えなどの新調.
+                    if (document.querySelector(".centering")) {
+                        document.querySelector(".centering").classList.remove("centering");
+                    }
+                    let the_new_focusedblock = original_sp_cover.lastElementChild.lastElementChild.lastElementChild;
+                    document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
+                    the_new_focusedblock.classList.add("centering");
+                    original_centering_checker(original_sp_cover, the_new_focusedblock);
 
-                original_sp_cover.classList.remove("see");
-                original_sp_cover.classList.remove("target_of_edition");
-            } 
-            // edit モードをリセット.
-            orange_data = {};
-            new_layer.remove();
-            screen.classList.remove("edit");
-            screen.style.opacity = 1;
-            the_scrolled_distance = 0;
-            orange_block_counter = 0;
-            let covs = document.querySelectorAll(".special_cov");
-            for (let i = 0; i < covs.length; i++) {
-                covs[i].remove();
+                    original_sp_cover.classList.remove("see");
+                    original_sp_cover.classList.remove("target_of_edition");
+                } 
+                // edit モードをリセット.
+                orange_data = {};
+                new_layer.remove();
+                screen.classList.remove("edit");
+                screen.style.opacity = 1;
+                the_scrolled_distance = 0;
+                orange_block_counter = 0;
+                let covs = document.querySelectorAll(".special_cov");
+                for (let i = 0; i < covs.length; i++) {
+                    covs[i].remove();
+                }
+                
+                bo.style.backgroundColor = "#0070D8";
+                bo.classList.remove("edit_mode");
+                screen.style.display = "block";
+                let final_centering = document.querySelector(".centering");
+                // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
+                focus_checker(final_centering);
+                adjust_box(final_centering);
+
+                // 編集直後のMS起動への対策.
+                is_it_same_series(final_centering);
+                wheel_positioning();
             }
-            
-            bo.style.backgroundColor = "#121212";
-            bo.classList.remove("edit_mode");
-            screen.style.display = "block";
-            let final_centering = document.querySelector(".centering");
-            // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
-            focus_checker(final_centering);
-            let the_e_n = final_centering.getBoundingClientRect().top + window.pageYOffset - (window.innerHeight * 0.6);
-            scrollBy(0, - the_e_n);
-
-            // 編集直後のMS起動への対策.
-            is_it_same_series(final_centering);
         }
     }
 });
