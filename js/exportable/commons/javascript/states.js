@@ -7,7 +7,7 @@ let animation_list = {};
 // -- animation_generate_list を取得してループを設置.
 // -- Animation_complex_make() に通して 返ってくる animation を受け取り
 // -- animation_list[i] に格納するようにする.
-let animation_generate_list = [[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1], [["scale", 2], 1], [["horizontal", 0], 1]];
+// let animation_generate_list = [[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1], [["scale", 2], 1], [["horizontal", 0], 1]];
 
 for (let i = 0; i < animation_generate_list.length; i++) {
     // video_animation の数合わせをスキップしている.

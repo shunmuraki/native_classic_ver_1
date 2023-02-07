@@ -26,7 +26,7 @@ for (let i = 0; i < section_elms.length; i++) {
 
 // yt-iframe の読み込み
 let yt_elem_list = new Array();
-let yt_id_list = [];
+// let yt_id_list = [];
 
 function yt_load() {
     for (let i = 0; i < yt_id_list.length; i++) {

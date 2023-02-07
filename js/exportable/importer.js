@@ -653,6 +653,10 @@ for (let i = 0; i < lnjs_url_list.length; i++) {
         let final_animation_generate_list =  "let animation_generate_list = " + JSON.stringify(animation_generate_list) + ";";
         text = final_animation_generate_list + text;
     }
+    if (i == 2) {
+        let final_yt_id_list =  "let yt_id_list = " + JSON.stringify(yt_id_list) + ";";
+        text = final_yt_id_list + text;
+    }
     let the_e_num =  url.indexOf(".js");    
     let the_name =  url.slice(36, the_e_num) + ".js";
     zip.folder("javascript").file(the_name, text);
@@ -676,8 +680,7 @@ for (let i = 0; i < img_url_list.length; i++) {
 
 // JavaScriptファイルのエクスポート. (main.js)
 let final_animation_data = "let animation_data = " + JSON.stringify(animation_data) + ";";
-let final_yt_id_list =  "let yt_id_list = " + JSON.stringify(yt_id_list) + ";";
-the_js = the_js + final_animation_data + final_yt_id_list;
+the_js = the_js + final_animation_data;
 let main_res = await fetch("../js/exportable/commons/javascript/main.js");
 let main_text = await main_res.text();
 the_js = the_js + main_text;
