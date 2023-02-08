@@ -312,7 +312,6 @@ p, span, a {
 .um_display .relative .flex .box {
   display: inline-block;
   min-width: 360px;
-  min-height: 225px;
   -o-object-fit: cover;
      object-fit: cover;
   position: relative;
@@ -368,7 +367,7 @@ p, span, a {
   white-space: nowrap;
 }
 .um_display .relative .um_video {
-  height: 225px;
+  height: 245px;
   width: calc((100% + 360px) / 2);
   left: 0;
   overflow-x: scroll;
@@ -384,7 +383,7 @@ p, span, a {
   border-right: 6px solid #0070D8;
 }
 .um_display .relative .um_audio {
-  height: 225px;
+  height: 245px;
   width: calc((100% + 360px) / 2);
   right: 0;
   overflow-x: scroll;
@@ -443,15 +442,15 @@ p, span, a {
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_pointer, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_pointer {
   z-index: 999;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  top: 2px;
+  top: 0px;
 }
 .block_layer .sp_cover .orange_space .orange_pointer_zone .orange_line .orange_stripe, .block_layer .sp_cover .orange_space .orange_stripe_zone .orange_line .orange_stripe {
   z-index: 99;
-  height: 3px;
-  top: 4.5px;
+  height: 2px;
+  top: 2px;
 }
 .block_layer .sp_cover .sp {
   position: relative;
@@ -549,6 +548,22 @@ p, span, a {
 }
 .new_layer .see {
   box-sizing: border-box;
+  box-shadow: 0px 6px 15px #0067c7, 0px -6px 15px #0079ea !important;
+}
+
+.autoseekingmode {
+  background-color: #0a0a0a;
+}
+.autoseekingmode::after {
+  background-color: #0a0a0a;
+}
+.autoseekingmode .sp_cover {
+  opacity: 0;
+}
+.autoseekingmode .see {
+  opacity: 1;
+  background-color: #0070D8;
+  box-shadow: none !important;
 }
 
 .statusbar {

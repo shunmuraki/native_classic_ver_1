@@ -12,10 +12,10 @@ screen.appendChild(damee);
 window.onload = () => {
     // scrollTo がうまくいかないので仕方なく利用.
     $(function() {
-        $('html,body').animate({ scrollTop: window_height - 200 });
+        $('html,body').animate({ scrollTop: window_height - 200 }, {duration: 0});
         setTimeout(() => {
             wheel_positioning();
-        }, 1000)
+        }, 100)
     });
     document.getElementsByTagName("html")[0].style.overflow = "hidden";
     document.getElementsByTagName("body")[0].style.overflow = "hidden";

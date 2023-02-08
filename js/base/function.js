@@ -436,3 +436,27 @@ export const adjust_box = (e) => {
         wheel_positioning();
     }
 }
+
+// ブロックの生成やスプリット、ポインターを打つなどのタイミングで標準ポインターをアニメーションさせる際に使用する関数.
+export const pointer_anim = () => {                    
+    let pri_pointer = document.querySelector(".pointer");
+    pri_pointer.animate(
+        [
+            { scale: 1 },
+            { scale: 0.8 }
+        ], {
+            duration: 300,
+            fill: "both",
+        }
+    );
+    pri_pointer.animate(
+        [
+            { scale: 0.8 },
+            { scale: 1,  }
+        ], {
+            duration: 300,
+            fill: "both",
+            delay: 300,
+        }
+    );
+}

@@ -84,8 +84,13 @@ const outer_inte = (e) => {
         current_time = 0;
         the_states(e, animation_data, "auto_seek", yt_elem_list);
     } else if (current_time >= duration) {
-        animation_data[String(the_name)]["about_time"]["section_current_time"] = duration;            
-        current_time = duration;
+        if (duration > 15) {
+            animation_data[String(the_name)]["about_time"]["section_current_time"] = duration - 10; 
+            current_time = duration;
+        } else {
+            animation_data[String(the_name)]["about_time"]["section_current_time"] = 5;
+            current_time = 5;
+        }
         the_states(e, animation_data, "auto_seek", yt_elem_list);     
     }
 

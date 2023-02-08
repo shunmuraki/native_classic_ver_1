@@ -1,6 +1,6 @@
 import { blocksize, screen } from "../base/elements.js"
 import { same_data_getter, vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, same_data_counter, which_special_is } from "../base/tools.js";
-import { make_ver_fragment, make_dup_fragment, original_centering_checker, focus_checker, blur_checker } from "../base/function.js";
+import { make_ver_fragment, make_dup_fragment, original_centering_checker, focus_checker, blur_checker, pointer_anim } from "../base/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { adjust_target_pos } from "../ms/function.js";
 
@@ -26,7 +26,7 @@ window.addEventListener("keydown", (e)=>{
 
       // 以下 command + k の処理.
       if (k == "k") {
-
+        pointer_anim();
         // 複製されるのが画像かもしれないので、command + U では必要なかったが配慮.
         if (current.tagName == "TEXTAREA") {
           current.blur();

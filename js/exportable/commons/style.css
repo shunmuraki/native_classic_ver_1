@@ -259,20 +259,7 @@ html {
   width: 100vw;
   height: 98vh;
   z-index: 1;
-}
-.linear::after {
-  content: "------------ Linear startpoint. ------------";
-  position: absolute;
-  top: 0px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.3rem;
-  letter-spacing: 0.03em;
-  font-weight: 300;
-  color: #00d877;
-  font-family: "Josefin Sans";
-  z-index: 2;
-  opacity: 0.6;
+  background-color: #00d877;
 }
 .linear .object {
   overflow: hidden;
@@ -305,10 +292,10 @@ html {
   font-size: 1.3rem;
   letter-spacing: 0.03em;
   font-weight: 300;
-  color: #0070D8;
+  color: #00d877;
   font-family: "Josefin Sans";
   z-index: 2;
-  opacity: 0.6;
+  opacity: 0.8;
 }
 .non .video {
   width: 600px;
@@ -329,8 +316,7 @@ html {
 .statusbar_outer {
   padding: 5px 4px;
   background-color: #ffffff;
-  filter: drop-shadow(3px 3px 4px #f1f1f1);
-  border-radius: 2px;
+  border-radius: 3px;
   height: 95vh;
   position: fixed;
   top: 2.5vh;
@@ -340,6 +326,6 @@ html {
 .statusbar_outer .statusbar {
   width: 3px;
   height: auto;
-  background-color: #44a5ff;
+  background-color: #00d877;
   border-radius: 3px;
 }/*# sourceMappingURL=style.css.map */

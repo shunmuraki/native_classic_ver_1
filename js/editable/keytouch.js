@@ -1,5 +1,5 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, blocksize, linesize, blocktime } from "../base/elements.js";
-import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box, special_cleaner} from "../base/function.js";
+import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box, special_cleaner, pointer_anim } from "../base/function.js";
 import { vertical_to_hor, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter, which_special_is } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { just_clear_yt_loop, yt_player_getter, yt_resetter } from "../multiable/extends.js";
@@ -14,7 +14,6 @@ let the_scrolled_distance = 0;
 let orange_block_counter = 0;
 
 let bo = document.getElementsByTagName("BODY")[0]
-let pri_pointer = document.querySelector(".pointer");
 
 // 外部ファイルに orange_data を共有する関数.
 export const orange_data_getter = () => {
@@ -264,217 +263,219 @@ window.addEventListener("keydown", (e)=>{
             centering = document.querySelector(".comesin");
         } 
 
-        if(! e.shiftKey) { 
-            let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
-            let orange_pointer_list = orange_pointer_space.firstElementChild;
-
-            // 以下ブロック移動モードとポインター移動モードの切り替え処理.
-            if (k == "ArrowLeft") {
-                if (the_see_centering.classList.contains("principle_block")) {
-
-                    if (centering) {
-                        if (centering.classList.contains("opac_cam")) {
-                            centering.remove();
-                        }
-                    }
-
-                    if (orange_pointer_list.childElementCount != 0) {
-                        centering.classList.remove("comesin"); 
-                        let nextstep = best_related_element(the_see_centering, vertical_to_hor(new_layer_centering).scrollLeft, "pointer", orange_data);
-                        let new_one = nextstep[0];
-                        let scroll_distance = nextstep[1];
-                        new_layer_centering.classList.remove("new_layer_centering");
-                        new_one.classList.add("comesin");
-                        let the_gap = scroll_distance - vertical_to_hor(new_layer_centering).scrollLeft;
-                        all_view_changer(the_see_centering, the_gap);                        
-                        principle_management(the_see_centering, "principle_pointer");
-                        wheel_positioning();
-                    }
-                } 
-                // sprinciple_pointer だった場合は何もしない.
-            }
-            if (k == "ArrowRight") {
-                if (the_see_centering.classList.contains("principle_pointer")) {
-
-                    let nextstep = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data);
-                    let new_one = nextstep[0];
-                    let scroll_distance = nextstep[1];
-                    new_one.classList.add("new_layer_centering");                    
-                    let the_gap = scroll_distance - orange_pointer_space.scrollLeft;
-                    all_view_changer(the_see_centering, the_gap);
-                    principle_management(the_see_centering, "principle_block");
-                    is_it_same_series(new_one);
-                    wheel_positioning();
-                }
-                // principle_block だった場合は何もしない.
-                the_scrolled_distance = 0;
-            }
-        }
-
-        // ブロックによる上下左右移動の処理.
-        if(e.shiftKey) {
-            if (the_see_centering.classList.contains("principle_block")) {
-
-                if (k == "ArrowUp") {
-                    if (the_see_centering.previousElementSibling) {
-                        orange_data = pre_pointing_in(the_see_centering, orange_data);
-                        principle_management(the_see_centering.previousElementSibling, "principle_block");
-                        the_see_centering.classList.toggle("see");
-                        the_see_centering.previousElementSibling.classList.toggle("see");
-                        go_top(new_layer_centering, "new_layer_centering");
-                        the_scrolled_distance = 0;
-                    }
-                }
+        if (! new_layer.classList.contains("autoseekingmode")) {
+            if(! e.shiftKey) { 
+                let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
+                let orange_pointer_list = orange_pointer_space.firstElementChild;
+    
+                // 以下ブロック移動モードとポインター移動モードの切り替え処理.
                 if (k == "ArrowLeft") {
-                    go_left(new_layer_centering, "new_layer_centering");
-                    the_scrolled_distance = 0;
-                }
-                if (k == "ArrowRight") {
-                    go_right(new_layer_centering, "new_layer_centering");
-                    the_scrolled_distance = 0;
-                }
-                if (k == "ArrowDown") {
-                    if (the_see_centering.nextElementSibling) {
-                        orange_data = pre_pointing_in(the_see_centering, orange_data);
-                        orange_data = pre_pointing_out(the_see_centering, the_see_centering.nextElementSibling, orange_data);
-                        principle_management(the_see_centering.nextElementSibling, "principle_block");
-                        the_see_centering.classList.toggle("see");
-                        the_see_centering.nextElementSibling.classList.toggle("see");
-                        go_bottom(new_layer_centering, "new_layer_centering");
-                        the_scrolled_distance = 0;
-                    }
-                }
-
-            } else if (the_see_centering.classList.contains("principle_pointer")) {
-
-                // ポインターによる上下左右移動の処理.
-                if (k == "ArrowUp") {
-                    let the_countingstart_top = elem_post_getter(the_see_centering);
-                    // スクロール位置の調整のため現在地を控えておく.
-                    let the_countingnow_pos = the_see_centering.getBoundingClientRect().top;
-                    while (the_countingstart_top >= 1) {
-                        if (new_layer.children[the_countingstart_top].previousElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
-                            
-                            // もとのthe_see_centeringからクラスを外す.
-                            the_see_centering.classList.toggle("see");
-                            // 更新.
-                            the_see_centering = new_layer.children[the_countingstart_top];
-
-                            let orange_pointer_space = the_see_centering.previousElementSibling.firstElementChild.firstElementChild;
-                            
-                            comesin_management("top", centering, the_see_centering);
-
+                    if (the_see_centering.classList.contains("principle_block")) {
+    
+                        if (centering) {
                             if (centering.classList.contains("opac_cam")) {
                                 centering.remove();
                             }
-                            
-                            orange_data = pre_pointing_in(the_see_centering, orange_data);
-
-                            let default_distance = document.querySelector(".comesin").parentElement.parentElement.scrollLeft;
-                            let the_gap = target_data(document.querySelector(".comesin"), "scroll_left_") - default_distance;
-                            all_view_changer(the_see_centering.previousElementSibling, the_gap);
-                            principle_management(the_see_centering.previousElementSibling, "principle_pointer");
-                            let nextstep = best_related_element(the_see_centering.previousElementSibling, orange_pointer_space.scrollLeft, "block", orange_data);
-
-                            // 再度更新.
-                            the_see_centering.previousElementSibling.classList.toggle("see");
-                            the_see_centering = the_see_centering.previousElementSibling;
-                            let the_see_centering_height = the_see_centering.getBoundingClientRect().top - the_countingnow_pos;
-
-                            // edit モードでは「see」ラインの高さを固定したい狙い.
-                            scrollBy(0, the_see_centering_height);
-                            wheel_positioning();
-                            
+                        }
+    
+                        if (orange_pointer_list.childElementCount != 0) {
+                            centering.classList.remove("comesin"); 
+                            let nextstep = best_related_element(the_see_centering, vertical_to_hor(new_layer_centering).scrollLeft, "pointer", orange_data);
                             let new_one = nextstep[0];
-                            is_it_same_series(new_one);
-                            the_scrolled_distance = 0;
-
-                            break;
+                            let scroll_distance = nextstep[1];
+                            new_layer_centering.classList.remove("new_layer_centering");
+                            new_one.classList.add("comesin");
+                            let the_gap = scroll_distance - vertical_to_hor(new_layer_centering).scrollLeft;
+                            all_view_changer(the_see_centering, the_gap);                        
+                            principle_management(the_see_centering, "principle_pointer");
+                            wheel_positioning();
                         }
-                        the_countingstart_top -= 1;
-                    }
-                }
-                if (k == "ArrowLeft") {
-                    if (centering.previousElementSibling) {
-                        let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
-                        let the_gap = target_data(centering.previousElementSibling, "scroll_left_") - centering.parentElement.parentElement.scrollLeft;
-                        all_view_changer(the_see_centering, the_gap);
-                        
-                        comesin_management("left", centering, the_see_centering);
-                        
-                        if (centering.classList.contains("opac_cam")) {
-                            centering.remove();
-                        }
-
-                        let nextstep = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data);
-                        let new_one = nextstep[0];
-                        is_it_same_series(new_one);
-                        the_scrolled_distance = 0;
-                    }
+                    } 
+                    // sprinciple_pointer だった場合は何もしない.
                 }
                 if (k == "ArrowRight") {
-                    if (centering.nextElementSibling) {
-                        let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
-                        let the_gap = target_data(centering.nextElementSibling, "scroll_left_") - centering.parentElement.parentElement.scrollLeft;
-                        all_view_changer(the_see_centering, the_gap);
-                        
-                        comesin_management("right", centering, the_see_centering);
-                        
-                        if (centering.classList.contains("opac_cam")) {
-                            centering.remove();
-                        }
-
+                    if (the_see_centering.classList.contains("principle_pointer")) {
+    
                         let nextstep = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data);
                         let new_one = nextstep[0];
+                        let scroll_distance = nextstep[1];
+                        new_one.classList.add("new_layer_centering");                    
+                        let the_gap = scroll_distance - orange_pointer_space.scrollLeft;
+                        all_view_changer(the_see_centering, the_gap);
+                        principle_management(the_see_centering, "principle_block");
                         is_it_same_series(new_one);
+                        wheel_positioning();
+                    }
+                    // principle_block だった場合は何もしない.
+                    the_scrolled_distance = 0;
+                }
+            }
+    
+            // ブロックによる上下左右移動の処理.
+            if(e.shiftKey) {
+                if (the_see_centering.classList.contains("principle_block")) {
+    
+                    if (k == "ArrowUp") {
+                        if (the_see_centering.previousElementSibling) {
+                            orange_data = pre_pointing_in(the_see_centering, orange_data);
+                            principle_management(the_see_centering.previousElementSibling, "principle_block");
+                            the_see_centering.classList.toggle("see");
+                            the_see_centering.previousElementSibling.classList.toggle("see");
+                            go_top(new_layer_centering, "new_layer_centering");
+                            the_scrolled_distance = 0;
+                        }
+                    }
+                    if (k == "ArrowLeft") {
+                        go_left(new_layer_centering, "new_layer_centering");
                         the_scrolled_distance = 0;
                     }
-                }
-                if (k == "ArrowDown") {
-                    let the_bottom_num = new_layer.childElementCount - 1;
-                    let the_countingstart_bottom = elem_post_getter(the_see_centering);
-
-                    // スクロール位置の調整のため現在地を控えておく.
-                    let the_countingnow_pos = the_see_centering.getBoundingClientRect().top;
-                    while (the_countingstart_bottom < the_bottom_num) {
-                        if (new_layer.children[the_countingstart_bottom].nextElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
-                            
-                            // もとのthe_see_centeringからクラスを外す.
-                            the_see_centering.classList.toggle("see");
-                            // 更新.
-                            the_see_centering = new_layer.children[the_countingstart_bottom];
-
-                            let orange_pointer_space = the_see_centering.nextElementSibling.firstElementChild.firstElementChild;
+                    if (k == "ArrowRight") {
+                        go_right(new_layer_centering, "new_layer_centering");
+                        the_scrolled_distance = 0;
+                    }
+                    if (k == "ArrowDown") {
+                        if (the_see_centering.nextElementSibling) {
                             orange_data = pre_pointing_in(the_see_centering, orange_data);
                             orange_data = pre_pointing_out(the_see_centering, the_see_centering.nextElementSibling, orange_data);
-                        
-                            comesin_management("bottom", centering, the_see_centering);
-                        
-                            if (centering.classList.contains("opac_cam")) {
-                              centering.remove();
-                            }
-      
-                            let default_distance = document.querySelector(".comesin").parentElement.parentElement.scrollLeft;
-                            let the_gap = target_data(document.querySelector(".comesin"), "scroll_left_") - default_distance;
-                            all_view_changer(the_see_centering.nextElementSibling, the_gap);
-                            principle_management(the_see_centering.nextElementSibling, "principle_pointer");
-                            let nextstep = best_related_element(the_see_centering.nextElementSibling, orange_pointer_space.scrollLeft, "block", orange_data);
-                            // 再度更新.
+                            principle_management(the_see_centering.nextElementSibling, "principle_block");
+                            the_see_centering.classList.toggle("see");
                             the_see_centering.nextElementSibling.classList.toggle("see");
-                            the_see_centering = the_see_centering.nextElementSibling;
-                            let the_see_centering_height = the_see_centering.getBoundingClientRect().top - the_countingnow_pos;
+                            go_bottom(new_layer_centering, "new_layer_centering");
+                            the_scrolled_distance = 0;
+                        }
+                    }
+    
+                } else if (the_see_centering.classList.contains("principle_pointer")) {
+    
+                    // ポインターによる上下左右移動の処理.
+                    if (k == "ArrowUp") {
+                        let the_countingstart_top = elem_post_getter(the_see_centering);
+                        // スクロール位置の調整のため現在地を控えておく.
+                        let the_countingnow_pos = the_see_centering.getBoundingClientRect().top;
+                        while (the_countingstart_top >= 1) {
+                            if (new_layer.children[the_countingstart_top].previousElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
+                                
+                                // もとのthe_see_centeringからクラスを外す.
+                                the_see_centering.classList.toggle("see");
+                                // 更新.
+                                the_see_centering = new_layer.children[the_countingstart_top];
+    
+                                let orange_pointer_space = the_see_centering.previousElementSibling.firstElementChild.firstElementChild;
+                                
+                                comesin_management("top", centering, the_see_centering);
+    
+                                if (centering.classList.contains("opac_cam")) {
+                                    centering.remove();
+                                }
+                                
+                                orange_data = pre_pointing_in(the_see_centering, orange_data);
+    
+                                let default_distance = document.querySelector(".comesin").parentElement.parentElement.scrollLeft;
+                                let the_gap = target_data(document.querySelector(".comesin"), "scroll_left_") - default_distance;
+                                all_view_changer(the_see_centering.previousElementSibling, the_gap);
+                                principle_management(the_see_centering.previousElementSibling, "principle_pointer");
+                                let nextstep = best_related_element(the_see_centering.previousElementSibling, orange_pointer_space.scrollLeft, "block", orange_data);
+    
+                                // 再度更新.
+                                the_see_centering.previousElementSibling.classList.toggle("see");
+                                the_see_centering = the_see_centering.previousElementSibling;
+                                let the_see_centering_height = the_see_centering.getBoundingClientRect().top - the_countingnow_pos;
+    
+                                // edit モードでは「see」ラインの高さを固定したい狙い.
+                                scrollBy(0, the_see_centering_height);
+                                wheel_positioning();
+                                
+                                let new_one = nextstep[0];
+                                is_it_same_series(new_one);
+                                the_scrolled_distance = 0;
+    
+                                break;
+                            }
+                            the_countingstart_top -= 1;
+                        }
+                    }
+                    if (k == "ArrowLeft") {
+                        if (centering.previousElementSibling) {
+                            let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
+                            let the_gap = target_data(centering.previousElementSibling, "scroll_left_") - centering.parentElement.parentElement.scrollLeft;
+                            all_view_changer(the_see_centering, the_gap);
                             
-                            // edit モードでは「see」ラインの高さを固定したい狙い.
-                            scrollBy(0, the_see_centering_height);
-                            wheel_positioning();
+                            comesin_management("left", centering, the_see_centering);
                             
+                            if (centering.classList.contains("opac_cam")) {
+                                centering.remove();
+                            }
+    
+                            let nextstep = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data);
                             let new_one = nextstep[0];
                             is_it_same_series(new_one);
                             the_scrolled_distance = 0;
-
-                            break;
                         }
-                        the_countingstart_bottom += 1;
+                    }
+                    if (k == "ArrowRight") {
+                        if (centering.nextElementSibling) {
+                            let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
+                            let the_gap = target_data(centering.nextElementSibling, "scroll_left_") - centering.parentElement.parentElement.scrollLeft;
+                            all_view_changer(the_see_centering, the_gap);
+                            
+                            comesin_management("right", centering, the_see_centering);
+                            
+                            if (centering.classList.contains("opac_cam")) {
+                                centering.remove();
+                            }
+    
+                            let nextstep = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data);
+                            let new_one = nextstep[0];
+                            is_it_same_series(new_one);
+                            the_scrolled_distance = 0;
+                        }
+                    }
+                    if (k == "ArrowDown") {
+                        let the_bottom_num = new_layer.childElementCount - 1;
+                        let the_countingstart_bottom = elem_post_getter(the_see_centering);
+    
+                        // スクロール位置の調整のため現在地を控えておく.
+                        let the_countingnow_pos = the_see_centering.getBoundingClientRect().top;
+                        while (the_countingstart_bottom < the_bottom_num) {
+                            if (new_layer.children[the_countingstart_bottom].nextElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
+                                
+                                // もとのthe_see_centeringからクラスを外す.
+                                the_see_centering.classList.toggle("see");
+                                // 更新.
+                                the_see_centering = new_layer.children[the_countingstart_bottom];
+    
+                                let orange_pointer_space = the_see_centering.nextElementSibling.firstElementChild.firstElementChild;
+                                orange_data = pre_pointing_in(the_see_centering, orange_data);
+                                orange_data = pre_pointing_out(the_see_centering, the_see_centering.nextElementSibling, orange_data);
+                            
+                                comesin_management("bottom", centering, the_see_centering);
+                            
+                                if (centering.classList.contains("opac_cam")) {
+                                  centering.remove();
+                                }
+          
+                                let default_distance = document.querySelector(".comesin").parentElement.parentElement.scrollLeft;
+                                let the_gap = target_data(document.querySelector(".comesin"), "scroll_left_") - default_distance;
+                                all_view_changer(the_see_centering.nextElementSibling, the_gap);
+                                principle_management(the_see_centering.nextElementSibling, "principle_pointer");
+                                let nextstep = best_related_element(the_see_centering.nextElementSibling, orange_pointer_space.scrollLeft, "block", orange_data);
+                                // 再度更新.
+                                the_see_centering.nextElementSibling.classList.toggle("see");
+                                the_see_centering = the_see_centering.nextElementSibling;
+                                let the_see_centering_height = the_see_centering.getBoundingClientRect().top - the_countingnow_pos;
+                                
+                                // edit モードでは「see」ラインの高さを固定したい狙い.
+                                scrollBy(0, the_see_centering_height);
+                                wheel_positioning();
+                                
+                                let new_one = nextstep[0];
+                                is_it_same_series(new_one);
+                                the_scrolled_distance = 0;
+    
+                                break;
+                            }
+                            the_countingstart_bottom += 1;
+                        }
                     }
                 }
             }
@@ -484,7 +485,7 @@ window.addEventListener("keydown", (e)=>{
         if(! e.shiftKey) {
             if (e.ctrlKey) {
                 if (k == "s") {
-                    screen.classList.add("autoseekingmode");
+                    new_layer.classList.add("autoseekingmode");
                     let centering = document.getElementsByClassName("new_layer_centering")[0];
                     let scrap = vertical_to_sp_cover(centering);
                     let hor = vertical_to_hor(centering);
@@ -674,28 +675,6 @@ window.addEventListener("keydown", (e)=>{
                     }                         
                 }
 
-                function pointer_anim() {                    
-                    pri_pointer.animate(
-                        [
-                          { scale: 1 },
-                          { scale: 0.8 }
-                        ], {
-                          duration: 400,
-                          fill: "both",
-                        }
-                    );
-                    pri_pointer.animate(
-                        [
-                            { scale: 0.8 },
-                            { scale: 1,  }
-                        ], {
-                          duration: 300,
-                          fill: "both",
-                          delay: 400,
-                        }
-                    );
-                }
-
                 if (centering) {
                     if (the_see_centering.firstElementChild.firstElementChild.scrollLeft == Number(target_data(centering, "scroll_left_"))) {
                         if (the_see_centering.classList.contains("principle_pointer") && centering.classList.contains("opac_cam") == false){
@@ -731,7 +710,7 @@ window.addEventListener("keydown", (e)=>{
         if (k == "Escape") {
 
             // このギャップすごいけどw
-            if (screen.classList.contains("autoseekingmode")) {
+            if (new_layer.classList.contains("autoseekingmode")) {
 
                 the_scrolled_distance = 0;
                 actuar_st_alloff();
@@ -766,7 +745,7 @@ window.addEventListener("keydown", (e)=>{
                 }
                 
                 wheel_positioning();
-                screen.classList.remove("autoseekingmode");
+                new_layer.classList.remove("autoseekingmode");
 
             } else {
                 // 編集を終了する時点でorange_pointer_f が存在したら初めて実行。存在しなかったら周辺のorange群を放棄する.
