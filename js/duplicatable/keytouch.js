@@ -113,6 +113,7 @@ window.addEventListener("keydown", (e)=>{
       if ( type_signiture.indexOf('in') != -1) {
         document.querySelector(".ms_area").remove();
         let centering = document.querySelector(".centering");
+        
         // same群の中で　command + u をした場合に same が２つに分裂するのと近いため、処理を same_cutter に共通化してある.
         same_cutter(centering, "replace");
         centering.classList.add("change");

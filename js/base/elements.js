@@ -1,6 +1,8 @@
 import { blur_checker, focus_checker } from "./function.js";
 
 export let screen = document.querySelector(".screen");
+
+// 動的な根幹のセットアップ.
 export const blocksize = 360;
 export const linesize = 24;
 export const blocktime = 5;
@@ -8,7 +10,6 @@ export const blocktime = 5;
 let the_b = window.innerWidth - blocksize;
 let the_a = the_b / 2;
 let the_c = the_a + blocksize;
-
 let default_block_length = blocksize * linesize;
 let default_length = default_block_length + window.innerWidth;
 
@@ -23,7 +24,6 @@ export const the_name_list = ['same_start', 'same_end', 'same_num_', 'same', 'ac
 export const window_height = window.innerHeight;
 export const the_middline = window_height * 0.5;
 export const the_sunsetline = window_height * 0.3;
-
 
 // 以下チートシートの表示について.
 let cs = document.querySelector(".cheet_sheet");

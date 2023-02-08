@@ -1,5 +1,6 @@
 import { screen, half_left_width, blocksize } from "../base/elements.js";
 import { focus_checker } from "../base/function.js";
+
 let video_list = document.querySelector(".um_video");
 let audio_list = document.querySelector(".um_audio");
 let video_null = video_list.lastElementChild;
@@ -24,7 +25,6 @@ export function video_street_scroll() {
   before_choose.classList.remove("um_centering");
   var after_choose = video_list.lastElementChild.previousElementSibling;
   after_choose.classList.add("um_centering");
-
   video_null.style.opacity = 1;
   audio_null.style.opacity = 0;
   video_list.scrollLeft -= blocksize;
@@ -80,13 +80,14 @@ for (let i = 0; i < 10; i++) {
   audio_panc.after(container);
 }
 
+// UM の画像の配置を揃えるための計らい.
 audio_list.lastElementChild.previousElementSibling.classList.add("edge");
 video_list.lastElementChild.previousElementSibling.classList.add("edge");
 
 // デフォルトの設定.
 audio_list.lastElementChild.classList.add("um_centering");
 
-// ** 以下デフォルトのスクロール位置の調整。
+// 以下デフォルトのスクロール位置の調整。
 let video_list_scrollwidth = video_list.scrollWidth;
 let audio_list_scrollwidth = audio_list.scrollWidth;
 video_list.scrollLeft = video_list_scrollwidth - half_left_width;

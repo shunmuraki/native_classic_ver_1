@@ -1,13 +1,15 @@
 import { screen } from "../base/elements.js";
 import { focus_checker } from "../base/function.js";
+import {tracer_basis} from "../base/tools.js"
 
 let the_values = new Array();
-
-const button = document.querySelector(".export_button");
+let button = document.querySelector(".export_button");
 
 button.addEventListener("click", () => {
+    
     // スタイリング等充てた直後にexportされるケースに対応.
     tracer_basis(document.querySelector(".centering"));
+    
     // textarea が innerHTMLではコピーされないため別に配列を用意して export.html側で再度同じ状況を再現.
     let write_areas = document.querySelectorAll(".write_area");
     for (let i = 0; i < write_areas.length; i++) {

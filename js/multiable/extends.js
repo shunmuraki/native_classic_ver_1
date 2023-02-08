@@ -166,5 +166,6 @@ export const video_load_then = (e, f) => {
         let after_distance = blocksize * (the_block_num);
         all_view_changer(current_sp_cover, after_distance);
         is_it_same_series(document.querySelector(".centering"));
+        
     }, 1500);
 }

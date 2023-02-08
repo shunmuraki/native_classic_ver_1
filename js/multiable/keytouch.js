@@ -1,11 +1,11 @@
 import { screen } from "../base/elements.js";
-import { is_it_same_series, make_it_img } from "./function.js";
+import { make_it_img } from "./function.js";
 import { video_load_then } from "./extends.js";
 import { adjust_box, focus_checker } from "../base/function.js";
 
 window.addEventListener("keydown", (e) => {
+    
     let k = e.key;
-
     let current;
     let type_signiture;
     

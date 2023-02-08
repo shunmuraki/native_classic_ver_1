@@ -17,7 +17,6 @@ button_container.appendChild(the_usage_button);
 
 the_footer.appendChild(button_container);
 
-
 let right_container = document.createElement("div");
 right_container.classList.add("rightside");
 let icon_img = document.createElement("img");

@@ -13,8 +13,6 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            // background: linear-gradient(145deg, #101010, #131313) !important;
-            // background-color: rgba(10, 10, 10, 1);
             background-color: #0070D8;
             box-shadow:  inset 3px 3px 11px #0067c7,
                                     inset -3px -3px 11px #0079ea !important;
@@ -147,13 +145,10 @@
         .box {
           display: inline-block;
           min-width: 360px;
-        //   height: 225px;
           object-fit: cover;
           position: relative;
           box-sizing: border-box;
           z-index: 2;
-          // border-right: 6px solid #0070D8;
-
            &:after {
              content: '';
              position: absolute;
@@ -173,8 +168,6 @@
                                 inset -3px -3px 11px #0079ea !important;
             img {
                 padding: 20px 10px;
-                // width: 90%;
-                // height: auto;
             }
         }     
         .null_f {
@@ -205,8 +198,6 @@
         flex-direction: column;
         overflow-y: scroll;
         white-space: nowrap;
-        // border-right: 6px solid #006cd0;
-        // filter: drop-shadow(5px 5px 15px #fff);
       }
       .um_video {
         height: 245px;
@@ -581,7 +572,6 @@ img, iframe {
         .download_button {
             padding: 15px 25px;
             border-radius: 3px;
-            // background-color: ;
             line-height: 1;
             color: #fff;
             font-size: 2rem;
@@ -612,10 +602,6 @@ img, iframe {
     box-sizing: border-box;
 
     .flex {
-        // display: flex;
-        // justify-content: flex-start;
-        // flex-wrap: wrap;
-        // align-items: flex-end;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
         gap: 10px;
@@ -657,6 +643,10 @@ img, iframe {
             grid-column: 3 / 5;
             grid-row: 4;
         }
+        .grid_4 {
+            grid-column: 5 / 7;
+            grid-row: 4;
+        }
         .m_b {
             background-color: rgba(255, 226, 41, 0.3);
         }
@@ -683,9 +673,8 @@ img, iframe {
 }
 
 
-// * あくまでエディター上の描画が目的の
+// 以下あくまでエディター上の描画が目的の処理
 // vertical | horizontal | scale | opacity
-
 .styling_1_0_0_0 {
     top: 50%!important;
     left: 0 !important;
@@ -1105,7 +1094,6 @@ img, iframe {
 .img, .video {
     .styling_2_1_0_1
      {
-        // nunu
         transform: translateX(-50%) scale(0.5) !important;
     }
 }

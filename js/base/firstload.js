@@ -10,7 +10,7 @@ damee.classList.add("first_load_dame");
 screen.appendChild(damee);
 
 window.onload = () => {
-    // scrollTo がうまくいかないので仕方なく利用.
+    // scrollTo の代替.
     $(function() {
         $('html,body').animate({ scrollTop: window_height - 200 }, {duration: 0});
         setTimeout(() => {
@@ -22,8 +22,9 @@ window.onload = () => {
 };     
 
 (function () {
+    // 以下 export.html から回帰したケースへの対応.
     if (sessionStorage.getItem("output")) {
-        // 以下 export.htmlから回帰したケースへの対応.
+
         let doms = sessionStorage.getItem("output");
         screen.innerHTML = doms;
         let the_values = sessionStorage.getItem("the_values");
@@ -42,6 +43,7 @@ window.onload = () => {
         sessionStorage.clear();
 
     } else {
+        // 以下通常のリロードへの対応.
         let d = document.querySelector(".first_load_dame");
         make_fragment(d, "after");
         d.remove();

@@ -26,10 +26,6 @@ window.addEventListener("keydown", (e)=>{
 
             // msの挿入先について条件分岐.「same」クラスがついている場合はカバーが被さっているので、対象を special_cov とする.
             if (centering.classList.contains("same")) {
-
-              // special_cov がなかったからエラーになってる.
-              // 確かに編集直後とかは存在しないのかもしれないね...... 想定外.
-              // * シンプルに先に make_special_cov() を走らせたらどうか. 
               ms_adjust_target = which_special_is(centering).lastElementChild;
               ms_adjust_target.before(ms);
 
@@ -37,7 +33,6 @@ window.addEventListener("keydown", (e)=>{
               if (document.activeElement.tagName == "BODY") {
                 centering.lastElementChild.before(ms);
               } else {
-                // current.value = current.value.slice(0, -1);
                 current.blur();
                 current.before(ms);
               }

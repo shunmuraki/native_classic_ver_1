@@ -43,7 +43,6 @@ window.addEventListener("keydown", (e)=>{
                 let next_one = current_sp_cover.nextElementSibling.lastElementChild.lastElementChild.lastElementChild;
                 var next_textarea = next_one.lastElementChild;
                 centering_marker(current_vertical, next_one, "centering");
-               
                 next_textarea.focus();
                 is_it_same_series(next_one);
                 wheel_positioning();

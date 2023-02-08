@@ -457,7 +457,6 @@ export function delete_orange_p(e) {
     return orange_data;
 }
 
-
 // comesin クラス（最新のorange_pointerを検索できる）を管理する関数. (上下左右 ...　外してつける / space .. ただ外す)
 export const comesin_management = (e, f, g) => {
     if (document.querySelector(".comesin")) {
@@ -501,6 +500,7 @@ export const edit_mode_default_adjust = (e) => {
     }
 }
 
+// オートシーキングモードにおいて actuar のデフォルトセットアップをする関数.
 export const actuar_st_allon = () => {
     let sts = document.querySelectorAll("actuar_st");
     for (let i = 0; i < sts.length; i++) {
@@ -510,6 +510,7 @@ export const actuar_st_allon = () => {
     }
 }
 
+// オートシーキングモード終了後にactuar系列のブロックの描画を現場復帰する関数.
 export const actuar_st_alloff = () => {
     let sts = document.querySelectorAll("actuar_st");
     for (let i = 0; i < sts.length; i++) {
@@ -518,7 +519,6 @@ export const actuar_st_alloff = () => {
         }
     }
 }
-
 export const actuar_en_alloff = () => {
     let ens = document.querySelectorAll("actuar_en");
     for (let i = 0; i < ens.length; i++) {

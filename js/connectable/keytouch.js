@@ -195,6 +195,7 @@ window.addEventListener("keydown", (e)=>{
                             last_one.lastElementChild.value = last_one.lastElementChild.value.slice(0, -1);
                         }, 10)
                     }
+                    
                     screen.classList.remove("ms");
                     
                 }

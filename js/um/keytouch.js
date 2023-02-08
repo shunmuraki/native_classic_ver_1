@@ -111,8 +111,8 @@ document.addEventListener("keydown", (e) => {
         }        
     }
 
+    // 以下左右移動のコマンドでUMレイヤーに並んだ画像や動画のどれかが選択された際の処理.
     if (screen.classList.contains("um_ready")) {
-        // UMレイヤーに並んだ画像や動画のどれかが選択された際の処理.
         if (k == "Enter") { 
             let native_center = document.querySelector(".centering");    
             let um_centering = document.querySelector(".um_centering");

@@ -1,5 +1,5 @@
 import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, blocksize, linesize, blocktime } from "../base/elements.js";
-import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box, special_cleaner, pointer_anim } from "../base/function.js";
+import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box, pointer_anim } from "../base/function.js";
 import { vertical_to_hor, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter, which_special_is } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
 import { just_clear_yt_loop, yt_player_getter, yt_resetter } from "../multiable/extends.js";
@@ -12,7 +12,6 @@ let timeoutArray = new Array();
 let intervalArray = new Array();
 let the_scrolled_distance = 0;
 let orange_block_counter = 0;
-
 let bo = document.getElementsByTagName("BODY")[0]
 
 // 外部ファイルに orange_data を共有する関数.
@@ -709,7 +708,6 @@ window.addEventListener("keydown", (e)=>{
         // Edit モードを終了.
         if (k == "Escape") {
 
-            // このギャップすごいけどw
             if (new_layer.classList.contains("autoseekingmode")) {
 
                 the_scrolled_distance = 0;

@@ -1,6 +1,6 @@
 import { screen } from "./elements.js";
 
-// Tools.
+// ブロックから指定の階層の要素を返す関数.
 export const vertical_to_hor = (e) => {
     return e.parentElement;
 };
@@ -117,7 +117,6 @@ export const same_change_tracer = (e) => {
         if (e.previousElementSibling.classList.contains("same_end")) {
 
             let special_cov = which_special_is(e.previousElementSibling);
-
             if (special_cov) {
                 let specon_cloned = special_cov.lastElementChild.cloneNode(true);
                 if (e.previousElementSibling.lastElementChild) {

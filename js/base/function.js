@@ -167,6 +167,7 @@ export const special_cleaner = (e) => {
 
 // topへの移動
 export const go_top = (e, f) => {
+
     let ver = e;
     var sibling = vertical_to_sp(ver).previousElementSibling;
     var pre_sibling = vertical_to_sp_cover(ver).previousElementSibling;
@@ -177,6 +178,7 @@ export const go_top = (e, f) => {
     let sibling_height = 0;
 
     if (f == "centering") {
+
         if (sibling) {
             blur_checker(ver);
             let the_num = [].slice.call(vertical_to_hor(ver).children).indexOf(ver);
@@ -186,7 +188,6 @@ export const go_top = (e, f) => {
             focus_checker(next_one);
             is_it_same_series(next_one);
             wheel_positioning();
-            
         } else if (pre_sibling) {
             blur_checker(ver);            
             sibling_height = pre_sibling.clientHeight;
@@ -213,14 +214,14 @@ export const go_top = (e, f) => {
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
-            // * ここで本来はspecial_covをremoveしたりする必要があるのかも.
-            special_cleaner(vertical_to_sp_cover(ver));
-        
+
+            special_cleaner(vertical_to_sp_cover(ver));        
             // edit モードは「see」ラインの位置を固定したい狙い.
             scrollBy(0, - your_height);
             is_it_same_series(next_one);
             wheel_positioning();
         }
+
     }
 }
 
@@ -256,7 +257,6 @@ export const go_bottom = (e, f) => {
             focus_checker(next_one);
             special_cleaner(pre_sibling);
 
-            // * ここが改良ポイントになるかも.
             if (sibling_height > to_the_distance) {
                 scrollBy(0, your_height);
             } 
@@ -280,6 +280,7 @@ export const go_bottom = (e, f) => {
             is_it_same_series(next_one);
             wheel_positioning();
         }
+
     }
 
 }
@@ -372,7 +373,6 @@ export const the_magic_paste = (e) => {
     
     // 足りないラインを新しく生成.
     if (the_additional_num > 0) {
-
         for (let i = 1; i < current_ver_num; i++) {
             for (let o = 0; o < the_name_list.length; o++) {
                 classmover(edit_contents[i], edit_contents[i], the_name_list[o], "remove");
@@ -414,6 +414,7 @@ export const the_magic_paste = (e) => {
                 sp_cover.children[i - 1].lastElementChild.children[c_num + o].after(will_added_elems[o]);
             }    
         }
+        
     }
 
     let old_center = document.querySelector(".centering");

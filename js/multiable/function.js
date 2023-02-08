@@ -71,6 +71,7 @@ export const make_special_cov = (e, f) => {
     let left_distance = half_left_width;
     
     special_cov.style.top = bottom_distance + "px";
+    
     // borderの有無の違いから 1px を調整....
     special_cov.style.left = left_distance + 1 + "px";
 

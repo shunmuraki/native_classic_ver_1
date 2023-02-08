@@ -49,7 +49,6 @@ document.addEventListener("keydown", (e) => {
                     delay: 100,
                   }
                 );
-      
               layer_base.animate(
                   [
                     { transform: 'rotate(360deg)', },

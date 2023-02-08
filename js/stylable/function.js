@@ -120,6 +120,7 @@ const style_num_changer = (f, g) => {
     target.classList.add(final_name);
 }
 
+// レイヤー 2 を表示する時に レイヤー 1 を隠したり、それを戻す関数.
 const wheel_1_management = (e) => {
   if (e == "go") {
     layer_base.style.opacity = 0;
@@ -128,10 +129,12 @@ const wheel_1_management = (e) => {
   }
 }
 
+// Escapeキーを押した時に正しくレイヤーを同期させるための計らい.
 const pre_wheel_management = (e) =>{
   e.classList.toggle("waiting_wheel");
 }
 
+// 以下各ホイールをクリックした際の処理.
 base_1.addEventListener("click", () => {
     pre_wheel_management(ly_2_1);
     wheel_1_management("go");

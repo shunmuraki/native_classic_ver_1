@@ -105,15 +105,14 @@ function ac_vi_adaptation(e, f) {
 
 // change クラスから スタイリングの変化前と変化後の値をセットにして返す関数.
 function en_change_adaptation(e) {    
-    let target = e.nextElementSibling;
 
-    console.log(target);
+    let target = e.nextElementSibling;
 
     if (target) {
         if (target.classList.contains("change")) {
             let be_classlist = e.lastElementChild.classList;
 
-            // * この時に same_end を探してそのクラスを持たせるようにする.
+            // same_end を探してそのクラスを持たせるようにする.
             let af_classlist;
             if (target.classList.contains("same")) {
                 if (! target.classList.contains("same_end")) {
@@ -121,7 +120,6 @@ function en_change_adaptation(e) {
                     let pare = target.parentElement;
                     let the_num = [].slice.call(pare.children).indexOf(target) + the_path;
                     let the_same_end = pare.children[the_num];
-                    console.log(the_same_end);
                     af_classlist = the_same_end.lastElementChild.classList;
                 }
             } else {
@@ -155,7 +153,6 @@ function en_change_adaptation(e) {
 
             let final_data = [b_data, a_data];
 
-            console.log(final_data);
             return final_data;
         }
     }
@@ -165,7 +162,6 @@ function en_change_adaptation(e) {
 function iframe_adaptation(e) {
     let the_content = e.lastElementChild;
 
-    console.log(the_content);
     let value_id = target_data(e, "id_is_");
     if (yt_id_list.indexOf(value_id) == -1) {
         yt_id_list.push(value_id);
@@ -211,8 +207,6 @@ function object_generation(e) {
     let final_block = e.cloneNode(true);
     let classlist = final_block.classList;
     for (let i = classlist.length - 1; i >= 0 ; i--) {
-        // 残しておくべきものはもっとあるだろ.
-        // とりあえず全部残してみる.
         if (classlist[i].indexOf("same_id_") == -1 && classlist[i].indexOf("same_deletable") == -1 && classlist[i].indexOf("anim_num_") == -1) {
             final_block.classList.remove(classlist[i]);
         }
@@ -250,8 +244,6 @@ function genedata_compare(e, f) {
     let scale_data = f[2] - e[2];
     let opacity_data = f[3] - e[3];
 
-    console.log(horizontal_data);
-
     if (vertical_data != 0) {
         let new_prop_v = [["vertical", f[0]], 1];
         output.push(new_prop_v);
@@ -270,8 +262,6 @@ function genedata_compare(e, f) {
         output.push(new_prop_o);
     }
 
-    console.log(output);
-
     return output;
 }
 
@@ -282,7 +272,7 @@ function generationdata_setup(e, f) {
     let anim_blockhas = [];
     
     if (f == "start") {
-        // ここは比較する必要がない.
+        // 比較する必要がない.
         anim_blockhas = ["opacity", 1];
 
         // このブロックが change を持っていたら
@@ -294,34 +284,28 @@ function generationdata_setup(e, f) {
         }
 
     } else if (f == "end") {
-        // ここは比較する必要がない
-        console.log(e);
+        //  比較する必要がない.
         anim_blockhas = [["opacity", 0], 1];
-        console.log(e.parentElement);
         // 次のブロックが changeを持っていたら
         let the_nextblock = e.nextElementSibling;
-        console.log(the_nextblock);
         if (the_nextblock) {
             if (the_nextblock.classList.contains("change")) {
                 let final_data = en_change_adaptation(e);
                 // * e: [0,0,0,0] - [1,1,1,1]
                 anim_blockhas = genedata_compare(final_data[0], final_data[1]); 
                 // * → [["vertical", 0], ["scale", 2]]
-                console.log(anim_blockhas);
             }
         }
         
         final_data = anim_blockhas;
 
     } else if (f == "common") {
-        // ここは比較する必要がない.
+        // 比較する必要がない.
         let before_data = ["opacity", 1];
         let after_data = ["opacity", 0];
         final_data = [[before_data, 1], [after_data, 1]];
     } 
 
-    console.log(final_data);
-    
     return final_data;
 }
 
@@ -346,11 +330,7 @@ function animationdata_setup(e, f, g) {
     let the_animation = f;
     let gene_datas = g;
     let the_num = gene_datas.length;
-
     let animations = [];
-
-    console.log(gene_datas);
-    console.log(the_num);
 
     // the_num 分のanimationを複製する.
     // [処理内容]
@@ -358,27 +338,19 @@ function animationdata_setup(e, f, g) {
     // anim_num のセット.
     // ブロックに anim_num をadd.
     for (let i = 0; i < the_num; i++) {
-
-        console.log(the_animation);
         
         // let new_typedata = Object.create(the_animation);
         let new_typedata = JSON.parse(JSON.stringify(the_animation));
         let new_gene_datas = JSON.parse(JSON.stringify(gene_datas));
-        console.log(new_typedata);
-        console.log(new_gene_datas);
+
         // anim_blockhas の１つを格納し、それとセットになる the_animation にはその length を渡してあげる.
-        // console.log(JSON.stringify(gene_datas));
-        console.log(new_gene_datas[i]);
         let the_value = new_gene_datas[i];
 
-        console.log(the_value);
         animation_generate_list.push(the_value);
-        console.log(animation_generate_list);
 
         let the_keynum = animation_generate_list.length;
         new_typedata["anim_name"] = the_keynum;
 
-        console.log(new_typedata);
         let the_name = "anim_num_" + the_keynum;
         the_block.classList.add(the_name);
         let final_animation = ac_vi_adaptation(the_block, new_typedata);
@@ -426,6 +398,7 @@ for (let i = 0; i < sp_covers.length; i++) {
 
         // リニアだけを対象にする.
         if (verticals.length > 1) {
+
             for (let j = 0; j < verticals.length; j++) {
                 let block = verticals[j]; 
                 img_src_getter(block);
@@ -442,12 +415,6 @@ for (let i = 0; i < sp_covers.length; i++) {
                             data_num += 1;
                             animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_start[j];
                         }
-    
-                        // textarea_adaptation(block);
-                        // block.classList.add(the_classname);
-                        // let object_you = object_generation(block);
-    
-                        // the_big_section.appendChild(object_you);
     
                     } else if (block.classList.contains("same_end")) {
     
@@ -504,7 +471,9 @@ for (let i = 0; i < sp_covers.length; i++) {
                         block.classList.add(the_classname);            
                         object_setter(block, the_big_section);
                     }
+                    
                 } else {
+
                     // start_animationとend_animationの両方を構成する.
                     let start_animation = base_setup(block, j, "start");
                     let generative_data_start = generationdata_setup(block, "start");
@@ -517,18 +486,13 @@ for (let i = 0; i < sp_covers.length; i++) {
                     }
     
                     let end_animation = base_setup(block, j + 1, "end");
-                    
-                    console.log(end_animation);
                     let generative_data_end = generationdata_setup(block, "end");
-                    console.log(generative_data_end);
 
                     let final_animation_end = animationdata_setup(block, end_animation, generative_data_end);
                     for (let k = 0; k < final_animation_end.length; k++) {
                         data_num += 1;
                         animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_end[j];
                     }
-
-                    console.log(final_animation_end);
 
                     // video属性の場合は追加で video_animation を作成.
                     if (block.classList.contains("video")) {
@@ -551,6 +515,7 @@ for (let i = 0; i < sp_covers.length; i++) {
     
                     block.classList.add(the_classname);
                     object_setter(block, the_big_section);
+
                 }
             }
         } else {
@@ -598,7 +563,6 @@ for (let i = 0; i < sections.length; i++) {
                 }
                 for (let l = will_deleted.length - 1; l >= 0; l--) {
                     if (! will_deleted[l].isEqualNode(final_big_objects[o])) {
-                        console.log(will_deleted[l]);
                         will_deleted[l].remove();
                     }
                 }
@@ -613,7 +577,6 @@ for (let i = 0; i < sections.length; i++) {
     if (sections[i].childElementCount > 1) { 
         sections[i].classList.add("linear");
         // linearnativeのリニアにて最初の要素は描画しておくようにするため.
-        console.log(sections[i].firstElementChild);
         sections[i].firstElementChild.classList.add("fire");
     } else {
         sections[i].classList.add("non");
