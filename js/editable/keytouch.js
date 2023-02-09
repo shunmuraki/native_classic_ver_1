@@ -56,7 +56,6 @@ window.addEventListener("keydown", (e)=>{
 
             let special_cov_will_die = document.getElementsByTagName("script")[0].previousElementSibling;
             if (special_cov_will_die.classList.contains("special_cov")) {
-                console.log(special_cov_will_die);
                 special_cov_will_die.remove();
             }
     
@@ -243,7 +242,6 @@ window.addEventListener("keydown", (e)=>{
 
             // 「see」ラインを画面中央に配置.
             edit_mode_default_adjust(new_see);
-            console.log(document.querySelector(".new_layer_centering"));
             is_it_same_series(document.querySelector(".new_layer_centering"));
             layer_centering.classList.remove("new_layer_centering");
         }
@@ -484,32 +482,39 @@ window.addEventListener("keydown", (e)=>{
         if(! e.shiftKey) {
             if (e.ctrlKey) {
                 if (k == "s") {
+                    pointer_anim();
+                    // actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
+                    actuar_st_allon();
+
                     new_layer.classList.add("autoseekingmode");
                     let centering = document.getElementsByClassName("new_layer_centering")[0];
                     let scrap = vertical_to_sp_cover(centering);
                     let hor = vertical_to_hor(centering);
                     let the_seeking_time;
-
-                    // actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
-                    actuar_st_allon();
-
-                    // この取り方はどうも推奨できない.
-                    let special_cov = null;
-                    let player; 
+                    let players_list = new Array();
                     let play_when;
                     let pause_when;
 
-                    if (centering.classList.contains("same")) {
-                        special_cov = which_special_is(centering);
-                    }
-        
-                    if (special_cov) {
-                        if (special_cov.lastElementChild) {
-                            if (special_cov.lastElementChild.tagName == "IFRAME") {
-                                player = yt_player_getter(special_cov.lastElementChild);
-                                player.pauseVideo();
-                                // この時点で動画が再生されていたらループをストップ.
-                                just_clear_yt_loop();
+                    // ここも connected の場合に対応させる.
+                    let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);
+                    for (let i = 0; i < scrap.children.length; i++) {
+                        // orange_space を弾く.
+                        if (i > 0) {
+                            let horizon = scrap.children[i].lastElementChild;
+                            for (let o = 0; o < horizon.children.length; o++) {
+                                let the_block = horizon.children[the_block_num + 1];
+                                let the_special_cov = which_special_is(the_block);
+                                if (the_special_cov) {
+                                    if (the_special_cov.lastElementChild) {
+                                        if (the_special_cov.lastElementChild.tagName == "IFRAME") {
+                                            let player = yt_player_getter(the_special_cov.lastElementChild);
+                                            player.pauseVideo();
+                                            // この時点で動画が再生されていたらループをストップ.
+                                            let the_name = "same_num_" + target_data(the_special_cov, "this_cov_is_");
+                                            just_clear_yt_loop(the_name);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -524,40 +529,55 @@ window.addEventListener("keydown", (e)=>{
                                 let centering_you = document.getElementsByClassName("new_layer_centering")[0];
                                 if (centering_you.nextElementSibling && scrap.classList.contains("playing")) {
                                     let next_one_is_you = centering_you.nextElementSibling;
+                                    let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);
                                     centering_marker(centering_you, next_one_is_you, "new_layer_centering");
                                     is_it_same_series(next_one_is_you);
                                     the_timeout();
-        
-                                    centering = document.getElementsByClassName("new_layer_centering")[0];
                                     
-                                    if (special_cov) {
-                                        if (! special_cov.isEqualNode(which_special_is(centering))) {
-                                            // 新しいspecial_covが台頭する時.
-                                            special_cov = which_special_is(centering);                                            
+                                    centering = document.getElementsByClassName("new_layer_centering")[0];
 
-                                            clearTimeout(timeoutArray.shift());
-                                            clearInterval(intervalArray.shift());
+                                    // このあたりをループにする connected に対応させる.
 
-                                            if (special_cov.lastElementChild) {
-                                                if (special_cov.lastElementChild.tagName == "IFRAME") {
-                                                    player = yt_player_getter(special_cov.lastElementChild); 
+                                    for (let i = 0; i < scrap.children.length; i++) {
+                                        // orange_space を弾く.
+                                        if (i > 0) {
+                                            let horizon = scrap.children[i].lastElementChild;
+                                            for (let o = 0; o < horizon.children.length; o++) {
+                                                let the_block = horizon.children[the_block_num + 2];
+                                                let the_special_cov = which_special_is(the_block);
+
+                                                if (the_special_cov) {
+                                                    if (! the_special_cov.isEqualNode(which_special_is(centering))) {
+                                                        // 新しいspecial_covが台頭する時.
+                                                        // special_cov = which_special_is(centering);                                            
+                                                        clearTimeout(timeoutArray.shift());
+                                                        clearInterval(intervalArray.shift());
+
+                                                        let player;
+            
+                                                        if (the_special_cov.lastElementChild) {
+                                                            if (the_special_cov.lastElementChild.tagName == "IFRAME") {
+                                                                player = yt_player_getter(the_special_cov.lastElementChild); 
+                                                            }
+                                                        }
+            
+                                                        setTimeout(() => {
+                                                            if (player) {
+                                                                player.pauseVideo();
+                                                                let the_time = yt_resetter();
+                                                                player.seekTo(the_time);
+                                                                player.playVideo();
+                                                            }        
+            
+                                                            // この setTimeout １秒分を考慮する.
+                                                            let ms = pause_when - play_when;
+                                                            the_seeking_time = (blocktime * 1000) - ms;
+                                                            the_timeout();
+                                                            the_interval();
+                                                        }, 1000)
+                                                    }
                                                 }
                                             }
-
-                                            setTimeout(() => {
-                                                if (player) {
-                                                    player.pauseVideo();
-                                                    let the_time = yt_resetter();
-                                                    player.seekTo(the_time);
-                                                    player.playVideo();
-                                                }        
-
-                                                // この setTimeout １秒分を考慮したい/
-                                                let ms = pause_when - play_when;
-                                                the_seeking_time = (blocktime * 1000) - ms;
-                                                the_timeout();
-                                                the_interval();
-                                            }, 1000)
                                         }
                                     }
                                 } else {
@@ -571,29 +591,39 @@ window.addEventListener("keydown", (e)=>{
                                 all_view_changer(scrap, blocksize / blocktime);
                                 let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);                        
                                 let the_pri_distance = window.innerWidth + (the_block_num * blocksize) - half_left_width;
-                                let the_block = hor.children[the_block_num + 1];
-                                
+                                                                
                                 // 現在の、実際のhorのscrollLeft とそれがどれくらい離れているかの算出.
                                 let the_gap =  hor.scrollLeft - the_pri_distance;
-        
-                                // 自動シーキング中のacutar 描画.    
-                                if (the_block.classList.contains("actuar_st")) {
-                                    let the_actuar_distance = Math.floor(Number(target_data(the_block, "actuar_time_")));
-                                    if (the_gap > the_actuar_distance - 10) {
-                                        if (special_cov) {
-                                            special_cov.lastElementChild.style.opacity = 1;
-                                        } else {
-                                            the_block.lastElementChild.style.opacity = 1;
-                                        }
-                                    }
-                                } else if (the_block.classList.contains("actuar_en")) {
-                                    let the_actuar_distance = Math.floor(Number(target_data(the_block, "actuar_time_")));
-                                    if (the_gap > the_actuar_distance - 10) {
-                                        if (special_cov) {
-                                            special_cov.lastElementChild.style.opacity = 0.5;
-                                        } else {
-                                            the_blockv.lastElementChild.style.opacity = 0.5;
-                                        }
+                                
+                                // actuar の変化処理については connected の場合を想定して scrap 内の　sp - hor でループさせる必要がある.
+                                for (let i = 0; i < scrap.children.length; i++) {
+                                    // orange_space を弾く.
+                                    if (i > 0) {
+                                        let horizon = scrap.children[i].lastElementChild;
+                                        for (let o = 0; o < horizon.children.length; o++) {
+                                            let the_block = horizon.children[the_block_num + 1];
+                                            let the_special_cov = which_special_is(the_block);
+                                            // 自動シーキング中のacutar 描画.    
+                                            if (the_block.classList.contains("actuar_st")) {
+                                                let the_actuar_distance = Math.floor(Number(target_data(the_block, "actuar_time_")));
+                                                if (the_gap > the_actuar_distance - 10) {
+                                                    if (the_special_cov) {
+                                                        the_special_cov.lastElementChild.style.setProperty('opacity', 1, 'important');
+                                                    } else {
+                                                        the_block.lastElementChild.style.setProperty('opacity', 1, 'important');
+                                                    }
+                                                }
+                                            } else if (the_block.classList.contains("actuar_en")) {
+                                                let the_actuar_distance = Math.floor(Number(target_data(the_block, "actuar_time_")));
+                                                if (the_gap > the_actuar_distance - 10) {
+                                                    if (the_special_cov) {
+                                                        the_special_cov.lastElementChild.style.setProperty('opacity', 0.5, 'important');
+                                                    } else {
+                                                        the_block.lastElementChild.style.setProperty('opacity', 0.5, 'important');
+                                                    }
+                                                }
+                                            }
+                                        }   
                                     }
                                 }
         
@@ -611,9 +641,23 @@ window.addEventListener("keydown", (e)=>{
                         }
         
                         if (scrap.classList.contains("playing")) {                    
-                            
-                            if (player) {
-                                player.pauseVideo();
+                            //　ここもループにする.
+                            // すべての special_cov からすべての player を取って全部止める.
+                            let specials = document.getElementsByClassName("special_cov");
+                            for (let i = 0; i < specials.length; i++) {
+                                let player;
+                                let the_special_cov = specials[i];
+                                if (the_special_cov.lastElementChild) {
+                                    if (the_special_cov.lastElementChild.tagName == "IFRAME") {
+                                        player = yt_player_getter(the_special_cov.lastElementChild); 
+                                        if (player) {
+                                            player.pauseVideo();
+
+                                            // また再開する時に全部を開始できるように.
+                                            players_list.push(player);
+                                        }
+                                    }
+                                }
                             }
                             
                             scrap.classList.remove("playing");
@@ -638,22 +682,42 @@ window.addEventListener("keydown", (e)=>{
                             the_seeking_time = (blocktime * 1000) - ms;
         
                         } else if (scrap.classList.contains("pausing")) {
-                            
-                            if (player) {
-                                player.pauseVideo();
-                                let the_time = yt_resetter();
-                                player.seekTo(the_time);
-                            }
-        
+
                             let start = new Date();
                             play_when = start.getTime();
         
                             scrap.classList.remove("pausing");
                             scrap.classList.add("playing");
-        
-                            if (player) {
-                                player.playVideo();
+
+                            function player_starter(e) {
+                                e.pauseVideo();
+                                let the_time = yt_resetter();
+                                e.seekTo(the_time);
+                                e.playVideo();
                             }
+
+                            // 現在表示しているすべての player の再生を開始する.
+                            if (players_list.length == 0) {
+                                let specials = document.getElementsByClassName("special_cov");
+                                for (let i = 0; i < specials.length; i++) {
+                                    let player;
+                                    let the_special_cov = specials[i];
+                                    if (the_special_cov.lastElementChild) {
+                                        if (the_special_cov.lastElementChild.tagName == "IFRAME") {
+                                            player = yt_player_getter(the_special_cov.lastElementChild); 
+                                            if (player) {
+                                                player_starter(player);
+                                            }
+                                        }
+                                    }
+                                }
+                            } else { 
+                                for (let i = 0; i < players_list.length; i++) {
+                                    let player = players_list[i];
+                                    player_starter(player);
+                                }
+                            }
+
         
                             // 再実行.
                             the_timeout();

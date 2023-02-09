@@ -1,7 +1,8 @@
 import { screen, the_name_list, blocksize } from "../base/elements.js";
 import { focus_checker, make_ver_fragment } from "../base/function.js";
-import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp_cover } from "../base/tools.js";
+import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp_cover, which_special_is } from "../base/tools.js";
 import { adjust_target_pos } from "../ms/function.js";
+import { is_it_same_alend, is_it_same_series } from "../multiable/function.js";
 
 window.addEventListener("keydown", (e)=>{
 
@@ -14,7 +15,6 @@ window.addEventListener("keydown", (e)=>{
         if (document.activeElement.tagName != "BODY") {
 
             current = document.activeElement;
-            current_vertical = current.parentElement;
             type_signiture = current.value;
             
             if (document.activeElement.classList.contains("ms_area") == false) {    
@@ -24,15 +24,23 @@ window.addEventListener("keydown", (e)=>{
                 let height = current.clientHeight;
                 current.parentElement.style.height = height + "px";
             }
-        } else {
-            current_vertical = document.querySelector(".centering");
         }
+
+        current_vertical = document.querySelector(".centering");
         
         let current_horizontal = vertical_to_hor(current_vertical);
         let current_sp_cover = vertical_to_sp_cover(current_vertical);
 
         if (type_signiture) {
             if ( type_signiture.indexOf('connec') != -1) {
+
+                // 先にms調整箇所を戻しておいてそれから複製させる. 
+                let target = current_vertical;
+                if (current_vertical.classList.contains("same")) {
+                    target = which_special_is(current_vertical);
+                    console.log(target);
+                } 
+                adjust_target_pos(target.lastElementChild, "off");
                 
                 tracer_basis(document.querySelector(".centering"));
                 document.querySelector(".ms_area").remove();
@@ -133,7 +141,11 @@ window.addEventListener("keydown", (e)=>{
                                 
                                     // ブロック単位でクラスを引き継ぐ.
                                     let old_block = current_horizontal.children[the_content_disi];
-                                    let the_content_embed = old_block.lastElementChild.cloneNode(true);                                
+                                    let the_content_embed = null;
+                                    
+                                    if (old_block.lastElementChild) {
+                                        the_content_embed = old_block.lastElementChild.cloneNode(true);
+                                    }
                                     
                                     for (let o = 0; o < the_name_list.length; o++) {
                                         classmover(old_block, children_block[i], the_name_list[o], "add");
@@ -149,7 +161,7 @@ window.addEventListener("keydown", (e)=>{
                                     if (current_horizontal.children[the_content_disi].classList.contains("centering")) {
                                         children_block[i].classList.add("centering")
                                     }
-                                    if (! the_content_embed.classList.contains("stripe_hor")) {
+                                    if (the_content_embed) {
                                         children_block[i].appendChild(the_content_embed);
                                     }
                                 }
@@ -184,11 +196,18 @@ window.addEventListener("keydown", (e)=>{
                         the_sp_cover_a.children[i].lastElementChild.scrollLeft = the_default_leng + the_redefault_scroll;
                     }
     
-                    // フォーカスを当てる.
                     let last_one = the_sp_cover_a.lastElementChild.lastElementChild.children[the_center_num - 1];
+                    // let target = last_one;
+                    // if (last_one.classList.contains("same")) {
+                    //     target = which_special_is(last_one);
+                    // }
+                    // // msスペース分の調整.
+                    // adjust_target_pos(target.lastElementChild, "off");
 
-                    // msスペース分の調整.
-                    adjust_target_pos(last_one.lastElementChild, "off");
+                    // Connect の場合は この sp の special_cov だけ削除しているので、それを再起させるだけでいい.
+                    is_it_same_series(last_one);
+                    
+                    // フォーカスを当てる.
                     let bol = focus_checker(last_one);
                     if (bol) {
                         setTimeout(() => {

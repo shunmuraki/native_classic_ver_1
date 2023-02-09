@@ -3,6 +3,7 @@ import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_sunsetline, blocksize, blocktime } from "./elements.js";
 import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, which_special_is } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
+import { same_data_getter, same_data_counter } from "./tools.js";
 
 let magic_elms = new Array();
 
@@ -73,6 +74,7 @@ export const make_fragment = (e, f) => {
     const textarea = document.createElement("textarea");
     
     sp_cover.classList.add("sp_cover");
+    sp_cover.classList.add("pausing");
     sp.classList.add("sp");
 
     horizontal.classList.add("horizontal");
@@ -172,6 +174,7 @@ export const go_top = (e, f) => {
     var sibling = vertical_to_sp(ver).previousElementSibling;
     var pre_sibling = vertical_to_sp_cover(ver).previousElementSibling;
     let your_height = vertical_to_sp(ver).clientHeight;
+    let connected_your_height = vertical_to_sp_cover(ver).clientHeight;
     let to_the_distance = vertical_to_sp(ver).getBoundingClientRect().top;
     let next_one;
 
@@ -199,7 +202,7 @@ export const go_top = (e, f) => {
 
             // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
             if (sibling_height > to_the_distance) {
-                scrollBy(0, - your_height);
+                scrollBy(0, - connected_your_height);
             } 
             wheel_positioning();
         }
@@ -217,7 +220,7 @@ export const go_top = (e, f) => {
 
             special_cleaner(vertical_to_sp_cover(ver));        
             // edit モードは「see」ラインの位置を固定したい狙い.
-            scrollBy(0, - your_height);
+            scrollBy(0, - connected_your_height);
             is_it_same_series(next_one);
             wheel_positioning();
         }
@@ -232,6 +235,7 @@ export const go_bottom = (e, f) => {
     var sibling = vertical_to_sp(ver).nextElementSibling;
     var pre_sibling = vertical_to_sp_cover(ver).nextElementSibling;
     let your_height = vertical_to_sp(ver).clientHeight;
+    let connected_your_height = vertical_to_sp_cover(ver).clientHeight;
     let to_the_distance =  window.innerHeight - vertical_to_sp(ver).getBoundingClientRect().bottom;
     let sibling_height = 0;
     let next_one;
@@ -258,7 +262,7 @@ export const go_bottom = (e, f) => {
             special_cleaner(pre_sibling);
 
             if (sibling_height > to_the_distance) {
-                scrollBy(0, your_height);
+                scrollBy(0, connected_your_height);
             } 
             wheel_positioning();
         }
@@ -276,7 +280,7 @@ export const go_bottom = (e, f) => {
             special_cleaner(vertical_to_sp_cover(ver));
             
             // edit モードは「see」ラインの位置を固定したい狙い.
-            scrollBy(0, your_height);
+            scrollBy(0, connected_your_height);
             is_it_same_series(next_one);
             wheel_positioning();
         }
@@ -301,6 +305,7 @@ export const go_left = (e, f) => {
                 focus_checker(next_one);
             }
     
+            // 変更があったとしたら今のラインなのでconnectedの影響によるループは必要なし.
             same_change_tracer(next_one);
             is_it_same_series(next_one);
         }
@@ -322,14 +327,16 @@ export const go_right = (e, f) => {
             focus_checker(next_one);
         }
 
+        // 変更があったとしたら今のラインなのでconnectedの影響によるループは必要なし.
         same_change_tracer(next_one);
         is_it_same_series(next_one);
     }
 }
 
-
 // マジックコピーの関数.
 export const the_magic_copy = (e) => {
+    // スタイリング直後にカットされることを想定.
+    tracer_basis(document.querySelector(".centering"));
     // 初期化
     magic_elms = [];   
     // 以降に残っているものを、動画に限らず全部コピー.
@@ -338,11 +345,31 @@ export const the_magic_copy = (e) => {
     // 各spごとにコピーして以前のブロックをまとめて削除してラインfragmentとして変数に格納しておく.
     for (let i = 0; i < sp_cover.childElementCount; i++) {
         let line = sp_cover.children[i].lastElementChild.children;
+        let breaker = line[c_num + 1];
+        
+        let same_name = "same_num_" + target_data(breaker, "same_num_");
+        // 色々処理施す前に、0 で sameならsame_start を与えて same_num もう更新する.
+        // [same_cutter の部分利用]
+        breaker.previousElementSibling.classList.add("same_end");
+        breaker.classList.add("same_start");
+        let sames = document.getElementsByClassName(same_name);
+        let breakpoint = [].slice.call(sames).indexOf(breaker);
+        let same_data = same_data_getter();
+        same_data += 1;
+        same_data_counter(same_data);
+        for (let i = sames.length - 1; i >= breakpoint; i--) {
+            let same_block = sames[i];
+            classmover(same_block, same_block, "same_num_", "remove");
+            same_block.classList.add("same_num_" + same_data);                    
+        }
+
+        // 色々処理.
         let new_folder = new Array();
         for (let o = line.length - 1; o >= c_num + 1; o--) {
             new_folder.unshift(line[o]);
             line[o].remove();
         }
+
         magic_elms.push(new_folder);
     }
 }
@@ -370,7 +397,6 @@ export const the_magic_paste = (e) => {
     the_name_list.push("centering");
     the_name_list.push("original_centering");
 
-    
     // 足りないラインを新しく生成.
     if (the_additional_num > 0) {
         for (let i = 1; i < current_ver_num; i++) {

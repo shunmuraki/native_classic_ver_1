@@ -17,8 +17,8 @@ export const block_multiable = (e, f) => {
     the_box.style.height = 225 + "px";
     the_box.classList.add("video");
 
-    var player;
-    var duration_time;
+    let player;
+    let duration_time;
         
     function onYouTubeIframeAPIReady(g, h) {
         window.YT.ready(function() {
@@ -141,17 +141,30 @@ export const is_it_same_start = (e) => {
             the_state();
             special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];
         }
+
+        // 中身が opacity 0 の same_end をコピーしたケースを想定して戻す.
+        special_cov.lastElementChild.style.setProperty('opacity', 1, 'important');
+
+        // centering クラスを持つ e なんだったら special_cov にも center_special を与えるようにしたり、そうじゃなかったら除去するようにしないと.
+        if (e.classList.contains("centering") || e.classList.contains("new_layer_centering")) {
+            special_cov.classList.add("center_special");
+        } else {
+            special_cov.classList.remove("center_special");
+        }
         
         let player;
+        let sp_cover = vertical_to_sp_cover(e);
 
         function play_around() {
             if (player) {
-                just_clear_yt_loop();
+                let the_name = "same_num_" + target_data(special_cov, "this_cov_is_");
+                just_clear_yt_loop(the_name);
                 setTimeout(() => {
                     let the_time = yt_resetter(e);
                     player.seekTo(the_time);
                     player.playVideo();
-                    yt_loop_player(player, e);
+                    yt_loop_player(player, e, the_name);
+                    console.log(e);
                 }, 1000)
             }
         }
@@ -160,7 +173,7 @@ export const is_it_same_start = (e) => {
         if (special_cov.lastElementChild) {
             player = yt_player_getter(special_cov.lastElementChild);
             if (screen.classList.contains("edit")) {
-                if (document.querySelector(".pausing")) {
+                if (sp_cover.classList.contains("pausing")) {
                     play_around();
                 }
             } else {
@@ -176,6 +189,7 @@ export const is_it_same_alend = (e) => {
     let player;
     let the_target_left = e.previousElementSibling;
     let the_target_right = e.nextElementSibling;
+    let sp_cover = vertical_to_sp_cover(e);
 
     function the_state(e) {
         let the_special_cov = which_special_is(e);
@@ -202,12 +216,14 @@ export const is_it_same_alend = (e) => {
         if (the_target_left.classList.contains("same_end")) {
             player_setup(the_target_left);
 
-            if (document.querySelector(".pausing")) {
+            // たぶんここが pausing も playing も複数存在する可能性を加味してないんだと思う.
+            if (sp_cover.classList.contains("pausing")) {
                 if (player) {
+                    let the_name = "same_num_" + target_data(which_special_is(e), "this_cov_is_");
                     player.pauseVideo();
                     let the_time = yt_resetter();
                     player.seekTo(the_time);
-                    yt_loop_stopper(player, "end");
+                    yt_loop_stopper(player, "end", the_name);
                 }
             }
             the_state(the_target_left);
@@ -225,12 +241,13 @@ export const is_it_same_alend = (e) => {
     if (the_target_right) {
         if (the_target_right.classList.contains("same_start")) {
             player_setup(the_target_right);
-            if (document.querySelector(".pausing")) {
+            if (sp_cover.classList.contains("pausing")) {
                 if (player) {
+                    let the_name = "same_num_" + target_data(which_special_is(e), "this_cov_is_");
                     player.pauseVideo();
                     let the_time = yt_resetter();
                     player.seekTo(the_time);
-                    yt_loop_stopper(player, "start");
+                    yt_loop_stopper(player, "start", the_name);
                 }
             }
             // same_start に special_cov の content を一時的に複製して格納.
@@ -261,14 +278,8 @@ export const is_it_same_series = (e) => {
         if (i == 0 && sps[0].classList.contains("orange_space")) {
         } else {
             let vers = sps[i].lastElementChild.children;
-            for (let o = 0; o < vers.length; o++) {
-                if (o > 0) {
-                    if (o == centering_num) {
-                        is_it_same_start(vers[o]);
-                        is_it_same_alend(vers[o]);
-                    }
-                }
-            }
+            is_it_same_start(vers[centering_num]);
+            is_it_same_alend(vers[centering_num]);
         }
     }
 }

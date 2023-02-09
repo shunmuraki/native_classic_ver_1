@@ -43,18 +43,20 @@ export const yt_resetter = (e) => {
 }
 
 // センタリングしたブロックの動画をブロック分再生（or ループ再生）する関数
-export const yt_loop_player = (e, f) => {
+export const yt_loop_player = (e, f, g) => {
     let the_time = yt_resetter(f);
-    yt_loop.push(
+    if (! yt_loop[g]) {
+        yt_loop[g] = new Array();
+    }
+    yt_loop[g].push(
         setInterval(() => {
-            // e.pauseVideo();
             e.seekTo(the_time);
             e.playVideo();
         }, blocktime * 1000));
 }
 
 // 上の関数によってセットされた interval 処理をクリアする関数.
-export const yt_loop_stopper = (e, f) => {
+export const yt_loop_stopper = (e, f, g) => {
     let duration;
     e.pauseVideo();
     if (f == "start") {
@@ -63,13 +65,19 @@ export const yt_loop_stopper = (e, f) => {
         duration = e.getDuration();
         e.seekTo(duration);
     }
-    clearInterval(yt_loop.shift());
+    if (yt_loop[g]) {
+        clearInterval(yt_loop[g].shift());
+    }
 }
 
 // 現在センタリングしているブロックが yt でループされているのを停止する関数.
-export const just_clear_yt_loop = () => {
-    for (let i = yt_loop.length; i >= 0; i--)  {
-        clearInterval(yt_loop.shift());
+export const just_clear_yt_loop = (e) => {
+    console.log(yt_loop);
+    let target_dataset = yt_loop[e];
+    if (target_dataset) {
+        for (let i = target_dataset.length; i >= 0; i--)  {
+            clearInterval(target_dataset.shift());
+        }
     }
 }
 

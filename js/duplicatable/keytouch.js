@@ -3,6 +3,7 @@ import { same_data_getter, vertical_to_hor, vertical_to_sp_cover, vertical_to_sp
 import { make_ver_fragment, make_dup_fragment, original_centering_checker, focus_checker, blur_checker, pointer_anim } from "../base/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { adjust_target_pos } from "../ms/function.js";
+import { same_around } from "./function.js";
 
 window.addEventListener("keydown", (e)=>{ 
 
@@ -37,60 +38,18 @@ window.addEventListener("keydown", (e)=>{
          let c_v_num = [].slice.call(current_horizontal.children).indexOf(current_vertical);
          let scrollleft_b = current_horizontal.scrollLeft;
          let balanc = 0;
-         let center_num = [].slice.call(sps).indexOf(vertical_to_sp(current_vertical));
+         // connnected
 
-         for (let i = 0; i < sps.length; i++) {
-              
-            // 対象のラインの場合.
-            if (i == center_num) {
-                  
-                  // 現在のブロックを same_end として、その前に要素を追加しながら移動していく.
-                  make_dup_fragment(current_vertical, "before");
-                  let next_one = current_vertical.previousElementSibling;
-                  
-                  if (! current_vertical.classList.contains("same")) {
-
-                    current_vertical.classList.add("same");
-                    let same_data = same_data_getter();
-                    same_data += 1;
-                    same_data_counter(same_data);
-                  
-                    current_vertical.classList.add("same_end");
-                    next_one.classList.add("same_start");
-
-                  } 
-
-                  let same_data_latest = same_data_getter();
-                  let the_name = "same_num_" + same_data_latest;
-  
-                  current_vertical.classList.add("same");
-                  next_one.classList.add("same");
-                  
-                  current_vertical.classList.add(the_name);
-                  next_one.classList.add(the_name);
-                  
-                  // command + U では必要なかったが配慮.
-                  focus_checker(next_one);
-
-              } else {
-                
-                  // sp_cover 内の対象外のラインの場合.
-                  let c_v = sps[i].lastElementChild.children[c_v_num];
-
-                  // 以下 command + u と同様の条件分岐.
-                  if (c_v.classList.contains("same")) {
-                    if (! c_v.classList.contains("same_end")) {
-                      let addition = c_v.cloneNode(true);
-                      c_v.before(addition);
-                        
-                    } else if (c_v.classList.contains("same_end")) {
-                      make_ver_fragment(c_v, "after");
-                    }
-                  } else  {
-                    make_ver_fragment(c_v, "after");
-                  }
-              }
-          }
+         console.log(sps.length);
+         if (sps.length > 1) {
+          same_around(current_vertical, "connected");
+         } else {
+          console.log("try!");
+          // 通常の処理.
+          // 現在のブロックを same_end として、その前に要素を追加しながら移動していく.
+          make_dup_fragment(current_vertical, "before");
+          same_around(current_vertical, "default");
+         }
 
          // ブロック挿入が終わって sp_cover が満たされた以降の処理. このあたりも大枠が command + u と同様.
          let center = document.querySelector(".centering");
@@ -108,7 +67,6 @@ window.addEventListener("keydown", (e)=>{
 
 
     if (type_signiture) {
-
       // ind コマンドの処理.
       if ( type_signiture.indexOf('in') != -1) {
         document.querySelector(".ms_area").remove();

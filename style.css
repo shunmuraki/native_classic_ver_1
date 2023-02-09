@@ -509,6 +509,15 @@ p, span, a {
 .block_layer .sp_cover .sp .horizontal .centering {
   box-shadow: inset 3px 3px 11px #0067c7, inset -3px -3px 11px #0079ea !important;
 }
+.block_layer .sp_cover .sp .horizontal .same:after {
+  content: "";
+  width: 100%;
+  height: 3px;
+  position: absolute;
+  top: 3px;
+  left: 0px;
+  background-color: #1f93ff;
+}
 .block_layer .sp_cover .sp .horizontal .video, .block_layer .sp_cover .sp .horizontal .img {
   height: 225px !important;
 }
@@ -541,10 +550,6 @@ p, span, a {
 }
 .new_layer .sp_cover .sp .horizontal .new_layer_centering {
   box-shadow: inset 3px 3px 11px #0067c7, inset -3px -3px 11px #0079ea !important;
-}
-.new_layer .sp_cover .sp .horizontal .vertical {
-  border: 1px solid #006cd0;
-  box-sizing: border-box;
 }
 .new_layer .see {
   box-sizing: border-box;
@@ -687,12 +692,24 @@ img, iframe {
 
 .special_cov {
   z-index: 5000;
-  box-shadow: inset 3px 3px 11px #0067c7, inset -3px -3px 11px #0079ea !important;
   background-color: #0070D8;
   overflow: hidden;
 }
+.special_cov:after {
+  content: "";
+  width: 100%;
+  height: 3px;
+  position: absolute;
+  left: 0px;
+  top: 3px;
+  background-color: #1f93ff;
+}
 .special_cov .write_area, .special_cov img, .special_cov iframe {
   padding: 20px 10px;
+}
+
+.center_special {
+  box-shadow: inset 3px 3px 11px #0067c7, inset -3px -3px 11px #0079ea !important;
 }
 
 .redirect_cover, .cheet_sheet {
