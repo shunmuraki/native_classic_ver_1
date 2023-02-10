@@ -199,7 +199,7 @@ export const go_top = (e, f) => {
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
             // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
-            special_cleaner(vertical_to_sp_cover(ver));
+            special_cleaner(pre_sibling);
 
             // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
             if (sibling_height > to_the_distance) {
@@ -223,7 +223,6 @@ export const go_top = (e, f) => {
             // edit モードは「see」ラインの位置を固定したい狙い.
             scrollBy(0, - connected_your_height);
             is_it_same_series(next_one);
-            wheel_positioning();
         }
 
     }
@@ -257,11 +256,10 @@ export const go_bottom = (e, f) => {
             blur_checker(ver);
             sibling_height = pre_sibling.clientHeight;
             next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
-           
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
 
-            special_cleaner(vertical_to_sp_cover(ver));
+            special_cleaner(pre_sibling);
 
             if (sibling_height > to_the_distance) {
                 scrollBy(0, connected_your_height);
@@ -279,12 +277,11 @@ export const go_bottom = (e, f) => {
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);            
-            special_cleaner(vertical_to_sp_cover(ver));
+            special_cleaner(vertical_to_sp_cover(ver));   
             
             // edit モードは「see」ラインの位置を固定したい狙い.
             scrollBy(0, connected_your_height);
             is_it_same_series(next_one);
-            wheel_positioning();
         }
 
     }
@@ -420,7 +417,6 @@ export const the_magic_paste = (e) => {
 
     // 不足分を補ってライン数が十分なsp_coverに対して再度子要素を取得してループ. 条件分岐はここから.
     for (let i = 1; i <= sp_cover.childElementCount; i++) {
-
         if (i < current_line_num || i > bottom_line_num) {
             for (let o = 0; o < magic_elms[0].length; o++) {
                 let c_v = sp_cover.children[i - 1].lastElementChild.children[c_num + o];
@@ -442,12 +438,10 @@ export const the_magic_paste = (e) => {
                 sp_cover.children[i - 1].lastElementChild.children[c_num + o].after(will_added_elems[o]);
             }    
         }
-        
     }
 
     let old_center = document.querySelector(".centering");
     let center = old_center.nextElementSibling;
-
     centering_marker(old_center, center, "centering");
     original_centering_checker(sp_cover, center);
     same_cutter(center, "addon");

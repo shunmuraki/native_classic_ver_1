@@ -43,14 +43,7 @@ export const layer_resetter = () => {
 export const wheel_positioning = () => {
   let centering;
   if (screen.classList.contains("edit")) {
-    if (document.getElementsByClassName("see")[0]) {
-      let seeing = document.getElementsByClassName("see")[0];
-      if (seeing.classList.contains("principle_block")) {
-        centering = document.getElementsByClassName("new_layer_centering")[0];
-      } else if (seeing.classList.contains("principle_pointer")) {
-        centering = document.getElementsByClassName("comesin")[0];
-      }
-    }
+    centering = document.getElementsByClassName("new_layer_centering")[0];
   } else {
     centering = document.getElementsByClassName("centering")[0];
   }

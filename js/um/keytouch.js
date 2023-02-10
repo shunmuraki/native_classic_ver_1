@@ -19,18 +19,20 @@ document.addEventListener("keydown", (e) => {
 
         // 以下ユニバーサルマークダウン機能の例として「"ted"」が検索された場合の処理.
         if ( type_signiture.indexOf('ted') != -1) {
-            centering = document.querySelector(".centering");
-            document.querySelector(".ms_area").remove();
-            focus_checker(centering);
-            screen.classList.add("um");
-            current.value = '';
-            um.style.display = "block";
-            centering.style.height = 225 + "px";
-            current.blur();
-            screen.classList.remove("um_ready");
-
-            adjust_box(centering);
-            um_positioning();
+            if (screen.classList.contains("ms")) {
+                centering = document.querySelector(".centering");
+                document.querySelector(".ms_area").remove();
+                focus_checker(centering);
+                screen.classList.add("um");
+                current.value = '';
+                um.style.display = "block";
+                centering.style.height = 225 + "px";
+                current.blur();
+                screen.classList.remove("um_ready");
+    
+                adjust_box(centering);
+                um_positioning();
+            }
         }
     }
 

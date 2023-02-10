@@ -39,211 +39,215 @@ window.addEventListener("keydown", (e)=>{
         // Editモードを展開.
         if (type_signiture.indexOf('edi') != -1) {
 
-            tracer_basis(document.querySelector(".centering"));
+            if (screen.classList.contains("ms")) {
 
-            document.querySelector(".ms_area").remove();
-            focus_checker(document.querySelector(".centering"));
-    
-            // デフォルトレイヤーからの離脱.
-            if (current.tagName == "TEXTAREA") {
-                current.blur();
-              }
-    
-            // 下準備.
-            let current_vertical = document.querySelector(".centering");
-            let current_horizontal = vertical_to_hor(current_vertical);
-            let current_sp_cover = vertical_to_sp_cover(current_vertical);
+                tracer_basis(document.querySelector(".centering"));
 
-            let special_cov_will_die = document.getElementsByTagName("script")[0].previousElementSibling;
-            if (special_cov_will_die.classList.contains("special_cov")) {
-                special_cov_will_die.remove();
-            }
+                document.querySelector(".ms_area").remove();
+                focus_checker(document.querySelector(".centering"));
+        
+                // デフォルトレイヤーからの離脱.
+                if (current.tagName == "TEXTAREA") {
+                    current.blur();
+                  }
+        
+                // 下準備.
+                let current_vertical = document.querySelector(".centering");
+                let current_horizontal = vertical_to_hor(current_vertical);
+                let current_sp_cover = vertical_to_sp_cover(current_vertical);
     
-            // 編集レイヤーの生成と挿入.
-            const add_new_layer = document.createElement("div");
-            add_new_layer.classList.add("new_layer");
-            add_new_layer.classList.add("block_layer");
-            add_new_layer.style.display = "none";
-            add_new_layer.style.opacity = 0;
-            screen.after(add_new_layer);
-            let new_layer = document.querySelector(".new_layer");
-            
-            // Editモードの明示化. 編集レイヤー上での処理に限定.
-            screen.classList.add("edit");
-            new_layer.style.display = "block";
-            screen.style.display = "none";
-            bo.style.backgroundColor = "#0070D8";
-            bo.classList.add("edit_mode");
-
-            // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
-            let vh_count = current_horizontal.childElementCount - 1;
-            let sp_cover_will_num = Math.ceil(vh_count / linesize);
-            let new_sp_cov = current_sp_cover.cloneNode(true); 
-            
-            // すでに sp_cover には適切なラインが築かれているので、これを崩さずにそのまま再利用する. (中身のブロックはクリア.)
-            let newla_sps = new_sp_cov.children;
-
-            // のちのために screenレイヤーの sp_cover にもクラスを付与.
-            current_sp_cover.classList.add("target_of_edition");
-    
-            for (let i = 0; i < newla_sps.length; i++) {
-                let bye_once = newla_sps[i].lastElementChild.children;
-                for (let o = bye_once.length - 1; o >= 0 ; o--) {
-                    // adjusterは残しておく.
-                    if (o > 0) { 
-                        bye_once[o].remove();
-                    }
+                let special_cov_will_die = document.getElementsByTagName("script")[0].previousElementSibling;
+                if (special_cov_will_die.classList.contains("special_cov")) {
+                    special_cov_will_die.remove();
                 }
-                for (let o = 0; o < linesize; o++) {
-                    // scrap(sp_cover) のclone の　horizontal に ver を10個詰める.
-                    make_ver_fragment(newla_sps[i].lastElementChild.lastElementChild, "after");
-                }
-
-                // editモードは右半分のスペースまで利用するため、可動域を拡張する目的でお尻にも adjuster を挿入.
-                let adjuster_element = document.createElement("div");
-                adjuster_element.classList.add("adjuster");
-                adjuster_element.classList.add("horizontal_child");
-                newla_sps[i].lastElementChild.lastElementChild.after(adjuster_element);
-            }
-    
-            // Nativeにはラインごとのシーキング機能があるため、デフォルトでその状態をセット.
-            new_sp_cov.classList.add("pausing");
-            
-            // 挿入前にorange_space を追加.
-            add_orange_space_for_everyone(new_sp_cov);
-           
-            // scrap を必要な数だけ new_layer に追加。
-            for (let i = 0; i < sp_cover_will_num; i++) {
-                let new_one = new_sp_cov.cloneNode(true);
-                new_one.firstElementChild.classList.add("orange_num_" + i);
-                new_one.classList.add("principle_pointer");
-                new_layer.appendChild(new_one);
-            }
-    
-            // デフォルトレイヤーに存在する大元のブロックたちの中身を、編集レイヤーの対応するブロックへ移行.
-            let screen_sps = current_sp_cover.children;
-            for (let i = 0; i < screen_sps.length; i++) {
-                let screen_vers = screen_sps[i].lastElementChild.children;
-                for (let o = 0; o < screen_vers.length; o++) {
-                  
-                    // adjuster をスキップ  
-                    if (o > 0) {
-                        let the_num = o;
-                        let ver_side = Math.trunc(the_num / linesize);
-                        let hor_side = the_num % linesize;
-                        
-                        // 割り切れてしまった場合.
-                        if (ver_side == 0 && hor_side == 1) {
-                            hor_side = 0;
-                        } else if (ver_side > 0 && hor_side == 0) {
-                            ver_side -= 1;
-                            hor_side = 23;
-                        } else {
-                            hor_side -= 1;
-                        }
-                        
-                        new_layer.children[ver_side].children[i + 1].lastElementChild.children[linesize].classList.add("you");
-                        
-                        // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
-                        let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];
-                        
-                        if (the_block_into.lastElementChild) {
-                            the_block_into.lastElementChild.remove();
-                        }
-                        for (let j = 0; j < the_name_list.length; j++) {
-                            classmover(screen_vers[o], the_block_into, the_name_list[j], "add");
-                        }
-                        if (screen_vers[o].classList.contains("centering")) {
-                            the_block_into.classList.add("new_layer_centering");
-                        } 
-                        
-                        // dupブロックの場合を考えて条件分岐.
-                        if (screen_vers[o].lastElementChild) {
-                            let imp_content = screen_vers[o].lastElementChild.cloneNode(true);
-                            the_block_into.appendChild(imp_content);
-                        }
-                    }
-                } 
-            }
-
-            // 10個ずつで強制的に区分けされたscrapによって same が分裂したケースに対応.
-            for (let i = 0; i < new_layer.childElementCount; i++) {
-                for (let o = 0; o < new_layer.children[i].childElementCount; o++) {
-                    if (o > 0) {
-                        let the_target_start = new_layer.children[i].children[o].lastElementChild.firstElementChild.nextElementSibling;
-                        let the_target_end = new_layer.children[i].children[o].lastElementChild.lastElementChild.previousElementSibling;
-                        if (the_target_start.classList.contains("same") && the_target_start.classList.contains("same_start") == false) {
-                            the_target_start.classList.add("same_start");
-                        }
-                        if (the_target_end.classList.contains("same") && the_target_end.classList.contains("same_end") == false) {
-                            the_target_end.classList.add("same_end"); 
-                        }
-                    }
-                }
-            }
-    
-            // デフォルトで center になったことを明示.
-            let layer_centering = document.querySelector(".new_layer_centering");
-            let default_scrap = vertical_to_sp_cover(layer_centering);
-            default_scrap.classList.add("see");
-
-            // 移行先でのms分のスペースを調整.            
-            adjust_target_pos(layer_centering.lastElementChild, "off");
-    
-            // 画面の切り替え.
-            screen.style.opacity = 0;
-            new_layer.style.opacity = 1;
-
-            // 以下編集レイヤーのスクロール位置の調整.
-            let centering_num = [].slice.call(layer_centering.parentElement.children).indexOf(layer_centering) - 1;
-            let see = document.querySelector(".see");
-            let see_num = [].slice.call(new_layer.children).indexOf(see);
-            let scraps = new_layer.children;
-            let the_default_scrollleft = blocksize * centering_num + window.innerWidth - half_left_width;
-            
-            for (let i = 0; i < scraps.length; i++) {
-                let scrap = scraps[i];
+        
+                // 編集レイヤーの生成と挿入.
+                const add_new_layer = document.createElement("div");
+                add_new_layer.classList.add("new_layer");
+                add_new_layer.classList.add("block_layer");
+                add_new_layer.style.display = "none";
+                add_new_layer.style.opacity = 0;
+                screen.after(add_new_layer);
+                let new_layer = document.querySelector(".new_layer");
                 
-                // orange_dataと連携が開始.
-                orange_data[i] = {};
-                orange_data[i]["s_count"] = 0;
-                orange_data[i]["left"] = [];
+                // Editモードの明示化. 編集レイヤー上での処理に限定.
+                screen.classList.add("edit");
+                new_layer.style.display = "block";
+                screen.style.display = "none";
+                bo.style.backgroundColor = "#0070D8";
+                bo.classList.add("edit_mode");
     
-                if (i == see_num) {
-                    for (let o = 0; o < scrap.children.length; o++) {
-                        // orange_space をスキップ
-                        if (o == 0) {
-                            scrap.children[o].children[0].scrollLeft = the_default_scrollleft;
-                            scrap.children[o].children[1].scrollLeft = the_default_scrollleft;
-                        }
-                        if (o > 0) {
-                            scrap.children[o].lastElementChild.scrollLeft = the_default_scrollleft;
+                // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
+                let vh_count = current_horizontal.childElementCount - 1;
+                let sp_cover_will_num = Math.ceil(vh_count / linesize);
+                let new_sp_cov = current_sp_cover.cloneNode(true); 
+                
+                // すでに sp_cover には適切なラインが築かれているので、これを崩さずにそのまま再利用する. (中身のブロックはクリア.)
+                let newla_sps = new_sp_cov.children;
+    
+                // のちのために screenレイヤーの sp_cover にもクラスを付与.
+                current_sp_cover.classList.add("target_of_edition");
+        
+                for (let i = 0; i < newla_sps.length; i++) {
+                    let bye_once = newla_sps[i].lastElementChild.children;
+                    for (let o = bye_once.length - 1; o >= 0 ; o--) {
+                        // adjusterは残しておく.
+                        if (o > 0) { 
+                            bye_once[o].remove();
                         }
                     }
-                } else {
-                    for (let o = 0; o < scrap.children.length; o++) {
-                        // orange_space をスキップ
-                        if (o == 0) {
-                            scrap.children[o].children[0].scrollLeft = full_start_scrollwidth;
-                            scrap.children[o].children[1].scrollLeft = full_start_scrollwidth;
-                        }
+                    for (let o = 0; o < linesize; o++) {
+                        // scrap(sp_cover) のclone の　horizontal に ver を10個詰める.
+                        make_ver_fragment(newla_sps[i].lastElementChild.lastElementChild, "after");
+                    }
+    
+                    // editモードは右半分のスペースまで利用するため、可動域を拡張する目的でお尻にも adjuster を挿入.
+                    let adjuster_element = document.createElement("div");
+                    adjuster_element.classList.add("adjuster");
+                    adjuster_element.classList.add("horizontal_child");
+                    newla_sps[i].lastElementChild.lastElementChild.after(adjuster_element);
+                }
+        
+                // Nativeにはラインごとのシーキング機能があるため、デフォルトでその状態をセット.
+                new_sp_cov.classList.add("pausing");
+                
+                // 挿入前にorange_space を追加.
+                add_orange_space_for_everyone(new_sp_cov);
+               
+                // scrap を必要な数だけ new_layer に追加。
+                for (let i = 0; i < sp_cover_will_num; i++) {
+                    let new_one = new_sp_cov.cloneNode(true);
+                    new_one.firstElementChild.classList.add("orange_num_" + i);
+                    new_one.classList.add("principle_pointer");
+                    new_layer.appendChild(new_one);
+                }
+        
+                // デフォルトレイヤーに存在する大元のブロックたちの中身を、編集レイヤーの対応するブロックへ移行.
+                let screen_sps = current_sp_cover.children;
+                for (let i = 0; i < screen_sps.length; i++) {
+                    let screen_vers = screen_sps[i].lastElementChild.children;
+                    for (let o = 0; o < screen_vers.length; o++) {
+                      
+                        // adjuster をスキップ  
                         if (o > 0) {
-                            scrap.children[o].lastElementChild.scrollLeft = full_start_scrollwidth;
+                            let the_num = o;
+                            let ver_side = Math.trunc(the_num / linesize);
+                            let hor_side = the_num % linesize;
+                            
+                            // 割り切れてしまった場合.
+                            if (ver_side == 0 && hor_side == 1) {
+                                hor_side = 0;
+                            } else if (ver_side > 0 && hor_side == 0) {
+                                ver_side -= 1;
+                                hor_side = 23;
+                            } else {
+                                hor_side -= 1;
+                            }
+                            
+                            new_layer.children[ver_side].children[i + 1].lastElementChild.children[linesize].classList.add("you");
+                            
+                            // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
+                            let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];
+                            
+                            if (the_block_into.lastElementChild) {
+                                the_block_into.lastElementChild.remove();
+                            }
+                            for (let j = 0; j < the_name_list.length; j++) {
+                                classmover(screen_vers[o], the_block_into, the_name_list[j], "add");
+                            }
+                            if (screen_vers[o].classList.contains("centering")) {
+                                the_block_into.classList.add("new_layer_centering");
+                            } 
+                            
+                            // dupブロックの場合を考えて条件分岐.
+                            if (screen_vers[o].lastElementChild) {
+                                let imp_content = screen_vers[o].lastElementChild.cloneNode(true);
+                                the_block_into.appendChild(imp_content);
+                            }
+                        }
+                    } 
+                }
+    
+                // 10個ずつで強制的に区分けされたscrapによって same が分裂したケースに対応.
+                for (let i = 0; i < new_layer.childElementCount; i++) {
+                    for (let o = 0; o < new_layer.children[i].childElementCount; o++) {
+                        if (o > 0) {
+                            let the_target_start = new_layer.children[i].children[o].lastElementChild.firstElementChild.nextElementSibling;
+                            let the_target_end = new_layer.children[i].children[o].lastElementChild.lastElementChild.previousElementSibling;
+                            if (the_target_start.classList.contains("same") && the_target_start.classList.contains("same_start") == false) {
+                                the_target_start.classList.add("same_start");
+                            }
+                            if (the_target_end.classList.contains("same") && the_target_end.classList.contains("same_end") == false) {
+                                the_target_end.classList.add("same_end"); 
+                            }
                         }
                     }
                 }
-            }
-            
-            let new_see = document.getElementsByClassName("see")[0];
-            
-            // 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
-            orange_data = orange_pointer_make(new_see, orange_data); 
-            new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
+        
+                // デフォルトで center になったことを明示.
+                let layer_centering = document.querySelector(".new_layer_centering");
+                let default_scrap = vertical_to_sp_cover(layer_centering);
+                default_scrap.classList.add("see");
+    
+                // 移行先でのms分のスペースを調整.            
+                adjust_target_pos(layer_centering.lastElementChild, "off");
+        
+                // 画面の切り替え.
+                screen.style.opacity = 0;
+                new_layer.style.opacity = 1;
+    
+                // 以下編集レイヤーのスクロール位置の調整.
+                let centering_num = [].slice.call(layer_centering.parentElement.children).indexOf(layer_centering) - 1;
+                let see = document.querySelector(".see");
+                let see_num = [].slice.call(new_layer.children).indexOf(see);
+                let scraps = new_layer.children;
+                let the_default_scrollleft = blocksize * centering_num + window.innerWidth - half_left_width;
+                
+                for (let i = 0; i < scraps.length; i++) {
+                    let scrap = scraps[i];
+                    
+                    // orange_dataと連携が開始.
+                    orange_data[i] = {};
+                    orange_data[i]["s_count"] = 0;
+                    orange_data[i]["left"] = [];
+        
+                    if (i == see_num) {
+                        for (let o = 0; o < scrap.children.length; o++) {
+                            // orange_space をスキップ
+                            if (o == 0) {
+                                scrap.children[o].children[0].scrollLeft = the_default_scrollleft;
+                                scrap.children[o].children[1].scrollLeft = the_default_scrollleft;
+                            }
+                            if (o > 0) {
+                                scrap.children[o].lastElementChild.scrollLeft = the_default_scrollleft;
+                            }
+                        }
+                    } else {
+                        for (let o = 0; o < scrap.children.length; o++) {
+                            // orange_space をスキップ
+                            if (o == 0) {
+                                scrap.children[o].children[0].scrollLeft = full_start_scrollwidth;
+                                scrap.children[o].children[1].scrollLeft = full_start_scrollwidth;
+                            }
+                            if (o > 0) {
+                                scrap.children[o].lastElementChild.scrollLeft = full_start_scrollwidth;
+                            }
+                        }
+                    }
+                }
+                
+                let new_see = document.getElementsByClassName("see")[0];
+                
+                // 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
+                orange_data = orange_pointer_make(new_see, orange_data); 
+                new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
+    
+                // 「see」ラインを画面中央に配置.
+                edit_mode_default_adjust(new_see);
+                is_it_same_series(document.querySelector(".new_layer_centering"));
+                layer_centering.classList.remove("new_layer_centering");
 
-            // 「see」ラインを画面中央に配置.
-            edit_mode_default_adjust(new_see);
-            is_it_same_series(document.querySelector(".new_layer_centering"));
-            layer_centering.classList.remove("new_layer_centering");
+            }
         }
     }
 
@@ -833,49 +837,70 @@ window.addEventListener("keydown", (e)=>{
                     // ブロックの content が video で左隣は船内のsameで右隣は船外のsame、そして、same_end を持っていないなら実行. 
                     let special_menu = (e, f, g) => {
                         let f_p = g;
+
+                        function same_end_around() {
+                            let the_t = "same_num_" + target_data(e, "same_num_");
+                            let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
+                            let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
+                            the_natural_cont.style.setProperty('opacity', 1, 'important');
+
+                            // dupブロックだった場合を想定.                                        
+                            if (f.lastElementChild) {
+                                f.lastElementChild.remove();
+                            }
+                            f.appendChild(the_natural_cont);
+                            f.classList.add("same_end");
+                        }
+
+                        function same_start_around() {
+                            console.log('www');
+                            f.classList.add("same_start");
+
+                            let same_name = "same_num_" + target_data(f, "same_num_");
+                            let breakpoint = [].slice.call(f_p.children).indexOf(f);                                                        
+                            
+                            let same_data = same_data_getter();
+                            same_data += 1;
+                            same_data_counter(same_data);
+                    
+                            for (let i = f_p.children.length - 1; i >= breakpoint; i--) {
+                                if (f_p.children[i].classList.contains(same_name)) {
+                                    let same_block = f_p.children[i];
+                                    classmover(same_block, same_block, "same_num_", "remove");
+                                    same_block.classList.add("same_num_" + same_data);
+                                }
+                            }
+                        }
                         if (e.previousElementSibling) {
                             if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in")) {
                                 if (e.nextElementSibling) {
                                     if (e.nextElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in") == false) {                                                     
                                         if (f.classList.contains("same") && f.classList.contains("same_end") == false) {
-                                            let the_t = "same_num_" + target_data(e, "same_num_");
-                                            let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
-                                            let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
-                                            the_natural_cont.style.setProperty('opacity', 1, 'important');
-
-                                            // dupブロックだった場合を想定.                                        
-                                            if (f.lastElementChild) {
-                                                f.lastElementChild.remove();
-                                            }
-                                            f.appendChild(the_natural_cont);
-                                            f.classList.add("same_end");
+                                            // 実行.
+                                            same_end_around();
                                         } 
                                     }
                                 }
                             }
                             if (e.previousElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in")) {
                                 if (e.previousElementSibling) {
+                                    console.log('w');
                                     if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in") == false) {                                                     
+                                        console.log('ww');
                                         if (f.classList.contains("same") && f.classList.contains("same_start") == false) {
-                                            f.classList.add("same_start");
-
-                                            let same_name = "same_num_" + target_data(f, "same_num_");
-                                            let breakpoint = [].slice.call(f_p.children).indexOf(f);                                                        
-                                            
-                                            let same_data = same_data_getter();
-                                            same_data += 1;
-                                            same_data_counter(same_data);
-                                    
-                                            for (let i = f_p.children.length - 1; i >= breakpoint; i--) {
-                                                if (f_p.children[i].classList.contains(same_name)) {
-                                                    let same_block = f_p.children[i];
-                                                    classmover(same_block, same_block, "same_num_", "remove");
-                                                    same_block.classList.add("same_num_" + same_data);
-                                                }
-                                            }
+                                            // 実行.
+                                            same_start_around();
                                         } 
                                     }
                                 }
+                            }
+                        }
+
+                        // いよいよそのscrapの中にそのブロックしかいなかった場合に対応.    
+                        if (! f.nextElementSibling) {
+                                if (! f.previousElementSibling) {
+                                same_end_around();
+                                same_start_around();
                             }
                         }
                     }
@@ -930,23 +955,36 @@ window.addEventListener("keydown", (e)=>{
                                         }
                                     }
                                     
+                                    // 一度ずらしてある審査基準から戻す必要があるってことを前提に考えると？
                                     if (the_desition_one == true && the_desition_second == true) {
+                                        console.log("wopw");
                                         fif();
-                                    } else if (the_desition_one == true && the_desition_second == false) {
-                                        let gap = the_pointer_scrollleft_en - thisblock_scrollleft_st;
-                                        if (gap > 10 && gap < blocksize) {
-                                            if (gap > 50) {
-                                                fif("actuar_en", gap - 5);
+                                    } else {
+                                        if (the_desition_one == true && the_desition_second == false) {
+                                            let gap = the_pointer_scrollleft_en - thisblock_scrollleft_st;
+                                            console.log(gap);
+                                            // gap = 5
+                                            if (gap > 10 && gap < blocksize) {
+                                                if (gap > 50) {
+                                                    fif("actuar_en", gap - 5);
+                                                }
                                             }
-                                        }
-                                    } else if (the_desition_one == false && the_desition_second == true) {
-                                        let gap = thisblock_scrollleft_en - the_pointer_scrollleft_st;
-                                        if (gap > 10 && gap < blocksize) {                                       
-                                            if (gap > 50) {
-                                                fif("actuar_st", 405 - gap);
+                                        } 
+                                        if (the_desition_one == false && the_desition_second == true) {
+                                            let gap = thisblock_scrollleft_en - the_pointer_scrollleft_st;
+                                            // 切り出されたブロックが単一の際に対応してちょっと複雑な書き方になっている.
+                                            if (gap > 10 && gap < blocksize) {  
+                                                if (gap < blocksize - 10) {
+                                                    if (gap > 50) {
+                                                        fif("actuar_st", 365 - gap);
+                                                    } 
+                                                } else {
+                                                    fif();
+                                                }
                                             }
                                         }
                                     }
+                                    
                                 }
                             }
                             return you_are_on_orange;

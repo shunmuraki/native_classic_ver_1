@@ -136,7 +136,7 @@ html {
 html, body {
   font-size: 10px;
   background-color: #0070D8;
-  width: 100vw;
+  width: 100%;
 }
 
 .inner {

@@ -85,21 +85,28 @@ for (let i = 0; i < write_areas.length ; i++) {
 let sp_covers = document.querySelectorAll(".sp_cover");
 
 // actuar クラスへの対応や video_startpointのセットなど、 animation_data を更新する関数.
-function ac_vi_adaptation(e, f) {
+function ac_vi_adaptation(e, f, g) {
     let classlist = e.classList;
     let animation_data = f;
     for (let i = 0; i < classlist.length; i++) {
         let classname = classlist[i];
         if (classname.indexOf("this_video_st_") != -1) {
-            animation_data["video_startpoint"] = Math.floor(Number(target_data(e, "this_video_st_")));
-        } else if (classname.indexOf("actuar_time_") != -1) {
+            // JB
+            if (g == "active_st") {
+                animation_data["video_startpoint"] = Math.floor(Number(target_data(e, "this_video_st_")));
+            }
+        } 
+        if (classname.indexOf("actuar_time_") != -1) {
             // 秒数に変換. (blocksize = 360)
             let act_num = 5 * (Math.floor(Number(target_data(e, "actuar_time_"))) / 360);
             if (classname.indexOf("actuar_st_") != -1) {
                 animation_data["trigger_when"] = animation_data["trigger_when"] + act_num;     
-                // actuar を video_startpoint にも反映.
-                if (classname.indexOf('this_video_st_') != -1) {
-                    animation_data["video_startpoint"] = animation_data["video_startpoint"] + act_num;
+                // JB.
+                if (g == "active_st") {
+                    // actuar を video_startpoint にも反映.
+                    if (classname.indexOf('this_video_st_') != -1) {
+                        animation_data["video_startpoint"] = animation_data["video_startpoint"] + act_num;
+                    }
                 }
             } else if (classname.indexOf('actuar_en') != -1) {
                 animation_data["finish_when"] = animation_data["finish_when"] - act_num + 5; 
@@ -295,14 +302,14 @@ function base_setup(e, f, g) {
 }
 
 // animation_generate_list と animation_data を紐付け、前者にデータを格納して後者をアップデートして返す関数.
-function animationdata_setup(e, f, g) {
+function animationdata_setup(e, f, g, h) {
     let the_block = e;
     let the_animation = f;
     let gene_datas = g;
     let the_num = gene_datas.length;
     let animations = [];
-    // the_num 分のanimationを複製する.
     // [処理内容]
+    // the_num 分のanimationを複製　→
     // anim_name のセット. ← animation_generation_list の何番目かの数字を格納.
     // anim_num のセット.
     // ブロックに anim_num をadd.
@@ -316,7 +323,7 @@ function animationdata_setup(e, f, g) {
         new_typedata["anim_name"] = the_keynum;
         let the_name = "anim_num_" + the_keynum;
         the_block.classList.add(the_name); 
-        let final_animation = ac_vi_adaptation(the_block, new_typedata);
+        let final_animation = ac_vi_adaptation(the_block, new_typedata, h);
         animation_generate_list.push(the_value);
         animations.push(final_animation);
     }
@@ -363,12 +370,25 @@ for (let i = 0; i < sp_covers.length; i++) {
         
         let here = o + 1;
         let the_classname = "outerstyle_" + sp_num + "_" + here;
-
         the_big_section.classList.add("section_" + i);
-        // リニアだけを対象にする.
-        if (verticals.length > 1) {
 
+        // hor の中のブロックが複数　or sameを持つブロックがひとつ入っている 場合に = true にして以下のブロックごとのループや linear クラスの付与を実行.
+        let desider = false;
+        if (verticals.length > 1) {
+            desider = true;
             the_big_section.classList.add("linear");
+        } else  {
+            if (verticals.firstElementChild.classList.contains("video") && verticals.firstElementChild.classList.contains("same")) {
+                desider = true;
+                verticals.firstElementChild.classList.add("onlyone");
+            }
+        }
+        // 最後の要素は表示したままにしたいため.
+        sp.lastElementChild.firstElementChild.classList.add("opening");
+        sp.lastElementChild.lastElementChild.classList.add("ending");
+        // リニアだけを対象にする.
+        // adjuster は削除済み.
+        if (desider) {
 
             for (let j = 0; j < verticals.length; j++) {
                 let block = verticals[j]; 
@@ -395,23 +415,28 @@ for (let i = 0; i < sp_covers.length; i++) {
                           
                             // ペアのsame_endを取得
                             let the_passenger = document.getElementsByClassName(the_same_name)[document.getElementsByClassName(the_same_name).length - 1];
-                            let final_animation_start = animationdata_setup(the_passenger, start_animation, generative_data_start);
+                            let final_animation_start = animationdata_setup(the_passenger, start_animation, generative_data_start, "none_st");
 
                             for (let k = 0; k < final_animation_start.length; k++) {
                                 data_num += 1;
                                 animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_start[k];
                             }
                         }
-                        if (block.previousElementSibling) {
-                            if (! block.previousElementSibling.classList.contains("same")) {
-                                video_same_start();
-                            } else {
-                                if (! block.previousElementSibling.classList.contains(the_imp_id)) {
+
+                        if (! block.classList.contains("opening")) {
+                            if (! block.classList.contains("onlyone")) {
+                                if (block.previousElementSibling) {
+                                    if (! block.previousElementSibling.classList.contains("same")) {
+                                        video_same_start();
+                                    } else {
+                                        if (! block.previousElementSibling.classList.contains(the_imp_id)) {
+                                            video_same_start();
+                                        }
+                                    }
+                                } else {
                                     video_same_start();
                                 }
                             }
-                        } else {
-                            video_same_start();
                         }
     
                     } else if (block.classList.contains("same_end")) {
@@ -420,7 +445,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                         function video_same_end() {
                             let end_animation = base_setup(block, j + 1, "end");
                             let generative_data_end = generationdata_setup(block, "end");
-                            let final_animation_end = animationdata_setup(block, end_animation, generative_data_end);
+                            let final_animation_end = animationdata_setup(block, end_animation, generative_data_end, "non_st");
     
                             for (let k = 0; k < final_animation_end.length; k++) {
                                 data_num += 1;
@@ -428,16 +453,20 @@ for (let i = 0; i < sp_covers.length; i++) {
                             }    
                         }
 
-                        if (block.nextElementSibling) {
-                            if (! block.nextElementSibling.classList.contains("same")) {
-                                video_same_end();
-                            } else {
-                                if (! block.nextElementSibling.classList.contains(the_imp_id)) {
+                        if (! block.classList.contains("ending")) {
+                            if (! block.classList.contains("onlyone")) {
+                                if (block.nextElementSibling) {
+                                    if (! block.nextElementSibling.classList.contains("same")) {
+                                        video_same_end();
+                                    } else {
+                                        if (! block.nextElementSibling.classList.contains(the_imp_id)) {
+                                            video_same_end();
+                                        }
+                                    }
+                                } else {
                                     video_same_end();
                                 }
                             }
-                        } else {
-                            video_same_end();
                         }
 
                         // video属性の場合は、それ用のvideo_animationを追加で作成.
@@ -457,7 +486,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                             video_animation["finish_when"] = (j * 5) + 5;
                             video_animation["trigger_when"] = video_animation["finish_when"] - v_duration;
     
-                            video_animation = ac_vi_adaptation(block, video_animation);
+                            video_animation = ac_vi_adaptation(block, video_animation, "active_st");
                             video_animation["anim_name"] = animation_generate_list.length + 1;
                             animation_generate_list.push([]);
     
@@ -478,6 +507,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                     }
                   
                 } 
+
                 else {
 
                     function for_ind() {
@@ -487,7 +517,7 @@ for (let i = 0; i < sp_covers.length; i++) {
 
                         // まず block が違う.
                         // あと中身があるかみるべき？
-                        let final_animation_start = animationdata_setup(block, start_animation, generative_data_start);
+                        let final_animation_start = animationdata_setup(block, start_animation, generative_data_start, "active_st");
     
                         for (let k = 0; k < final_animation_start.length; k++) {
                             data_num += 1;
@@ -496,7 +526,7 @@ for (let i = 0; i < sp_covers.length; i++) {
         
                         let end_animation = base_setup(block, j + 1, "end");
                         let generative_data_end = generationdata_setup(block, "end");
-                        let final_animation_end = animationdata_setup(block, end_animation, generative_data_end);
+                        let final_animation_end = animationdata_setup(block, end_animation, generative_data_end, "active_st");
 
                         for (let k = 0; k < final_animation_end.length; k++) {
                             data_num += 1;
@@ -511,7 +541,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                         let video_animation = {};
                         video_animation["trigger_when"] = j * 5;
                         video_animation["finish_when"] = video_animation["trigger_when"] + 5;
-                        video_animation = ac_vi_adaptation(block, video_animation);
+                        video_animation = ac_vi_adaptation(block, video_animation, "active_st");
                         video_animation["anim_name"] = animation_generate_list.length + 1;
                         animation_generate_list.push([]);
                         animation_data["section_" + i]["about_anims"]["data_" + data_num] = video_animation;
@@ -529,6 +559,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                     }
                 }
             }
+            
         } else {
             let block = verticals[0];
             textarea_adaptation(block);

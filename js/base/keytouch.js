@@ -40,7 +40,7 @@ window.addEventListener("keydown", (e)=>{
                 original_centering_checker(current_sp_cover, current_vertical);
                 adjust_box(current_vertical);
                 make_fragment(current_sp_cover, "after");    
-                special_cleaner(current_sp_cover);
+                special_cleaner();
                 let next_one = current_sp_cover.nextElementSibling.lastElementChild.lastElementChild.lastElementChild;
                 var next_textarea = next_one.lastElementChild;
                 centering_marker(current_vertical, next_one, "centering");

@@ -219,9 +219,9 @@ export const is_it_same_alend = (e) => {
             // たぶんここが pausing も playing も複数存在する可能性を加味してないんだと思う.
             if (sp_cover.classList.contains("pausing")) {
                 if (player) {
-                    let the_name = "same_num_" + target_data(which_special_is(e), "this_cov_is_");
+                    let the_name = "same_num_" + target_data(which_special_is(the_target_left), "this_cov_is_");
                     player.pauseVideo();
-                    let the_time = yt_resetter();
+                    let the_time = yt_resetter(the_target_left);
                     player.seekTo(the_time);
                     yt_loop_stopper(player, "end", the_name);
                 }
@@ -243,9 +243,9 @@ export const is_it_same_alend = (e) => {
             player_setup(the_target_right);
             if (sp_cover.classList.contains("pausing")) {
                 if (player) {
-                    let the_name = "same_num_" + target_data(which_special_is(e), "this_cov_is_");
+                    let the_name = "same_num_" + target_data(which_special_is(the_target_right), "this_cov_is_");
                     player.pauseVideo();
-                    let the_time = yt_resetter();
+                    let the_time = yt_resetter(the_target_right);
                     player.seekTo(the_time);
                     yt_loop_stopper(player, "start", the_name);
                 }
