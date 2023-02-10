@@ -53,7 +53,6 @@ export const run_finish_classi = (e, f, g) => {
     }
 }
 
-
 export const the_states = (e, f, g, h) => {
  
     let section = e;
@@ -69,7 +68,7 @@ export const the_states = (e, f, g, h) => {
         let the_object = document.getElementsByClassName(String("anim_num_" + anim_name))[0];
         let trigger_when = loop_anims[String("data_" + i)]["trigger_when"];
         let finish_when = loop_anims[String("data_" + i)]["finish_when"];
-        let seekt = loop_anims[String("data_" + i)]["seekto"];
+        let seekt = loop_anims[String("data_" + i)]["video_startpoint"];
         
         var loop_object_tag = the_object.lastElementChild.tagName;
 

@@ -58,7 +58,6 @@ export const wheel_positioning = () => {
   let the_focus_left = centering.getBoundingClientRect().left;
   pointer.style.top = the_focus_top - 10 + "px";
   pointer.style.left = the_focus_left - 10 + "px";
-
 }
 
 // ホイールの描画アニメーションの関数.

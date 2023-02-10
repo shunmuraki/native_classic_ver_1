@@ -1,6 +1,6 @@
 import { screen, blocksize } from "../base/elements.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
-import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, the_magic_copy, the_magic_paste, adjust_box, pointer_anim } from "./function.js";
+import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, the_magic_copy, the_magic_paste, adjust_box, pointer_anim, special_cleaner } from "./function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
 
@@ -40,6 +40,7 @@ window.addEventListener("keydown", (e)=>{
                 original_centering_checker(current_sp_cover, current_vertical);
                 adjust_box(current_vertical);
                 make_fragment(current_sp_cover, "after");    
+                special_cleaner(current_sp_cover);
                 let next_one = current_sp_cover.nextElementSibling.lastElementChild.lastElementChild.lastElementChild;
                 var next_textarea = next_one.lastElementChild;
                 centering_marker(current_vertical, next_one, "centering");

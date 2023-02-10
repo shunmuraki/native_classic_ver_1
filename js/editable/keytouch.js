@@ -285,7 +285,7 @@ window.addEventListener("keydown", (e)=>{
                             let the_gap = scroll_distance - vertical_to_hor(new_layer_centering).scrollLeft;
                             all_view_changer(the_see_centering, the_gap);                        
                             principle_management(the_see_centering, "principle_pointer");
-                            wheel_positioning();
+                            // wheel_positioning();
                         }
                     } 
                     // sprinciple_pointer だった場合は何もしない.
@@ -301,7 +301,7 @@ window.addEventListener("keydown", (e)=>{
                         all_view_changer(the_see_centering, the_gap);
                         principle_management(the_see_centering, "principle_block");
                         is_it_same_series(new_one);
-                        wheel_positioning();
+                        // wheel_positioning();
                     }
                     // principle_block だった場合は何もしない.
                     the_scrolled_distance = 0;
@@ -841,7 +841,8 @@ window.addEventListener("keydown", (e)=>{
                                             let the_t = "same_num_" + target_data(e, "same_num_");
                                             let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
                                             let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
-                                            the_natural_cont.style.opacity = 1;
+                                            the_natural_cont.style.setProperty('opacity', 1, 'important');
+
                                             // dupブロックだった場合を想定.                                        
                                             if (f.lastElementChild) {
                                                 f.lastElementChild.remove();

@@ -157,6 +157,7 @@ export const special_cleaner = (e) => {
             let the_special_cov = which_special_is(ends[i]);
             if (the_special_cov) {
                 let cont = the_special_cov.lastElementChild.cloneNode(true);
+                cont.style.setProperty('opacity', 1, 'important');
                 if (ends[i].lastElementChild) {
                     ends[i].lastElementChild.remove();
                 }
@@ -198,7 +199,7 @@ export const go_top = (e, f) => {
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
             // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
-            special_cleaner(pre_sibling);
+            special_cleaner(vertical_to_sp_cover(ver));
 
             // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
             if (sibling_height > to_the_distance) {
@@ -218,7 +219,7 @@ export const go_top = (e, f) => {
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
 
-            special_cleaner(vertical_to_sp_cover(ver));        
+            special_cleaner(vertical_to_sp_cover(ver));   
             // edit モードは「see」ラインの位置を固定したい狙い.
             scrollBy(0, - connected_your_height);
             is_it_same_series(next_one);
@@ -259,7 +260,8 @@ export const go_bottom = (e, f) => {
            
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
-            special_cleaner(pre_sibling);
+
+            special_cleaner(vertical_to_sp_cover(ver));
 
             if (sibling_height > to_the_distance) {
                 scrollBy(0, connected_your_height);

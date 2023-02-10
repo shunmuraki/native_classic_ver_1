@@ -516,6 +516,7 @@ p, span, a {
   position: absolute;
   top: 3px;
   left: 0px;
+  border-radius: 1px;
   background-color: #1f93ff;
 }
 .block_layer .sp_cover .sp .horizontal .video, .block_layer .sp_cover .sp .horizontal .img {
@@ -702,6 +703,7 @@ img, iframe {
   position: absolute;
   left: 0px;
   top: 3px;
+  border-radius: 1px;
   background-color: #1f93ff;
 }
 .special_cov .write_area, .special_cov img, .special_cov iframe {
