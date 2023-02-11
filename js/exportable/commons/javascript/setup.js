@@ -1,10 +1,14 @@
 import { pragm_stylies, style_data_trace } from "./parts.js";
 import { block_multiable } from "./ytp.js";
 
+// yt-iframe の読み込み
+let yt_elem_list = new Array();
+// let yt_id_list = []; *Nativeから追加.
 let bo = document.getElementsByTagName("body")[0];
 let section_elms = document.querySelectorAll(".linear");
-
 let the_pathes = ["anim.js", "states.js", "base/tools.js", "main.js"];
+
+// HTMLファイル にて動的に JSファイル群　を読み込む際に使う関数.
 export const script_load = () => {
     for (let i = 0; i < the_pathes.length; i++) {
         let the_sctag = document.createElement("script");
@@ -13,7 +17,8 @@ export const script_load = () => {
         bo.appendChild(the_sctag);
     }
 }
-// touch * ここは最終的にはループで処理するようになる。sectionタグによる全取得で.
+
+// 各　section に対する初期セットアップ.
 for (let i = 0; i < section_elms.length; i++) {
     section_elms[i].classList.add("iwatchyou");
     section_elms[i].classList.add("ikuneko");
@@ -23,10 +28,6 @@ for (let i = 0; i < section_elms.length; i++) {
         the_next_section.style.opacity = 0;
     }
 }
-
-// yt-iframe の読み込み
-let yt_elem_list = new Array();
-// let yt_id_list = [];
 
 function yt_load() {
     for (let i = 0; i < yt_id_list.length; i++) {
@@ -38,10 +39,10 @@ function yt_load() {
     }
 }
 
+// yt_elm_list を外部ファイルへ共有する関数.
 export const ytelemlist_getter = () => {
     return yt_elem_list;
 }
-
 
 // 最初の section が non 属性だったら margin を 50vh とって場所を戻してあげるようにする.
 let the_first = document.querySelector(".inner").firstElementChild;
@@ -77,15 +78,12 @@ window.onload = () => {
 // DOMへのスタイリングのトレース.
 for (let i = 0; i < section_elms.length; i++) {
     let objects = section_elms[i].children;
-    console.log(objects);
     for (let o = 0; o < objects.length; o++) {
         let object = objects[o];
         let style_data = pragm_stylies(object);
-        console.log(style_data);
         style_data_trace(object, style_data);
     }
 }
-
 
 window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
@@ -106,7 +104,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
             // その他の JS の動的な読み込み.
-            // & yt のセットアップ（YT.playerが準備できた頃.）
+            // 加えて yt のセットアップ（YT.playerが準備できた頃.）
             script_load(); 
             loading_screen.style.display = "none";
         }, 1000)

@@ -13,14 +13,11 @@ let additional_time = 0;
 let the_section = null;
 
 // ***** ---------- * -  基本データセット  ------------ - - - - -  -------------------------------
-// テスト用. [ + seekto prop. ]
-// let animation_data = {section_2:{about_time:{section_current_time:0,section_duration:30,},about_anims:{data_1:{trigger_when:5,finish_when:7,anim_name:0,},data_2:{trigger_when:9,finish_when:11,anim_name:1,},data_3:{trigger_when:14,finish_when:16,anim_name:2,},data_4:{trigger_when:18,finish_when:20,anim_name:3,},data_5:{trigger_when:16,finish_when:18,anim_name:8,},data_6:{trigger_when:20,finish_when:22,anim_name:9,},data_7:{trigger_when:24,finish_when:26,anim_name:10,},data_8:{trigger_when:28,finish_when:30,anim_name:11,},data_9:{trigger_when:9,finish_when:11,anim_name:16,}, data_10:{trigger_when:20,finish_when:22,anim_name:17} }},section_4:{about_time:{section_current_time:0,section_duration:40,},about_anims:{data_1:{trigger_when:5,finish_when:7,anim_name:4,},data_2:{trigger_when:9,finish_when:11,anim_name:5,},data_3:{trigger_when:14,finish_when:16,anim_name:6,},data_4:{trigger_when:18,finish_when:20,anim_name:7,},data_5:{trigger_when:16,finish_when:18,anim_name:12,},data_6:{trigger_when:20,finish_when:22,anim_name:13,},data_7:{trigger_when:24,finish_when:26,anim_name:14,},data_8:{trigger_when:28,finish_when:30,anim_name:15},}}};
-
 // youtube id list. これをdomに昇華させます(in states.js). 
 let state_classies = ["running", "playing", "finished", "paused"];
+// let animation_data = {}; *Nativeから追加.
 let yt_elem_list = ytelemlist_getter();
 // ***** ---------- * -  基本データセット  ------------ - - - - -  -------------------------------
-
 
 // ***** ---------- * -  setTimeout, setInterval 関連のセットアップ  ------------ - - - - -  -------------------------------
 let intervalArray = new Array();
@@ -32,13 +29,10 @@ let timeoutArray = new Array();
 const default_timeout = (e) => {
     let the_name = "section_" + target_data(e, "section_");
     let duration = animation_data[String(the_name)]["about_time"]["section_duration"];
-
     let duration_use = duration * 1000;
 
     timeoutArray.push(setTimeout(() => {
-
         let the_next_section = e.nextElementSibling;
-
         if (the_next_section) {
             the_next_section.style.opacity = 1;
         }
@@ -54,10 +48,9 @@ const default_timeout = (e) => {
 // ***** ---------- * -  毎秒監視要員  ------------ - - - - -  -------------------------------
 const aries = (e) => {
     let trigger_name = "section_" + target_data(e, "section_");
-    // interval 形式にする必要があるあよね.
     intervalArray.push(setInterval(() => {
         animation_data[String(trigger_name)]["about_time"]["section_current_time"] += 0.5;
-        // * ここで statusbar の調整をかけたい.
+        // statusbar の調整.
         status_update(trigger_name, animation_data);
         the_states(e, animation_data, "autoseek", yt_elem_list);
     }, 500));
@@ -72,13 +65,11 @@ const clear_shu = () => {
 }
 
 const outer_inte = (e) => {
-
     let the_name = "section_" + target_data(e, "section_");
     let current_time = animation_data[String(the_name)]["about_time"]["section_current_time"];
     let duration = animation_data[String(the_name)]["about_time"]["section_duration"];
     let the_next_section = e.nextElementSibling;
-
-    // * 微調整要員
+    // 以下境目の微調整要員
     if (current_time <= 0) {
         animation_data[String(the_name)]["about_time"]["section_current_time"] = 0;            
         current_time = 0;
@@ -97,9 +88,7 @@ const outer_inte = (e) => {
     if (e.classList.contains("ikuneko")) {
         
         if (current_time >= duration){
-
             all_pauser(e, yt_elem_list);
-
             let objects = e.children;
             for (let i = 0; i < objects.length; i++) {
                 let object = objects[i];
@@ -108,23 +97,18 @@ const outer_inte = (e) => {
                     classmover(object, object, state_classies[o], "remove");
                 }
             }
-
             if (the_next_section) {
                 the_next_section.style.opacity = 1;
             }
-
             remove_wheel();
             off_preventer(e);
             transition_animation_end(e);
-
         } 
 
     } else if (e.classList.contains("kuruneko")) {
 
         all_pauser(e, yt_elem_list);
-
         if (current_time <= 0) {
-    
             let objects = e.children;
             for (let i = 0; i < objects.length; i++) {
                 let object = objects[i];
@@ -132,11 +116,9 @@ const outer_inte = (e) => {
                     classmover(object, object, state_classies[o], "remove");
                 }
             }
-
             if (the_next_section) {
                 the_next_section.style.opacity = 0;
             }
-
             remove_wheel();
             off_preventer(e);
             transition_animation_start(e);
@@ -152,25 +134,18 @@ const the_arrows = (event) => {
         
     let the_name = "section_" + target_data(the_section, "section_");
     let the_next_section = the_section.nextElementSibling;
-
     let section_duration = animation_data[the_name]["about_time"]["section_duration"];
     duration = section_duration;
-    
     let distance = event.deltaY;
     let plus = distance / 200;
-
     current_time = animation_data[the_name]["about_time"]["section_current_time"]; 
-    
     all_pauser(the_section, yt_elem_list);
-
     additional_time += plus;
 
     suppression(() => { 
 
         let the_name = "section_" + target_data(the_section, "section_");
-
         clear_shu();
-
         the_states(the_section, animation_data, "allstop", yt_elem_list);
 
         // * additional_time によって上下が決まるし、この時点で特別なクラスを持っているなら、それは下の要素について対応する必要がある。
@@ -242,14 +217,11 @@ const the_arrows = (event) => {
         if (current_time < 0 || current_time > duration) {
 
             clear_shu();
-
-            // * ここで特別なクラスを付与、かな？？
             if (current_time <= 0) {
                 the_section.classList.add("special_med_zero");
             } else if (current_time >= duration) {
                 the_section.classList.add("special_med_full");
             }
-
             outer_inte(the_section);
 
         } else {
@@ -295,11 +267,9 @@ const cropper = () => {
     function showElements(entries) {
         entries.forEach((entry) => {
         let nowElement = entry.target;
-          if (entry.isIntersecting) {
-            
+          if (entry.isIntersecting) {        
             if (Math.round(entry.intersectionRatio * 100) == 100) {
-
-                // * remove_wheel のため。
+                // remove_wheel のため。
                 the_section = nowElement;
                 sr_assign(nowElement);
 
@@ -320,16 +290,15 @@ const cropper = () => {
 
             } 
           } else {  
-              
               nowElement.classList.remove("state_on");
               nowElement.classList.add("iwatchyou");
-
           }
         });
     }   
     
     let observer = new IntersectionObserver(showElements, options);
     let myTarget = document.querySelectorAll(".iwatchyou");
+
     for (let n = 0; n < myTarget.length; n++) {
         observer.observe(myTarget[n]);
     }

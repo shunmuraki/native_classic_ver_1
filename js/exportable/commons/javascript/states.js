@@ -1,16 +1,15 @@
 import { target_data } from "./base/tools.js";
 import { animation_make } from "./anim.js";
 
+// animation_generate_list = []; *Nativeから追加.
 let animation_list = {};
 
-// * イメージとしては
+// [処理内容]
 // -- animation_generate_list を取得してループを設置.
 // -- Animation_complex_make() に通して 返ってくる animation を受け取り
 // -- animation_list[i] に格納するようにする.
-// let animation_generate_list = [[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 1], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1],[["opacity", 0], 1], [["scale", 2], 1], [["horizontal", 0], 1]];
-
 for (let i = 0; i < animation_generate_list.length; i++) {
-    // video_animation の数合わせをスキップしている.
+    // video_animation の数合わせをスキップ.
     if (animation_generate_list[i][0]) {
         let animation_part = animation_make(String("anim_num_" + i), animation_generate_list[i]);
         animation_list[i] = animation_part;
@@ -53,6 +52,7 @@ export const run_finish_classi = (e, f, g) => {
     }
 }
 
+// 渦中の section 内の 各object の状態を current_time と照合しながら更新する関数.
 export const the_states = (e, f, g, h) => {
  
     let section = e;
@@ -69,12 +69,9 @@ export const the_states = (e, f, g, h) => {
         let trigger_when = loop_anims[String("data_" + i)]["trigger_when"];
         let finish_when = loop_anims[String("data_" + i)]["finish_when"];
         let seekt = loop_anims[String("data_" + i)]["video_startpoint"];
-        
-        var loop_object_tag = the_object.lastElementChild.tagName;
-
+        let loop_object_tag = the_object.lastElementChild.tagName;
         let the_animation = animation_list[anim_name];
-
-        var object_content = yt_elem_list[Number(target_data(the_object, "yt_num_"))];
+        let object_content = yt_elem_list[Number(target_data(the_object, "yt_num_"))];
 
         if (g == "allstop") {
 
@@ -175,6 +172,5 @@ export const the_states = (e, f, g, h) => {
                 }
             }    
         }
-
     }
 }

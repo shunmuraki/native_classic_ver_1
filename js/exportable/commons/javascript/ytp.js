@@ -1,12 +1,10 @@
-// *** ブロック内に iFrame を作成する関数, 引数に videoId と 挿入先のブロック
+// ブロック内に iFrame を作成する関数, 引数に videoId と 挿入先のブロック
 export const block_multiable = (e, f, z) => {
  
     let the_box = document.getElementById(e).parentElement;
     let the_related_name = "yt_num_" + z;
     the_box.classList.add(the_related_name);
-
-    var player;
-    var duration_time;
+    let player;
         
     function onYouTubeIframeAPIReady(g, h) {
         player = new YT.Player(g, {
