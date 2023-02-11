@@ -140,7 +140,7 @@ export const status_update = (e, f) => {
 // スタイル計算用の関数.
 export const pragm_stylies = (e) => {
 
-    let style_data = { vertical: [], horizontal: [], scale: [0, 1], opacity: [0, 1], size: []};
+    let style_data = { vertical: [], horizontal: [], scale: [0.5, 1], opacity: [0, 1], size: []};
     let object_classlist = e.classList;
 
     let px_width = window.innerWidth;
@@ -220,9 +220,8 @@ export const style_data_trace = (e, f) => {
     // horizontal
     e.style.left = f["horizontal"][h_num] + "px";
 
-    // scale
-    e.style.transform = "scale(" + f["scale"][s_num] + ")";
-
     // 初期値はこれでいい.
-    e.style.opacity = 0;
+    if (! e.classList.contains("fire")) {
+        e.style.opacity = 0;
+    }
 }

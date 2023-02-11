@@ -26,6 +26,7 @@ for (let i = 0; i < section_elms.length; i++) {
     let the_next_section = section_elms[i].nextElementSibling;
     if (the_next_section) {
         the_next_section.style.opacity = 0;
+        the_next_section.style.marginTop = '-50vh';
     }
 }
 

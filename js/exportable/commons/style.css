@@ -276,8 +276,8 @@ html {
 }
 
 .non {
-  margin: -50vh auto 0 auto;
   position: relative;
+  background-color: #ffffff;
   z-index: 100;
   padding: 60px 0;
   min-height: 100vh;
@@ -317,9 +317,9 @@ html {
   padding: 5px 4px;
   background-color: #ffffff;
   border-radius: 3px;
-  height: 95vh;
+  height: 92vh;
   position: fixed;
-  top: 2.5vh;
+  top: 4vh;
   left: -20px;
   z-index: 50;
 }
@@ -328,4 +328,4 @@ html {
   height: auto;
   background-color: #00d877;
   border-radius: 3px;
-}/*# sourceMappingURL=style.css.map */
+}

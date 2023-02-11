@@ -317,7 +317,7 @@ function animationdata_setup(e, f, g, h) {
         let new_gene_datas = JSON.parse(JSON.stringify(gene_datas));
         // anim_blockhas の１つを格納し、それとセットになる the_animation にはその length を渡してあげる.
         let the_value = new_gene_datas[i];
-        let the_keynum = animation_generate_list.length + 1;
+        let the_keynum = animation_generate_list.length;
         new_typedata["anim_name"] = the_keynum;
         let the_name = "anim_num_" + the_keynum;
         the_block.classList.add(the_name); 
@@ -376,7 +376,7 @@ for (let i = 0; i < sp_covers.length; i++) {
             desider = true;
             the_big_section.classList.add("linear");
         } else  {
-            if (verticals.firstElementChild.classList.contains("video") && verticals.firstElementChild.classList.contains("same")) {
+            if (verticals[0].classList.contains("video") && verticals[0].classList.contains("same")) {
                 desider = true;
                 verticals.firstElementChild.classList.add("onlyone");
             }
@@ -387,6 +387,9 @@ for (let i = 0; i < sp_covers.length; i++) {
         // リニアだけを対象にする.
         // adjuster は削除済み.
         if (desider) {
+
+            // sectionごとに data_ は初期化.
+            data_num = 0;
 
             for (let j = 0; j < verticals.length; j++) {
                 let block = verticals[j]; 
@@ -508,26 +511,64 @@ for (let i = 0; i < sp_covers.length; i++) {
                 else {
 
                     function for_ind() {
-                        // start_animationとend_animationの両方を構成する.
-                        let start_animation = base_setup(block, j, "start");
-                        let generative_data_start = generationdata_setup(block, "start");
-                        // まず block が違う.
-                        // あと中身があるかみるべき？
-                        let final_animation_start = animationdata_setup(block, start_animation, generative_data_start, "active_st");
-    
-                        for (let k = 0; k < final_animation_start.length; k++) {
-                            data_num += 1;
-                            animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_start[k];
-                        }
-        
-                        let end_animation = base_setup(block, j + 1, "end");
-                        let generative_data_end = generationdata_setup(block, "end");
-                        let final_animation_end = animationdata_setup(block, end_animation, generative_data_end, "active_st");
 
-                        for (let k = 0; k < final_animation_end.length; k++) {
-                            data_num += 1;
-                            animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_end[k];
+                        function notsame_start_around() {
+                            // start_animationとend_animationの両方を構成する.
+                            let start_animation = base_setup(block, j, "start");
+                            let generative_data_start = generationdata_setup(block, "start");
+                            // まず block が違う.
+                            // あと中身があるかみるべき？
+                            let final_animation_start = animationdata_setup(block, start_animation, generative_data_start, "active_st");
+        
+                            for (let k = 0; k < final_animation_start.length; k++) {
+                                data_num += 1;
+                                animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_start[k];
+                            }
                         }
+
+                        function notsame_end_around() {
+                            let end_animation = base_setup(block, j + 1, "end");
+                            let generative_data_end = generationdata_setup(block, "end");
+                            let final_animation_end = animationdata_setup(block, end_animation, generative_data_end, "active_st");
+    
+                            for (let k = 0; k < final_animation_end.length; k++) {
+                                data_num += 1;
+                                animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_end[k];
+                            }   
+                        }
+
+                        if (! block.classList.contains("opening")) {
+                            if (! block.classList.contains("onlyone")) {
+                                if (block.previousElementSibling) {
+                                    if (! block.previousElementSibling.classList.contains("same")) {
+                                        notsame_start_around();
+                                    } else {
+                                        if (! block.previousElementSibling.classList.contains(the_imp_id)) {
+                                            notsame_start_around();
+                                        }
+                                    }
+                                } else {
+                                    notsame_start_around();
+                                }
+                            }
+                        }
+
+                        if (! block.classList.contains("ending")) {
+                            if (! block.classList.contains("onlyone")) {
+                                if (block.nextElementSibling) {
+                                    if (! block.nextElementSibling.classList.contains("same")) {
+                                        notsame_end_around();
+                                    } else {
+                                        if (! block.nextElementSibling.classList.contains(the_imp_id)) {
+                                            notsame_end_around();
+                                        }
+                                    }
+                                } else {
+                                    notsame_end_around();
+                                }
+                            }
+                        }
+
                     }
 
                     // video属性の場合は追加で video_animation を作成.
@@ -632,6 +673,29 @@ for (let i = 0; i < sections.length; i++) {
 
 // < --------------------------------------------------------------------------------------------------- >
 
+// 検証用のコアデータのエクスポート結果表示consoleたち.
+
+// dom
+console.log("dom");
+let dom_string = String(screen.innerHTML);
+dom_string = dom_string.split('</div>') // ["apple", "banana", "orange"]
+dom_string.join('/n') // "apple banana orange"
+console.log(dom_string);
+
+// animation_data
+console.log("animation_data");
+console.log(animation_data);
+
+// animation_generate_list
+console.log("animation_generate_list");
+console.log(animation_generate_list);
+
+// yt_id_list
+console.log("yt_id_list");
+console.log(yt_id_list);
+
+// < --------------------------------------------------------------------------------------------------- >
+
 // HTMLファイルのエクスポート.
 let final_dom = String(screen.innerHTML);
 fetch('../js/exportable/commons/index_head.html') 
@@ -639,7 +703,6 @@ fetch('../js/exportable/commons/index_head.html')
 .then(data => { 
     the_html += data;
     the_html += final_dom;
-
     fetch('../js/exportable/commons/index_bottom.html')
     .then(response => response.text()) 
     .then(data_second => { 
@@ -656,7 +719,7 @@ let cb = await css_res.text();
 zip.file('style.css', cb);
 
 // JavaScriptファイル群のエクスポート. (commons系列)
-let lnjs_url_list = ["../js/exportable/commons/javascript/anim.js", "../js/exportable/commons/javascript/states.js", "../js/exportable/commons/javascript/setup.js", "../js/exportable/commons/javascript/parts.js"];
+let lnjs_url_list = ["../js/exportable/commons/javascript/anim.js", "../js/exportable/commons/javascript/states.js", "../js/exportable/commons/javascript/setup.js", "../js/exportable/commons/javascript/parts.js", "../js/exportable/commons/javascript/ytp.js"];
 for (let i = 0; i < lnjs_url_list.length; i++) {
     let url = lnjs_url_list[i];
     let res = await fetch(url);
@@ -677,7 +740,7 @@ for (let i = 0; i < lnjs_url_list.length; i++) {
 // JavaScriptファイルのエクスポート, (in Base)
 let base_file = await fetch("../js/exportable/commons/javascript/base/tools.js");
 let base_text = await base_file.text();
-zip.folder("base").file("tools.js", base_text);
+zip.folder("javascript").folder("base").file("tools.js", base_text);
 
 // image ファイル群のエクスポート. 
 let img_url_list = ["../js/exportable/commons/images/native_logod.png", "../js/exportable/commons/images/olo.png", "../js/exportable/commons/images/spinner.png"];
