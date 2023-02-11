@@ -741,13 +741,13 @@ img, iframe {
 }
 .redirect_cover .contents .download_button {
   padding: 15px 25px;
-  border-radius: 3px;
+  border-radius: 5px;
   line-height: 1;
   color: #fff;
   font-size: 2rem;
   font-weight: 500;
   letter-spacing: 0.06em;
-  border: 0.8px solid #fff;
+  border: 2px solid #fff;
   cursor: default;
 }
 .redirect_cover .contents .additional {

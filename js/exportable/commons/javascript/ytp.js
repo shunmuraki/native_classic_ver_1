@@ -5,11 +5,16 @@ export const block_multiable = (e, f, z) => {
     let the_related_name = "yt_num_" + z;
     the_box.classList.add(the_related_name);
     let player;
+
+    let the_video_height = window.innerHeight * 0.98;
+    let the_video_width = (the_video_height / 9) * 16;
+
         
     function onYouTubeIframeAPIReady(g, h) {
+        console.log(h);
         player = new YT.Player(g, {
-            width: '500',
-            height: '300',
+            width: the_video_width,
+            height: the_video_height,
             playerVars: { 'controls': 0 },
             videoId: h,
             events: {

@@ -1,5 +1,5 @@
-import { target_data } from "./base/tools.js";
 import { animation_make } from "./anim.js";
+import { target_data } from "./base/tools.js";
 
 // animation_generate_list = []; *Nativeから追加.
 let animation_list = {};
@@ -12,9 +12,11 @@ for (let i = 0; i < animation_generate_list.length; i++) {
     // video_animation の数合わせをスキップ.
     if (animation_generate_list[i][0]) {
         let animation_part = animation_make(String("anim_num_" + i), animation_generate_list[i]);
-        animation_list[i] = animation_part;
+        animation_list["anim_" + i] = animation_part;
     }
 }
+
+console.log(animation_list);
 
 export const play_pause_classi = (e, f) => {
     if (f == "playing") {
@@ -62,7 +64,7 @@ export const the_states = (e, f, g, h) => {
     let current_time = animation_data[String(section_name)]["about_time"]["section_current_time"];
     let loop_anims = animation_data[String(section_name)]["about_anims"];
     
-    for (var i = 1; i <= Object.keys(loop_anims).length; i++) {
+    for (var i = 0; i < Object.keys(loop_anims).length; i++) {
 
         let anim_name = Number(loop_anims[String("data_" + i)]["anim_name"]);
         let the_object = document.getElementsByClassName(String("anim_num_" + anim_name))[0];
@@ -70,8 +72,10 @@ export const the_states = (e, f, g, h) => {
         let finish_when = loop_anims[String("data_" + i)]["finish_when"];
         let seekt = loop_anims[String("data_" + i)]["video_startpoint"];
         let loop_object_tag = the_object.lastElementChild.tagName;
-        let the_animation = animation_list[anim_name];
+        let the_animation = animation_list["anim_" + String(anim_name)];
         let object_content = yt_elem_list[Number(target_data(the_object, "yt_num_"))];
+
+        console.log(object_content);
 
         if (g == "allstop") {
 
@@ -107,19 +111,23 @@ export const the_states = (e, f, g, h) => {
             if (loop_object_tag == "IFRAME") {
 
                     if (current_time > trigger_when && current_time < finish_when) {
-                        
-                        if (the_object.classList.contains("seekto_ready")) {
-                            object_content.seekTo(current_time - trigger_when + seekt);
-                            the_object.classList.remove("seekto_ready");
-                            the_object.classList.add("seek_did");
-                        }
 
+                        if (seekt) {
+                            if (the_object.classList.contains("seekto_ready")) {
+                                object_content.seekTo(current_time - trigger_when + seekt);
+                                the_object.classList.remove("seekto_ready");
+                                the_object.classList.add("seek_did");
+                            }
+                        }
+                        
                         if (the_object.classList.contains("playing") == false) { 
 
-                            if (! the_object.classList.contains("seek_did")) {
-                                object_content.seekTo(current_time - trigger_when + seekt);
-                            } else {
-                                the_object.classList.remove("seek_did");
+                            if (seekt) {
+                                if (! the_object.classList.contains("seek_did")) {
+                                    object_content.seekTo(current_time - trigger_when + seekt);
+                                } else {
+                                    the_object.classList.remove("seek_did");
+                                }
                             }
                                 
                             object_content.playVideo();
@@ -133,7 +141,9 @@ export const the_states = (e, f, g, h) => {
                     } else if (current_time >= finish_when) {
                         if (the_object.classList.contains("playing") == false) {
                             object_content.seekTo(0);
-                            object_content.seekTo(finish_when - trigger_when + seekt);
+                            if (seekt) {
+                                object_content.seekTo(finish_when - trigger_when + seekt);
+                            }
                             object_content.pauseVideo();
                             play_pause_classi(the_object, "paused");
                         }

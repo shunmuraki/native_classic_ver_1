@@ -1,4 +1,3 @@
-// ***** ---------- * -  インポーターゾーン  ------------ - - - - -  -------------------------------
 import { target_data, classmover } from "./base/tools.js";
 import { the_states } from "./states.js";
 import { on_preventer, off_preventer, all_pauser, suppression, sr_assign, status_update, transition_animation_start, transition_animation_end } from "./parts.js";
@@ -23,7 +22,6 @@ let yt_elem_list = ytelemlist_getter();
 let intervalArray = new Array();
 let timeoutArray = new Array();
 // ***** ---------- * -  setTimeout, setInterval 関連のセットアップ  ------------ - - - - -  -------------------------------
-
 
 // ***** ---------- * -  setTimeoutのsection別初期化  ------------ - - - - -  -------------------------------
 const default_timeout = (e) => {
@@ -131,6 +129,8 @@ const outer_inte = (e) => {
 // ***** ---------- * -  Wheel 周辺  ------------ - - - - -  -------------------------------
 
 const the_arrows = (event) => {
+
+    console.log("shibuya");
         
     let the_name = "section_" + target_data(the_section, "section_");
     let the_next_section = the_section.nextElementSibling;
@@ -235,8 +235,9 @@ const the_arrows = (event) => {
      }, 300);
 }
 
-
 const seek_by_wheel = () => {
+    console.log("hi");
+    console.log(the_section);
     the_section.addEventListener("wheel", the_arrows, true);
 }
 
@@ -286,8 +287,8 @@ const cropper = () => {
                 default_timeout(nowElement);
                 nowElement.classList.remove("iwatchyou");
                 nowElement.classList.add("state_on");
+                console.log(the_section);
                 seek_by_wheel();
-
             } 
           } else {  
               nowElement.classList.remove("state_on");

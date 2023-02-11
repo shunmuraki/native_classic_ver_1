@@ -20,6 +20,7 @@ export const script_load = () => {
 
 // 各　section に対する初期セットアップ.
 for (let i = 0; i < section_elms.length; i++) {
+
     section_elms[i].classList.add("iwatchyou");
     section_elms[i].classList.add("ikuneko");
 
@@ -30,6 +31,7 @@ for (let i = 0; i < section_elms.length; i++) {
     }
 }
 
+// youtube動画を読み込む関数.
 function yt_load() {
     for (let i = 0; i < yt_id_list.length; i++) {
         // * id と 親（<object>）を紐付ける.

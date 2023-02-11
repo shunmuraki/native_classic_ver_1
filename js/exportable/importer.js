@@ -42,7 +42,7 @@ let the_js = "";
 let the_img_blob_list = {};
 let images = [];
 
-let data_num = 0;
+let data_num = -1;
 let animation_data = {};
 let animation_generate_list = [];
 let yt_id_list = [];
@@ -166,6 +166,8 @@ function en_change_adaptation(e) {
 // yt-IDからyt-iframeを生成するための仮置きのdiv要素をセットする関数.
 function iframe_adaptation(e) {
     let the_content = e.lastElementChild;
+    let the_name = "yt_" + yt_id_list.length;
+
     let value_id = target_data(e, "id_is_");
     if (yt_id_list.indexOf(value_id) == -1) {
         yt_id_list.push(value_id);
@@ -173,7 +175,6 @@ function iframe_adaptation(e) {
     // same_end 同士見つけあってDOMを節約するために発見用のidをクラスに付与する.
     e.classList.add("same_deletable");
     e.classList.add("same_id_" + value_id);
-    let the_name = "yt_" + yt_id_list.length;
     let newElement = document.createElement("div");
     newElement.setAttribute("id", the_name);
     the_content.remove();
@@ -356,6 +357,9 @@ for (let i = 0; i < sp_covers.length; i++) {
     animation_data[String("section_" + i)] = {};
     animation_data[String("section_" + i)]["about_time"] = {};
     animation_data["section_" + i]["about_anims"] = {};
+
+    // sectionごとに data_ は初期化.
+    data_num = -1;
     
     for (let o = 0; o < sp_num; o++) {
         
@@ -387,9 +391,6 @@ for (let i = 0; i < sp_covers.length; i++) {
         // リニアだけを対象にする.
         // adjuster は削除済み.
         if (desider) {
-
-            // sectionごとに data_ は初期化.
-            data_num = 0;
 
             for (let j = 0; j < verticals.length; j++) {
                 let block = verticals[j]; 
@@ -470,6 +471,8 @@ for (let i = 0; i < sp_covers.length; i++) {
                             }
                         }
 
+                        console.log(block);
+
                         // video属性の場合は、それ用のvideo_animationを追加で作成.
                         if (block.classList.contains("video")) {         
                             
@@ -487,10 +490,15 @@ for (let i = 0; i < sp_covers.length; i++) {
                             video_animation["trigger_when"] = video_animation["finish_when"] - v_duration;
     
                             video_animation = ac_vi_adaptation(block, video_animation, "active_st");
-                            video_animation["anim_name"] = animation_generate_list.length + 1;
+                            video_animation["anim_name"] = animation_generate_list.length;
+
+                            console.log(video_animation);
                             animation_generate_list.push([]);
     
                             animation_data["section_" + i]["about_anims"]["data_" + data_num] = video_animation;
+                            console.log(animation_data["section_" + i]["about_anims"]["data_" + data_num]);
+                            console.log(animation_data["section_" + i]["about_anims"]);
+                            console.log(animation_data["section_" + i]);
 
                             block.classList.add("anim_num_" + video_animation["anim_name"]);
                             
@@ -673,7 +681,7 @@ for (let i = 0; i < sections.length; i++) {
 
 // < --------------------------------------------------------------------------------------------------- >
 
-// 検証用のコアデータのエクスポート結果表示consoleたち.
+// 検証用のコアデータのエクスポート結果表示.
 
 // dom
 console.log("dom");
