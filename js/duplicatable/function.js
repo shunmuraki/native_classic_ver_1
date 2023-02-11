@@ -5,12 +5,10 @@ export const same_around = (e, f) => {
     let next_one;
 
     function same_setup() {
-        //
         e.classList.add("same");
         let same_data = same_data_getter();
         same_data += 1;
         same_data_counter(same_data);
-        //
     }
 
     if (f == "default") {
@@ -30,7 +28,6 @@ export const same_around = (e, f) => {
             e.classList.add("same_start");
             next_one.classList.add("same_end");
         }
-
         let the_content = e.lastElementChild;
         if (next_one.lastElementChild) {
             next_one.lastElementChild.remove();
@@ -38,11 +35,11 @@ export const same_around = (e, f) => {
         }
         the_content.remove();
         centering_marker(e, next_one, "centering");
-
         if(e.classList.contains("same_end")) {
             e.classList.remove("same_end");
             next_one.classList.add("same_end");
         }
+
     }
 
     let same_data_latest = same_data_getter();

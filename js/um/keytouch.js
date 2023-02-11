@@ -29,7 +29,6 @@ document.addEventListener("keydown", (e) => {
                 centering.style.height = 225 + "px";
                 current.blur();
                 screen.classList.remove("um_ready");
-    
                 adjust_box(centering);
                 um_positioning();
             }

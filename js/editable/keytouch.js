@@ -853,7 +853,6 @@ window.addEventListener("keydown", (e)=>{
                         }
 
                         function same_start_around() {
-                            console.log('www');
                             f.classList.add("same_start");
 
                             let same_name = "same_num_" + target_data(f, "same_num_");
@@ -884,9 +883,7 @@ window.addEventListener("keydown", (e)=>{
                             }
                             if (e.previousElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in")) {
                                 if (e.previousElementSibling) {
-                                    console.log('w');
-                                    if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in") == false) {                                                     
-                                        console.log('ww');
+                                    if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in") == false) {       
                                         if (f.classList.contains("same") && f.classList.contains("same_start") == false) {
                                             // 実行.
                                             same_start_around();
@@ -957,12 +954,10 @@ window.addEventListener("keydown", (e)=>{
                                     
                                     // 一度ずらしてある審査基準から戻す必要があるってことを前提に考えると？
                                     if (the_desition_one == true && the_desition_second == true) {
-                                        console.log("wopw");
                                         fif();
                                     } else {
                                         if (the_desition_one == true && the_desition_second == false) {
                                             let gap = the_pointer_scrollleft_en - thisblock_scrollleft_st;
-                                            console.log(gap);
                                             // gap = 5
                                             if (gap > 10 && gap < blocksize) {
                                                 if (gap > 50) {

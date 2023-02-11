@@ -91,7 +91,6 @@ function ac_vi_adaptation(e, f, g) {
     for (let i = 0; i < classlist.length; i++) {
         let classname = classlist[i];
         if (classname.indexOf("this_video_st_") != -1) {
-            // JB
             if (g == "active_st") {
                 animation_data["video_startpoint"] = Math.floor(Number(target_data(e, "this_video_st_")));
             }
@@ -100,8 +99,7 @@ function ac_vi_adaptation(e, f, g) {
             // 秒数に変換. (blocksize = 360)
             let act_num = 5 * (Math.floor(Number(target_data(e, "actuar_time_"))) / 360);
             if (classname.indexOf("actuar_st_") != -1) {
-                animation_data["trigger_when"] = animation_data["trigger_when"] + act_num;     
-                // JB.
+                animation_data["trigger_when"] = animation_data["trigger_when"] + act_num;
                 if (g == "active_st") {
                     // actuar を video_startpoint にも反映.
                     if (classname.indexOf('this_video_st_') != -1) {
@@ -473,7 +471,6 @@ for (let i = 0; i < sp_covers.length; i++) {
                         if (block.classList.contains("video")) {         
                             
                             data_num += 1;
-    
                             let video_animation = {};
     
                             // 同じ same_num_を持つ　same_start について処理.
@@ -514,7 +511,6 @@ for (let i = 0; i < sp_covers.length; i++) {
                         // start_animationとend_animationの両方を構成する.
                         let start_animation = base_setup(block, j, "start");
                         let generative_data_start = generationdata_setup(block, "start");
-
                         // まず block が違う.
                         // あと中身があるかみるべき？
                         let final_animation_start = animationdata_setup(block, start_animation, generative_data_start, "active_st");

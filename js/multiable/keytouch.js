@@ -15,7 +15,6 @@ window.addEventListener("keydown", (e) => {
     } 
 
     if (type_signiture)  {
-        
         // 以下YouTubeの動画のURLがペーストされた場合の処理.
         if ( type_signiture.indexOf('youtube.com') != -1) {
             if (screen.classList.contains("ms")) {
@@ -25,7 +24,6 @@ window.addEventListener("keydown", (e) => {
                 screen.classList.remove("ms");
             }
         }
-
         if ( type_signiture.indexOf('imag') != -1) {
             if (screen.classList.contains("ms")) {
                 document.querySelector(".ms_area").remove();

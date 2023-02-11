@@ -33,7 +33,6 @@ window.onload = () => {
         for (let i = 0; i < write_areas.length ; i++) {
             write_areas[i].value = the_values[i];
         }        
-
         let hors = document.querySelectorAll(".horizontal");
         for (let i = 0; i < hors.length; i++) {
             hors[i].scrollLeft = hors[i].scrollWidth;

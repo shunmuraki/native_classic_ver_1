@@ -72,7 +72,6 @@ export const yt_loop_stopper = (e, f, g) => {
 
 // 現在センタリングしているブロックが yt でループされているのを停止する関数.
 export const just_clear_yt_loop = (e) => {
-    console.log(yt_loop);
     let target_dataset = yt_loop[e];
     if (target_dataset) {
         for (let i = target_dataset.length; i >= 0; i--)  {
@@ -94,7 +93,6 @@ export const video_load_then = (e, f) => {
     the_box.lastElementChild.remove();
     let the_add_box = document.createElement("div");
     the_add_box.setAttribute("id",the_id_name);
-
     the_add_box.classList.add("styling_1_1_1_1");
 
     // contentが textarea から img, video に置換されるためスタリングもここで変更.
@@ -104,7 +102,6 @@ export const video_load_then = (e, f) => {
     players_list[the_id_name] = pl;
     
     setTimeout(() => {
-        
         let the_duration = sessionStorage.getItem("the_duration");        
         let the_name = "same_num_" + same_data;
         the_box.classList.add("same");
@@ -174,6 +171,5 @@ export const video_load_then = (e, f) => {
         let after_distance = blocksize * (the_block_num);
         all_view_changer(current_sp_cover, after_distance);
         is_it_same_series(document.querySelector(".centering"));
-        
     }, 1500);
 }

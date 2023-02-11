@@ -6,7 +6,6 @@ let the_values = new Array();
 let button = document.querySelector(".export_button");
 
 button.addEventListener("click", () => {
-    
     // スタイリング等充てた直後にexportされるケースに対応.
     tracer_basis(document.querySelector(".centering"));
     

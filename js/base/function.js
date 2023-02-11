@@ -174,11 +174,9 @@ export const go_top = (e, f) => {
     let ver = e;
     var sibling = vertical_to_sp(ver).previousElementSibling;
     var pre_sibling = vertical_to_sp_cover(ver).previousElementSibling;
-    let your_height = vertical_to_sp(ver).clientHeight;
     let connected_your_height = vertical_to_sp_cover(ver).clientHeight;
     let to_the_distance = vertical_to_sp(ver).getBoundingClientRect().top;
     let next_one;
-
     let sibling_height = 0;
 
     if (f == "centering") {
@@ -234,7 +232,6 @@ export const go_bottom = (e, f) => {
     let ver = e;
     var sibling = vertical_to_sp(ver).nextElementSibling;
     var pre_sibling = vertical_to_sp_cover(ver).nextElementSibling;
-    let your_height = vertical_to_sp(ver).clientHeight;
     let connected_your_height = vertical_to_sp_cover(ver).clientHeight;
     let to_the_distance =  window.innerHeight - vertical_to_sp(ver).getBoundingClientRect().bottom;
     let sibling_height = 0;
@@ -375,7 +372,6 @@ export const the_magic_copy = (e) => {
 
 // マジックペーストの関数.
 export const the_magic_paste = (e) => {
-    
     // コピーしてあるfragmentを貼り付ける. ラインが足りないなら追加し、あとはペースト対象のラインとそれ以外のラインとで条件分岐して適当なタイプのブロックを同じ数だけ挿入している.
     let the_line_num = magic_elms.length;    
     let sp_cover = vertical_to_sp_cover(e);

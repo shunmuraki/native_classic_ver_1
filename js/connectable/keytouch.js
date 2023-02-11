@@ -2,7 +2,7 @@ import { screen, the_name_list, blocksize } from "../base/elements.js";
 import { focus_checker, make_ver_fragment } from "../base/function.js";
 import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp_cover, which_special_is } from "../base/tools.js";
 import { adjust_target_pos } from "../ms/function.js";
-import { is_it_same_alend, is_it_same_series } from "../multiable/function.js";
+import { is_it_same_series } from "../multiable/function.js";
 
 window.addEventListener("keydown", (e)=>{
 
@@ -13,7 +13,6 @@ window.addEventListener("keydown", (e)=>{
         let type_signiture;
         
         if (document.activeElement.tagName != "BODY") {
-
             current = document.activeElement;
             type_signiture = current.value;
             
@@ -27,7 +26,6 @@ window.addEventListener("keydown", (e)=>{
         }
 
         current_vertical = document.querySelector(".centering");
-        
         let current_horizontal = vertical_to_hor(current_vertical);
         let current_sp_cover = vertical_to_sp_cover(current_vertical);
 
@@ -52,7 +50,7 @@ window.addEventListener("keydown", (e)=>{
     
                     // 移動先にブロックたちを移動するために配列にブロックを格納.
                     if (the_sp_cover_a) {
-                    
+
                         // 移動を終えた上でスクロール位置が調整できるように centering の番号を控えておく.
                         let the_centering_num = 0;
                         for (let i = 0; i < current_horizontal.children.length; i++) {
@@ -197,12 +195,6 @@ window.addEventListener("keydown", (e)=>{
                         }
         
                         let last_one = the_sp_cover_a.lastElementChild.lastElementChild.children[the_center_num - 1];
-                        // let target = last_one;
-                        // if (last_one.classList.contains("same")) {
-                        //     target = which_special_is(last_one);
-                        // }
-                        // // msスペース分の調整.
-                        // adjust_target_pos(target.lastElementChild, "off");
     
                         // Connect の場合は この sp の special_cov だけ削除しているので、それを再起させるだけでいい.
                         is_it_same_series(last_one);

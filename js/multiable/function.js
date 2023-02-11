@@ -38,7 +38,6 @@ export const block_multiable = (e, f) => {
         event.target.mute();
         event.target.playVideo();
         duration_time = player.getDuration();
-        
         // 時間差の存在を考慮してsessionStorageを唯一この箇所で利用.
         sessionStorage.removeItem("the_duration");
         sessionStorage.setItem("the_duration", duration_time);
@@ -164,7 +163,6 @@ export const is_it_same_start = (e) => {
                     player.seekTo(the_time);
                     player.playVideo();
                     yt_loop_player(player, e, the_name);
-                    console.log(e);
                 }, 1000)
             }
         }

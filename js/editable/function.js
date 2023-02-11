@@ -174,7 +174,6 @@ export const pre_pointing_in = (e, f) => {
         } else {
             
             let the_name = "num_" + orange_data[orange_num]["s_count"];
-
             for (let i = 0; i < orange_pointer_space_store.children.length; i++) {
                 if (orange_pointer_space_store.children[i].classList.contains(the_name)) {
                     orange_pointer_space_store.children[i].remove();
@@ -187,6 +186,7 @@ export const pre_pointing_in = (e, f) => {
                     orange_stripe_space_store.children[i].remove();
                 }
             }
+
         }
         
         // 通常の状態を模す.
@@ -275,10 +275,8 @@ export function orange_pointer_make(e, f) {
     
     // 実際に pointer を打つ時の場所.
     let orange_pointer_left = orange_pointer_space.scrollLeft;
-
     let orange_pointer = document.createElement("div");
     orange_pointer.classList.add("orange_pointer");
-     
     orange_pointer.style.left = orange_pointer_left + half_left_width + "px";
 
     // scrollLeft は pointer 自身にも持たせておく.
