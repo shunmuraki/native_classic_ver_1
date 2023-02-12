@@ -101,21 +101,17 @@ nav,
 section {
   display: block;
 }
-
 body {
   line-height: 1;
 }
-
 ol,
 ul {
   list-style: none;
 }
-
 blockquote,
 q {
   quotes: none;
 }
-
 blockquote:before,
 blockquote:after,
 q:before,
@@ -123,24 +119,21 @@ q:after {
   content: "";
   content: none;
 }
-
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
 html {
   font-size: 10px;
   background-color: #FFFBF8;
 }
-
 .native_load_cover {
   width: 100vw;
   height: 100vh;
   background-color: #0070D8;
   position: fixed;
   top: 0;
-  z-index: 100;
+  z-index: 9999;
 }
 .native_load_cover::before {
   content: "";
@@ -226,11 +219,9 @@ html {
 .native_load_cover .desc p a {
   font-size: 1rem;
 }
-
 .margin {
   height: 1vh;
 }
-
 .section {
   width: 100vw;
   display: block;
@@ -244,40 +235,37 @@ html {
 .section h2 {
   font-size: 2.5rem;
   line-height: 1.7;
-  width: 600px;
   letter-spacing: 0.05em;
   font-weight: 700;
   margin: 30px auto 20px auto;
 }
 .section p {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   line-height: 2;
-  width: 600px;
   letter-spacing: 0.08em;
   font-weight: 400;
   margin: 0 auto 15px auto;
 }
-
 .linear {
   position: relative;
   width: 100vw;
   height: 98vh;
-  z-index: 1;
+  z-index: 200;
   background-color: #00d877;
 }
-
+.linear::after {
+  content: '';
+  width: 100vw;
+  height: 100vh;
+  background-color:transparent;
+  z-index: 1000;
+  position: absolute;
+  top: 0; 
+}
 .linear .object {
   overflow: hidden;
   position: absolute;
-  width: 100%;
-  height: 100%;
 }
-
-.linear .object img, .linear .object p {
-  padding: 20px 0;
-  box-sizing: border-box;
-}
-
 .linear .object img {
   width: 100%;
   height: 100%;
@@ -288,21 +276,9 @@ html {
   width: 100%;
   height: 100%;
 }
-
 .linear .fire {
   opacity: 1;
 }
-
-.linear::after {
-  content: '';
-  width: 100vw;
-  height: 100vh;
-  background-color:transparent;
-  z-index: 1000;
-  position: absolute;
-  top: 0; 
-}
-
 .non {
   position: relative;
   background-color: #ffffff;
@@ -325,22 +301,16 @@ html {
   z-index: 2;
   opacity: 0.8;
 }
-.non .video {
-  width: 600px;
-}
-.non .video video {
+.non .object iframe {
   width: 100%;
 }
-.non .image {
-  width: 600px;
-}
-.non .image img {
+.non .object img {
   width: 100%;
 }
-.non .video, .non .image {
+.non .object {
   margin: 15px auto;
+  width: 700px;
 }
-
 .statusbar_outer {
   padding: 5px 4px;
   background-color: #ffffff;
@@ -349,7 +319,7 @@ html {
   position: fixed;
   top: 4vh;
   left: -20px;
-  z-index: 50;
+  z-index: 250;
 }
 .statusbar_outer .statusbar {
   width: 3px;

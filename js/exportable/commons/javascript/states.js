@@ -16,8 +16,6 @@ for (let i = 0; i < animation_generate_list.length; i++) {
     }
 }
 
-console.log(animation_list);
-
 export const play_pause_classi = (e, f) => {
     if (f == "playing") {
         if (e.classList.contains("playing") == false) {
@@ -75,8 +73,6 @@ export const the_states = (e, f, g, h) => {
         let the_animation = animation_list["anim_" + String(anim_name)];
         let object_content = yt_elem_list[Number(target_data(the_object, "yt_num_"))];
 
-        console.log(object_content);
-
         if (g == "allstop") {
 
             if (loop_object_tag == "IFRAME") {
@@ -111,7 +107,6 @@ export const the_states = (e, f, g, h) => {
             if (loop_object_tag == "IFRAME") {
 
                     if (current_time > trigger_when && current_time < finish_when) {
-
                         if (seekt) {
                             if (the_object.classList.contains("seekto_ready")) {
                                 object_content.seekTo(current_time - trigger_when + seekt);
@@ -119,25 +114,22 @@ export const the_states = (e, f, g, h) => {
                                 the_object.classList.add("seek_did");
                             }
                         }
-                        
                         if (the_object.classList.contains("playing") == false) { 
-
                             if (seekt) {
                                 if (! the_object.classList.contains("seek_did")) {
                                     object_content.seekTo(current_time - trigger_when + seekt);
                                 } else {
                                     the_object.classList.remove("seek_did");
                                 }
-                            }
-                                
+                            }                        
                             object_content.playVideo();
                             play_pause_classi(the_object, "playing");
-    
                             object_content.addEventListener("ended", () => {
                                 object_content.pauseVideo();
                                 play_pause_classi(the_object, "paused");
                             })
-                        }
+                        } 
+                        
                     } else if (current_time >= finish_when) {
                         if (the_object.classList.contains("playing") == false) {
                             object_content.seekTo(0);
@@ -155,7 +147,6 @@ export const the_states = (e, f, g, h) => {
                 if (the_animation.playState != "running" && the_object.classList.contains(String("running" + anim_name)) == false) {
 
                     if (the_object.classList.contains(String("finished" + anim_name)) == false) {
-
                         the_animation.cancel();
                         the_animation.effect.updateTiming({ fill: 'none' }); 
 

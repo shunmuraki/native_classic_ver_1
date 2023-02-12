@@ -31,6 +31,24 @@ for (let i = 0; i < section_elms.length; i++) {
     }
 }
 
+// ずーっと次の要素を探し続けるってう単一のループの中でうまくやりたい.
+// linearだったら値をリセット、とか. 課程でclientHeight足し続けておいて、止まった瞬間のnon に不足分を足すプログラム.
+// *上から検索していくのがミソ.
+let official_sections = document.getElementsByClassName("section");
+let the_non_space_height = 0;
+for (let i = 0; i < official_sections.length; i++) {
+    if (official_sections[i].classList.contains("non")) {
+        the_non_space_height += official_sections[i].clientHeight;
+    } else if (official_sections[i].classList.contains("linear")) {
+        let edge_non = official_sections[i].previousElementSibling;
+        let the_addition = window.innerHeight - the_non_space_height;
+        if (the_addition > 0) {
+            edge_non.style.minHeight = Number(edge_non.clientHeight + the_addition) + "px";
+        }
+        the_non_space_height = 0;
+    }
+}
+
 // youtube動画を読み込む関数.
 function yt_load() {
     for (let i = 0; i < yt_id_list.length; i++) {
@@ -70,7 +88,6 @@ loader.animate(
 )
 
 let loading_screen = document.querySelector(".native_load_cover");
-
 window.onload = () => {
     // scrollTo がうまくいかないので仕方なく利用.
     $(function() {

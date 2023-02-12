@@ -53,7 +53,7 @@ export class Animation_scale_stand {
         let effect = new KeyframeEffect(
             this.target,
             [
-                {transform: "scale(" + f + ");"}
+                {transform: "scale(" + f + ")"}
             ], 
             {
                 duration: g * 1000,

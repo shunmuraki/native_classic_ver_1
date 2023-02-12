@@ -34,12 +34,14 @@ export function transition_animation_end(e) {
     td.persist();
 }
 
+// スクロールを禁止する関数.
 export function on_preventer(e){
     document.querySelector("body").style.overflow = "hidden";
     document.querySelector("html").style.overflow = "hidden";
     statusbar_management("on");
 }
 
+// スクロールを解除する関数.
 export function off_preventer(e) {
     document.querySelector("body").style.overflow = "visible";
     document.querySelector("html").style.overflow = "visible";
@@ -128,7 +130,6 @@ export const statusbar_management = (e) => {
 // statusbar のアップデートをする関数.
 export const status_update = (e, f) => {
     let animation_data = f;
-    // let section_duration = animation_data[the_name]["about_time"]["section_duration"];
     let ct = animation_data[String(e)]["about_time"]["section_current_time"];
     let duration = animation_data[String(e)]["about_time"]["section_duration"];
     let hpx = window.innerHeight * 0.95;
@@ -140,17 +141,22 @@ export const status_update = (e, f) => {
 // スタイル計算用の関数.
 export const pragm_stylies = (e) => {
 
-    let style_data = { vertical: [], horizontal: [], scale: [0.5, 1], opacity: [0, 1], size: []};
+    let style_data;
     let object_classlist = e.classList;
-
     let px_width = window.innerWidth;
     let px_height = window.innerHeight;
     let whole_num;
     let this_num;
     let class_name;
-
     let client_width = e.clientWidth;
-    let client_height = e.clientHeight;
+    let client_height = e.lastElementChild.clientHeight;
+
+    // テキストだけずれがあるからこれを調整。
+    if (e.lastElementChild.tagName == "P") {
+        style_data = { vertical: [], horizontal: [], scale: [1, 2], opacity: [0, 1], size: []};
+    } else {
+        style_data = { vertical: [], horizontal: [], scale: [0.5, 1], opacity: [0, 1], size: []};
+    }
 
     for (let j = 0; j < object_classlist.length; j++) {
         class_name = object_classlist[j]; 
@@ -179,15 +185,15 @@ export const pragm_stylies = (e) => {
     style_data["vertical"].push(the_top_2);
 
     // horizontal
+    // scaleを知ってからセッティングする必要がある.
     let the_left_1 = (px_width - client_width) / 2;
-    let the_left_2 = px_width - client_width;
+    let the_left_2 = px_width - (client_width * 2);    
     style_data["horizontal"].push(0);
-    style_data["horizontal"].push(the_left_1);
-    style_data["horizontal"].push(the_left_2);
+    style_data["horizontal"].push(Math.floor(the_left_1));
+    style_data["horizontal"].push(Math.floor(the_left_2));
 
     // 画像や動画のサイズに調整をかけるためにセット.
     style_data["size"].push(whole_space_height);
-
     return style_data;
 }
 
@@ -211,15 +217,12 @@ export const style_data_trace = (e, f) => {
         }
     }
 
-    // 画像や動画に対処する意味でも.
-    e.style.height = f["size"][0] + "px";
-
     // vertical
     e.style.top = f["vertical"][v_num] + "px";
-
     // horizontal
     e.style.left = f["horizontal"][h_num] + "px";
-
+    // scale
+    e.style.transform = "scale(" + f["scale"][s_num] + ")";
     // 初期値はこれでいい.
     if (! e.classList.contains("fire")) {
         e.style.opacity = 0;
