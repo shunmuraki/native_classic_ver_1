@@ -186,6 +186,7 @@ function iframe_adaptation(e) {
         yt_id_list.push(value_id);
     }
     // same_end 同士見つけあってDOMを節約するために発見用のidをクラスに付与する.
+    e.classList.add("iframe");
     e.classList.add("same_deletable");
     e.classList.add("same_id_" + value_id);
     let newElement = document.createElement("div");
@@ -361,6 +362,7 @@ for (let i = adjusters.length - 1; i >= 0 ; i--) {
 // section - object 構造へ仕上げる. この中で画像はリストにpushする。
 for (let i = 0; i < sp_covers.length; i++) {
     // < -----------------------------------------------------------------------------
+    // * ループ内準備ゾーン
     let sps = sp_covers[i].children;
     let the_big_section = document.createElement("div");
     the_big_section.classList.add("section");
@@ -397,7 +399,7 @@ for (let i = 0; i < sp_covers.length; i++) {
         // 最後の要素は表示したままにしたいため.
         sp.lastElementChild.firstElementChild.classList.add("opening");
         sp.lastElementChild.lastElementChild.classList.add("ending");
-
+        // * ループ内準備ゾーン
         // --------------------------------------------------------------------------------- >
 
         if (desider) {
@@ -407,8 +409,6 @@ for (let i = 0; i < sp_covers.length; i++) {
                 let the_imp_id = "id_is_" + target_data(block, "id_is_");
 
                 if (block.classList.contains("same")) {
-                    // たぶん same_num は絶対一緒にはならないよ. 分裂させてるんだもん. 
-                    // なので「id_is_」で判別するように書いてみようか.
                     let the_same_name = "same_num_" + target_data(block, "same_num_");
                     // [実行内容]
                     // same_start: 直前のブロックが存在した場合に same　を持っていなければ白、持っていても same_num を持っていてその番号が違ったら白.
@@ -430,7 +430,6 @@ for (let i = 0; i < sp_covers.length; i++) {
                                 animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_start[k];
                             }
                         }
-
                         if (! block.classList.contains("opening")) {
                                 if (block.previousElementSibling) {
                                     if (! block.previousElementSibling.classList.contains("same")) {
@@ -479,7 +478,6 @@ for (let i = 0; i < sp_covers.length; i++) {
                                 video_same_end();
                             }
                         }
-
                         // video属性の場合は、それ用のvideo_animationを追加で作成.
                         if (block.classList.contains("video")) {   
                             data_num += 1;
@@ -516,66 +514,58 @@ for (let i = 0; i < sp_covers.length; i++) {
                 else {
 
                     function for_ind() {
-
                         function notsame_start_around() {
                             // start_animationとend_animationの両方を構成する.
                             let start_animation = base_setup(block, j, "start");
                             let generative_data_start = generationdata_setup(block, "start");
-                            // まず block が違う.
-                            // あと中身があるかみるべき？
                             let final_animation_start = animationdata_setup(block, start_animation, generative_data_start, "active_st");
-        
                             for (let k = 0; k < final_animation_start.length; k++) {
                                 data_num += 1;
                                 animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_start[k];
                             }
                         }
-
                         function notsame_end_around() {
                             let end_animation = base_setup(block, j + 1, "end");
                             let generative_data_end = generationdata_setup(block, "end");
                             let final_animation_end = animationdata_setup(block, end_animation, generative_data_end, "active_st");
-    
                             for (let k = 0; k < final_animation_end.length; k++) {
                                 data_num += 1;
                                 animation_data["section_" + i]["about_anims"]["data_" + data_num] = final_animation_end[k];
                             }   
                         }
-
                         if (! block.classList.contains("opening")) {
-                                if (block.previousElementSibling) {
-                                    if (! block.previousElementSibling.classList.contains("same")) {
+                            if (block.previousElementSibling) {
+                                if (! block.previousElementSibling.classList.contains("same")) {
+                                    notsame_start_around();
+                                } else {
+                                    if (! the_imp_id) {
                                         notsame_start_around();
                                     } else {
-                                        if (! the_imp_id) {
+                                        if (! block.previousElementSibling.classList.contains(the_imp_id)) {
                                             notsame_start_around();
-                                        } else {
-                                            if (! block.previousElementSibling.classList.contains(the_imp_id)) {
-                                                notsame_start_around();
-                                            }
                                         }
                                     }
-                                } else {
-                                    notsame_start_around();
                                 }
+                            } else {
+                                notsame_start_around();
+                            }
                         }
-
                         if (! block.classList.contains("ending")) {
-                                if (block.nextElementSibling) {
-                                    if (! block.nextElementSibling.classList.contains("same")) {
+                            if (block.nextElementSibling) {
+                                if (! block.nextElementSibling.classList.contains("same")) {
+                                    notsame_end_around();
+                                } else {
+                                    if (! the_imp_id) {
                                         notsame_end_around();
                                     } else {
-                                        if (! the_imp_id) {
+                                        if (! block.nextElementSibling.classList.contains(the_imp_id)) {
                                             notsame_end_around();
-                                        } else {
-                                            if (! block.nextElementSibling.classList.contains(the_imp_id)) {
-                                                notsame_end_around();
-                                            }
                                         }
                                     }
-                                } else {
-                                    notsame_end_around();
                                 }
+                            } else {
+                                notsame_end_around();
+                            }
                         }
 
                     }

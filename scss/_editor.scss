@@ -543,6 +543,7 @@ img, iframe {
 }
 
 .special_cov {
+    position: absolute;
     z-index: 5000;
     background-color: #0070D8; 
     overflow: hidden;

@@ -63,10 +63,8 @@ export const block_multiable = (e, f) => {
 // same群のどこかがセンタリングしている際に、上に対象要素を被せて描画する関数.
 export const make_special_cov = (e, f) => {
 
-    let special_cov = document.createElement("div");
-    special_cov.style.position = "fixed";
-    
-    let bottom_distance = e.getBoundingClientRect().top;
+    let special_cov = document.createElement("div");    
+    let bottom_distance = e.getBoundingClientRect().top + window.pageYOffset;
     let left_distance = half_left_width;
     
     special_cov.style.top = bottom_distance + "px";

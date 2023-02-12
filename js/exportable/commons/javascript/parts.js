@@ -132,7 +132,7 @@ export const status_update = (e, f) => {
     let animation_data = f;
     let ct = animation_data[String(e)]["about_time"]["section_current_time"];
     let duration = animation_data[String(e)]["about_time"]["section_duration"];
-    let hpx = window.innerHeight * 0.95;
+    let hpx = window.innerHeight * 0.92;
     let the_length = (hpx / duration) * ct;
     // 動的に追加しているので最後の要素がstatusbarのはず.
     statusbar.style.height = the_length + "px";
@@ -173,14 +173,14 @@ export const pragm_stylies = (e) => {
     
     // vertical
     if (whole_space_height > client_height) {
-        the_top_1 = ((whole_space_height - client_height) / 2) + top_pos;
-        the_top_2 = whole_space_height - client_height + top_pos;
+        the_top_1 = ((whole_space_height - (client_height * 2)) / 2) + top_pos;
+        the_top_2 = whole_space_height - (client_height * 2) + top_pos;
     } else {
         the_top_1 = top_pos;
         the_top_2 = top_pos;
     }
 
-    style_data["vertical"].push(0);
+    style_data["vertical"].push(client_height / 1.5);
     style_data["vertical"].push(the_top_1);
     style_data["vertical"].push(the_top_2);
 
@@ -188,7 +188,7 @@ export const pragm_stylies = (e) => {
     // scaleを知ってからセッティングする必要がある.
     let the_left_1 = (px_width - client_width) / 2;
     let the_left_2 = px_width - (client_width * 2);    
-    style_data["horizontal"].push(0);
+    style_data["horizontal"].push(client_width / 1.5);
     style_data["horizontal"].push(Math.floor(the_left_1));
     style_data["horizontal"].push(Math.floor(the_left_2));
 
@@ -223,8 +223,18 @@ export const style_data_trace = (e, f) => {
     e.style.left = f["horizontal"][h_num] + "px";
     // scale
     e.style.transform = "scale(" + f["scale"][s_num] + ")";
-    // 初期値はこれでいい.
-    if (! e.classList.contains("fire")) {
-        e.style.opacity = 0;
+
+    // section タイトルのスタイリングのためのクラス付与.
+    if (f["scale"][s_num] == 2) {
+        if (e.lastElementChild.tagName == "P") {
+            e.classList.add("title");
+        }
+    }
+
+    // ここで初期値を与える.
+    if (! e.parentElement.classList.contains("non")) {
+        if (! e.classList.contains("fire")) {    
+            e.style.opacity = 0;
+        }
     }
 }
