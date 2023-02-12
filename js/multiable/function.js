@@ -62,7 +62,6 @@ export const block_multiable = (e, f) => {
 
 // same群のどこかがセンタリングしている際に、上に対象要素を被せて描画する関数.
 export const make_special_cov = (e, f) => {
-
     let special_cov = document.createElement("div");    
     let bottom_distance = e.getBoundingClientRect().top + window.pageYOffset;
     let left_distance = half_left_width;
@@ -282,7 +281,6 @@ export const is_it_same_series = (e) => {
 
 // sameの途中に挿入がされる場合への対処関数. (両サイドがsameであることが条件で、かつ両者が start , end は持たない場合にのみ実行)
 export const same_cutter = (e, f) => {
-
     let the_target_left = e.previousElementSibling;
     let the_target_right;
 
@@ -292,9 +290,7 @@ export const same_cutter = (e, f) => {
         the_target_right = e;
     }
     if (the_target_left && the_target_right) {
-
         if (the_target_left.classList.contains("same") && the_target_right.classList.contains("same")) {
-        
             if (the_target_left.classList.contains("same_start") == false && the_target_left.classList.contains("same_end") == false && the_target_right.classList.contains("same_start") == false && the_target_right.classList.contains("same_end") == false) {
                 
                 let spe_cont = document.querySelector(".special_cov").lastElementChild;

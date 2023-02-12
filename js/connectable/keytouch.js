@@ -30,7 +30,6 @@ window.addEventListener("keydown", (e)=>{
         let current_sp_cover = vertical_to_sp_cover(current_vertical);
 
         if (type_signiture) {
-
             if ( type_signiture.indexOf('connec') != -1) {
                 if (screen.classList.contains("ms")) {
                     // 先にms調整箇所を戻しておいてそれから複製させる. 

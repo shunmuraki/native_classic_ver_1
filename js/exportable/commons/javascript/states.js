@@ -16,6 +16,7 @@ for (let i = 0; i < animation_generate_list.length; i++) {
     }
 }
 
+// yt-player の動作状況を示すクラスを付け替える関数.
 export const play_pause_classi = (e, f) => {
     if (f == "playing") {
         if (e.classList.contains("playing") == false) {
@@ -34,6 +35,7 @@ export const play_pause_classi = (e, f) => {
     }
 }
 
+// Web Animation API の動作状況を示すクラスを付け替える関数.
 export const run_finish_classi = (e, f, g) => {
     if (f == "running") {
         if (e.classList.contains(String("running" + g)) == false) {

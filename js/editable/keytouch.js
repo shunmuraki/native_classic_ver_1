@@ -24,7 +24,6 @@ window.addEventListener("keydown", (e)=>{
     let k = e.key;
 
     if (document.activeElement.tagName == "TEXTAREA") {
-
         let current = document.activeElement;
         let type_signiture = current.value;
 
@@ -42,7 +41,6 @@ window.addEventListener("keydown", (e)=>{
             if (screen.classList.contains("ms")) {
 
                 tracer_basis(document.querySelector(".centering"));
-
                 document.querySelector(".ms_area").remove();
                 focus_checker(document.querySelector(".centering"));
         
@@ -289,7 +287,6 @@ window.addEventListener("keydown", (e)=>{
                             let the_gap = scroll_distance - vertical_to_hor(new_layer_centering).scrollLeft;
                             all_view_changer(the_see_centering, the_gap);                        
                             principle_management(the_see_centering, "principle_pointer");
-                            // wheel_positioning();
                         }
                     } 
                     // sprinciple_pointer だった場合は何もしない.
@@ -305,7 +302,6 @@ window.addEventListener("keydown", (e)=>{
                         all_view_changer(the_see_centering, the_gap);
                         principle_management(the_see_centering, "principle_block");
                         is_it_same_series(new_one);
-                        // wheel_positioning();
                     }
                     // principle_block だった場合は何もしない.
                     the_scrolled_distance = 0;
@@ -360,9 +356,7 @@ window.addEventListener("keydown", (e)=>{
                                 the_see_centering.classList.toggle("see");
                                 // 更新.
                                 the_see_centering = new_layer.children[the_countingstart_top];
-    
                                 let orange_pointer_space = the_see_centering.previousElementSibling.firstElementChild.firstElementChild;
-                                
                                 comesin_management("top", centering, the_see_centering);
     
                                 if (centering.classList.contains("opac_cam")) {
@@ -370,7 +364,6 @@ window.addEventListener("keydown", (e)=>{
                                 }
                                 
                                 orange_data = pre_pointing_in(the_see_centering, orange_data);
-    
                                 let default_distance = document.querySelector(".comesin").parentElement.parentElement.scrollLeft;
                                 let the_gap = target_data(document.querySelector(".comesin"), "scroll_left_") - default_distance;
                                 all_view_changer(the_see_centering.previousElementSibling, the_gap);
@@ -489,7 +482,6 @@ window.addEventListener("keydown", (e)=>{
                     pointer_anim();
                     // actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
                     actuar_st_allon();
-
                     new_layer.classList.add("autoseekingmode");
                     let centering = document.getElementsByClassName("new_layer_centering")[0];
                     let scrap = vertical_to_sp_cover(centering);
@@ -524,10 +516,8 @@ window.addEventListener("keydown", (e)=>{
                     }
         
                     if (hor.scrollLeft < full_end_scrollwidth) {
-        
                         // 初期値のセット.
                         the_seeking_time = blocktime * 1000;
-        
                         function the_timeout() {
                             timeoutArray.push(setTimeout(() => {
                                 let centering_you = document.getElementsByClassName("new_layer_centering")[0];
@@ -819,7 +809,6 @@ window.addEventListener("keydown", (e)=>{
                     
                     // 編集していた もともとの sp_coverを取得. 
                     let original_sp_cover = document.querySelector(".target_of_edition");
-
                     // 最初に sp_coverをクリーンアップ。
                     for (let i = 0; i < original_sp_cover.children.length; i++) {
                         let vers = original_sp_cover.children[i].lastElementChild.children;
@@ -837,7 +826,6 @@ window.addEventListener("keydown", (e)=>{
                     // ブロックの content が video で左隣は船内のsameで右隣は船外のsame、そして、same_end を持っていないなら実行. 
                     let special_menu = (e, f, g) => {
                         let f_p = g;
-
                         function same_end_around() {
                             let the_t = "same_num_" + target_data(e, "same_num_");
                             let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
@@ -906,9 +894,7 @@ window.addEventListener("keydown", (e)=>{
                         let stripe_inner_or_out = (e, f) => {
                             
                             let you_are_on_orange = null;
-                            
                             // 先頭が orange_space, それ以外の場所に sp が並ぶ。
-                            
                             // orange_spaceについて
                             let po_and_st = scraps[i].firstElementChild.firstElementChild.firstElementChild.children;
                             let block_num = f;

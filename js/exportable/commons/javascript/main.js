@@ -1,4 +1,4 @@
-let animation_data = {"section_7":{"about_time":{"section_duration":96,"section_current_time":0},"about_anims":{"data_0":{"trigger_when":5,"finish_when":6,"video_startpoint":0,"anim_name":0},"data_1":{"trigger_when":5,"finish_when":6,"video_startpoint":0,"anim_name":1},"data_2":{"trigger_when":10,"finish_when":11,"video_startpoint":0,"anim_name":2},"data_3":{"trigger_when":10,"finish_when":11,"video_startpoint":0,"anim_name":3},"data_4":{"trigger_when":45,"finish_when":46,"video_startpoint":0,"anim_name":4},"data_5":{"trigger_when":45,"finish_when":46,"video_startpoint":0,"anim_name":5},"data_6":{"trigger_when":50,"finish_when":51,"video_startpoint":0,"anim_name":6},"data_7":{"trigger_when":50,"finish_when":51,"video_startpoint":0,"anim_name":7},"data_8":{"trigger_when":60,"finish_when":61,"video_startpoint":0,"anim_name":8},"data_9":{"trigger_when":60,"finish_when":61,"video_startpoint":0,"anim_name":9},"data_10":{"trigger_when":60,"finish_when":61,"video_startpoint":0,"anim_name":10},"data_11":{"trigger_when":60,"finish_when":60,"video_startpoint":0,"anim_name":11},"data_12":{"trigger_when":80,"finish_when":81,"video_startpoint":0,"anim_name":12},"data_13":{"trigger_when":80,"finish_when":81,"video_startpoint":0,"anim_name":13},"data_14":{"trigger_when":85,"finish_when":86,"video_startpoint":0,"anim_name":14},"data_15":{"trigger_when":85,"finish_when":86,"video_startpoint":0,"anim_name":15},"data_16":{"trigger_when":5,"finish_when":6,"video_startpoint":0,"anim_name":16},"data_17":{"trigger_when":15,"finish_when":16,"video_startpoint":0,"anim_name":17},"data_18":{"trigger_when":15,"finish_when":16,"video_startpoint":0,"anim_name":18},"data_19":{"trigger_when":20,"finish_when":21,"video_startpoint":0,"anim_name":19},"data_20":{"trigger_when":35,"finish_when":36,"video_startpoint":0,"anim_name":20},"data_21":{"trigger_when":40,"finish_when":41,"video_startpoint":0,"anim_name":21},"data_22":{"trigger_when":85,"finish_when":86,"video_startpoint":0,"anim_name":22}}}};import { target_data, classmover } from "./base/tools.js";
+import { target_data, classmover } from "./base/tools.js";
 import { the_states } from "./states.js";
 import { on_preventer, off_preventer, all_pauser, suppression, sr_assign, status_update, transition_animation_start, transition_animation_end } from "./parts.js";
 import { ytelemlist_getter } from "./setup.js";
@@ -82,7 +82,6 @@ const outer_inte = (e) => {
     }
 
     if (e.classList.contains("ikuneko")) {
-        
         if (current_time >= duration){
             all_pauser(e, yt_elem_list);
             let objects = e.children;
@@ -100,9 +99,7 @@ const outer_inte = (e) => {
             off_preventer(e);
             transition_animation_end(e);
         } 
-
     } else if (e.classList.contains("kuruneko")) {
-
         all_pauser(e, yt_elem_list);
         if (current_time <= 0) {
             let objects = e.children;
@@ -196,6 +193,7 @@ const the_arrows = (event) => {
         timeoutArray.push(setTimeout(() => {
             off_preventer(the_section);
             transition_animation_end(the_section);
+            all_pauser(the_section, yt_elem_list);
 
             let the_next_section = the_section.nextElementSibling; 
             if (the_next_section) {

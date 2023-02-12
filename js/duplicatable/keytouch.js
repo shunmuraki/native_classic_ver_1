@@ -24,7 +24,6 @@ window.addEventListener("keydown", (e)=>{
   let current_sp_cover = vertical_to_sp_cover(current_vertical);
 
   if(e.metaKey) {  
-
     // 以下 command + k の処理.
     if (k == "k") {
       pointer_anim();

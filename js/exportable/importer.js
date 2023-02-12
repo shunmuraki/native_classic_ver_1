@@ -3,7 +3,6 @@
 const screen = document.querySelector(".screen");
 
 // 普段使っているTools.
-
 export function target_data(e, f) {
     const list = e.classList;
     for (let i = 0; i < list.length; i++) {
@@ -193,7 +192,6 @@ function iframe_adaptation(e) {
     newElement.setAttribute("id", the_name);
     the_content.remove();
     e.appendChild(newElement);
-
     return e;
 }
 
@@ -292,7 +290,9 @@ function generationdata_setup(e, f) {
             if (the_nextblock.classList.contains("change")) {
                 let f_data = en_change_adaptation(e);
                 // * e: [0,0,0,0] - [1,1,1,1]
-                final_data = genedata_compare(f_data[0], f_data[1]); 
+                // 移動先で要素をすぐに消す。こっちはあくまでつなぎ役のため.
+                // あとで複製した 3（>） 番目のanimationを消せるように多めに値を与えておくのがポイント.
+                final_data = genedata_compare(f_data[0], f_data[1], [["opacity", 0], 0, "re"]); 
                 // * → [["vertical", 0], ["scale", 2]]            
             }
         }
@@ -305,6 +305,8 @@ function base_setup(e, f, g) {
     let new_animation = {};
     new_animation["trigger_when"] = f * 5;
     if (e.classList.contains("change") && g == "start") {
+        // 前の要素のモーションアニメーションの終了を待ってからtriggerさせる.
+        new_animation["trigger_when"] = new_animation["trigger_when"] + 1;
         new_animation["finish_when"] = new_animation["trigger_when"];
     } else {
         new_animation["finish_when"] = new_animation["trigger_when"] + 1;
@@ -335,6 +337,11 @@ function animationdata_setup(e, f, g, h) {
         new_typedata["anim_name"] = the_keynum;
         let the_name = "anim_num_" + the_keynum;
         the_block.classList.add(the_name); 
+        // モーション後の opacity: 0 に該当するものかどうかの判別.
+        if (new_gene_datas[i][2]) {
+            // * 計算上 finish_when はそのまま変更せずに済むので trigger_when の方だけ.
+            new_typedata["trigger_when"] = new_typedata["trigger_when"] + 1;            
+        }
         let final_animation = ac_vi_adaptation(the_block, new_typedata, h);
         animation_generate_list.push(the_value);
         animations.push(final_animation);
@@ -409,6 +416,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                 let the_imp_id = "id_is_" + target_data(block, "id_is_");
 
                 if (block.classList.contains("same")) {
+                    
                     let the_same_name = "same_num_" + target_data(block, "same_num_");
                     // [実行内容]
                     // same_start: 直前のブロックが存在した場合に same　を持っていなければ白、持っていても same_num を持っていてその番号が違ったら白.
@@ -508,7 +516,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                         block.classList.add(the_classname);            
                         object_setter(block, the_big_section);
                     }
-                  
+
                 } 
 
                 else {

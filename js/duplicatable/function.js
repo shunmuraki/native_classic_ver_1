@@ -21,7 +21,6 @@ export const same_around = (e, f) => {
         }
 
     } else if (f == "connected") {
-   
         next_one = e.nextElementSibling;
         if (! e.classList.contains("same")) {
             same_setup();
@@ -39,7 +38,6 @@ export const same_around = (e, f) => {
             e.classList.remove("same_end");
             next_one.classList.add("same_end");
         }
-
     }
 
     let same_data_latest = same_data_getter();

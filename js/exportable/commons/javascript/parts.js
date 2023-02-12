@@ -1,3 +1,5 @@
+import { target_data } from "./base/tools.js";
+
 // TDの生成.
 export function transition_animation_start(e) {
     let effect = new KeyframeEffect(
@@ -50,10 +52,10 @@ export function off_preventer(e) {
 
 // 中のiframeの全部の再生を開始する関数
 export function all_player(e, f) {
-    for (var i = 0; i < e.length; i++) {
-        let content = e[i].lastElementChild;
+    for (var i = 0; i < e.children.length; i++) {
+        let content = e.children[i].lastElementChild;
         if (content.tagName == "IFRAME") {
-            let object_content = f[target_data(the_object, "yt_num_")];
+            let object_content = f[target_data(e.children[i], "yt_num_")];
             object_content.playVideo();
          } 
     }
@@ -61,10 +63,10 @@ export function all_player(e, f) {
 
 // 中のiframeの全部の再生を止める関数.
 export function all_pauser(e, f) {
-    for (var i = 0; i < e.length; i++) {
-        let content = e[i].lastElementChild;
+    for (var i = 0; i < e.children.length; i++) {
+        let content = e.children[i].lastElementChild;
         if (content.tagName == "IFRAME") {
-            let object_content = f[target_data(the_object, "yt_num_")];
+            let object_content = f[target_data(e.children[i], "yt_num_")];
             object_content.pauseVideo();
         } 
     }
