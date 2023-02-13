@@ -226,6 +226,12 @@ export const style_data_trace = (e, f) => {
     // scale
     e.style.transform = "scale(" + f["scale"][s_num] + ")";
 
+    if (e.parentElement.classList.contains("linear")) {
+        if (e.lastElementChild.tagName != "P") {
+            e.style.height = f["size"] + "px";
+        }
+    }
+
     // section タイトルのスタイリングのためのクラス付与.
     if (f["scale"][s_num] == 2) {
         if (e.lastElementChild.tagName == "P") {

@@ -4,11 +4,10 @@ import { wheel_positioning } from "../stylable/function.js";
 
 let all_writearea = document.getElementsByClassName("write_area");
 
-// Nativeを開いた時の最初の動作.
+// 以下Nativeを開いた時の最初の動作.
 let damee = document.createElement("div");
 damee.classList.add("first_load_dame");
 screen.appendChild(damee);
-
 window.onload = () => {
     // scrollTo の代替.
     $(function() {
@@ -24,7 +23,6 @@ window.onload = () => {
 (function () {
     // 以下 export.html から回帰したケースへの対応.
     if (sessionStorage.getItem("output")) {
-
         let doms = sessionStorage.getItem("output");
         screen.innerHTML = doms;
         let the_values = sessionStorage.getItem("the_values");
@@ -37,10 +35,8 @@ window.onload = () => {
         for (let i = 0; i < hors.length; i++) {
             hors[i].scrollLeft = hors[i].scrollWidth;
         }
-
         focus_checker(document.querySelector(".centering"));
         sessionStorage.clear();
-
     } else {
         // 以下通常のリロードへの対応.
         let d = document.querySelector(".first_load_dame");

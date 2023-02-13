@@ -85,11 +85,9 @@ export const the_states = (e, f, g, h) => {
     
             } else {
                 let the_classlist = the_object.classList;
-
                 if ( the_animation.playState == "running" ) {
                     the_animation.pause();
                     the_animation.cancel();
-
                     for ( let o = 0; o < the_classlist.length; o++ ) {
                         if (the_classlist[o].indexOf("running") != -1) {
                             the_object.classList.remove(the_classlist[o]);
@@ -144,27 +142,29 @@ export const the_states = (e, f, g, h) => {
                         the_object.classList.add("seekto_ready");
                     }  
                 
-            } else {
+            } 
 
+            // これだと video_startpointが響くか心配だが.
+            if (the_animation) {
                 if (the_animation.playState != "running" && the_object.classList.contains(String("running" + anim_name)) == false) {
-
+    
                     if (the_object.classList.contains(String("finished" + anim_name)) == false) {
                         the_animation.cancel();
                         the_animation.effect.updateTiming({ fill: 'none' }); 
-
+    
                         if (current_time > trigger_when && current_time < finish_when){
                             let the_duration_saving = current_time - trigger_when;
                             the_animation.currentTime = the_duration_saving;
                             run_finish_classi(the_object, "running", anim_name);
-
+    
                             the_animation.play();
                             the_animation.effect.updateTiming({ fill: 'forwards' }); 
-
+    
                             the_animation.onfinish = () => {
                                 run_finish_classi(the_object, "finished", anim_name); 
                                 the_animation.persist();
                             };
-
+    
                         } else if (current_time >= finish_when) {
                             run_finish_classi(the_object, "finished", anim_name);
                             the_animation.effect.updateTiming({ fill: 'forwards' }); 
@@ -173,7 +173,7 @@ export const the_states = (e, f, g, h) => {
                         }
                     }       
                 }
-            }    
+            } 
         }
     }
 }

@@ -97,7 +97,6 @@ export const video_load_then = (e, f) => {
 
     // contentが textarea から img, video に置換されるためスタリングもここで変更.
     the_box.appendChild(the_add_box);
-
     let pl = block_multiable(the_id_name, the_code);
     players_list[the_id_name] = pl;
     

@@ -125,7 +125,6 @@ export const make_ver_fragment = (e, f) => {
 
 // 空のブロックの生成関数（sameの場合に使用）
 export const make_dup_fragment = (e, f) => {
-
     const vertical = document.createElement("div");
     vertical.classList.add("vertical");
     vertical.classList.add("horizontal_child");
@@ -274,8 +273,7 @@ export const go_bottom = (e, f) => {
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);            
-            special_cleaner(vertical_to_sp_cover(ver));   
-            
+            special_cleaner(vertical_to_sp_cover(ver));     
             // edit モードは「see」ラインの位置を固定したい狙い.
             scrollBy(0, connected_your_height);
             is_it_same_series(next_one);

@@ -15,10 +15,8 @@ export function grab_auto(e) {
     // まず num_ を取得. * num はファイルにおけるグローバル変数による管理にある。
     const num = target_data(trigger_pointer, "num_");
     const the_key_classname = "num_" + num;
-
     // stripeを特定
     let partner_stripe = null;
-    // * ここ
     let stripe_space = e.parentElement.parentElement.nextElementSibling.firstElementChild;
     let all_stripe = stripe_space.children;
     for (let i = 0; i < all_stripe.length; i++) {
@@ -60,8 +58,6 @@ export const classmover = (e, f, g, h) => {
                 }
             } else if (h == "remove") {
                 if (f.classList.contains(classlist[i]) == true) {
-                    console.log(classlist[i]);
-                    console.log(g);
                     f.classList.remove(classlist[i]);
                 }
             }

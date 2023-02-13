@@ -103,10 +103,8 @@ const style_num_changer = (f, g) => {
     
     let current_classname = target_data(target, "styling_");
     let the_numpos = f * 2;
-    
     let a = current_classname.slice(0, the_numpos);
     let c = current_classname.slice(the_numpos + 1);
-
     let final_name = "styling_" + a + g + c;
     classmover(target, target, "styling_", "remove");
     target.classList.add(final_name);
@@ -142,7 +140,6 @@ base_3.addEventListener("click", () => {
     wheel_1_management("go");
     ly_2_2.style.display = "block";
 })
-
 
 sl_1_1.addEventListener("click", () => {
     style_num_changer(0, 0);

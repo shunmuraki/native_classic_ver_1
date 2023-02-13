@@ -392,8 +392,7 @@ window.addEventListener("keydown", (e)=>{
                         if (centering.previousElementSibling) {
                             let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
                             let the_gap = target_data(centering.previousElementSibling, "scroll_left_") - centering.parentElement.parentElement.scrollLeft;
-                            all_view_changer(the_see_centering, the_gap);
-                            
+                            all_view_changer(the_see_centering, the_gap);           
                             comesin_management("left", centering, the_see_centering);
                             
                             if (centering.classList.contains("opac_cam")) {
@@ -410,8 +409,7 @@ window.addEventListener("keydown", (e)=>{
                         if (centering.nextElementSibling) {
                             let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
                             let the_gap = target_data(centering.nextElementSibling, "scroll_left_") - centering.parentElement.parentElement.scrollLeft;
-                            all_view_changer(the_see_centering, the_gap);
-                            
+                            all_view_changer(the_see_centering, the_gap);          
                             comesin_management("right", centering, the_see_centering);
                             
                             if (centering.classList.contains("opac_cam")) {

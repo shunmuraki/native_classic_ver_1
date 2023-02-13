@@ -3,7 +3,6 @@ import { same_data_counter, same_data_getter } from "../base/tools.js";
 
 export const same_around = (e, f) => {
     let next_one;
-
     function same_setup() {
         e.classList.add("same");
         let same_data = same_data_getter();
@@ -12,14 +11,12 @@ export const same_around = (e, f) => {
     }
 
     if (f == "default") {
-
         next_one = e.previousElementSibling;
         if (! e.classList.contains("same")) {
             same_setup();
             e.classList.add("same_end");
             next_one.classList.add("same_start");
         }
-
     } else if (f == "connected") {
         next_one = e.nextElementSibling;
         if (! e.classList.contains("same")) {
@@ -47,7 +44,6 @@ export const same_around = (e, f) => {
     next_one.classList.add("same");          
     e.classList.add(the_name);
     next_one.classList.add(the_name);
-    
     // command + U では必要なかったが配慮.
     focus_checker(next_one);
 }

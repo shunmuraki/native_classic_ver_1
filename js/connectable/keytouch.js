@@ -46,7 +46,6 @@ window.addEventListener("keydown", (e)=>{
                     }
                 
                     let the_sp_cover_a = current_sp_cover.previousElementSibling;
-    
                     // 移動先にブロックたちを移動するために配列にブロックを格納.
                     if (the_sp_cover_a) {
 

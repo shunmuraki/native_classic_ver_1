@@ -291,8 +291,7 @@ export const same_cutter = (e, f) => {
     }
     if (the_target_left && the_target_right) {
         if (the_target_left.classList.contains("same") && the_target_right.classList.contains("same")) {
-            if (the_target_left.classList.contains("same_start") == false && the_target_left.classList.contains("same_end") == false && the_target_right.classList.contains("same_start") == false && the_target_right.classList.contains("same_end") == false) {
-                
+            if (the_target_left.classList.contains("same_start") == false && the_target_left.classList.contains("same_end") == false && the_target_right.classList.contains("same_start") == false && the_target_right.classList.contains("same_end") == false) { 
                 let spe_cont = document.querySelector(".special_cov").lastElementChild;
                 the_target_left.classList.add("same_end");
                 if (spe_cont.tagName == "IMG") {
@@ -350,7 +349,6 @@ export const make_it_img = (e, m) => {
         uploaded_multi_media.classList.add("styling_1_1_1_1");
         let multi_one_fragment = document.createDocumentFragment();
         multi_one_fragment.append(uploaded_multi_media);
-
         e.appendChild(multi_one_fragment);
         
         input.addEventListener("change", function(o) {            

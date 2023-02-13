@@ -16,7 +16,6 @@ window.addEventListener("keydown", (e)=>{
             current = document.activeElement;
             type_signiture = current.value;
             current_vertical = document.querySelector(".centering");
-
             if (document.activeElement.classList.contains("ms_area") == false) {
                 current.style.height = 24 + 'px';
                 let scrollHeight = current.scrollHeight;
@@ -25,7 +24,6 @@ window.addEventListener("keydown", (e)=>{
                 current.parentElement.style.height = height + "px";
                 adjust_box(current_vertical);
             }
-
         } else {
             current_vertical = document.querySelector(".centering");
         }

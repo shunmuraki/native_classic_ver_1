@@ -85,9 +85,7 @@ export const principle_management = (e, f) => {
 
 // scrapやsp_cover内のスクロール位置をすべて最適化する関数.
 export const all_view_changer = (e, f) => {
-
     if (e.children[0].classList.contains("orange_space")) {
-
         let orange = e.firstElementChild;
         let orange_pointer_space = orange.firstElementChild;
         let orange_stripe_space = orange.lastElementChild;
@@ -114,7 +112,6 @@ export const all_view_changer = (e, f) => {
 
 // orange_space を生成・追加する関数.
 export function add_orange_space_for_everyone(e) {
-    
     let orange_space = document.createElement("div");
     orange_space.classList.add("orange_space");
     orange_space.classList.add("now_pointer_s");
@@ -191,8 +188,7 @@ export const pre_pointing_in = (e, f) => {
         
         // 通常の状態を模す.
         orange.classList.remove("now_pointer_f");
-        orange.classList.add("now_pointer_s");
-        
+        orange.classList.add("now_pointer_s");     
         // pre_pointer_out（） へ繋げる.
         orange.classList.add("pre_pointer_s");   
     }
@@ -508,7 +504,7 @@ export const actuar_st_allon = () => {
     }
 }
 
-// オートシーキングモード終了後にactuar系列のブロックの描画を現場復帰する関数.
+// オートシーキングモード終了後にactuar_stが付いたブロックの描画を現場復帰する関数.
 export const actuar_st_alloff = () => {
     let sts = document.querySelectorAll(".actuar_st");
     for (let i = 0; i < sts.length; i++) {
@@ -517,6 +513,8 @@ export const actuar_st_alloff = () => {
         }
     }
 }
+
+// オートシーキングモード終了後にactuar_enが付いたブロックの描画を現場復帰する関数.
 export const actuar_en_alloff = () => {
     let ens = document.querySelectorAll(".actuar_en");
     for (let i = 0; i < ens.length; i++) {

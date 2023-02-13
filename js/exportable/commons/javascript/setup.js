@@ -36,8 +36,7 @@ if (official_sections[0].classList.contains("non")) {
 }
 
 // ずーっと次の要素を探し続けるってう単一のループの中でうまくやりたい.
-// linearだったら値をリセット、とか. 課程でclientHeight足し続けておいて、止まった瞬間のnon に不足分を足すプログラム.
-// *上から検索していくのがミソ.
+// linearだったら値をリセット、とか. 課程でclientHeight足し続けておいて、止まった瞬間のnon に不足分を足すプログラム. *上から検索していくのがミソ.
 let the_non_space_height = 0;
 for (let i = 0; i < official_sections.length; i++) {
     if (official_sections[i].classList.contains("non")) {
