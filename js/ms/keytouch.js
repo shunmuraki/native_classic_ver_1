@@ -61,7 +61,7 @@ window.addEventListener("keydown", (e)=>{
               
               adjust_target_pos(ms_adjust_target, "off");
 
-              if (adjust_target_pos.tagName == "TEXTAREA") {
+              if (ms_adjust_target.tagName == "TEXTAREA") {
                 ms_adjust_target.focus();
               }
   

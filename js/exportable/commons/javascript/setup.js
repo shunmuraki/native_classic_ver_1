@@ -50,13 +50,18 @@ for (let i = 0; i < official_sections.length; i++) {
         }
     } else if (official_sections[i].classList.contains("linear")) {
         let edge_non = official_sections[i].previousElementSibling;
-        let the_addition = window.innerHeight - the_non_space_height;
-        if (the_addition > 0) {
-            edge_non.style.minHeight = "auto";
-            edge_non.style.minHeight = Number(edge_non.clientHeight + the_addition) + "px";
-            edge_non.classList.add("carp");
+        if (edge_non) {
+            // linear - linear を警戒.
+            if (edge_non.classList.contains("non")) {
+                let the_addition = window.innerHeight - the_non_space_height;
+                if (the_addition > 0) {
+                    edge_non.style.minHeight = "auto";
+                    edge_non.style.minHeight = Number(edge_non.clientHeight + the_addition) + "px";
+                    edge_non.classList.add("carp");
+                }
+                the_non_space_height = 0;
+            }
         }
-        the_non_space_height = 0;
     }
 }
 

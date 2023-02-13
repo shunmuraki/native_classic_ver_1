@@ -101,8 +101,10 @@ export const sr_assign = (e) => {
 // 各 section が有する ステータスバー のサイズ（height） を更新する関数.
 let statusbar_outer = document.querySelector(".statusbar_outer");
 let statusbar = document.querySelector(".statusbar");
+let wheel_cover = document.querySelector(".wheel_cover");
 
 // 各 リニア製のsection に対して 動的に ステータスバー を表示する関数.
+// また同時に linear の上に被せる wheel_cover についてもここでマネジメント.
 export const statusbar_management = (e) => {
     if (e == "on") {
         statusbar_outer.animate(
@@ -115,7 +117,9 @@ export const statusbar_management = (e) => {
                 fill: "forwards"
             }
         )
+        wheel_cover.style.display = "block";
     } else if (e == "off") {
+        wheel_cover.style.display = "none";
         statusbar_outer.animate(
             [
                 {left: "-20px"},

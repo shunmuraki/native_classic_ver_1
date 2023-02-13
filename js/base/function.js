@@ -1,7 +1,7 @@
 import { all_view_changer } from "../editable/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_sunsetline, blocksize, blocktime } from "./elements.js";
-import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, which_special_is } from "./tools.js";
+import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, which_special_is, tracer_basis } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
 import { same_data_getter, same_data_counter } from "./tools.js";
 
@@ -340,7 +340,6 @@ export const the_magic_copy = (e) => {
     for (let i = 0; i < sp_cover.childElementCount; i++) {
         let line = sp_cover.children[i].lastElementChild.children;
         let breaker = line[c_num + 1];
-        
         let same_name = "same_num_" + target_data(breaker, "same_num_");
         // 色々処理施す前に、0 で sameならsame_start を与えて same_num もう更新する.
         // [same_cutter の部分利用]

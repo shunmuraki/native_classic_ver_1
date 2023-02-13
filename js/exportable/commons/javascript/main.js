@@ -10,6 +10,7 @@ let additional_time = 0;
 
 // * remove_wheel を実現するための懸念.
 let the_section = null;
+let wheel_cover = document.querySelector(".wheel_cover");
 
 // ***** ---------- * -  基本データセット  ------------ - - - - -  -------------------------------
 // youtube id list. これをdomに昇華させます(in states.js). 
@@ -71,7 +72,7 @@ const outer_inte = (e) => {
         current_time = 0;
         the_states(e, animation_data, "auto_seek", yt_elem_list);
     } else if (current_time >= duration) {
-        if (duration > 15) {
+        if (duration > 25) {
             animation_data[String(the_name)]["about_time"]["section_current_time"] = duration - 10; 
             current_time = duration;
         } else {
@@ -128,10 +129,14 @@ const the_arrows = (event) => {
     let the_next_section = the_section.nextElementSibling;
     let section_duration = animation_data[the_name]["about_time"]["section_duration"];
     duration = section_duration;
+    // plus の上限設定.
+    let plus = 50;
     // section の長さに応じてスクロールに対するシーク量を最適化しようとしている.
     let distance = event.deltaY;
-    let the_breaker = Math.floor(3000 / section_duration);
-    let plus = distance / the_breaker;
+    if (section_duration > 25) {
+        let the_breaker = Math.floor(3000 / section_duration);
+        plus = distance / the_breaker;
+    }
 
     current_time = animation_data[the_name]["about_time"]["section_current_time"]; 
     all_pauser(the_section, yt_elem_list);
@@ -207,9 +212,6 @@ const the_arrows = (event) => {
 
         }, duration_use));
 
-        
-        // iframe で seekto を処理させるのはこっちなんじゃないかと考えた.
-
         if (current_time < 0 || current_time > duration) {
 
             clear_shu();
@@ -232,12 +234,12 @@ const the_arrows = (event) => {
 }
 
 const seek_by_wheel = () => {
-    the_section.addEventListener("wheel", the_arrows, true);
+    wheel_cover.addEventListener("wheel", the_arrows, true);
 }
 
 // ** remove する関数をここに書いてあげれば良いのでは？？
 const remove_wheel = () => {
-    the_section.removeEventListener("wheel", the_arrows, true);
+    wheel_cover.removeEventListener("wheel", the_arrows, true);
 }
 // ***** ---------- * -  Wheel 周辺  ------------ - - - - -  -------------------------------
 
@@ -300,4 +302,6 @@ const cropper = () => {
 // ***** ---------- * -  Cropper() 周辺  ------------ - - - - -  -------------------------------
 
 // * 実行
-cropper();
+setTimeout(() => {
+    cropper();
+}, 500)

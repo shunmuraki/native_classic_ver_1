@@ -87,6 +87,7 @@ let sp_covers = document.querySelectorAll(".sp_cover");
 function ac_vi_adaptation(e, f, g) {
     let classlist = e.classList;
     let animation_data = f;
+    
     // まずはsame_end か same_start かだ.
     if (e.classList.contains("same_end")) {
         // 秒数に変換. (blocksize = 360)
@@ -287,8 +288,9 @@ function generationdata_setup(e, f) {
                 // * e: [0,0,0,0] - [1,1,1,1]
                 // 移動先で要素をすぐに消す。こっちはあくまでつなぎ役のため.
                 // あとで複製した 3（>） 番目のanimationを消せるように多めに値を与えておくのがポイント.
-                final_data = genedata_compare(f_data[0], f_data[1], [["opacity", 0], 0, "re"]); 
+                final_data = genedata_compare(f_data[0], f_data[1]); 
                 // * → [["vertical", 0], ["scale", 2]]            
+                final_data.push([["opacity", 0], 0, "re"]);
             }
         }
     } 
@@ -381,16 +383,16 @@ for (let i = 0; i < sp_covers.length; i++) {
         let sp = sps[o];
         let verticals = sp.lastElementChild.children;
         if (! animation_data[String("section_" + i)]["about_time"]["section_duration"]) {
-            animation_data[String("section_" + i)]["about_time"]["section_duration"] = (verticals.length * 5) + 1;
+            animation_data[String("section_" + i)]["about_time"]["section_duration"] = verticals.length * 5;
         }
+
         let here = o + 1;
         let the_classname = "outerstyle_" + sp_num + "_" + here;
         the_big_section.classList.add("section_" + i);
         for (let j = 0; j < verticals.length; j++) {
             img_src_getter(verticals[j]);
         }
-        // リニアだけを対象にする.
-        // adjuster は削除済み.
+        // リニアだけを対象にする. * adjuster は削除済み.
         // hor の中のブロックが複数　or sameを持つブロックがひとつ入っている 場合に = true にして以下のブロックごとのループや linear クラスの付与を実行.
         let desider = false;
         if (verticals.length > 1) {
@@ -483,6 +485,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                                 video_same_end();
                             }
                         }
+
                         // video属性の場合は、それ用のvideo_animationを追加で作成.
                         if (block.classList.contains("video")) {   
                             data_num += 1;
@@ -700,6 +703,7 @@ console.log(animation_generate_list);
 console.log("yt_id_list");
 console.log(yt_id_list);
 
+// 検証用のコアデータのエクスポート結果表示.
 // < --------------------------------------------------------------------------------------------------- >
 
 // HTMLファイルのエクスポート.

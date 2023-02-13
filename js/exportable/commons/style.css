@@ -328,6 +328,15 @@ html {
   margin: 0 auto;
   width: 40vw;
 }
+.wheel_cover {
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  display: none;
+  z-index: 8888;
+}
 .statusbar_outer {
   padding: 5px 5px;
   background-color: #888888;
