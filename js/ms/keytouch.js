@@ -60,16 +60,14 @@ window.addEventListener("keydown", (e)=>{
               }, 10)
               
               adjust_target_pos(ms_adjust_target, "off");
-  
-              if (! ms_adjust_target.parentElement) {
-                if (ms_adjust_target.tagName == "TEXTAREA") {
-                  ms_adjust_target.focus();
-                }
+
+              if (adjust_target_pos.tagName == "TEXTAREA") {
+                ms_adjust_target.focus();
               }
+  
               screen.classList.remove("ms");
             }
           }
         }
     }
-  
 })

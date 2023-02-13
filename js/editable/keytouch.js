@@ -53,10 +53,20 @@ window.addEventListener("keydown", (e)=>{
                 let current_vertical = document.querySelector(".centering");
                 let current_horizontal = vertical_to_hor(current_vertical);
                 let current_sp_cover = vertical_to_sp_cover(current_vertical);
-    
-                let special_cov_will_die = document.getElementsByTagName("script")[0].previousElementSibling;
-                if (special_cov_will_die.classList.contains("special_cov")) {
-                    special_cov_will_die.remove();
+                
+                // これを機にデフォルトレイヤーのspecial_covを一掃.
+                let specials = document.querySelectorAll(".special_cov");
+                console.log(specials);
+                if (specials.length > 0) {
+                    for (let i = specials.length - 1; i >= 0; i--) {
+                        specials[i].remove();
+                    }
+                }
+
+                // special_cov を全削除した分、表示の都合上 same_end 側をすべて表示しておく必要がある.
+                let ends = document.querySelectorAll(".same_end");
+                for (let i = ends.length - 1; i >= 0; i--) {
+                    ends[i].lastElementChild.style.setProperty('opacity', 1, 'important');
                 }
         
                 // 編集レイヤーの生成と挿入.

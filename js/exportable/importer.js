@@ -381,7 +381,7 @@ for (let i = 0; i < sp_covers.length; i++) {
         let sp = sps[o];
         let verticals = sp.lastElementChild.children;
         if (! animation_data[String("section_" + i)]["about_time"]["section_duration"]) {
-            animation_data[String("section_" + i)]["about_time"]["section_duration"] = ((verticals.length + 1) * 5) + 1;
+            animation_data[String("section_" + i)]["about_time"]["section_duration"] = (verticals.length * 5) + 1;
         }
         let here = o + 1;
         let the_classname = "outerstyle_" + sp_num + "_" + here;
@@ -610,9 +610,8 @@ for (let i = 0; i < sp_covers.length; i++) {
             textarea_adaptation(block);
             object_setter(block, the_big_section);
         }
-        if (verticals.length > 1) {
-            animation_data["section_" + i]["about_time"]["section_current_time"] = 0;
-        }
+
+        animation_data["section_" + i]["about_time"]["section_current_time"] = 0;
     }
 
     // 最後の総召集.
