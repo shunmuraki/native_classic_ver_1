@@ -127,23 +127,27 @@ const outer_inte = (e) => {
 const the_arrows = (event) => {
     let the_name = "section_" + target_data(the_section, "section_");
     let the_next_section = the_section.nextElementSibling;
-    let section_duration = animation_data[the_name]["about_time"]["section_duration"];
+    let section_duration = animation_data[the_name]["about_time"]["section_duration"]; 
+    let the_breaker = Math.floor(3000 / section_duration);
     duration = section_duration;
-    // plus の上限設定.
-    let plus = 50;
     // section の長さに応じてスクロールに対するシーク量を最適化しようとしている.
     let distance = event.deltaY;
-    if (section_duration > 25) {
-        let the_breaker = Math.floor(3000 / section_duration);
-        plus = distance / the_breaker;
-    }
-
     current_time = animation_data[the_name]["about_time"]["section_current_time"]; 
     all_pauser(the_section, yt_elem_list);
-    additional_time += plus;
+    additional_time += distance;
 
     suppression(() => { 
-
+        // section_duartion に応じた additional_time の再加工.
+        if (section_duration > 25) {
+            additional_time = additional_time / the_breaker;
+        } else {
+            if (additional_time > 0) {
+                additional_time = 5;
+            } else {
+                additional_time = -5;
+            }
+        }
+    
         let the_name = "section_" + target_data(the_section, "section_");
         clear_shu();
         the_states(the_section, animation_data, "allstop", yt_elem_list);
@@ -264,30 +268,33 @@ const cropper = () => {
     function showElements(entries) {
         entries.forEach((entry) => {
         let nowElement = entry.target;
+
           if (entry.isIntersecting) {        
             if (Math.round(entry.intersectionRatio * 100) == 100) {
-                // remove_wheel のため。
-                the_section = nowElement;
-                sr_assign(nowElement);
+                if (nowElement.classList.contains("linear")) {
+                    // remove_wheel のため。
+                    the_section = nowElement;
+                    sr_assign(nowElement);
+                    on_preventer(nowElement);
+                    transition_animation_start(nowElement);
 
-                on_preventer(nowElement);
-                transition_animation_start(nowElement);
+                    let the_next_section = nowElement.nextElementSibling;
+                    if (the_next_section) {
+                        the_next_section.style.opacity = 0;
+                    }
 
-                let the_next_section = nowElement.nextElementSibling;
-
-                if (the_next_section) {
-                    the_next_section.style.opacity = 0;
+                    aries(nowElement);
+                    default_timeout(nowElement);
+                    nowElement.classList.remove("iwatchyou");
+                    nowElement.classList.add("state_on");
+                    seek_by_wheel();
                 }
-
-                aries(nowElement);
-                default_timeout(nowElement);
-                nowElement.classList.remove("iwatchyou");
-                nowElement.classList.add("state_on");
-                seek_by_wheel();
             } 
           } else {  
-              nowElement.classList.remove("state_on");
-              nowElement.classList.add("iwatchyou");
+            if (nowElement.classList.contains("linear")) {
+                nowElement.classList.remove("state_on");
+                nowElement.classList.add("iwatchyou");
+            }
           }
         });
     }   

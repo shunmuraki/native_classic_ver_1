@@ -23,46 +23,28 @@ export const script_load = () => {
 for (let i = 0; i < section_elms.length; i++) {
     section_elms[i].classList.add("iwatchyou");
     section_elms[i].classList.add("ikuneko");
+    // 以下 lenearスペース の前後で nonスペースとの距離を開けて全体のバランスを取る.
+    // linearスペースの直前
+    let edge_non = section_elms[i].previousElementSibling;
+    if (edge_non) {
+        // linear - linear を警戒.
+        if (edge_non.classList.contains("non")) {
+            edge_non.style.paddingBottom = "50px";
+            edge_non.classList.add("carp");
+        }
+    }
+    // linearスペースの直前
     let the_next_section = section_elms[i].nextElementSibling;
     if (the_next_section) {
         the_next_section.style.opacity = 0;
         the_next_section.style.marginTop = '-50vh';
+        the_next_section.style.paddingTop = "50px";
     }
 }
 
 // 記事の先頭が non-section の場合に位置を整えるCSSを充てるため.
 if (official_sections[0].classList.contains("non")) {
     official_sections[0].classList.add("headsection");
-}
-
-// ずーっと次の要素を探し続けるってう単一のループの中でうまくやりたい.
-// linearだったら値をリセット、とか. 課程でclientHeight足し続けておいて、止まった瞬間のnon に不足分を足すプログラム. *上から検索していくのがミソ.
-let the_non_space_height = 0;
-for (let i = 0; i < official_sections.length; i++) {
-    if (official_sections[i].classList.contains("non")) {
-        // 他の non-section に罪はないので高さをCSSの上に上書きしてあげます.
-        // 次の条件分岐でこの non-section の高さが変わる可能性は大いに有りますが.
-        if (official_sections[i].nextElementSibling) {
-            if (official_sections[i].nextElementSibling.classList.contains("non")) {
-                official_sections[i].style.minHeight = "auto";
-                the_non_space_height += official_sections[i].clientHeight;
-            }
-        }
-    } else if (official_sections[i].classList.contains("linear")) {
-        let edge_non = official_sections[i].previousElementSibling;
-        if (edge_non) {
-            // linear - linear を警戒.
-            if (edge_non.classList.contains("non")) {
-                let the_addition = window.innerHeight - the_non_space_height;
-                if (the_addition > 0) {
-                    edge_non.style.minHeight = "auto";
-                    edge_non.style.minHeight = Number(edge_non.clientHeight + the_addition) + "px";
-                    edge_non.classList.add("carp");
-                }
-                the_non_space_height = 0;
-            }
-        }
-    }
 }
 
 // youtube動画を読み込む関数.

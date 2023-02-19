@@ -104,6 +104,7 @@ section {
 }
 body {
   line-height: 1;
+  padding-bottom: 100vh;
 }
 ol,
 ul {
@@ -294,14 +295,13 @@ html {
   background-color: #ffffff;
   z-index: 100;
   padding: 10px 0;
-  min-height: 100vh;
   box-sizing: border-box;
 }
 .headsection {
   margin: 80px 0 0 0;
 }
 .carp::after {
-  content: "------------ This space must be longer than this line at this time. ------------";
+  content: "------------ This is the end of section. -----------";
   position: absolute;
   bottom: 20px;
   right: 50px;
@@ -339,8 +339,8 @@ html {
 }
 .statusbar_outer {
   padding: 5px 5px;
-  background-color: #888888;
-  border-radius: 3px;
+  background-color: rgba(108, 160, 221, 0.7);
+  border-radius: 4px;
   height: 92vh;
   position: fixed;
   top: 4vh;
