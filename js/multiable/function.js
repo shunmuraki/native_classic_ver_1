@@ -324,7 +324,7 @@ export const make_it_img = (e, m) => {
     const input = document.createElement("input");
     const label = document.createElement("label");
 
-    input.setAttribute("type", "file")
+    input.setAttribute("type", "file");
     let inputs = document.getElementsByClassName("sp").length;
     input.id = "media_input" + inputs;
     input.classList.add("thisisinput" + inputs);
@@ -341,7 +341,7 @@ export const make_it_img = (e, m) => {
     e.style.height = 225 +  "px";
     
     if (m == "image") {
-        input.setAttribute("accept", ".jpg, .jpeg, .png")
+        input.setAttribute("accept", ".png");
         label.classList.add("image_input");
         const uploaded_multi_media = document.createElement("img");
 
@@ -352,13 +352,18 @@ export const make_it_img = (e, m) => {
         e.appendChild(multi_one_fragment);
         
         input.addEventListener("change", function(o) {            
-            var file = o.target.files;
-            var reader = new FileReader()
-            reader.readAsDataURL(file[0])
-            reader.onload = function() {
-            label.remove();
-            uploaded_multi_media.src = reader.result;
-        }
+            let file = o.target.files;
+            const sizeLimit = 1024 * 1024 * 1;
+            if (file.size <= sizeLimit) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file[0]);
+                reader.onload = function() {
+                    label.remove();
+                    uploaded_multi_media.src = reader.result;
+                }
+            } else {
+                e.lastElementChild.remove();
+            }
         }, false);
     } 
 };

@@ -208,6 +208,16 @@ function textarea_adaptation(e) {
     }
 }
 
+// imgタグの親要素に "img" クラスを付与する関数.
+function img_adaptation(e) {
+    let the_content = e.lastElementChild;
+    if (the_content) {
+        if (the_content.tagName == "IMG") {
+            e.classList.add("img");
+        }
+    }
+}
+
 // blockから <object> を生成して返す関数.
 function object_generation(e) {
     let final_block = e.cloneNode(true);
@@ -230,7 +240,6 @@ function img_src_getter(e) {
             images.push(the_src);
             let the_num = Object.keys(the_img_blob_list).length;
             the_img_blob_list["img_" + the_num] = the_src;
-    
             let the_filename = "/images/img_" + the_num + ".png";
             target.setAttribute("src", the_filename);
         }
@@ -354,6 +363,7 @@ function object_setter(e, f) {
     classmover(object_you.lastElementChild, object_you, "styling_", "add");
     object_you.removeAttribute('style');
     object_you.lastElementChild.removeAttribute("class");
+    img_adaptation(object_you);
     f.appendChild(object_you);
 }
 
@@ -787,3 +797,46 @@ zip.generateAsync(
         button.download = 'output.zip';
         button.href = uri;
 });
+
+// 以下 Glimpseとの接続処理 ---------------------------
+// blobリストがほしい (images)
+// 最終的な dom と json３つがほしい (final_dom, animation_data, animation_generate_list, yt_id_list)
+
+// glimpse.txt の中身.
+let final_textcontent = "";
+
+function image_make_it(e) {
+    let the_textdata = String(e) + "[:img]";
+    final_textcontent += the_textdata;
+}
+// * - DOM
+let dom_text = String(screen.innerHTML) + "[:dom]";
+final_textcontent += dom_text;
+// * - 画像
+for (let i=0; i < images.length; i++) {
+    image_make_it(images[i]);
+}
+// * - JSON類
+let yi_text = JSON.stringify(yt_id_list) + "[:yt_id_list]";
+final_textcontent += yi_text;
+let ad_text = JSON.stringify(animation_data) + "[:animation_data]";
+final_textcontent += ad_text;
+let ag_text = JSON.stringify(animation_generate_list) + "[:animation_generate_list]";
+final_textcontent += ag_text;
+
+// * - glimpse.txt の書き出し
+let blob = new Blob([final_textcontent], { type:"text/plain"});
+let url = URL.createObjectURL(blob);
+let glil = document.querySelector(".glimpse_link");
+glil.href = url;
+glil.download = "glimpse.txt";
+let int = setInterval(() => {
+    if (glil.classList.contains("change")) {
+        // 別タブで開くには？
+        // window.location.href = "https://glimpse.tokyo/publish.html";
+    }
+}, 1000)
+glil.addEventListener("click", () => {
+    glil.classList.add("change");
+    int;
+})

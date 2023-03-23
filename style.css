@@ -734,13 +734,15 @@ img, iframe {
   z-index: 300;
   text-align: center;
   opacity: 0;
-  display: flex;
   width: 50%;
+}
+.redirect_cover .contents .flex {
+  display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
 }
-.redirect_cover .contents .download_button {
+.redirect_cover .contents .flex .ex_bu {
   padding: 15px 25px;
   border-radius: 5px;
   line-height: 1;
@@ -748,17 +750,23 @@ img, iframe {
   font-size: 2rem;
   font-weight: 500;
   letter-spacing: 0.06em;
-  border: 2px solid #fff;
   cursor: default;
+  margin: 15px;
+}
+.redirect_cover .contents .flex .download_button {
+  border: 2px solid #fff;
+}
+.redirect_cover .contents .flex .glimpse_link {
+  background-color: #58D000;
 }
 .redirect_cover .contents .additional {
   color: #fff;
   font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: 0.05em;
-  margin: 0 0 0 80px;
-  display: block;
+  display: inline-block;
   border-bottom: 0.6px solid #fff;
+  margin: 40px 0 0 0;
   cursor: default;
 }
 
