@@ -196,8 +196,10 @@ export const go_top = (e, f) => {
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
             // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
+            let now_position = pre_sibling.lastElementChild.lastElementChild.scrollLeft;
+            let the_distance = full_end_scrollwidth - now_position;
+            all_view_changer(pre_sibling, the_distance);
             special_cleaner(pre_sibling);
-
             // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
             if (sibling_height > to_the_distance) {
                 scrollBy(0, - connected_your_height);
@@ -254,9 +256,10 @@ export const go_bottom = (e, f) => {
             next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
-
+            let now_position = pre_sibling.lastElementChild.lastElementChild.scrollLeft;
+            let the_distance = full_end_scrollwidth - now_position;
+            all_view_changer(pre_sibling, the_distance);
             special_cleaner(pre_sibling);
-
             if (sibling_height > to_the_distance) {
                 scrollBy(0, connected_your_height);
             } 
@@ -340,20 +343,23 @@ export const the_magic_copy = (e) => {
     for (let i = 0; i < sp_cover.childElementCount; i++) {
         let line = sp_cover.children[i].lastElementChild.children;
         let breaker = line[c_num + 1];
-        let same_name = "same_num_" + target_data(breaker, "same_num_");
-        // 色々処理施す前に、0 で sameならsame_start を与えて same_num もう更新する.
-        // [same_cutter の部分利用]
-        breaker.previousElementSibling.classList.add("same_end");
-        breaker.classList.add("same_start");
-        let sames = document.getElementsByClassName(same_name);
-        let breakpoint = [].slice.call(sames).indexOf(breaker);
-        let same_data = same_data_getter();
-        same_data += 1;
-        same_data_counter(same_data);
-        for (let i = sames.length - 1; i >= breakpoint; i--) {
-            let same_block = sames[i];
-            classmover(same_block, same_block, "same_num_", "remove");
-            same_block.classList.add("same_num_" + same_data);                    
+
+        if (breaker.classList.contains("same")) {
+            let same_name = "same_num_" + target_data(breaker, "same_num_");
+            // 色々処理施す前に、0 で sameならsame_start を与えて same_num もう更新する.
+            // [same_cutter の部分利用]
+            breaker.previousElementSibling.classList.add("same_end");
+            breaker.classList.add("same_start");
+            let sames = document.getElementsByClassName(same_name);
+            let breakpoint = [].slice.call(sames).indexOf(breaker);
+            let same_data = same_data_getter();
+            same_data += 1;
+            same_data_counter(same_data);
+            for (let i = sames.length - 1; i >= breakpoint; i--) {
+                let same_block = sames[i];
+                classmover(same_block, same_block, "same_num_", "remove");
+                same_block.classList.add("same_num_" + same_data);                    
+            }
         }
 
         // 色々処理.

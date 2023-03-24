@@ -214,6 +214,7 @@ function img_adaptation(e) {
     if (the_content) {
         if (the_content.tagName == "IMG") {
             e.classList.add("img");
+            e.classList.add("img_v");
         }
     }
 }
@@ -240,7 +241,7 @@ function img_src_getter(e) {
             images.push(the_src);
             let the_num = Object.keys(the_img_blob_list).length;
             the_img_blob_list["img_" + the_num] = the_src;
-            let the_filename = "/images/img_" + the_num + ".png";
+            let the_filename = "images/img_" + the_num + ".png";
             target.setAttribute("src", the_filename);
         }
     }
@@ -614,6 +615,10 @@ for (let i = 0; i < sp_covers.length; i++) {
                             block.classList.add(the_classname);
                             object_setter(block, the_big_section);
                         }
+                    } else if (block.lastElementChild.tagName == "IMG") {
+                        for_ind();
+                        block.classList.add(the_classname);
+                        object_setter(block, the_big_section);
                     }
                 }
             }
@@ -803,10 +808,45 @@ zip.generateAsync(
 // 最終的な dom と json３つがほしい (final_dom, animation_data, animation_generate_list, yt_id_list)
 
 // glimpse.txt の中身.
+// let img_blocks = document.querySelectorAll(".img_v");
 let final_textcontent = "";
 
-function image_make_it(e) {
-    let the_textdata = String(e) + "[:img]";
+function image_make_it(e, f) {
+    let dec = e.slice(0, 1);
+    let the_textdata;
+    if (dec == "[") {
+        the_textdata = String(e) + "[:img]";
+    } else {
+        let image = new Image();
+        image.src = String(e);
+        let canvas = document.createElement("canvas");
+        // canvas のサイズを調整しなくちゃ。どうやって画像ファイルのサイズを取得する？
+        // どのみちimageタグからとることになるらしい。なるほど、だったら最初からそれで済むかもしれないね.
+        // まず HTML でちゃんと画像を表示するようにしなくちゃ.
+        // naturalWidth って初めて知ったわ。
+        // console.log(img_blocks[f].lastElementChild);
+        let w = image.width;
+        let h = image.height;
+        console.log(w);
+        console.log(h);
+        let d = Math.trunc(w / 1000);
+        // リサイズはここでできるよ.
+        let trimed_w;
+        let trimed_h;
+        if (d > 0) {
+            trimed_w = w / d;
+            trimed_h = h / d;
+        } else {
+            trimed_w = w;
+            trimed_h = h;
+        }
+        canvas.width = trimed_w;
+        canvas.height = trimed_h;
+        let ctx = canvas.getContext("2d");
+        ctx.drawImage(image, 0, 0, w, h, 0, 0, trimed_w, trimed_h);
+        the_textdata = String(canvas.toDataURL("image/png")) + "[:img]";
+        console.log(the_textdata);
+    }
     final_textcontent += the_textdata;
 }
 // * - DOM
@@ -814,7 +854,7 @@ let dom_text = String(screen.innerHTML) + "[:dom]";
 final_textcontent += dom_text;
 // * - 画像
 for (let i=0; i < images.length; i++) {
-    image_make_it(images[i]);
+    image_make_it(images[i], i);
 }
 // * - JSON類
 let yi_text = JSON.stringify(yt_id_list) + "[:yt_id_list]";
@@ -833,7 +873,7 @@ glil.download = "glimpse.txt";
 let int = setInterval(() => {
     if (glil.classList.contains("change")) {
         // 別タブで開くには？
-        // window.location.href = "https://glimpse.tokyo/publish.html";
+        window.open("https://glimpse.tokyo/publish.html");
     }
 }, 1000)
 glil.addEventListener("click", () => {

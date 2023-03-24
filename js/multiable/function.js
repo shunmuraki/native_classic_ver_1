@@ -214,11 +214,13 @@ export const is_it_same_alend = (e) => {
             // たぶんここが pausing も playing も複数存在する可能性を加味してないんだと思う.
             if (sp_cover.classList.contains("pausing")) {
                 if (player) {
-                    let the_name = "same_num_" + target_data(which_special_is(the_target_left), "this_cov_is_");
-                    player.pauseVideo();
-                    let the_time = yt_resetter(the_target_left);
-                    player.seekTo(the_time);
-                    yt_loop_stopper(player, "end", the_name);
+                    if (which_special_is(the_target_left)) {
+                        let the_name = "same_num_" + target_data(which_special_is(the_target_left), "this_cov_is_");
+                        player.pauseVideo();
+                        let the_time = yt_resetter(the_target_left);
+                        player.seekTo(the_time);
+                        yt_loop_stopper(player, "end", the_name);
+                    }
                 }
             }
             the_state(the_target_left);
@@ -238,11 +240,13 @@ export const is_it_same_alend = (e) => {
             player_setup(the_target_right);
             if (sp_cover.classList.contains("pausing")) {
                 if (player) {
-                    let the_name = "same_num_" + target_data(which_special_is(the_target_right), "this_cov_is_");
-                    player.pauseVideo();
-                    let the_time = yt_resetter(the_target_right);
-                    player.seekTo(the_time);
-                    yt_loop_stopper(player, "start", the_name);
+                    if (which_special_is(the_target_right)) {
+                        let the_name = "same_num_" + target_data(which_special_is(the_target_right), "this_cov_is_");
+                        player.pauseVideo();
+                        let the_time = yt_resetter(the_target_right);
+                        player.seekTo(the_time);
+                        yt_loop_stopper(player, "start", the_name);
+                    }
                 }
             }
             // same_start に special_cov の content を一時的に複製して格納.
@@ -353,8 +357,9 @@ export const make_it_img = (e, m) => {
         
         input.addEventListener("change", function(o) {            
             let file = o.target.files;
-            const sizeLimit = 1024 * 1024 * 1;
-            if (file.size <= sizeLimit) {
+            const sizeLimit = 2048 * 2048 * 1;
+            console.log(file[0].size);
+            if (file[0].size <= sizeLimit) {
                 var reader = new FileReader();
                 reader.readAsDataURL(file[0]);
                 reader.onload = function() {

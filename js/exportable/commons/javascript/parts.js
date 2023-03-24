@@ -178,12 +178,24 @@ export const pragm_stylies = (e) => {
     let the_top_2;
     
     // vertical
-    if (whole_space_height > client_height) {
-        the_top_1 = ((whole_space_height - (client_height * 2)) / 2) + top_pos;
-        the_top_2 = whole_space_height - (client_height * 2) + top_pos;
-    } else {
-        the_top_1 = top_pos;
-        the_top_2 = top_pos;
+    // もちろん拡大されることを前提にするのはいいんだが、ただテキストの場合と画像・動画の場合で、実はデフォルトが異なるんやな。
+    // なのでそれを考慮したコードに現行のプログラムを直してみて、それで様子を見てみようかな。
+    if (e.lastElementChild.tagName == "p") {
+        if (whole_space_height > client_height) {
+            the_top_1 = ((whole_space_height - (client_height * 2)) / 2) + top_pos;
+            the_top_2 = whole_space_height - (client_height * 2) + top_pos;
+        } else {
+            the_top_1 = top_pos;
+            the_top_2 = top_pos;
+        }
+    } if (e.lastElementChild.tagName == "IMG") {
+        if (whole_space_height > client_height) {
+            the_top_1 = ((whole_space_height - client_height) / 2) + top_pos;
+            the_top_2 = whole_space_height - client_height + top_pos;
+        } else {
+            the_top_1 = top_pos;
+            the_top_2 = top_pos;
+        }
     }
 
     style_data["vertical"].push(client_height / 1.5);
@@ -198,8 +210,6 @@ export const pragm_stylies = (e) => {
     style_data["horizontal"].push(Math.floor(the_left_1));
     style_data["horizontal"].push(Math.floor(the_left_2));
 
-    // 画像や動画のサイズに調整をかけるためにセット.
-    style_data["size"].push(whole_space_height);
     return style_data;
 }
 
@@ -229,12 +239,6 @@ export const style_data_trace = (e, f) => {
     e.style.left = f["horizontal"][h_num] + "px";
     // scale
     e.style.transform = "scale(" + f["scale"][s_num] + ")";
-
-    if (e.parentElement.classList.contains("linear")) {
-        if (e.lastElementChild.tagName != "P") {
-            e.style.height = f["size"] + "px";
-        }
-    }
 
     // section タイトルのスタイリングのためのクラス付与.
     if (f["scale"][s_num] == 2) {
