@@ -177,9 +177,7 @@ function en_change_adaptation(e) {
 function iframe_adaptation(e) {
     let the_content = e.lastElementChild;
     let value_id = target_data(e, "id_is_");
-    if (yt_id_list.indexOf(value_id) == -1) {
-        yt_id_list.push(value_id);
-    }
+    yt_id_list.push(value_id);
     let the_name = "yt_" + String(yt_id_list.length - 1);
     // same_end 同士見つけあってDOMを節約するために発見用のidをクラスに付与する.
     e.classList.add("iframe");
@@ -652,6 +650,7 @@ for (let i = 0; i < sections.length; i++) {
     for (let o = final_big_objects.length - 1; o >= 0; o--) {
         if (final_big_objects[o]) {
             if (final_big_objects[o].classList.contains("same_deletable")) {
+                console.log(final_big_objects[o]);
                 let the_deletable_key = "same_id_" + target_data(final_big_objects[o], "same_id_");
                 if (section_deletable_list.indexOf(the_deletable_key) == -1) {
                     // 新種なので.
@@ -659,20 +658,26 @@ for (let i = 0; i < sections.length; i++) {
                     let will_deleted = document.getElementsByClassName(the_deletable_key);
                     for (let l = will_deleted.length - 1; l >= 0; l--) {
                         if (! will_deleted[l].isEqualNode(final_big_objects[o])) {
-                            // たぶん各自の anim_num_ から animation_generate_list を検索して [[], ]　← これを空にしたらいいと思う.
-                            // で、そのクラス自体取っちゃうっていう.　であとは animation_data についても value から検索して
-                            let del_list = will_deleted[l].classList;
-                            for (let j = 0; j < del_list.length; j++) {
-                                if (del_list[j].indexOf("anim_num_") != -1) {
-                                    // 移し替えて一元化.
-                                    final_big_objects[o].classList.add(del_list[j]);
+                            // same_end（中身を持たせてる）を殺さないための処理。
+                            if (! will_deleted[l].lastElementChild) {
+                                // たぶん各自の anim_num_ から animation_generate_list を検索して [[], ]　← これを空にしたらいいと思う.
+                                // で、そのクラス自体取っちゃうっていう.　であとは animation_data についても value から検索して
+                                let del_list = will_deleted[l].classList;
+                                for (let j = 0; j < del_list.length; j++) {
+                                    if (del_list[j].indexOf("anim_num_") != -1) {
+                                        // 移し替えて一元化.
+                                        final_big_objects[o].classList.add(del_list[j]);
+                                    }
                                 }
                             }
                         }
                     }
                     for (let l = will_deleted.length - 1; l >= 0; l--) {
                         if (! will_deleted[l].isEqualNode(final_big_objects[o])) {
-                            will_deleted[l].remove();
+                            // same_end（中身を持たせてる）を殺さないための処理。
+                            if (! will_deleted[l].lastElementChild) {
+                                will_deleted[l].remove();
+                            }
                         }
                     }
                 }

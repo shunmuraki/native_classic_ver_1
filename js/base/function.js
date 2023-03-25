@@ -346,11 +346,15 @@ export const the_magic_copy = (e) => {
 
         if (breaker.classList.contains("same")) {
             let same_name = "same_num_" + target_data(breaker, "same_num_");
+            let sames = document.getElementsByClassName(same_name);
+            // same_end同士中身をコピーしたい。
+            let c = sames[sames.length - 1].lastElementChild.cloneNode(true);
             // 色々処理施す前に、0 で sameならsame_start を与えて same_num もう更新する.
             // [same_cutter の部分利用]
             breaker.previousElementSibling.classList.add("same_end");
+            console.log(c);
+            breaker.previousElementSibling.appendChild(c);
             breaker.classList.add("same_start");
-            let sames = document.getElementsByClassName(same_name);
             let breakpoint = [].slice.call(sames).indexOf(breaker);
             let same_data = same_data_getter();
             same_data += 1;
