@@ -178,15 +178,22 @@ function iframe_adaptation(e) {
     let the_content = e.lastElementChild;
     let value_id = target_data(e, "id_is_");
     yt_id_list.push(value_id);
+    console.log(yt_id_list);
     let the_name = "yt_" + String(yt_id_list.length - 1);
+    console.log(the_name);
     // same_end 同士見つけあってDOMを節約するために発見用のidをクラスに付与する.
     e.classList.add("iframe");
     e.classList.add("same_deletable");
     e.classList.add("same_id_" + value_id);
     let newElement = document.createElement("div");
     newElement.setAttribute("id", the_name);
+    console.log(e);
     the_content.remove();
+    console.log(the_content);
+    console.log(e);
     e.appendChild(newElement);
+    console.log(e);
+
     return e;
 }
 
@@ -650,7 +657,6 @@ for (let i = 0; i < sections.length; i++) {
     for (let o = final_big_objects.length - 1; o >= 0; o--) {
         if (final_big_objects[o]) {
             if (final_big_objects[o].classList.contains("same_deletable")) {
-                console.log(final_big_objects[o]);
                 let the_deletable_key = "same_id_" + target_data(final_big_objects[o], "same_id_");
                 if (section_deletable_list.indexOf(the_deletable_key) == -1) {
                     // 新種なので.
@@ -833,8 +839,6 @@ function image_make_it(e, f) {
         // console.log(img_blocks[f].lastElementChild);
         let w = image.width;
         let h = image.height;
-        console.log(w);
-        console.log(h);
         let d = Math.trunc(w / 1000);
         // リサイズはここでできるよ.
         let trimed_w;
@@ -851,7 +855,6 @@ function image_make_it(e, f) {
         let ctx = canvas.getContext("2d");
         ctx.drawImage(image, 0, 0, w, h, 0, 0, trimed_w, trimed_h);
         the_textdata = String(canvas.toDataURL("image/png")) + "[:img]";
-        console.log(the_textdata);
     }
     final_textcontent += the_textdata;
 }
