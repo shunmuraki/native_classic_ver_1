@@ -180,7 +180,7 @@ export const pragm_stylies = (e) => {
     // vertical
     // もちろん拡大されることを前提にするのはいいんだが、ただテキストの場合と画像・動画の場合で、実はデフォルトが異なるんやな。
     // なのでそれを考慮したコードに現行のプログラムを直してみて、それで様子を見てみようかな。
-    if (e.lastElementChild.tagName == "p") {
+    if (e.lastElementChild.tagName == "P") {
         if (whole_space_height > client_height) {
             the_top_1 = ((whole_space_height - (client_height * 2)) / 2) + top_pos;
             the_top_2 = whole_space_height - (client_height * 2) + top_pos;

@@ -517,6 +517,7 @@ for (let i = 0; i < sp_covers.length; i++) {
                             video_animation = ac_vi_adaptation(the_start_elems, video_animation, "active_st");
 
                             video_animation["anim_name"] = animation_generate_list.length;
+                            video_animation["video_startpoint"] -= v_duration;
 
                             animation_generate_list.push([]);
                             animation_data["section_" + i]["about_anims"]["data_" + data_num] = video_animation;

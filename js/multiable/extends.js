@@ -86,9 +86,17 @@ export const video_load_then = (e, f) => {
     same_data = same_data_getter();
     same_data += 1;
     same_data_counter(same_data);
-
     let the_id_name = "yt_editor_" + same_data;
-    let the_code = e.slice(-11);
+    let the_code;
+    
+    // "v="以降の11文字を取得してcodeとする。
+    let spl = e.indexOf("v=");
+    // UMから取り込まれる場合と、通常のURLペーストの場合に対応。
+    if (e.indexOf("v=") == -1) {
+        the_code = e;
+    } else {
+        the_code = e.slice(spl + 2, spl + 13);
+    }
     let the_box = f.parentElement;
     the_box.lastElementChild.remove();
     let the_add_box = document.createElement("div");

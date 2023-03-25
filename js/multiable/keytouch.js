@@ -17,12 +17,10 @@ window.addEventListener("keydown", (e) => {
     if (type_signiture)  {
         // 以下YouTubeの動画のURLがペーストされた場合の処理.
         if ( type_signiture.indexOf('youtube.com') != -1) {
-            if (screen.classList.contains("ms")) {
-                video_load_then(type_signiture, current);
-                let centering = document.querySelector(".centering");
-                adjust_box(centering);
-                screen.classList.remove("ms");
-            }
+            video_load_then(type_signiture, current);
+            let centering = document.querySelector(".centering");
+            adjust_box(centering);
+            screen.classList.remove("ms");
         }
         if ( type_signiture.indexOf('imag') != -1) {
             if (screen.classList.contains("ms")) {

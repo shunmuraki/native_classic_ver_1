@@ -38,7 +38,10 @@ for (let i = 0; i < section_elms.length; i++) {
     if (the_next_section) {
         the_next_section.style.opacity = 0;
         the_next_section.style.marginTop = '-50vh';
-        the_next_section.style.paddingTop = "50px";
+        // linear - linear を警戒.
+        if (the_next_section.classList.contains("non")) {
+            the_next_section.style.paddingTop = "50px";
+        }
     }
 }
 
@@ -101,6 +104,12 @@ for (let i = 0; i < official_sections.length; i++) {
         let style_data = pragm_stylies(object);
         style_data_trace(object, style_data);
     }
+}
+
+// linear について、 z-indexを調整する。
+let linears = document.querySelectorAll(".linear");
+for (let i=0; i < linears.length; i++) {
+    linears[i].style.zIndex = 200 - i;
 }
 
 window.addEventListener("DOMContentLoaded", () => {

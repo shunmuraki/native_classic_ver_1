@@ -80,7 +80,6 @@ export class Animation_opacity_stand {
             {
                 duration: g * 1000, 
                 easing: 'linear', 
-                composite: 'accumulate'
             },
         );  
         animation_desc = new Animation(effect);
