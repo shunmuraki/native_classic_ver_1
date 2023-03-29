@@ -1,4 +1,4 @@
-import { screen, window_height } from "../base/elements.js";
+import { full_end_scrollwidth, full_start_scrollwidth, screen, window_height } from "../base/elements.js";
 import { focus_checker, make_fragment } from "./function.js";
 import { wheel_positioning } from "../stylable/function.js";
 

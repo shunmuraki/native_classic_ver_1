@@ -1,6 +1,6 @@
 import { all_view_changer } from "../editable/function.js";
 import { is_it_same_series, same_cutter } from "../multiable/function.js";
-import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_sunsetline, blocksize, blocktime } from "./elements.js";
+import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_sunsetline, blocksize, blocktime, custom_end_scrollwidth } from "./elements.js";
 import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, which_special_is, tracer_basis } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
 import { same_data_getter, same_data_counter } from "./tools.js";
@@ -72,6 +72,7 @@ export const make_fragment = (e, f) => {
     const adjuster = document.createElement("div");
     const vertical = document.createElement("div");
     const textarea = document.createElement("textarea");
+    const end_adjuster = document.createElement("div");
     
     sp_cover.classList.add("sp_cover");
     sp_cover.classList.add("pausing");
@@ -84,19 +85,25 @@ export const make_fragment = (e, f) => {
     textarea.classList.add("styling_1_1_0_1");
     adjuster.classList.add("horizontal_child");
     vertical.classList.add("horizontal_child");
+    end_adjuster.classList.add("adjuster");
+    end_adjuster.classList.add("horizontal_child");
 
     vertical.appendChild(textarea);
     horizontal.appendChild(adjuster);
     horizontal.appendChild(vertical);
+    horizontal.appendChild(end_adjuster);
     sp.appendChild(horizontal);
     sp_cover.appendChild(sp);
     
     let fragment = document.createDocumentFragment();
     fragment.append(sp_cover);
+    
     if (f == "before") {
         e.before(fragment);
+        e.previousElementSibling.lastElementChild.lastElementChild.scrollLeft = full_start_scrollwidth;
     } else if (f == "after") {
-        e.after(fragment);
+        e.after(fragment);        
+        e.nextElementSibling.lastElementChild.lastElementChild.scrollLeft = full_start_scrollwidth;
     }
 }
 
@@ -192,18 +199,19 @@ export const go_top = (e, f) => {
         } else if (pre_sibling) {
             blur_checker(ver);            
             sibling_height = pre_sibling.clientHeight;
-            next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
+            next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild.previousElementSibling;
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
             // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
             let now_position = pre_sibling.lastElementChild.lastElementChild.scrollLeft;
-            let the_distance = full_end_scrollwidth - now_position;
+            let the_distance = custom_end_scrollwidth(pre_sibling.lastElementChild.lastElementChild) - now_position;
             all_view_changer(pre_sibling, the_distance);
             special_cleaner(pre_sibling);
             // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
             if (sibling_height > to_the_distance) {
                 scrollBy(0, - connected_your_height);
             } 
+            is_it_same_series(next_one);
             wheel_positioning();
         }
 
@@ -217,7 +225,6 @@ export const go_top = (e, f) => {
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
-
             special_cleaner(vertical_to_sp_cover(ver));   
             // edit モードは「see」ラインの位置を固定したい狙い.
             scrollBy(0, - connected_your_height);
@@ -253,16 +260,17 @@ export const go_bottom = (e, f) => {
         } else if (pre_sibling) {
             blur_checker(ver);
             sibling_height = pre_sibling.clientHeight;
-            next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild;
+            next_one = pre_sibling.lastElementChild.lastElementChild.children[1];
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
             let now_position = pre_sibling.lastElementChild.lastElementChild.scrollLeft;
-            let the_distance = full_end_scrollwidth - now_position;
+            let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
             special_cleaner(pre_sibling);
             if (sibling_height > to_the_distance) {
                 scrollBy(0, connected_your_height);
             } 
+            is_it_same_series(next_one);
             wheel_positioning();
         }
 
@@ -314,19 +322,21 @@ export const go_right = (e, f) => {
     go_af_scroll();
     let ver = e;
     if (ver.nextElementSibling) {
-        blur_checker(ver);
-        let sp_cover = vertical_to_sp_cover(ver);   
-        all_view_changer(sp_cover, blocksize);
-        let next_one = ver.nextElementSibling;
-        centering_marker(ver, next_one, f);
-
-        if (f == "centering") {
-            focus_checker(next_one);
+        if (! ver.nextElementSibling.classList.contains("adjuster")) {
+            blur_checker(ver);
+            let sp_cover = vertical_to_sp_cover(ver);   
+            all_view_changer(sp_cover, blocksize);
+            let next_one = ver.nextElementSibling;
+            centering_marker(ver, next_one, f);
+    
+            if (f == "centering") {
+                focus_checker(next_one);
+            }
+    
+            // 変更があったとしたら今のラインなのでconnectedの影響によるループは必要なし.
+            same_change_tracer(next_one);
+            is_it_same_series(next_one);
         }
-
-        // 変更があったとしたら今のラインなのでconnectedの影響によるループは必要なし.
-        same_change_tracer(next_one);
-        is_it_same_series(next_one);
     }
 }
 

@@ -1,4 +1,4 @@
-import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, blocksize, linesize, blocktime } from "../base/elements.js";
+import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, blocksize, linesize, blocktime, custom_end_scrollwidth } from "../base/elements.js";
 import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box, pointer_anim } from "../base/function.js";
 import { vertical_to_hor, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter, which_special_is } from "../base/tools.js";
 import { is_it_same_series } from "../multiable/function.js";
@@ -134,10 +134,10 @@ window.addEventListener("keydown", (e)=>{
                 let screen_sps = current_sp_cover.children;
                 for (let i = 0; i < screen_sps.length; i++) {
                     let screen_vers = screen_sps[i].lastElementChild.children;
-                    for (let o = 0; o < screen_vers.length; o++) {
-                      
-                        // adjuster をスキップ  
-                        if (o > 0) {
+                    // 最後尾のadjuster をスキップ  
+                    for (let o = 0; o < screen_vers.length - 1; o++) {
+                        // 前のadjuster をスキップ  
+                        if (o > 0 ) {
                             let the_num = o;
                             let ver_side = Math.trunc(the_num / linesize);
                             let hor_side = the_num % linesize;
@@ -820,8 +820,9 @@ window.addEventListener("keydown", (e)=>{
                     // 最初に sp_coverをクリーンアップ。
                     for (let i = 0; i < original_sp_cover.children.length; i++) {
                         let vers = original_sp_cover.children[i].lastElementChild.children;
-                        for (let o = vers.length - 1; o >= 0 ; o--) {
-                            // adjusterを残しておく.
+                        // 最後尾のadjusterを残しておく.
+                        for (let o = vers.length - 2; o >= 0 ; o--) {
+                            // 最初のadjusterも残しておく.
                             if (o > 0) { 
                                 vers[o].remove();
                             }
@@ -1006,7 +1007,7 @@ window.addEventListener("keydown", (e)=>{
                             
                             // デフォルトレイヤーにおける編集対象だったsp_coverへFragmentたちを挿入. 編集モードから回帰.
                             if (o != 0) {
-                                original_sp_cover.children[o - 1].lastElementChild.appendChild(scrap_sp_hor_fragment);
+                                original_sp_cover.children[o - 1].lastElementChild.lastElementChild.before(scrap_sp_hor_fragment);
                             }
                         }
                     }
@@ -1015,7 +1016,7 @@ window.addEventListener("keydown", (e)=>{
                     if (document.querySelector(".centering")) {
                         document.querySelector(".centering").classList.remove("centering");
                     }
-                    let the_new_focusedblock = original_sp_cover.lastElementChild.lastElementChild.lastElementChild;
+                    let the_new_focusedblock = original_sp_cover.lastElementChild.lastElementChild.lastElementChild.previousElementSibling;                    
                     document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
                     the_new_focusedblock.classList.add("centering");
                     original_centering_checker(original_sp_cover, the_new_focusedblock);
@@ -1039,6 +1040,8 @@ window.addEventListener("keydown", (e)=>{
                 bo.classList.remove("edit_mode");
                 screen.style.display = "block";
                 let final_centering = document.querySelector(".centering");
+                let now_position = vertical_to_hor(final_centering).scrollLeft;
+                all_view_changer(vertical_to_sp_cover(final_centering), custom_end_scrollwidth(vertical_to_hor(final_centering)) - now_position);
                 // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
                 focus_checker(final_centering);
                 adjust_box(final_centering);

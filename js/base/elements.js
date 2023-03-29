@@ -14,6 +14,12 @@ let default_length = default_block_length + window.innerWidth;
 
 export const full_start_scrollwidth = window.innerWidth - the_a;
 export const full_end_scrollwidth = default_length - the_c + blocksize;
+// e = scrollWidth
+export const custom_end_scrollwidth = (e) => {
+    let the_distance = e.scrollWidth - window.innerWidth - the_a - blocksize;
+    return the_distance;
+}
+
 export const half_left_width = the_a;
 export const half_right_width = the_c;
 
