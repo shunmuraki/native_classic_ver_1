@@ -478,6 +478,19 @@ p, span, a {
   border-right: 2px solid #0072dd;
   border-bottom: 2px solid #0072dd;
 }
+.block_layer .sp_cover .sp .horizontal .vertical:nth-of-type(2) {
+  overflow: visible;
+}
+.block_layer .sp_cover .sp .horizontal .vertical:nth-of-type(2):after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: calc(50vw + 180px);
+  height: 2px;
+  bottom: 0px;
+  left: calc(180px - 50vw);
+  background-color: #0072dd;
+}
 .block_layer .sp_cover .sp .horizontal .vertical label {
   width: 100%;
   height: 100%;
