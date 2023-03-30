@@ -176,6 +176,7 @@ export const pragm_stylies = (e) => {
     let top_pos = whole_space_height * (this_num - 1);
     let the_top_1;
     let the_top_2;
+    let custom_size;
     
     // vertical
     // もちろん拡大されることを前提にするのはいいんだが、ただテキストの場合と画像・動画の場合で、実はデフォルトが異なるんやな。
@@ -190,12 +191,16 @@ export const pragm_stylies = (e) => {
         }
     } if (e.lastElementChild.tagName == "IMG") {
         if (whole_space_height > client_height) {
-            the_top_1 = ((whole_space_height - client_height) / 2) + top_pos;
-            the_top_2 = whole_space_height - client_height + top_pos;
+            custom_size = client_height;
+            the_top_1 = ((whole_space_height - custom_size) / 2) + top_pos;
+            the_top_2 = whole_space_height - custom_size + top_pos;
         } else {
+            custom_size = Math.floor(whole_space_height);
             the_top_1 = top_pos;
             the_top_2 = top_pos;
         }
+    } else {
+        custom_size = Math.floor(whole_space_height);;
     }
 
     style_data["vertical"].push(client_height / 1.5);
@@ -209,6 +214,7 @@ export const pragm_stylies = (e) => {
     style_data["horizontal"].push(client_width / 1.5);
     style_data["horizontal"].push(Math.floor(the_left_1));
     style_data["horizontal"].push(Math.floor(the_left_2));
+    style_data["size"].push(Math.floor(custom_size));
 
     return style_data;
 }
@@ -239,6 +245,12 @@ export const style_data_trace = (e, f) => {
     e.style.left = f["horizontal"][h_num] + "px";
     // scale
     e.style.transform = "scale(" + f["scale"][s_num] + ")";
+    // size
+    if (e.parentElement.classList.contains("linear")) {
+        if (e.lastElementChild.tagName != "P") {
+            e.style.height = f["size"][0] + "px";
+        }
+    }
 
     // section タイトルのスタイリングのためのクラス付与.
     if (f["scale"][s_num] == 2) {
