@@ -406,16 +406,15 @@ p, span, a {
 }
 .block_layer::after {
   content: "";
-  width: 1.5px;
+  width: 2px;
   background-color: #0072dd;
   height: 100vh;
   position: absolute;
   top: 0;
-  left: calc((100% + 360.5px) / 2);
+  left: calc((100% + 360px) / 2 - 2px);
 }
 .block_layer .sp_cover {
   max-width: 100vw;
-  border: 1.5px solid #0072dd;
 }
 .block_layer .sp_cover .orange_space {
   position: relative;
@@ -467,7 +466,6 @@ p, span, a {
 }
 .block_layer .sp_cover .sp .horizontal .adjuster {
   width: 100vw;
-  background-color: rgb(0, 0, 0);
 }
 .block_layer .sp_cover .sp .horizontal .vertical {
   width: 360px;
@@ -477,6 +475,8 @@ p, span, a {
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
+  border-right: 2px solid #0072dd;
+  border-bottom: 2px solid #0072dd;
 }
 .block_layer .sp_cover .sp .horizontal .vertical label {
   width: 100%;
@@ -512,9 +512,9 @@ p, span, a {
 .block_layer .sp_cover .sp .horizontal .same:after {
   content: "";
   width: 100%;
-  height: 3px;
+  height: 2px;
   position: absolute;
-  top: 3px;
+  top: 4px;
   left: 0px;
   border-radius: 1px;
   background-color: #1f93ff;
@@ -551,6 +551,10 @@ p, span, a {
 }
 .new_layer .sp_cover .sp .horizontal .new_layer_centering {
   box-shadow: inset 3px 3px 11px #0067c7, inset -3px -3px 11px #0079ea !important;
+}
+.new_layer .sp_cover .sp .horizontal .vertical {
+  border-right: none;
+  border-bottom: none;
 }
 .new_layer .see {
   box-sizing: border-box;
@@ -696,19 +700,30 @@ img, iframe {
   z-index: 5000;
   background-color: #0070D8;
   overflow: hidden;
+  border-right: 2px solid #0072dd;
+  border-bottom: 2px solid #0072dd;
 }
 .special_cov:after {
   content: "";
   width: 100%;
-  height: 3px;
+  height: 2px;
   position: absolute;
   left: 0px;
-  top: 3px;
+  top: 4px;
   border-radius: 1px;
   background-color: #1f93ff;
 }
 .special_cov .write_area, .special_cov img, .special_cov iframe {
   padding: 20px 10px;
+}
+
+.edit_mode .special_cov {
+  position: absolute;
+  z-index: 5000;
+  background-color: #0070D8;
+  overflow: hidden;
+  border-right: none;
+  border-bottom: none;
 }
 
 .center_special {
