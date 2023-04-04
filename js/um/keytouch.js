@@ -38,6 +38,7 @@ document.addEventListener("keydown", (e) => {
     if (screen.classList.contains("um")) {
 
         if (k == "Escape") {
+            e.preventDefault();
             um.style.display = "none";
             centering = document.querySelector(".centering");
             focus_checker(centering);        

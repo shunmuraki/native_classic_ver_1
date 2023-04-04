@@ -774,6 +774,8 @@ window.addEventListener("keydown", (e)=>{
         // Edit モードを終了.
         if (k == "Escape") {
 
+            e.preventDefault();
+
             if (new_layer.classList.contains("autoseekingmode")) {
 
                 the_scrolled_distance = 0;

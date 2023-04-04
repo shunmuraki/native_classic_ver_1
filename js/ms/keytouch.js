@@ -52,6 +52,11 @@ window.addEventListener("keydown", (e)=>{
         if (screen.classList.contains("ms")) {
           // ms の終了処理.
           if (k == "Escape" || k == "Enter") {
+
+            if (k == "Escape") {
+              e.preventDefault();
+            }
+
             if (! screen.classList.contains("style")) {
               setTimeout(() => {
                 if (document.querySelector(".ms_area")) {

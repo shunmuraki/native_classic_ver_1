@@ -207,6 +207,7 @@ export const go_top = (e, f) => {
             let the_distance = custom_end_scrollwidth(pre_sibling.lastElementChild.lastElementChild) - now_position;
             all_view_changer(pre_sibling, the_distance);
             special_cleaner(pre_sibling);
+            cs_bye();
             // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
             if (sibling_height > to_the_distance) {
                 scrollBy(0, - connected_your_height);
@@ -226,6 +227,7 @@ export const go_top = (e, f) => {
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
             special_cleaner(vertical_to_sp_cover(ver));   
+            cs_bye();
             // edit モードは「see」ラインの位置を固定したい狙い.
             scrollBy(0, - connected_your_height);
             is_it_same_series(next_one);
@@ -267,6 +269,7 @@ export const go_bottom = (e, f) => {
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
             special_cleaner(pre_sibling);
+            cs_bye();
             if (sibling_height > to_the_distance) {
                 scrollBy(0, connected_your_height);
             } 
@@ -285,6 +288,7 @@ export const go_bottom = (e, f) => {
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);            
             special_cleaner(vertical_to_sp_cover(ver));     
+            cs_bye();
             // edit モードは「see」ラインの位置を固定したい狙い.
             scrollBy(0, connected_your_height);
             is_it_same_series(next_one);
@@ -495,4 +499,14 @@ export const pointer_anim = () => {
             delay: 300,
         }
     );
+}
+
+// center_specialクラスを除去する（special_covは残す）
+export const cs_bye = () => {
+    let specials = document.querySelectorAll(".special_cov");
+    for (let i = 0; i < specials.length; i++) {
+        if (specials[i].classList.contains("center_special")) {
+            specials[i].classList.remove("center_special");
+        }
+    }
 }

@@ -102,8 +102,10 @@ export const same_data_counter = (e) => {
 export const tracer_basis = (e) => {
     let special_cov = which_special_is(e);
     
+    // たぶんここで opacity: 1; の content が same_end に append されていたんだね。
     if (special_cov) {
         let specon_cloned = special_cov.lastElementChild.cloneNode(true);
+        specon_cloned.style.setProperty('opacity', 0, 'important');
         let same_name = "same_num_" + target_data(e, "same_num_");
         let sames = document.getElementsByClassName(same_name);
         sames[sames.length - 1].lastElementChild.remove();
@@ -119,10 +121,12 @@ export const same_change_tracer = (e) => {
             let special_cov = which_special_is(e.previousElementSibling);
             if (special_cov) {
                 let specon_cloned = special_cov.lastElementChild.cloneNode(true);
+                specon_cloned.style.setProperty('opacity', 0, 'important');
                 if (e.previousElementSibling.lastElementChild) {
                     e.previousElementSibling.lastElementChild.remove();
                 }
                 e.previousElementSibling.appendChild(specon_cloned);
+                console.log(e.previousElementSibling);
             }
         }
     } 

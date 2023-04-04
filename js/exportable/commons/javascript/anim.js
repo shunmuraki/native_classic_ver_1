@@ -9,7 +9,7 @@ export class Animation_vertical_stand {
         let effect = new KeyframeEffect(
             this.target,
             [
-                {top: f}
+                {top: f + "px"}
             ], 
             {
                 duration: g * 1000, 
@@ -31,7 +31,7 @@ export class Animation_horizontal_stand {
         let effect = new KeyframeEffect(
             this.target,
             [
-                {left: f} 
+                {left: f + "px"} 
             ], 
             {
                 duration: g * 1000, 

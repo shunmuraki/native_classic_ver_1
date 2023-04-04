@@ -37,11 +37,13 @@ document.addEventListener("keydown", (e) => {
     }
     if (screen.classList.contains("style")) {
           if (k == "Escape") {
+            e.preventDefault();
             let w_w = document.querySelector(".waiting_wheel");
             if (w_w) {
               // セカンドレイヤーが表示中の場合の処理.
               w_w.classList.remove("waiting_wheel");
               w_w.style.display = "none";
+              document.querySelector(".layer_1").style.opacity = 1;
             } else {
               // ファーストレイヤーが表示中の場合の処理.
               the_pointer.animate(

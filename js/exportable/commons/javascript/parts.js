@@ -189,7 +189,7 @@ export const pragm_stylies = (e) => {
             the_top_1 = top_pos;
             the_top_2 = top_pos;
         }
-    } if (e.lastElementChild.tagName == "IMG") {
+    } else if (e.lastElementChild.tagName == "IMG") {
         if (whole_space_height > client_height) {
             custom_size = client_height;
             the_top_1 = ((whole_space_height - custom_size) / 2) + top_pos;
@@ -208,10 +208,23 @@ export const pragm_stylies = (e) => {
     style_data["vertical"].push(the_top_2);
 
     // horizontal
+    let c = custom_size / client_height;
+    let w = Math.floor(client_width) * c;
+
     // scaleを知ってからセッティングする必要がある.
-    let the_left_1 = (px_width - client_width) / 2;
-    let the_left_2 = px_width - (client_width * 2);    
-    style_data["horizontal"].push(client_width / 1.5);
+    let the_left_0;
+    let the_left_1;
+    let the_left_2;    
+    if (e.lastElementChild.tagName == "P") {
+        the_left_0 = client_width / 1.5;
+        the_left_1 = (px_width - client_width) / 2;
+        the_left_2 = px_width - (client_width * 2);    
+    } else if (e.lastElementChild.tagName == "IMG") {
+        the_left_0 = 0;
+        the_left_1 = (px_width - w) / 2;
+        the_left_2 = px_width - w;    
+    } 
+    style_data["horizontal"].push(Math.floor(the_left_0));
     style_data["horizontal"].push(Math.floor(the_left_1));
     style_data["horizontal"].push(Math.floor(the_left_2));
     style_data["size"].push(Math.floor(custom_size));

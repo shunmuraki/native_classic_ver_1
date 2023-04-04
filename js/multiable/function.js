@@ -139,6 +139,7 @@ export const is_it_same_start = (e) => {
         }
 
         // 中身が opacity 0 の same_end をコピーしたケースを想定して戻す.
+        // here??
         special_cov.lastElementChild.style.setProperty('opacity', 1, 'important');
 
         // centering クラスを持つ e なんだったら special_cov にも center_special を与えるようにしたり、そうじゃなかったら除去するようにしないと.
@@ -225,12 +226,20 @@ export const is_it_same_alend = (e) => {
             }
             the_state(the_target_left);
             if (the_target_left.lastElementChild) {
+
+                // here??
                 the_target_left.lastElementChild.style.setProperty('opacity', 1, 'important');
+                // test //
+                // console.log(the_target_left);
             } 
         } else if (the_target_left.classList.contains("same_start")) {
             // 同 same_num を持つ same_start の content があれば削除.
             if (the_target_left.lastElementChild) {
-                the_target_left.lastElementChild.remove();
+                the_target_left.lastElementChild.style.setProperty('opacity', 0, 'important');
+                let d = the_target_left.lastElementChild;
+                d.remove();
+                console.log(the_target_left.lastElementChild);
+                console.log(the_target_left);
             }
         }
     }
@@ -251,6 +260,9 @@ export const is_it_same_alend = (e) => {
             }
             // same_start に special_cov の content を一時的に複製して格納.
             the_state(the_target_right);
+            if (the_target_right.lastElementChild) {
+                the_target_right.lastElementChild.remove();
+            }
             the_target_right.appendChild(same_start_content);
 
         } else if (the_target_right.classList.contains("same_end")) {
