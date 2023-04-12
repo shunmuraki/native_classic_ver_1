@@ -60,7 +60,7 @@ for (let i = 0; i < 10; i++) {
   container.classList.add("box");
   let inner = document.createElement("img");
   // サムネイルだけを読み込む.
-  let the_srccode = 'http://img.youtube.com/vi/' + the_id + '/mqdefault.jpg';
+  let the_srccode = 'http://img.youtube.com/vi/' + the_id + '/maxresdefault.jpg';
   inner.src = the_srccode;
   container.appendChild(inner);
   container.classList.add("this_yt_id_" + yt_videolist_ted[i]);

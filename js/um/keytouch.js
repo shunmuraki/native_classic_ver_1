@@ -28,6 +28,7 @@ document.addEventListener("keydown", (e) => {
                 um.style.display = "block";
                 centering.style.height = 225 + "px";
                 current.blur();
+                centering.style.opacity = 0;
                 screen.classList.remove("um_ready");
                 adjust_box(centering);
                 um_positioning();
@@ -44,6 +45,7 @@ document.addEventListener("keydown", (e) => {
             focus_checker(centering);        
             screen.classList.remove("um");
             screen.classList.remove("um_ready");
+            centering.style.opacity = 1;
         }
     
         let the_um_current = document.querySelector(".um_centering");
@@ -131,6 +133,7 @@ document.addEventListener("keydown", (e) => {
             um.style.display = "none";
             screen.classList.remove("um");
             screen.classList.remove("um_ready");
+            native_center.style.opacity = 1;
         }
     }
 });

@@ -180,9 +180,10 @@ export const special_cleaner = (e) => {
 export const go_top = (e, f) => {
 
     let ver = e;
+    let this_sc = vertical_to_sp_cover(ver);
     var sibling = vertical_to_sp(ver).previousElementSibling;
-    var pre_sibling = vertical_to_sp_cover(ver).previousElementSibling;
-    let connected_your_height = vertical_to_sp_cover(ver).clientHeight;
+    var pre_sibling = this_sc.previousElementSibling;
+    let connected_your_height = this_sc.clientHeight;
     let to_the_distance = vertical_to_sp(ver).getBoundingClientRect().top;
     let next_one;
     let sibling_height = 0;
@@ -204,10 +205,17 @@ export const go_top = (e, f) => {
             next_one = pre_sibling.lastElementChild.lastElementChild.lastElementChild.previousElementSibling;
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
+            
             // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
             let now_position = pre_sibling.lastElementChild.lastElementChild.scrollLeft;
             let the_distance = custom_end_scrollwidth(pre_sibling.lastElementChild.lastElementChild) - now_position;
             all_view_changer(pre_sibling, the_distance);
+
+            // 自分自身を変えろ。
+            let my_position = this_sc.lastElementChild.lastElementChild.scrollLeft;
+            let my_distance = full_start_scrollwidth - my_position;
+            all_view_changer(this_sc, my_distance);
+
             special_cleaner(pre_sibling);
             cs_bye();
             // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
@@ -225,9 +233,16 @@ export const go_top = (e, f) => {
             sibling_height = pre_sibling.clientHeight;
             next_one = pre_sibling.children[1].lastElementChild.lastElementChild;
             centering_marker(ver, next_one, f);
+            
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
+
+            // 自分を変えろ！
+            let my_position = this_sc.children[1].lastElementChild.scrollLeft;
+            let my_distance = full_start_scrollwidth - my_position;
+            all_view_changer(this_sc, my_distance);    
+
             special_cleaner(vertical_to_sp_cover(ver));   
             cs_bye();
             // edit モードは「see」ラインの位置を固定したい狙い.
@@ -242,9 +257,10 @@ export const go_top = (e, f) => {
 export const go_bottom = (e, f) => {
 
     let ver = e;
+    let this_sc = vertical_to_sp_cover(ver);
     var sibling = vertical_to_sp(ver).nextElementSibling;
-    var pre_sibling = vertical_to_sp_cover(ver).nextElementSibling;
-    let connected_your_height = vertical_to_sp_cover(ver).clientHeight;
+    var pre_sibling = this_sc.nextElementSibling;
+    let connected_your_height = this_sc.clientHeight;
     let to_the_distance =  window.innerHeight - vertical_to_sp(ver).getBoundingClientRect().bottom;
     let sibling_height = 0;
     let next_one;
@@ -270,6 +286,12 @@ export const go_bottom = (e, f) => {
             let now_position = pre_sibling.lastElementChild.lastElementChild.scrollLeft;
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
+
+            // 自分を変えろ。
+            let my_position = this_sc.lastElementChild.lastElementChild.scrollLeft;
+            let my_distance = custom_end_scrollwidth(this_sc.lastElementChild.lastElementChild) - my_position;
+            all_view_changer(this_sc, my_distance);
+
             special_cleaner(pre_sibling);
             cs_bye();
             if (sibling_height > to_the_distance) {
@@ -286,9 +308,16 @@ export const go_bottom = (e, f) => {
             sibling_height = pre_sibling.clientHeight;
             next_one = pre_sibling.children[1].lastElementChild.children[1];
             centering_marker(ver, next_one, f);
+            
             let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
             let the_distance = full_start_scrollwidth - now_position;
-            all_view_changer(pre_sibling, the_distance);            
+            all_view_changer(pre_sibling, the_distance);    
+            
+            // 自分を変えろ！
+            let my_position = this_sc.children[1].lastElementChild.scrollLeft;
+            let my_distance = full_end_scrollwidth - my_position;
+            all_view_changer(this_sc, my_distance);
+
             special_cleaner(vertical_to_sp_cover(ver));     
             cs_bye();
             // edit モードは「see」ラインの位置を固定したい狙い.
