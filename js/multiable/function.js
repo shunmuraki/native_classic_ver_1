@@ -140,7 +140,7 @@ export const is_it_same_start = (e) => {
 
         // 中身が opacity 0 の same_end をコピーしたケースを想定して戻す.
         // here??
-        special_cov.lastElementChild.style.setProperty('opacity', 1, 'important');
+        // special_cov.lastElementChild.style.setProperty('opacity', 1, 'important');
 
         // centering クラスを持つ e なんだったら special_cov にも center_special を与えるようにしたり、そうじゃなかったら除去するようにしないと.
         if (e.classList.contains("centering") || e.classList.contains("new_layer_centering")) {
@@ -228,7 +228,9 @@ export const is_it_same_alend = (e) => {
             if (the_target_left.lastElementChild) {
 
                 // here??
-                the_target_left.lastElementChild.style.setProperty('opacity', 1, 'important');
+                if (! the_target_left.classList.contains("stable")) {
+                    the_target_left.lastElementChild.style.setProperty('opacity', 1, 'important');
+                }
                 // test //
                 // console.log(the_target_left);
             } 
@@ -275,6 +277,21 @@ export const is_it_same_alend = (e) => {
     if (e.classList.contains("same_start") ||  e.classList.contains("same_end")) {
         if (e.lastElementChild) {
             e.lastElementChild.style.setProperty('opacity', 0, 'important');
+        }
+    }
+
+    // ここに新しく「e.classList.contains("stable")」みたいなものを追加してはどうだろう？
+    if (e.classList.contains("stable_end")) {
+        // 削除するバージョン。
+        if (which_special_is(e)) {
+            let s = which_special_is(e);
+            s.classList.add("stable_end");
+        }
+    } else {
+        // 削除するバージョン。
+        if (which_special_is(e)) {
+            let s = which_special_is(e);
+            s.classList.remove("stable_end");
         }
     }
 }

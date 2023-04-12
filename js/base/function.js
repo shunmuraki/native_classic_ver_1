@@ -105,6 +105,8 @@ export const make_fragment = (e, f) => {
         e.after(fragment);        
         e.nextElementSibling.lastElementChild.lastElementChild.scrollLeft = full_start_scrollwidth;
     }
+
+    cs_bye();
 }
 
 // ブロックの生成関数
@@ -117,7 +119,6 @@ export const make_ver_fragment = (e, f) => {
     textarea.classList.add("write_area");
     textarea.classList.add("styling_1_1_0_1");
     vertical.classList.add("horizontal_child");
-
     vertical.appendChild(textarea);
 
     let fragment = document.createDocumentFragment();
@@ -128,6 +129,7 @@ export const make_ver_fragment = (e, f) => {
     } else if (f == "after") {
         e.after(fragment);
     }
+    cs_bye();
 }
 
 // 空のブロックの生成関数（sameの場合に使用）
@@ -356,6 +358,7 @@ export const the_magic_copy = (e) => {
     // 各spごとにコピーして以前のブロックをまとめて削除してラインfragmentとして変数に格納しておく.
     for (let i = 0; i < sp_cover.childElementCount; i++) {
         let line = sp_cover.children[i].lastElementChild.children;
+        let current_scrollleft = sp_cover.children[i].lastElementChild.scrollLeft;
         let breaker = line[c_num + 1];
 
         if (breaker.classList.contains("same")) {
@@ -381,13 +384,17 @@ export const the_magic_copy = (e) => {
         }
 
         // 色々処理.
+
+        // ここでは何をしている？？
         let new_folder = new Array();
-        for (let o = line.length - 1; o >= c_num + 1; o--) {
+        // adjuster を削除させない。
+        for (let o = line.length - 2; o >= c_num + 1; o--) {
             new_folder.unshift(line[o]);
             line[o].remove();
         }
 
         magic_elms.push(new_folder);
+        sp_cover.children[i].lastElementChild.scrollLeft = current_scrollleft;
     }
 }
 

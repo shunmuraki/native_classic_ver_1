@@ -26,7 +26,8 @@ export const half_right_width = the_c;
 export const window_height = window.innerHeight;
 export const the_middline = window_height * 0.5;
 export const the_sunsetline = window_height * 0.3;
-export const the_name_list = ['same_start', 'same_end', 'same_num_', 'same', 'actuar_time_', 'actuar_st', 'actuar_en', 'this_video_st', 'this_video_en', "video", "img", "id_is_"];
+// stable周辺追加バージョン。
+export const the_name_list = ['stable', 'stable_end', 'same_start', 'same_end', 'same_num_', 'same', 'actuar_time_', 'actuar_st', 'actuar_en', 'this_video_st', 'this_video_en', "video", "img", "id_is_"];
 
 // 以下チートシートの表示について.
 let cs = document.querySelector(".cheet_sheet");

@@ -56,7 +56,6 @@ window.addEventListener("keydown", (e)=>{
                 
                 // これを機にデフォルトレイヤーのspecial_covを一掃.
                 let specials = document.querySelectorAll(".special_cov");
-                console.log(specials);
                 if (specials.length > 0) {
                     for (let i = specials.length - 1; i >= 0; i--) {
                         specials[i].remove();
@@ -66,7 +65,7 @@ window.addEventListener("keydown", (e)=>{
                 // special_cov を全削除した分、表示の都合上 same_end 側をすべて表示しておく必要がある.
                 let ends = document.querySelectorAll(".same_end");
                 for (let i = ends.length - 1; i >= 0; i--) {
-                    ends[i].lastElementChild.style.setProperty('opacity', 1, 'important');
+                    // ends[i].lastElementChild.style.setProperty('opacity', 1, 'important');
                 }
         
                 // 編集レイヤーの生成と挿入.
@@ -86,7 +85,8 @@ window.addEventListener("keydown", (e)=>{
                 bo.classList.add("edit_mode");
     
                 // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
-                let vh_count = current_horizontal.childElementCount - 1;
+                // adjuster が２つ。
+                let vh_count = current_horizontal.childElementCount - 2;
                 let sp_cover_will_num = Math.ceil(vh_count / linesize);
                 let new_sp_cov = current_sp_cover.cloneNode(true); 
                 
@@ -123,6 +123,8 @@ window.addEventListener("keydown", (e)=>{
                 add_orange_space_for_everyone(new_sp_cov);
                
                 // scrap を必要な数だけ new_layer に追加。
+
+                // * このあたりで「余計に scrap が生成されている」疑いがある。
                 for (let i = 0; i < sp_cover_will_num; i++) {
                     let new_one = new_sp_cov.cloneNode(true);
                     new_one.firstElementChild.classList.add("orange_num_" + i);
@@ -160,9 +162,12 @@ window.addEventListener("keydown", (e)=>{
                             if (the_block_into.lastElementChild) {
                                 the_block_into.lastElementChild.remove();
                             }
+
+                            // * おそらくここで、デフォルトスクリーンのブロックたちから編集レイヤーの新しいブロックへ特定のクラスを移行している。
                             for (let j = 0; j < the_name_list.length; j++) {
                                 classmover(screen_vers[o], the_block_into, the_name_list[j], "add");
                             }
+                            
                             if (screen_vers[o].classList.contains("centering")) {
                                 the_block_into.classList.add("new_layer_centering");
                             } 
@@ -184,9 +189,13 @@ window.addEventListener("keydown", (e)=>{
                             let the_target_end = new_layer.children[i].children[o].lastElementChild.lastElementChild.previousElementSibling;
                             if (the_target_start.classList.contains("same") && the_target_start.classList.contains("same_start") == false) {
                                 the_target_start.classList.add("same_start");
+                                // 連続箇所の場合に無駄な分裂をさせずに済ませるために。
+                                the_target_start.classList.add("co");
                             }
                             if (the_target_end.classList.contains("same") && the_target_end.classList.contains("same_end") == false) {
                                 the_target_end.classList.add("same_end"); 
+                                // 連続箇所の場合に無駄な分裂をさせずに済ませるために。
+                                the_target_end.classList.add("co");
                             }
                         }
                     }
@@ -720,7 +729,6 @@ window.addEventListener("keydown", (e)=>{
                                 }
                             }
 
-        
                             // 再実行.
                             the_timeout();
                             the_interval();
@@ -814,243 +822,274 @@ window.addEventListener("keydown", (e)=>{
                 new_layer.classList.remove("autoseekingmode");
 
             } else {
-                // 編集を終了する時点でorange_pointer_f が存在したら初めて実行。存在しなかったら周辺のorange群を放棄する.
-                if (document.querySelector(".orange_pointer_f")) {
-                    
-                    // 編集していた もともとの sp_coverを取得. 
-                    let original_sp_cover = document.querySelector(".target_of_edition");
-                    // 最初に sp_coverをクリーンアップ。
-                    for (let i = 0; i < original_sp_cover.children.length; i++) {
-                        let vers = original_sp_cover.children[i].lastElementChild.children;
-                        // 最後尾のadjusterを残しておく.
-                        for (let o = vers.length - 2; o >= 0 ; o--) {
-                            // 最初のadjusterも残しておく.
-                            if (o > 0) { 
-                                vers[o].remove();
-                            }
-                        }
-                    }
 
-                    let scraps = document.querySelector(".new_layer").children;
+                // 「pointer_s の相手がいなかった場合」ってどうやって導き出すんだろう。
+                // -- pointer の数が奇数、とか？
+                // 「pointer の数が偶数である場合」という条件を全体に追加してあげる必要があると思う。
+                let orange_pease = document.querySelectorAll(".orange_pointer").length;
 
-                    // 本来same_endではなかったが、編集の結果same_endとなるブロックへの対処。中身にvideo本来を格納. 
-                    // ブロックの content が video で左隣は船内のsameで右隣は船外のsame、そして、same_end を持っていないなら実行. 
-                    let special_menu = (e, f, g) => {
-                        let f_p = g;
-                        function same_end_around() {
-                            let the_t = "same_num_" + target_data(e, "same_num_");
-                            let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
-                            let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
-                            the_natural_cont.style.setProperty('opacity', 1, 'important');
+                console.log(orange_pease);
 
-                            // dupブロックだった場合を想定.                                        
-                            if (f.lastElementChild) {
-                                f.lastElementChild.remove();
-                            }
-                            f.appendChild(the_natural_cont);
-                            f.classList.add("same_end");
-                        }
+                // pointer が片方しか打たれていないまま escape キーの処理が実行されるのを回避。
+                if (orange_pease % 2 == 0) {
+                    // 編集を終了する時点でorange_pointer_f が存在したら初めて実行。存在しなかったら周辺のorange群を放棄する.
+                    if (document.querySelector(".orange_pointer_f")) {
 
-                        function same_start_around() {
-                            f.classList.add("same_start");
-
-                            let same_name = "same_num_" + target_data(f, "same_num_");
-                            let breakpoint = [].slice.call(f_p.children).indexOf(f);                                                        
-                            
-                            let same_data = same_data_getter();
-                            same_data += 1;
-                            same_data_counter(same_data);
-                    
-                            for (let i = f_p.children.length - 1; i >= breakpoint; i--) {
-                                if (f_p.children[i].classList.contains(same_name)) {
-                                    let same_block = f_p.children[i];
-                                    classmover(same_block, same_block, "same_num_", "remove");
-                                    same_block.classList.add("same_num_" + same_data);
-                                }
-                            }
-                        }
-                        if (e.previousElementSibling) {
-                            if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in")) {
-                                if (e.nextElementSibling) {
-                                    if (e.nextElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in") == false) {                                                     
-                                        if (f.classList.contains("same") && f.classList.contains("same_end") == false) {
-                                            // 実行.
-                                            same_end_around();
-                                        } 
-                                    }
-                                }
-                            }
-                            if (e.previousElementSibling.classList.contains("same") && e.nextElementSibling.classList.contains("you_in")) {
-                                if (e.previousElementSibling) {
-                                    if (e.previousElementSibling.classList.contains("same") && e.previousElementSibling.classList.contains("you_in") == false) {       
-                                        if (f.classList.contains("same") && f.classList.contains("same_start") == false) {
-                                            // 実行.
-                                            same_start_around();
-                                        } 
-                                    }
+                        let scraps = document.querySelector(".new_layer").children;
+                        
+                        // 編集していた もともとの sp_coverを取得. 
+                        let original_sp_cover = document.querySelector(".target_of_edition");
+                        // 最初に sp_coverをクリーンアップ。
+                        for (let i = 0; i < original_sp_cover.children.length; i++) {
+                            let vers = original_sp_cover.children[i].lastElementChild.children;
+                            // 最後尾のadjusterを残しておく.
+                            for (let o = vers.length - 2; o >= 0 ; o--) {
+                                // 最初のadjusterも残しておく.
+                                if (o > 0) { 
+                                    vers[o].remove();
                                 }
                             }
                         }
 
-                        // いよいよそのscrapの中にそのブロックしかいなかった場合に対応.    
-                        if (! f.nextElementSibling) {
-                                if (! f.previousElementSibling) {
-                                same_end_around();
-                                same_start_around();
-                            }
-                        }
-                    }
+                        // EXTRACZATION!!!! ----------------------------------------
+                        // EXTRACZATION!!!! ----------------------------------------
+                        let cool = new Array();
 
-                    for (let i = 0; i < scraps.length; i++) {
-                        let stripe_inner_or_out = (e, f) => {
-                            
-                            let you_are_on_orange = null;
-                            // 先頭が orange_space, それ以外の場所に sp が並ぶ。
-                            // orange_spaceについて
-                            let po_and_st = scraps[i].firstElementChild.firstElementChild.firstElementChild.children;
-                            let block_num = f;
+                        let stripe_inner_or_out = (e) => {
 
-                            // １つのorange_stripe の中に乗っかっているブロックを検出する処理.
-                            let thisblock_scrollleft_st = (blocksize * block_num) + full_start_scrollwidth - blocksize;
-                            let thisblock_scrollleft_en = thisblock_scrollleft_st + blocksize;
+                            let w_col = new Array();
 
+                            // scrapごとに処理をする。
+                            let po_and_st = scraps[e].firstElementChild.firstElementChild.firstElementChild.children;
+                        
+                            // stripe ごとに処理する。
+                            // stripeの先頭と最後尾のブロックを検出し、それらについての情報を調べて「同一scrap内のsp間で共通の選択範囲を示すデータ」を作成する。
                             for (let o = 0; o < po_and_st.length; o++) {
                                 if (po_and_st[o].classList.contains("orange_pointer_s")) {
                                     let the_pointer_s = po_and_st[o];
                                     let the_pointer_f = grab_auto(the_pointer_s)[1];
-                                    let the_pointer_scrollleft_st = Number(target_data(the_pointer_s, "scroll_left_")) + 5;
-                                    let the_pointer_scrollleft_en = Number(target_data(the_pointer_f, "scroll_left_")) + 5;
-                                    let the_desition_one = false;
-                                    let the_desition_second = false;
 
-                                    // s - f　上に "st" が乗っかっているかどうか判定.
-                                    if (the_pointer_scrollleft_st <= thisblock_scrollleft_st && thisblock_scrollleft_st < the_pointer_scrollleft_en) {
-                                        the_desition_one = true;
-                                    }
-                                    // s - f　上に "en" が乗っかっているかどうか判定.
-                                    if (the_pointer_scrollleft_st < thisblock_scrollleft_en && thisblock_scrollleft_en <= the_pointer_scrollleft_en) {
-                                        the_desition_second = true;
-                                    }
+                                    // そもそもこれが正しいのかは分からないけどな。
+                                    let the_pointer_scrollleft_st = Number(target_data(the_pointer_s, "scroll_left_"));
+                                    let the_pointer_scrollleft_en = Number(target_data(the_pointer_f, "scroll_left_"));
+                        
+                                    // stripeごとの選択範囲を示すデータ。scrap - orange_space ごとに束ねることになる。
+                                    let stcl = new Array();
+                                    let w = full_start_scrollwidth;
 
-                                    // 以下「完全に orange_stripe の上に乗っかっていたわけではないブロック」への対応処理.
-                                    let fif = (f, g) => {
-                                        orange_block_counter += 1;
-                                        e.classList.add("you_in");
-                                        e.classList.add("you_" + orange_block_counter);
-                                        you_are_on_orange = e.cloneNode(true);
-
-                                        if (f == "actuar_st") {
-                                            you_are_on_orange.classList.add("actuar_st");
-                                            you_are_on_orange.classList.add("actuar_time_" + g);
-
-                                        } else if (f == "actuar_en") {
-                                            you_are_on_orange.classList.add("actuar_en");
-                                            you_are_on_orange.classList.add("actuar_time_" + g);
-                                        }
-                                    }
+                                    // pointer_s と pointer_f のポジションをブロック数に変換。
+                                    let st = Math.trunc((the_pointer_scrollleft_st - w) / blocksize) + 1;
+                                    let en = Math.trunc((the_pointer_scrollleft_en - w) / blocksize);
+                        
+                                    // -- st について
+                                    // 差分を取得してこれが 50 以上なら actuar と認定し、same_start と一緒にデータに格納する。
+                                    // * BANS: [[何番目のst, actuar_stの大きさ], [何番目のen, actuar_enの大きさ]]
+                                    let st_d = Math.trunc(the_pointer_scrollleft_st - w - (blocksize * (st - 1)));
                                     
-                                    // 一度ずらしてある審査基準から戻す必要があるってことを前提に考えると？
-                                    if (the_desition_one == true && the_desition_second == true) {
-                                        fif();
+                                    if (st_d > 50) {
+                                        let rsd = blocksize - st_d;
+                                        stcl.push([st, rsd]);
                                     } else {
-                                        if (the_desition_one == true && the_desition_second == false) {
-                                            let gap = the_pointer_scrollleft_en - thisblock_scrollleft_st;
-                                            // gap = 5
-                                            if (gap > 10 && gap < blocksize) {
-                                                if (gap > 50) {
-                                                    fif("actuar_en", gap - 5);
-                                                }
-                                            }
-                                        } 
-                                        if (the_desition_one == false && the_desition_second == true) {
-                                            let gap = thisblock_scrollleft_en - the_pointer_scrollleft_st;
-                                            // 切り出されたブロックが単一の際に対応してちょっと複雑な書き方になっている.
-                                            if (gap > 10 && gap < blocksize) {  
-                                                if (gap < blocksize - 10) {
-                                                    if (gap > 50) {
-                                                        fif("actuar_st", 365 - gap);
-                                                    } 
-                                                } else {
-                                                    fif();
-                                                }
-                                            }
-                                        }
+                                        stcl.push([st, "NONE"]);
+                                    }
+                        
+                                    // -- en について
+                                    // 差分を取得してこれが 50 以上なら actuar と認定し、same_start と一緒にデータに格納する。
+                                    // * BANS: [[何番目のst, actuar_stの大きさ], [何番目のen, actuar_enの大きさ], coの関係かどうか]
+                                    let en_d = Math.trunc(the_pointer_scrollleft_en - w - (blocksize * en)); 
+                                    
+                                    if (en_d > 50) {
+                                        stcl.push([en, en_d]);
+                                    } else {
+                                        // co についても処理。
+                                        stcl.push([en, "NONE"]);
+                                    }
+
+                                    w_col.push(stcl);
+                                }
+                            }
+
+                            cool.push(w_col);
+                        }
+                        
+                        // 実行（データ成形）
+                        for (let i = 0; i < scraps.length; i++) {
+                            stripe_inner_or_out(i);
+                        }
+                        
+                        // BANSについてループ
+                        // クラスの付与(same_start / same_end / actuar_st / actuar_en / actuar_time_), same_num の変更.
+                        // * scrap ごとに存在する「BANS」
+                        // * BANS: [[何番目のst, actuar_stの大きさ], [何番目のen, actuar_enの大きさ], coの関係かどうか.
+                        for (let i = 0; i < scraps.length; i++) {
+                            
+                            let bans = cool[i];
+                            let sps = scraps[i].children;
+                        
+                            for (let o = 0; o < bans.length; o++) {
+                                
+                                // 上で一通り作成した、抽出範囲を示すデータ
+                                let st_n = bans[o][0][0];
+                                let st_a = bans[o][0][1];
+                                let en_n = bans[o][1][0];
+                                let en_a = bans[o][1][1];
+                        
+                                // 新しく配布する same_num_ がいくつかを保存する変数.
+                                let nex;
+
+                                // 最初のブロックと最後尾のブロックの間にどれくらいのブロックが入っているか。
+                                let bbb = en_n - st_n + 1;
+
+                                for (let l = 1; l < sps.length; l++) {
+                        
+                                    let st_block = sps[l].lastElementChild.children[st_n];
+                                    let en_block = sps[l].lastElementChild.children[en_n];
+                        
+                                    let fragment = document.createDocumentFragment();
+                        
+                                    // -- ST_BLOCK について
+                                    
+                                    // ---- まず nex を決める。
+                                    if (st_block.classList.contains("co") && scraps[i].classList.contains("continue_former")) {
+                                        st_block.classList.remove("same_start");
+                                        console.log(scraps[i].children[l]);
+                                        nex = target_data(scraps[i].children[l], "continue_num_");
+                                    } else {
+                                        // 通常処理
+                                        let same_data = same_data_getter();
+                                        same_data += 1;
+                                        same_data_counter(same_data);
+                                        nex = same_data + 1;
+                                        same_data_counter(nex);
+                                        st_block.classList.add("same_start");
+                                    }
+
+                                    if (st_block.classList.contains("co")) {
+                                        st_block.classList.remove("co");
+                                    }
+
+                                    // --- same と関連性のない actuar の処理
+                                    if (st_a != "NONE") {
+                                        st_block.classList.add("actuar_st");
+                                        st_block.classList.add("actuar_time_" + st_a);
                                     }
                                     
-                                }
-                            }
-                            return you_are_on_orange;
-                        }
-
-                        // 以下scap ごとにorange_stripeの上にあるブロックを検出して Fragment に束ねていく処理.
-                        let sps = scraps[i].children;
-                        for (let o = 0; o < sps.length; o++) {
-                            
-                            // 先頭のOrange_spaceをスキップ.
-                            let scrap_sp_hor_fragment = document.createDocumentFragment();
-                            let sp_hor_blocks = sps[o].lastElementChild.children;
-
-                            for (let l = 0; l < sp_hor_blocks.length; l++) {
-                                // 最初と最後の adjuster を省く.
-                                if (l != 0 && l != sp_hor_blocks.length - 1) {
-                                    let active_block = stripe_inner_or_out(sp_hor_blocks[l], l);
-                                    if (active_block) {                                    
-                                        scrap_sp_hor_fragment.appendChild(active_block);
+                                    // ---- nex を用いた、新しいクラスの配布。   
+                                    for (let m = 0; m < bbb; m++) {
+                                        let t = sps[l].lastElementChild.children[st_n + m];
+                                        classmover(t, t, "same_num_", "remove");
+                                        t.classList.add("same_num_" + nex);
+                                        // same_end を除いてfragmentへ追加
+                                        if (en_n != st_n + m) {
+                                            let cloned_t = t.cloneNode(true);
+                                            fragment.appendChild(cloned_t);
+                                        }
                                     }
+                        
+                                    // -- EN_BLOCK について
+
+                                    if (en_block.lastElementChild) {
+                                        en_block.lastElementChild.remove();
+                                    } else {
+                                        if (! en_block.classList.contains("co")) {
+                                            // 本当の same_end ではない場合、これと同時に「stable」クラスを付与する。
+                                            en_block.classList.add("stable");
+                                            en_block.classList.add("stable_end");
+                                        }
+                                    }
+
+                                    if (en_block.classList.contains("co")) {
+                                        if (scraps[i + 1]) {
+                                            let same_data = same_data_getter();
+                                            scraps[i + 1].classList.add("continue_former");
+                                            scraps[i + 1].children[l].classList.add("continue_num_" + same_data);
+                                        } 
+                                        en_block.classList.remove("same_end");
+                                        en_block.classList.remove("co");
+
+                                    } else {
+                                        en_block.classList.add("same_end");
+                                        let the_t = "id_is_" + target_data(en_block, "id_is_");
+                                        let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
+                                        let the_natural_cont = hit_target.lastElementChild.cloneNode(true);
+                                        // the_natural_cont.style.setProperty('opacity', 1, 'important');
+                                        // dupブロックだった場合を想定. 
+                                        en_block.appendChild(the_natural_cont);
+                                    }
+
+                                    // --- same と関連性のない actuar の処理
+                                    if (en_a != "NONE") {
+                                        en_block.classList.add("actuar_en");
+                                        en_block.classList.add("actuar_time_" + en_a);
+                                    }
+                        
+                                    // fragmentへ追加
+                                    let cloned_f = en_block.cloneNode(true);
+                                    fragment.appendChild(cloned_f);
+                        
+                                    // fragmentの回帰。
+                                    original_sp_cover.children[l - 1].lastElementChild.lastElementChild.before(fragment);
                                 }
                             }
+                        }
 
-                            // 新たな same群 の生成.
-                            for (let l = 0; l < scrap_sp_hor_fragment.children.length; l++) {
-                                let the_ob_name = "you_" + target_data(scrap_sp_hor_fragment.children[l], "you_");
-                                let its_you = document.getElementsByClassName(the_ob_name)[0];
-                                special_menu(its_you, scrap_sp_hor_fragment.children[l], scrap_sp_hor_fragment);
-                            }
-                            
-                            // デフォルトレイヤーにおける編集対象だったsp_coverへFragmentたちを挿入. 編集モードから回帰.
-                            if (o != 0) {
-                                original_sp_cover.children[o - 1].lastElementChild.lastElementChild.before(scrap_sp_hor_fragment);
+
+                        // ---------------------------------------- EXTRACZATION!!!!
+                        // ---------------------------------------- EXTRACZATION!!!!
+
+                        // same_end のみについけていた stable クラスを、 same_start にも配る。
+                        // same_end のstable の次のブロックは必ず stable である、という考えに基づいて。
+                        let stables = document.getElementsByClassName("stable");
+                        for (let i = 0; i < stables.length; i++) {
+                            if (stables[i].nextElementSibling) {
+                                stables[i].nextElementSibling.classList.add("stable");
                             }
                         }
-                    }
 
-                    // スタイリングやクラスの付け替えなどの新調.
-                    if (document.querySelector(".centering")) {
-                        document.querySelector(".centering").classList.remove("centering");
-                    }
-                    let the_new_focusedblock = original_sp_cover.lastElementChild.lastElementChild.lastElementChild.previousElementSibling;                    
-                    document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
-                    the_new_focusedblock.classList.add("centering");
-                    original_centering_checker(original_sp_cover, the_new_focusedblock);
 
-                    original_sp_cover.classList.remove("see");
-                    original_sp_cover.classList.remove("target_of_edition");
-                } 
-                // edit モードをリセット.
-                orange_data = {};
-                new_layer.remove();
-                screen.classList.remove("edit");
-                screen.style.opacity = 1;
-                the_scrolled_distance = 0;
-                orange_block_counter = 0;
-                let covs = document.querySelectorAll(".special_cov");
-                for (let i = 0; i < covs.length; i++) {
-                    covs[i].remove();
-                }
+                        // スタイリングやクラスの付け替えなどの新調.
+                        if (document.querySelector(".centering")) {
+                            document.querySelector(".centering").classList.remove("centering");
+                        }
+
+                        let the_new_focusedblock = original_sp_cover.lastElementChild.lastElementChild.lastElementChild.previousElementSibling;
+                        // the_new_focusdblock の中に要素が入っていないことが問題になっている。
+                        // 確かに same_end を作る際に、大元から中身をコピーしていないことが問題なんじゃないか。
+                        
+                        document.querySelector(".new_layer_centering").classList.remove("new_layer_centering");
+                        the_new_focusedblock.classList.add("centering");
+                        original_centering_checker(original_sp_cover, the_new_focusedblock);
+
+                        original_sp_cover.classList.remove("see");
+                        original_sp_cover.classList.remove("target_of_edition");
+                    } 
+                    // edit モードをリセット.
+                    orange_data = {};
+                    new_layer.remove();
+                    screen.classList.remove("edit");
+                    screen.style.opacity = 1;
+                    the_scrolled_distance = 0;
+                    orange_block_counter = 0;
+                    let covs = document.querySelectorAll(".special_cov");
+                    for (let i = 0; i < covs.length; i++) {
+                        covs[i].remove();
+                    }
+                    
+                    bo.style.backgroundColor = "#0070D8";
+                    bo.classList.remove("edit_mode");
+                    screen.style.display = "block";
+                    let final_centering = document.querySelector(".centering");
+                    let now_position = vertical_to_hor(final_centering).scrollLeft;
+                    all_view_changer(vertical_to_sp_cover(final_centering), custom_end_scrollwidth(vertical_to_hor(final_centering)) - now_position);
+                    // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
+                    focus_checker(final_centering);
+                    adjust_box(final_centering);
+
+                    // 編集直後のMS起動への対策.
+                    is_it_same_series(final_centering);
+                    wheel_positioning();
                 
-                bo.style.backgroundColor = "#0070D8";
-                bo.classList.remove("edit_mode");
-                screen.style.display = "block";
-                let final_centering = document.querySelector(".centering");
-                let now_position = vertical_to_hor(final_centering).scrollLeft;
-                all_view_changer(vertical_to_sp_cover(final_centering), custom_end_scrollwidth(vertical_to_hor(final_centering)) - now_position);
-                // 編集モードが終了してからデフォルトレイヤーに戻って最初のフォーカス.
-                focus_checker(final_centering);
-                adjust_box(final_centering);
-
-                // 編集直後のMS起動への対策.
-                is_it_same_series(final_centering);
-                wheel_positioning();
+                }
             }
         }
     }

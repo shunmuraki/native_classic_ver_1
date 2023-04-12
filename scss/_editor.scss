@@ -211,9 +211,6 @@
         .box {
             border-left: 6px solid #0070D8;
         }
-        .edge {
-            border-right: 6px solid #0070D8;
-        }
       }
       .um_audio {
         height: 245px;
@@ -229,7 +226,7 @@
             border-right: 6px solid #0070D8;
         }
         .edge {
-            border-left: 6px solid #0070D8;
+            // border-left: 6px solid #0070D8;
         }
       }
     }
@@ -375,18 +372,7 @@
 
                 .video, .img {
                     height: 225px !important;
-                }
-
-                .same {
-                    .write_area, img, iframe {
-                        opacity: 0 !important;
-                    }
-                }
-                .same_start, .same_end {
-                    .write_area, img, iframe {
-                        opacity: 1 !important;
-                    }
-                }                
+                }         
             }
         }
     }
@@ -583,6 +569,34 @@ img, iframe {
     }
     .write_area, img, iframe {
         padding: 20px 10px;
+    }
+}
+
+.same {
+    .write_area, img, iframe {
+        opacity: 0 !important;
+    }
+}
+.same_start, .same_end {
+    .write_area, img, iframe {
+        opacity: 1 !important;
+    }
+}
+.stable {
+    .write_area, img, iframe {
+        opacity: 0 !important;
+    }
+}   
+
+.stable_end {
+    &:before {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: calc(100% - 5px);
+        bottom: 0;
+        right: 0px;
+        background-color: #58D000;
     }
 }
 
