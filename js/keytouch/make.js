@@ -3,6 +3,7 @@ import { is_it_same_series, same_cutter } from "../multiable/function.js";
 import { make_fragment, make_ver_fragment, go_top, go_left, go_bottom, go_right, centering_marker, original_centering_checker, the_magic_copy, the_magic_paste, adjust_box, pointer_anim, special_cleaner } from "./function.js";
 import { vertical_to_hor, vertical_to_sp, vertical_to_sp_cover } from "./tools.js";
 import { wheel_positioning } from "../stylable/function.js";
+import { keytouch_basic } from "../function/general.js";
 
 window.addEventListener("keydown", (e)=>{
 
@@ -10,27 +11,11 @@ window.addEventListener("keydown", (e)=>{
         
         let k = e.key;
         let current;
-        let current_vertical;
         let type_signiture;
-        
-        if (document.activeElement.tagName != "BODY") {
-            current = document.activeElement;
-            type_signiture = current.value;
-            current_vertical = document.querySelector(".centering");
-            if (document.activeElement.classList.contains("ms_area") == false) {
-                current.style.height = 24 + 'px';
-                let scrollHeight = current.scrollHeight;
-                current.style.height = scrollHeight + 'px'; 
-                let height = current.clientHeight;
-                current.parentElement.style.height = height + "px";
-                adjust_box(current_vertical);
-            }
-        } else {
-            current_vertical = document.querySelector(".centering");
-        }
-        
-        let current_horizontal = vertical_to_hor(current_vertical);
-        let current_sp_cover = vertical_to_sp_cover(current_vertical);
+        let current_vertical;
+        let current_horizontal;
+        let current_sp_cover;
+        keytouch_basic(current, type_signiture, current_vertical, current_horizontal, current_sp_cover);
 
         // 縦に要素を追加する処理.
         if(e.metaKey) {
@@ -94,37 +79,6 @@ window.addEventListener("keydown", (e)=>{
                 is_it_same_series(center);
             }
         }
-    
-        // 上下左右の移動. (デフォルトレイヤー）
-        if(e.shiftKey) {      
-            if (k == "ArrowUp") {
-                original_centering_checker(current_sp_cover, current_vertical);
-                go_top(current_vertical, "centering");
-            }   
-            if (k == "ArrowLeft") {
-                go_left(current_vertical, "centering");
-            }  
-            if (k == "ArrowRight") {
-                go_right(current_vertical, "centering");
-            }
-            if (k == "ArrowDown") {
-                original_centering_checker(current_sp_cover, current_vertical);
-                go_bottom(current_vertical, "centering");
-            }
-        }
-        
-        // マジックコマンド.
-        if(e.ctrlKey) {
-            if (k == "c") {
-                pointer_anim();
-                the_magic_copy(current_vertical);
-            }
-            if (k == "v") {
-                pointer_anim();
-                the_magic_paste(current_vertical);
-            }
-        }
-
     }
 
 });

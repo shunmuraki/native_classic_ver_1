@@ -14,7 +14,6 @@ document.addEventListener("keydown", (e) => {
     
     if (current.tagName == "TEXTAREA") {
         type_signiture = current.value;
-
         // ホイールを起動する処理.
         if ( type_signiture.indexOf('styl') != -1) {
           if (screen.classList.contains("ms")) {
@@ -29,15 +28,11 @@ document.addEventListener("keydown", (e) => {
             wheel_seton();
             current.blur();
             adjust_target_pos(centering.lastElementChild, "off");
-
-            // - * - 「style」が実行された時に、最初に A を実行します。
-            // で、中身がテキストの場合はそうする、そうでなかった場合は別のものを用意するって感じだよね。
-            // 中身が存在しないJSONとかでもうまくいったりするのかな。一旦それを書いてみよう。動きを統一して、
-            // 最初の実行時にホイールが使用するデータを出し分ける。
             style_initial();
           }
         }
     }
+    
     if (screen.classList.contains("style")) {
 
       // ここに通常の左右の移動を実現する処理について書こうかしら。

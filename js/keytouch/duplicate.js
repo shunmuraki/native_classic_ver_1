@@ -7,21 +7,13 @@ import { same_around } from "./function.js";
 
 window.addEventListener("keydown", (e)=>{ 
   
+  let k = e.key;
+  let current;
   let type_signiture;
-  let current = document.activeElement;
-  let k = e.key; 
   let current_vertical;
-
-  if (document.activeElement.tagName == "TEXTAREA") {
-    current_vertical = current.parentElement;
-    type_signiture = current.value;
-
-  } else {
-    current_vertical = document.querySelector(".centering");
-  }
-
-  let current_horizontal = vertical_to_hor(current_vertical);
-  let current_sp_cover = vertical_to_sp_cover(current_vertical);
+  let current_horizontal;
+  let current_sp_cover;
+  keytouch_basic(current, type_signiture, current_vertical, current_horizontal, current_sp_cover);
 
   if(e.metaKey) {  
     // 以下 command + k の処理.

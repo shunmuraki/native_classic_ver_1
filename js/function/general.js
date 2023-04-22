@@ -251,3 +251,35 @@ export const adjust_target_pos = (e, f) => {
         }
     }
 }
+
+// e = current
+// f = current_vertical
+export const optimize_writing = (e, f) => {
+    e.style.height = 24 + 'px';
+    let scrollHeight = e.scrollHeight;
+    e.style.height = scrollHeight + 'px'; 
+    let height = e.clientHeight;
+    e.parentElement.style.height = height + "px";
+    adjust_box(f);
+}
+
+// e = current
+// f = type_signiture
+// g = current_vertical
+// h = current_horizontal
+// i = current_sp_cover
+export const keytouch_basic = (e, f, g) => {
+    if (document.activeElement.tagName != "BODY") {
+        e = document.activeElement;
+        f = e.value;
+        g = document.querySelector(".centering");
+        if (document.activeElement.classList.contains("ms_area") == false) {
+            optimize_writing(e, g);
+        }
+    } else {
+        g = document.querySelector(".centering");
+    }
+
+    h = vertical_to_hor(g);
+    i = vertical_to_sp_cover(g);
+}

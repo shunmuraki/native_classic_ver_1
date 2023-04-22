@@ -6,6 +6,7 @@ import { startblock_around, endblock_around, for_ind } from "./function.js";
 
 // < --------------------------------------------------------------------------------------------------- >
 
+const zip = new JSZip();
 let sp_covers = document.querySelectorAll(".sp_cover");
 
 // 変換の手前、export.htmlから adjuster をすべて除去する.
@@ -19,6 +20,7 @@ for (let i = adjusters.length - 1; i >= 0 ; i--) {
 // section - object 構造へ仕上げる. この中で画像はリストにpushする。
 for (let i = 0; i < sp_covers.length; i++) {
     // < -----------------------------------------------------------------------------
+    let caset = document.createDocumentFragment();
     // * ループ内準備ゾーン
     let sps = sp_covers[i].children;
     let the_big_section = document.createElement("div");

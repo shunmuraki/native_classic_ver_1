@@ -12,20 +12,15 @@ import { adjust_target_pos } from "../ms/function.js";
 // グローバル変数の跡地
 
 window.addEventListener("keydown", (e)=>{
-
-    let k = e.key;
-
     if (document.activeElement.tagName == "TEXTAREA") {
-        let current = document.activeElement;
-        let type_signiture = current.value;
-
-        if (document.activeElement.classList.contains("ms_area") == false) {
-            current.style.height = 24 + 'px';
-            let scrollHeight = current.scrollHeight;
-            current.style.height = scrollHeight + 'px'; 
-            let height = current.clientHeight;
-            current.parentElement.style.height = height + "px";
-        }        
+        
+        let k = e.key;
+        let current;
+        let type_signiture;
+        let current_vertical;
+        let current_horizontal;
+        let current_sp_cover;
+        keytouch_basic(current, type_signiture, current_vertical, current_horizontal, current_sp_cover);
         
         // Editモードを展開.
         if (type_signiture.indexOf('edi') != -1) {

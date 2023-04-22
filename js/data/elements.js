@@ -4,6 +4,8 @@ import { classmover } from "./tools.js";
 
 // DOM系列
 export const screen = document.querySelector(".screen");
+// せめて "body" にしてくれ
+export const bo = document.getElementsByTagName("BODY")[0];
 export const pointer = document.querySelector(".pointer_and_wheel");
 
 export const wheel = document.querySelector(".wheel");

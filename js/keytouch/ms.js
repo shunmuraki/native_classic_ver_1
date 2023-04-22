@@ -5,9 +5,7 @@ import { which_special_is } from "../base/tools.js";
 window.addEventListener("keydown", (e)=>{
   
     let k = e.key;
-    let current;
-
-    current = document.activeElement;
+    let current = document.activeElement;
 
     // マークダウンスペースの軌道処理.
     if (k == "/") {

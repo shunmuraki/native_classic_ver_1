@@ -1,6 +1,21 @@
 import { centering_marker, focus_checker} from "../base/function.js";
 import { same_data_counter, same_data_getter } from "../base/tools.js";
 
+// 空のブロックの生成関数（sameの場合に使用）
+export const make_dup_fragment = (e, f) => {
+    const vertical = document.createElement("div");
+    vertical.classList.add("vertical");
+    vertical.classList.add("horizontal_child");
+    let fragment = document.createDocumentFragment();
+    fragment.append(vertical);
+
+    if (f == "before") {
+        e.before(fragment);
+    } else if (f == "after") {
+        e.after(fragment);
+    }
+}
+
 export const same_around = (e, f) => {
     let next_one;
     function same_setup() {

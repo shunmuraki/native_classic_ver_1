@@ -66,18 +66,3 @@ export const make_ver_fragment = (e, f) => {
     }
     cs_bye();
 }
-
-// 空のブロックの生成関数（sameの場合に使用）
-export const make_dup_fragment = (e, f) => {
-    const vertical = document.createElement("div");
-    vertical.classList.add("vertical");
-    vertical.classList.add("horizontal_child");
-    let fragment = document.createDocumentFragment();
-    fragment.append(vertical);
-
-    if (f == "before") {
-        e.before(fragment);
-    } else if (f == "after") {
-        e.after(fragment);
-    }
-}

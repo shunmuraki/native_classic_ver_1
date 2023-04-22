@@ -8,26 +8,13 @@ window.addEventListener("keydown", (e)=>{
 
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {
 
+        let k = e.key;
         let current;
-        let current_vertical;
         let type_signiture;
-        
-        if (document.activeElement.tagName != "BODY") {
-            current = document.activeElement;
-            type_signiture = current.value;
-            
-            if (document.activeElement.classList.contains("ms_area") == false) {    
-                current.style.height = 24 + 'px';
-                let scrollHeight = current.scrollHeight;
-                current.style.height = scrollHeight + 'px'; 
-                let height = current.clientHeight;
-                current.parentElement.style.height = height + "px";
-            }
-        }
-
-        current_vertical = document.querySelector(".centering");
-        let current_horizontal = vertical_to_hor(current_vertical);
-        let current_sp_cover = vertical_to_sp_cover(current_vertical);
+        let current_vertical;
+        let current_horizontal;
+        let current_sp_cover;
+        keytouch_basic(current, type_signiture, current_vertical, current_horizontal, current_sp_cover);
 
         if (type_signiture) {
             if ( type_signiture.indexOf('connec') != -1) {
