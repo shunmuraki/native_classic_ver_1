@@ -1,7 +1,3 @@
-import { screen } from "../base/elements.js";
-import { adjust_target_pos } from "../base/function.js";
-import { which_special_is } from "../base/tools.js";
-
 window.addEventListener("keydown", (e)=>{
   
     let k = e.key;

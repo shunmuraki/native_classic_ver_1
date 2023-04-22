@@ -1,17 +1,5 @@
-import { full_end_scrollwidth, full_start_scrollwidth, half_left_width, screen, the_name_list, blocksize, linesize, blocktime, custom_end_scrollwidth } from "../base/elements.js";
-import { make_ver_fragment, go_top, go_left, go_right, go_bottom, original_centering_checker, centering_marker, focus_checker, adjust_box, pointer_anim } from "../base/function.js";
-import { vertical_to_hor, vertical_to_sp_cover, target_data, grab_auto, classmover, same_data_counter, same_data_getter, tracer_basis, elem_post_getter, which_special_is } from "../base/tools.js";
-import { is_it_same_series } from "../multiable/function.js";
-import { just_clear_yt_loop, yt_player_getter, yt_resetter } from "../multiable/extends.js";
-import { actuar_st_alloff, actuar_en_alloff, actuar_st_allon, add_orange_space_for_everyone, all_view_changer, best_related_element, comesin_management, delete_orange_p, edit_mode_default_adjust, orange_pointer_make, pre_pointing_in, pre_pointing_out, principle_management } from "../editable/edit.js";
-import { wheel_positioning } from "../stylable/function.js";
-import { adjust_target_pos } from "../ms/function.js";
-
-// グローバル変数の跡地
-// グローバル変数の跡地
-// グローバル変数の跡地
-
 window.addEventListener("keydown", (e)=>{
+    
     if (document.activeElement.tagName == "TEXTAREA") {
         
         let k = e.key;

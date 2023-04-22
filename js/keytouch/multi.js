@@ -1,9 +1,3 @@
-import { screen } from "../base/elements.js";
-import { adjust_box } from "../base/function.js";
-import { video_load_then } from "../base/multifuncs.js";
-import { make_it_img } from "../base/multifuncs.js";
-import { focus_checker } from "../base/function.js";
-
 window.addEventListener("keydown", (e) => {
     
     let k = e.key;

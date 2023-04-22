@@ -1,7 +1,3 @@
-import { native_style_funcs } from "../stylable/styledata.js";
-// target_data, classmover
-import { target_data, classmover } from "../base/tools.js";
-
 // actuar クラスへの対応や video_startpointのセットなど、 animation_data を更新する関数.
 export const ac_vi_adaptation = (e, f, g) => {
     let classlist = e.classList;
@@ -324,8 +320,6 @@ export const image_make_it = (e, f) => {
     }
     final_textcontent += the_textdata;
 }
-
-// internal
 
 // start_animationを構成する.
 // [引数に渡す必要がある変数]

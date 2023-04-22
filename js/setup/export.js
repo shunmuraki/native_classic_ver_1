@@ -1,8 +1,16 @@
-// target_data と classmover を読み込む.
-import { target_data, classmover } from "../base/tools.js";
-import { image_make_it, img_src_getter, base_setup, generationdata_setup, animationdata_setup, ac_vi_adaptation, iframe_adaptation, textarea_adaptation, object_setter } from "./function.js";
-import { startblock_around, endblock_around, for_ind } from "./function.js";
-// screen 読み込んでクれ！
+// まず要素を読み込む。
+
+// DOMのインポート.
+let the_values = JSON.parse(sessionStorage.getItem("the_values"));
+let the_output = sessionStorage.getItem("output");
+screen.innerHTML = the_output;
+
+// textareaの値を現状復帰.
+let write_areas = document.querySelectorAll(".write_area");
+for (let i = 0; i < write_areas.length ; i++) {
+    write_areas[i].value = the_values[i];
+}
+
 
 // < --------------------------------------------------------------------------------------------------- >
 

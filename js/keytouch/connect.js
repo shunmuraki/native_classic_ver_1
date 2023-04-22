@@ -1,11 +1,5 @@
-import { screen, the_name_list, blocksize } from "../base/elements.js";
-import { focus_checker, make_ver_fragment } from "../base/function.js";
-import { classmover, tracer_basis, vertical_to_hor, vertical_to_sp_cover, which_special_is } from "../base/tools.js";
-import { adjust_target_pos } from "../ms/function.js";
-import { is_it_same_series } from "../multiable/function.js";
-
 window.addEventListener("keydown", (e)=>{
-
+    
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {
 
         let k = e.key;

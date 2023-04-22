@@ -1,13 +1,3 @@
-import { screen, blocksize } from "../base/elements.js";
-import { target_data } from "../base/tools.js";
-import { adjust_box, focus_checker } from "../base/function.js";
-import { video_load_then } from "../multiable/extends.js";
-import { video_street_scroll, audio_street_scroll, um_positioning } from "./function.js";
-
-// dom定数の跡地
-// dom定数の跡地
-// dom定数の跡地
-
 document.addEventListener("keydown", (e) => {
     
     let current = document.activeElement;

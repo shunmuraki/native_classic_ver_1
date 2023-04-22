@@ -1,5 +1,3 @@
-// before: multifuncs
-
 // extends
 // special_cov 向けでない、通常の yt プレイヤーの束から該当するプレイヤーを返す関数.
 export const yt_player_getter = (e) => {
@@ -28,7 +26,6 @@ export const yt_resetter = (e) => {
     } else {
         target = e;
     }
-
     let the_time = Number(target_data(target, "this_video_st_"));
     return the_time;
 }
@@ -73,7 +70,6 @@ export const just_clear_yt_loop = (e) => {
 
 // 動画の読み込み・sp_cover内のラインの調整（ブロック数）などを行う関数. um と multiable にて共通利用.
 export const video_load_then = (e, f) => {
-
     same_data = same_data_getter();
     same_data += 1;
     same_data_counter(same_data);
@@ -379,7 +375,6 @@ export const is_it_same_alend = (e) => {
     if (the_target_left) {
         if (the_target_left.classList.contains("same_end")) {
             player_setup(the_target_left);
-
             // たぶんここが pausing も playing も複数存在する可能性を加味してないんだと思う.
             if (sp_cover.classList.contains("pausing")) {
                 if (player) {
@@ -392,6 +387,7 @@ export const is_it_same_alend = (e) => {
                     }
                 }
             }
+
             the_state(the_target_left);
             if (the_target_left.lastElementChild) {
 

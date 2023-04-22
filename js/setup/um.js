@@ -7,6 +7,11 @@ video_list.scrollLeft = the_video_width;
 let the_audio_width = - blocksize * 10;
 audio_list.scrollLeft = the_audio_width;
 
+let video_list = document.querySelector(".um_video");
+let audio_list = document.querySelector(".um_audio");
+let video_null = video_list.lastElementChild;
+let audio_null = audio_list.lastElementChild;
+
 // UMレイヤーに yt iframe を流し込む.
 for (let i = 0; i < 10; i++) {
   let the_id = String(yt_videolist_ted[i]);

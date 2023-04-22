@@ -1,6 +1,10 @@
 // 以下チートシートの表示関連
 // チートシートをJSONから動的に読み込むようにする。
 
+// box を作って、中に引数に渡した文字列を配置する、ブロックの生成関数
+let cs_flex = document.querySelector(".cs_flex");
+let cs = document.querySelector(".cheet_sheet");
+
 // 今のチートシートをJSON形式にする.
 async function getCheetsheet() {
     const response = await fetch(
@@ -9,9 +13,6 @@ async function getCheetsheet() {
     const data = await response.json();
     return data;
 }
-
-// box を作って、中に引数に渡した文字列を配置する、ブロックの生成関数
-let cs_flex = document.querySelector(".cs_flex");
 
 // e = key
 // f = value
@@ -33,18 +34,18 @@ const cheetsheet_block_maker = (e, f) => {
 }
 
 // json からループで ブロック生成関数にデータを渡すループ処理
-const native_usages = getCheetsheet;
+// const native_usages = getCheetsheet;
+
 for (let key in native_usages) {
     let v = native_usages[key];
     cheetsheet_block_maker(key, v);
 }
 
-let cs = document.querySelector(".cheet_sheet");
 if (cs) {
     cs.style.top = 100 + "%";
 }
-let csb = document.querySelector(".usage_button");
 
+let csb = document.querySelector(".usage_button");
 // デフォルトのセットアップ
 csb.classList.add("off");
 csb.addEventListener("click", () => {

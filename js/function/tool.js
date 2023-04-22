@@ -1,5 +1,3 @@
-import { screen } from "../elements.js";
-
 // ブロックから指定の階層の要素を返す関数.
 export const vertical_to_hor = (e) => {
     return e.parentElement;
@@ -152,13 +150,13 @@ export const which_special_is = (e) => {
 }
 
 // style_ クラスから、実際のスタイル項目を取得して返す関数。
-const data_layer_shift = (e, f) => {
+export const data_layer_shift = (e, f) => {
   let in_process = Object.keys(e)[0];
   let v = in_process[f];
   return v;
 }
 
-const the_process = (e) => {
+export const the_process = (e) => {
     let nums = e.split("_");
     // ここにタイトルを出し入れしていく。まずは階層からになる。
     let title;

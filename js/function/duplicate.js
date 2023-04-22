@@ -1,6 +1,3 @@
-import { centering_marker, focus_checker} from "../base/function.js";
-import { same_data_counter, same_data_getter } from "../base/tools.js";
-
 // 空のブロックの生成関数（sameの場合に使用）
 export const make_dup_fragment = (e, f) => {
     const vertical = document.createElement("div");

@@ -36,7 +36,6 @@ export const the_magic_copy = (e) => {
         }
 
         // 色々処理.
-
         // ここでは何をしている？？
         let new_folder = new Array();
         // adjuster を削除させない。

@@ -1,10 +1,3 @@
-import { screen } from "../base/elements.js";
-// [必要な関数]
-// which_special_is, adjust_target_pos, wheel_seton, style_initial, running_root, layer_resetter, focus_checker
-import { which_special_is } from "../base/tools.js";
-import { adjust_target_pos, wheel_seton, focus_checker } from "../base/function.js";
-import { style_initial, running_root } from "../stylable/style.js";
-
 document.addEventListener("keydown", (e) => {
     
     let current = document.activeElement;

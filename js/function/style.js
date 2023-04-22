@@ -3,7 +3,7 @@
 // 本当はここに関数はまとめるべきなのかもしれない。
 // 何も実行するものがない場合に実行する「none_title()」関数。
 export const none_title = (e) => {
-    console.log(none_title);
+    console.log("none_title");
   }
   
 // e = 要素

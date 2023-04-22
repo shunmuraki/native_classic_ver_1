@@ -1,11 +1,3 @@
-import { screen } from "../base/elements.js";
-import { focus_checker } from "../base/function.js";
-import {tracer_basis} from "../base/tools.js"
-
-// グローバル変数の跡地
-// グローバル変数の跡地
-// グローバル変数の跡地
-
 let button = document.querySelector(".export_button");
 
 button.addEventListener("click", () => {

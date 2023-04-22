@@ -1,10 +1,3 @@
-import { blocksize, screen } from "../base/elements.js"
-import { vertical_to_hor, vertical_to_sp_cover, which_special_is } from "../base/tools.js";
-import { make_dup_fragment, original_centering_checker, blur_checker, pointer_anim } from "../base/function.js";
-import { is_it_same_series, same_cutter } from "../multiable/function.js";
-import { adjust_target_pos } from "../ms/function.js";
-import { same_around } from "./function.js";
-
 window.addEventListener("keydown", (e)=>{ 
   
   let k = e.key;

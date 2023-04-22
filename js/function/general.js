@@ -1,14 +1,3 @@
-import { all_view_changer } from "../editable/function.js";
-import { is_it_same_series, same_cutter } from "../multiable/function.js";
-import { full_start_scrollwidth, full_end_scrollwidth, the_name_list, window_height, the_sunsetline, blocksize, blocktime, custom_end_scrollwidth } from "./elements.js";
-import { classmover, same_change_tracer, target_data, vertical_to_hor, vertical_to_sp, vertical_to_sp_cover, which_special_is, tracer_basis } from "./tools.js";
-import { wheel_positioning } from "../stylable/function.js";
-import { same_data_getter, same_data_counter } from "./tools.js";
-
-// グローバル変数の跡地
-// グローバル変数の跡地
-// グローバル変数の跡地
-
 // centering クラスの調整関数
 export const centering_marker = (e, f, g) => {
     e.classList.remove(g);
@@ -183,52 +172,52 @@ export const same_cutter = (e, f) => {
 export const wheel_positioning = () => {
     let centering;
     if (screen.classList.contains("edit")) {
-      centering = document.getElementsByClassName("new_layer_centering")[0];
+        centering = document.getElementsByClassName("new_layer_centering")[0];
     } else {
-      centering = document.getElementsByClassName("centering")[0];
+        centering = document.getElementsByClassName("centering")[0];
     }
     let the_focus_top = centering.getBoundingClientRect().top;
     let the_focus_left = centering.getBoundingClientRect().left;
     pointer.style.top = the_focus_top - 10 + "px";
     pointer.style.left = the_focus_left - 10 + "px";
-  }
+}
   
   // ホイールの描画アニメーションの関数.
-  export const wheel_seton = () => {
-      the_pointer.animate(
-          [
-            { transform: 'scale(1)', opacity: 1, },
-            { transform: 'scale(5)', opacity: 1 },
-          ], {
-            duration: 300,
-            fill: "both",
-            easing: "ease-in-out"
-          }
-        );
-      wheel.style.display = "block";
-      layer_base.animate(
-          [
-            { transform: 'rotate(270)', },
-            { transform: 'rotate(360deg) ' }
-          ], {
-            duration: 700,        
-            fill: "both",
-            easing: "ease-in-out",
-            delay: 200,
-          }
-        );
-      wheel.animate(
-          [
-            { opacity: 0, },
-            { opacity: 1, }, 
-          ], {
-            duration: 400,
-            delay: 200,
-            fill: "both",
-            easing: "ease-in-out"
-          }
-        );
-  }
+export const wheel_seton = () => {
+    the_pointer.animate(
+        [
+        { transform: 'scale(1)', opacity: 1, },
+        { transform: 'scale(5)', opacity: 1 },
+        ], {
+        duration: 300,
+        fill: "both",
+        easing: "ease-in-out"
+        }
+    );
+    wheel.style.display = "block";
+    layer_base.animate(
+        [
+        { transform: 'rotate(270)', },
+        { transform: 'rotate(360deg) ' }
+        ], {
+        duration: 700,        
+        fill: "both",
+        easing: "ease-in-out",
+        delay: 200,
+        }
+    );
+    wheel.animate(
+        [
+        { opacity: 0, },
+        { opacity: 1, }, 
+        ], {
+        duration: 400,
+        delay: 200,
+        fill: "both",
+        easing: "ease-in-out"
+        }
+    );
+}
 
 // ms からの移籍（2023.4.20）
 // ホイールをブロックやポインター（編集時）に追従させる関数.
