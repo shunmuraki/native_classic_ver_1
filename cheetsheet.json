@@ -1,0 +1,22 @@
+{
+    "command + ↩︎": "Add a block after current block. Except command-key, you can just enter in current block.",
+    "command + u": "Add a block into right side of current block. ",
+    "command + k": "Duplicate current block and move to right. (If the right block has already exist, duplicate the content in current block and pack it into the right block.)",
+    "shift + ↑": "Move current block up.",
+    "shift + →": "Move to the right block.",
+    "shift + ↓": "Move current block down.",
+    "shift + ←": "ove to the left block.",
+    "control + c": "Copy the all horizontal blocks after current block and delete it.",
+    "control + v": "Paste the blocks which you copied before with control-key and “c” into the right side of current block.",
+    "/": "Markdown space will be opened. You can cancel with Escape-key. You can use 6 word in markdown and all of them described in orange on this page.",
+    "/ style": "It able to change the element's style. You can go back layer or finish it with Escape-key.",
+    "/ image": "The space you can upload a image open. The file selector will be opened when you click the space.",
+    "/ ind": "You can split in two the group consist of a same element duplicated. If you change the style of latter one, you can make the element animate.",
+    "/ ted*": "There is “Universal Markdown” function in Native, which is experimental function. We can search videos and images simultaneously when you write any word in markdown space, and choose one of them. On this Native, you can try it with word “ted”. (We will make this function able to search audio, then we will be able to use BGM in article which we write on Native!)",
+    "/ connect": "We call it “line”, the group of horizontal blocks. You can connect a line current block located and the above line with this word.",
+    "/ edit": "We call it “line”, the group of horizontal blocks. You can connect a line current block located and the above line with this word.",
+    "command + c": "You can put a pointer. A stripe will be lined in the space between two pointer, and it will be active zone after trimming. If you do this command on a pointer, it will be canceled. (You can put pointer in block-move mode, but if you cancel it, you have to change into pointer-move mode.)",
+    "←": "In trimming scene, you can move by pointer and block both. This command change the mode into pointer-move. In addition, you can move by pointer(up, right, down, left) with normal commands.",
+    "→": "This command change the mode into block-move. (the default mode is block-move when you start trimming.)",
+    "control + s": "You can play the group consist of 24 blocks automatically which current block located. If it was playing , it will be paused. This function will be useful for overlooking and put a pointer in the middle of the block. You can finish auto-seek-mode with Escape-key. (You need to do this before trying to move block.)"
+}
