@@ -1,3 +1,6 @@
+import { cs_bye } from "./general.js";
+import { full_start_scrollwidth } from "../data/constant.js";
+
 // sp_cover の生成関数
 export const make_fragment = (e, f) => {
 

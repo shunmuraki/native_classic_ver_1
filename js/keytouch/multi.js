@@ -1,3 +1,8 @@
+import { adjust_box, focus_checker } from "../function/general.js";
+import { video_load_then, make_it_img } from "../function/multi.js";
+import { screen } from "../data/constant.js";
+
+
 window.addEventListener("keydown", (e) => {
     
     let k = e.key;

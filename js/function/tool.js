@@ -1,3 +1,5 @@
+import { screen } from "../data/constant.js";
+
 // ブロックから指定の階層の要素を返す関数.
 export const vertical_to_hor = (e) => {
     return e.parentElement;
@@ -96,10 +98,16 @@ export const same_data_counter = (e) => {
     }
 }
 
+// 対応する special_cov を返す関数.
+export const which_special_is = (e) => {
+    let the_name = "this_cov_is_" + target_data(e, "same_num_");
+    let the_special_cov = document.getElementsByClassName(the_name)[0];
+    return the_special_cov;
+}
+
 // 左右の移動でspecial_covの変更内容を same_end に反映させる関数
 export const tracer_basis = (e) => {
     let special_cov = which_special_is(e);
-    
     // たぶんここで opacity: 1; の content が same_end に append されていたんだね。
     if (special_cov) {
         let specon_cloned = special_cov.lastElementChild.cloneNode(true);
@@ -140,13 +148,6 @@ export const elem_post_getter = (e) => {
     let parent = e.parentElement;
     let the_num = [].slice.call(parent.children).indexOf(e);
     return the_num;
-}
-
-// 対応する special_cov を返す関数.
-export const which_special_is = (e) => {
-    let the_name = "this_cov_is_" + target_data(e, "same_num_");
-    let the_special_cov = document.getElementsByClassName(the_name)[0];
-    return the_special_cov;
 }
 
 // style_ クラスから、実際のスタイル項目を取得して返す関数。

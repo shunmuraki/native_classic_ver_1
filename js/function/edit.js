@@ -1,3 +1,7 @@
+import { target_data, grab_auto } from "../function/tool.js";
+import { wheel_positioning } from "./general.js";
+import { blocksize, half_left_width, full_end_scrollwidth, full_start_scrollwidth, window_height } from "../data/variable.js";
+
 // ポインターやブロックからして一番近いブロックかポインターを検出する関数.
 export const best_related_element = (e, f, g, h) => {
 

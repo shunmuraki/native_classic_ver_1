@@ -1,3 +1,8 @@
+import { focus_checker, keytouch_basic, focus_checker } from "../function/general.js";
+import { vertical_to_hor, which_special_is, is_it_same_series, vertical_to_hor, classmover, tracer_basis } from "../function/tool.js";
+import { make_ver_fragment } from "../function/make.js";
+import { the_name_list, screen, blocksize } from "../data/constant.js";
+
 window.addEventListener("keydown", (e)=>{
     
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {

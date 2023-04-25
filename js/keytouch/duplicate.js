@@ -1,3 +1,9 @@
+import { keytouch_basic, original_centering_checker, pointer_anim } from "../function/general.js";
+import { vertical_to_hor, is_it_same_series, vertical_to_hor } from "../function/tool.js";
+import { same_around } from "../function/duplicate.js";
+import { is_it_same_series } from "../function/multi.js";
+import { blocksize } from "../data/constant.js";
+
 window.addEventListener("keydown", (e)=>{ 
   
   let k = e.key;

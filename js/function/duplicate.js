@@ -1,3 +1,5 @@
+import { centering_marker, focus_checker } from "../function/general.js";
+
 // 空のブロックの生成関数（sameの場合に使用）
 export const make_dup_fragment = (e, f) => {
     const vertical = document.createElement("div");
@@ -49,6 +51,8 @@ export const same_around = (e, f) => {
         }
     }
 
+
+    // ここ変えてくれ。
     let same_data_latest = same_data_getter();
     let the_name = "same_num_" + same_data_latest;
 

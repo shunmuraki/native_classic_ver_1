@@ -1,3 +1,13 @@
+import { tracer_basis, vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, target_data, classmover } from "./tool.js";
+import {make_ver_fragment} from "./make.js";
+import { centering_marker, original_centering_checker, same_cutter, focus_checker, adjust_box } from "./general.js";
+import { is_it_same_series } from "./multi.js";
+import { all_view_changer } from "./edit.js";
+import { the_name_list, blocksize } from "../data/constant.js";
+import { native_value } from "../data/variable.js";
+
+let magic_elms = native_value("magic_elms");
+
 // マジックコピーの関数.
 export const the_magic_copy = (e) => {
     // スタイリング直後にカットされることを想定.

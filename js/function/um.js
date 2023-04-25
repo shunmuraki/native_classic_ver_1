@@ -1,3 +1,6 @@
+import { focus_checker } from "./general.js";
+import { screen, blocksize } from "../data/constant.js";
+
 // ユニバーサルマークダウンの表示位置をセンタリングしている要素へ調整する関数.
 export const um_positioning = () => {
   let adjust_box = document.querySelector(".centering");

@@ -1,3 +1,6 @@
+import { wheel_positioning } from "../function/general.js";
+import { make_fragment } from "../function/make.js";
+
 window.onload = () => {
     // 以下Nativeを開いた時の最初の動作.
     let dummy = document.createElement("div");

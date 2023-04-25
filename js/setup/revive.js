@@ -1,3 +1,5 @@
+import { focus_checker } from "../function/general.js";
+
 (function () {
     // 以下 export.html から回帰したケースへの対応.
     if (sessionStorage.getItem("output")) {

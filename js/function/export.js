@@ -1,3 +1,5 @@
+import { target_data, classmover } from "./tool.js";
+
 // actuar クラスへの対応や video_startpointのセットなど、 animation_data を更新する関数.
 export const ac_vi_adaptation = (e, f, g) => {
     let classlist = e.classList;

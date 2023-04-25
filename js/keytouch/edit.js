@@ -1,3 +1,17 @@
+import { keytouch_basic, original_centering_checker, pointer_anim, adjust_box, focus_checker, centering_marker, adjust_target_pos, wheel_positioning, pointer_anim } from "../function/general.js";
+import { vertical_to_hor, is_it_same_series, vertical_to_hor, tracer_basis, elem_post_getter, classmover } from "../function/tool.js";
+import { is_it_same_series, yt_player_getter, yt_resetter, is_it_same_series } from "../function/multi.js";
+import { make_ver_fragment } from "../function/make.js";
+import { orange_pointer_make, add_orange_space_for_everyone, best_related_element, principle_management, all_view_changer, pre_pointing_in, pre_pointing_out, comesin_management, actuar_st_alloff, actuar_en_alloff  } from "../function/edit.js";
+import { go_top, go_left, go_bottom, go_right } from "../function/motion.js";
+import { the_name_list, screen, bo, blocksize, linesize, blocktime, half_left_width, full_end_scrollwidth, full_start_scrollwidth, custom_end_scrollwidth } from "../data/constant.js";
+import { native_value } from "../data/variable.js";
+
+let orange_data = native_value("orange_data");
+let timeoutArray = native_value("timeoutArray");
+let intervalArray = native_value("intervalArray");
+let the_scrolled_distance = native_value("the_scrolled_distance");
+
 window.addEventListener("keydown", (e)=>{
     
     if (document.activeElement.tagName == "TEXTAREA") {
@@ -1044,7 +1058,6 @@ window.addEventListener("keydown", (e)=>{
                     screen.classList.remove("edit");
                     screen.style.opacity = 1;
                     the_scrolled_distance = 0;
-                    orange_block_counter = 0;
                     let covs = document.querySelectorAll(".special_cov");
                     for (let i = 0; i < covs.length; i++) {
                         covs[i].remove();

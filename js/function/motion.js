@@ -1,3 +1,9 @@
+import { vertical_to_hor, vertical_to_sp_cover, vertical_to_sp } from "./tool.js";
+import { centering_marker, focus_checker, blur_checker, wheel_positioning, special_cleaner, cs_bye, go_af_scroll } from "./general.js";
+import { is_it_same_series } from "./multi.js";
+import { all_view_changer } from "./edit.js";
+import { blocksize, full_end_scrollwidth, full_start_scrollwidth, custom_end_scrollwidth } from "../data/constant.js";
+
 // topへの移動
 export const go_top = (e, f) => {
 

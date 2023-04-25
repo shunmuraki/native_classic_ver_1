@@ -1,3 +1,7 @@
+import { keytouch_basic, original_centering_checker } from "../function/general.js";
+import { go_top, go_left, go_bottom, go_right } from "../function/motion.js";
+import { screen } from "../data/constant.js";
+
 window.addEventListener("keydown", (e)=>{
 
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {

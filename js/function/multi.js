@@ -1,3 +1,21 @@
+import { vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, which_special_is, target_data } from "./tool.js";
+import { is_it_same_series } from "./multi.js";
+import { all_view_changer } from "./edit.js";
+import { make_dup_fragment } from "./duplicate.js";
+import { screen, blocksize, blocktime, half_left_width } from "../data/constant.js";
+import { native_value } from "../data/variable.js";
+
+let yt_loop = native_value("yt_loop");
+let same_data = native_value("same_data");
+let special_playerlist = native_value("special_playerlist");
+let s_n = native_value("s_n");
+let same_start_content = native_value("same_start_content");
+
+// special_cov用に毎度作成する yt のリストを外部のJSファイルへ渡す関数.
+export const special_playlist_getter = () => {
+    return special_playerlist;
+}
+
 // extends
 // special_cov 向けでない、通常の yt プレイヤーの束から該当するプレイヤーを返す関数.
 export const yt_player_getter = (e) => {
@@ -66,6 +84,55 @@ export const just_clear_yt_loop = (e) => {
             clearInterval(target_dataset.shift());
         }
     }
+}
+
+// yt iframe　の読み込み
+export const block_multiable = (e, f) => {
+    let the_box = document.getElementById(e).parentElement;
+    the_box.style.height = 225 + "px";
+    the_box.classList.add("video");
+
+    let player;
+    let duration_time;
+        
+    function onYouTubeIframeAPIReady(g, h) {
+        window.YT.ready(function() {
+            player = new window.YT.Player(g, {
+                width: blocksize,
+                height: '202.5',
+                videoId: h,
+                events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+                }
+            });
+        })
+    }
+
+    function onPlayerReady(event) {
+        event.target.mute();
+        event.target.playVideo();
+        duration_time = player.getDuration();
+        // 時間差の存在を考慮してsessionStorageを唯一この箇所で利用.
+        sessionStorage.removeItem("the_duration");
+        sessionStorage.setItem("the_duration", duration_time);
+        return duration_time;
+    }
+
+    var done = false;
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+            setTimeout(stopVideo, 100);
+            done = true;
+        }
+    }
+    function stopVideo() {
+        player.pauseVideo();
+    }
+    onYouTubeIframeAPIReady(e, f);
+
+    return player;
 }
 
 // 動画の読み込み・sp_cover内のラインの調整（ブロック数）などを行う関数. um と multiable にて共通利用.
@@ -169,60 +236,6 @@ export const video_load_then = (e, f) => {
 }
 
 // func
-
-// special_cov用に毎度作成する yt のリストを外部のJSファイルへ渡す関数.
-export const special_playlist_getter = () => {
-    return special_playerlist;
-}
-
-// yt iframe　の読み込み
-export const block_multiable = (e, f) => {
-    let the_box = document.getElementById(e).parentElement;
-    the_box.style.height = 225 + "px";
-    the_box.classList.add("video");
-
-    let player;
-    let duration_time;
-        
-    function onYouTubeIframeAPIReady(g, h) {
-        window.YT.ready(function() {
-            player = new window.YT.Player(g, {
-                width: blocksize,
-                height: '202.5',
-                videoId: h,
-                events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-                }
-            });
-        })
-    }
-
-    function onPlayerReady(event) {
-        event.target.mute();
-        event.target.playVideo();
-        duration_time = player.getDuration();
-        // 時間差の存在を考慮してsessionStorageを唯一この箇所で利用.
-        sessionStorage.removeItem("the_duration");
-        sessionStorage.setItem("the_duration", duration_time);
-        return duration_time;
-    }
-
-    var done = false;
-
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-            setTimeout(stopVideo, 100);
-            done = true;
-        }
-    }
-    function stopVideo() {
-        player.pauseVideo();
-    }
-    onYouTubeIframeAPIReady(e, f);
-
-    return player;
-}
 
 // same群のどこかがセンタリングしている際に、上に対象要素を被せて描画する関数.
 export const make_special_cov = (e, f) => {

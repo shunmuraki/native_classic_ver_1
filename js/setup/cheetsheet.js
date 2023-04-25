@@ -1,3 +1,5 @@
+import { focus_checker, blur_checker } from "../function/general";
+
 // 以下チートシートの表示関連
 // チートシートをJSONから動的に読み込むようにする。
 

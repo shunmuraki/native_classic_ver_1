@@ -1,3 +1,10 @@
+import { all_view_changer } from "./edit.js";
+import { target_data, vertical_to_sp_cover, which_special_is, vertical_to_hor } from "./tool.js";
+import { screen, pointer, wheel, the_pointer, layer_base, blocksize, blocktime, window_height, the_sunsetline } from "../data/constant.js";
+import { native_value } from "../data/variable.js";
+
+let default_pos = native_value("default_pos");
+
 // centering クラスの調整関数
 export const centering_marker = (e, f, g) => {
     e.classList.remove(g);

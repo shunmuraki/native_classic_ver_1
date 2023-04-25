@@ -1,3 +1,19 @@
+import { ac_vi_adaptation, iframe_adaptation, textarea_adaptation, object_setter, for_ind, image_make_it, startblock_around, endblock_around, img_src_getter } from "../function/export.js";
+import { target_data } from "../function/tool.js";
+
+// ----- from exportable -----
+// * これらに ln へ引き渡す最終的なデータを代入し続ける.
+let the_html = "";
+let the_js = "";
+let the_img_blob_list = {};
+let images = [];
+// * これらはエクスポートする諸々の中の"データ"っぽいものたちを常に持つ。
+let data_num = -1;
+let animation_data = {};
+let animation_generate_list = [];
+let yt_id_list = [];
+let section_deletable_list = [];
+
 // まず要素を読み込む。
 
 // DOMのインポート.
@@ -277,7 +293,7 @@ for (let i = 0; i < sections.length; i++) {
         }
     }
 
-    if (sections[i].classList.contains("linear")) { 
+    if (sections[i].classList.contains("linear")) {
         // linearnativeのリニアにて最初の要素は描画しておくようにするため.
         if (sections[i].firstElementChild) {
             sections[i].firstElementChild.classList.add("fire");

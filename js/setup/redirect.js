@@ -1,3 +1,8 @@
+import {tracer_basis} from "../function/tool.js";
+import { focus_checker } from "../function/general.js";
+
+// * index.html → export.html のリダイレクト時に sessionStorage に保存した innerHTML には入らない <textarea> の value たちを重ねて保存しておく変数.
+let the_values = new Array();
 let button = document.querySelector(".export_button");
 
 button.addEventListener("click", () => {

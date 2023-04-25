@@ -1,3 +1,8 @@
+import { focus_checker, adjust_target_pos, wheel_seton, focus_checker } from "../function/general.js";
+import { which_special_is } from "../function/tool.js";
+import { running_root, style_initial } from "../function/style.js";
+import { screen, wheel, the_pointer, layer_base } from "../data/constant.js";
+
 document.addEventListener("keydown", (e) => {
     
     let current = document.activeElement;

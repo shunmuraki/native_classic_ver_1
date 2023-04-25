@@ -1,3 +1,7 @@
+import { keytouch_basic, pointer_anim } from "../function/general.js";
+import {the_magic_copy, the_magic_paste} from "../function/magic.js";
+import { screen} from "../data/constant.js";
+
 window.addEventListener("keydown", (e)=>{
    
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {
@@ -24,4 +28,3 @@ window.addEventListener("keydown", (e)=>{
     }
     
 });
-

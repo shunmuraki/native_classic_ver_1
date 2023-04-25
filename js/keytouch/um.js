@@ -1,3 +1,8 @@
+import { focus_checker, adjust_box } from "../function/general.js";
+import { video_street_scroll, audio_street_scroll } from "../function/um.js";
+import { target_data } from "../function/tool.js";
+import { screen, um, blocksize} from "../data/constant.js";
+
 document.addEventListener("keydown", (e) => {
     
     let current = document.activeElement;

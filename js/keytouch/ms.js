@@ -1,3 +1,10 @@
+import { which_special_is } from "../function/tool.js";
+import { adjust_target_pos } from "../function/general.js";
+import { screen } from "../data/constant.js";
+import { native_value } from "../data/variable.js";
+
+let ms_adjust_target = native_value("ms_adjust_target");
+
 window.addEventListener("keydown", (e)=>{
   
     let k = e.key;

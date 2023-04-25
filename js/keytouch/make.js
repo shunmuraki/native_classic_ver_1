@@ -1,3 +1,8 @@
+import { keytouch_basic, pointer_anim, original_centering_checker, adjust_box, centering_marker, same_cutter, special_cleaner, wheel_positioning } from "../function/general.js";
+import { make_fragment, make_ver_fragment } from "../function/make.js";
+import { is_it_same_series } from "../function/multi.js";
+import { screen, blocksize } from "../data/constant.js";
+
 window.addEventListener("keydown", (e)=>{
 
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {
