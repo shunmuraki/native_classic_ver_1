@@ -6,10 +6,9 @@ import { all_view_changer } from "./edit.js";
 import { the_name_list, blocksize } from "../data/constant.js";
 import { native_value } from "../data/variable.js";
 
-let magic_elms = native_value("magic_elms");
-
 // マジックコピーの関数.
 export const the_magic_copy = (e) => {
+    let magic_elms = native_value("magic_elms");
     // スタイリング直後にカットされることを想定.
     tracer_basis(document.querySelector(".centering"));
     // 初期化
@@ -26,6 +25,7 @@ export const the_magic_copy = (e) => {
         if (breaker.classList.contains("same")) {
             let same_name = "same_num_" + target_data(breaker, "same_num_");
             let sames = document.getElementsByClassName(same_name);
+            let same_num = native_value("same_num");
             // same_end同士中身をコピーしたい。
             let c = sames[sames.length - 1].lastElementChild.cloneNode(true);
             // 色々処理施す前に、0 で sameならsame_start を与えて same_num もう更新する.
@@ -35,13 +35,11 @@ export const the_magic_copy = (e) => {
             breaker.previousElementSibling.appendChild(c);
             breaker.classList.add("same_start");
             let breakpoint = [].slice.call(sames).indexOf(breaker);
-            let same_data = same_data_getter();
-            same_data += 1;
-            same_data_counter(same_data);
+            same_num = native_value("same_num", 1);
             for (let i = sames.length - 1; i >= breakpoint; i--) {
                 let same_block = sames[i];
                 classmover(same_block, same_block, "same_num_", "remove");
-                same_block.classList.add("same_num_" + same_data);                    
+                same_block.classList.add("same_num_" + same_num);
             }
         }
 

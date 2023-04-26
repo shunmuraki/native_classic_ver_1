@@ -19,11 +19,11 @@ let players_list = {};
 // * YT の単一ブロックにおける５秒ごと（or blocktime）のループ処理を司る setInterval を連ねておく変数. ブロックが移った際にループを丸ごと消せるようにする。
 let yt_loop = new Array();
 // * デフォルトレイヤーにおいて、same群間の区別を図るために割り振っている「same_num_」を常に監視する変数.
-let same_data = 0;
+let same_num = 0;
 // * Native には special_cov という仕組みがあって、この special_cov における YT のループ処理を他とは別に管理する変数.
 let special_playerlist = {};
 // * 同様に special_cov に配布される same_num_ を別途管理するための変数.
-let s_n = 100;
+let s_s_num = 100;
 // * same 群の外へ出た時に、現存する special_cov の中にある「最新の要素」を管理する変数.
 let same_start_content = null;
 
@@ -63,9 +63,9 @@ let values = {
     "ms_adjust_target": ms_adjust_target,
     "players_list": players_list,
     "yt_loop": yt_loop,
-    "same_data": same_data,
+    "same_num": same_num,
     "special_playerlist": special_playerlist,
-    "s_n": s_n,
+    "s_s_num": s_s_num,
     "same_start_content": same_start_content,
     "orange_data": orange_data,
     "timeoutArray": timeoutArray,

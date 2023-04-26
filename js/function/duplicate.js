@@ -1,3 +1,4 @@
+import { native_value } from "../data/variable.js";
 import { centering_marker, focus_checker } from "../function/general.js";
 
 // 空のブロックの生成関数（sameの場合に使用）
@@ -16,12 +17,13 @@ export const make_dup_fragment = (e, f) => {
 }
 
 export const same_around = (e, f) => {
+    
+    let same_num = native_value("same_num");
     let next_one;
+
     function same_setup() {
-        e.classList.add("same");
-        let same_data = same_data_getter();
-        same_data += 1;
-        same_data_counter(same_data);
+        e.classList.add("same"); 
+        same_num = native_value('same_num', 1);
     }
 
     if (f == "default") {
@@ -53,8 +55,7 @@ export const same_around = (e, f) => {
 
 
     // ここ変えてくれ。
-    let same_data_latest = same_data_getter();
-    let the_name = "same_num_" + same_data_latest;
+    let the_name = "same_num_" + same_num;
 
     e.classList.add("same");
     next_one.classList.add("same");          

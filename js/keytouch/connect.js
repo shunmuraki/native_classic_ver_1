@@ -7,13 +7,12 @@ window.addEventListener("keydown", (e)=>{
     
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {
 
-        let k = e.key;
-        let current;
-        let type_signiture;
-        let current_vertical;
-        let current_horizontal;
-        let current_sp_cover;
-        keytouch_basic(current, type_signiture, current_vertical, current_horizontal, current_sp_cover);
+        // 恒例の作業
+        let key_basis = keytouch_basic();
+        let type_signiture = key_basis[1];
+        let current_vertical = key_basis[2];
+        let current_horizontal = key_basis[3];
+        let current_sp_cover = key_basis[5];
 
         if (type_signiture) {
             if ( type_signiture.indexOf('connec') != -1) {

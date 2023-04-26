@@ -6,12 +6,9 @@ window.addEventListener("keydown", (e)=>{
    
     if (screen.classList.contains("edit") == false && screen.classList.contains("um") == false) {
     
-        let k = e.key;
-        let current;
-        let type_signiture;
-        let current_vertical;
-
-        keytouch_basic(current, type_signiture, current_vertical);
+        // 恒例の作業
+        let key_basis = keytouch_basic();        
+        let current_vertical = key_basis[2];
         
         // マジックコマンド.
         if(e.ctrlKey) {

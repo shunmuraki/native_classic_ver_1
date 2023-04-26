@@ -5,7 +5,6 @@ import { screen } from "../data/constant.js";
 
 window.addEventListener("keydown", (e) => {
     
-    let k = e.key;
     let current;
     let type_signiture;
     

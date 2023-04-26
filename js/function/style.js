@@ -2,9 +2,6 @@ import { classmover, target_data } from "./tool.js"
 import { chartbox, titlebox } from "../data/constant.js";
 import { native_value } from "../data/variable.js";
 
-let current_states = native_value("current_states");
-let previous_states = native_value("previous_states");
-
 // before: stylefuncs
 // ********* style_ 系列の関数たち *********
 // 本当はここに関数はまとめるべきなのかもしれない。
@@ -168,6 +165,8 @@ const layer_maker = (e) => {
 
 // style_initial の中で実行する。
 const all_setup = (e) => {
+  let current_states = native_value("current_states");
+  let previous_states = native_value("previous_states");
   // まずはデフォルトの選択項目を決めて、クラスを振ってあげる必要がある。
   // ひとまずは layer_1 (0枚目) が来るから、この最初のブロックに対して choose クラスをつけるようにしよう。
   // sl_1_1　←この子がそれ。
@@ -213,6 +212,8 @@ const running_a = (e) => {
 }
 
 export const style_initial = (e) => {  
+  let current_states = native_value("current_states");
+  let previous_states = native_value("previous_states");
   // 中身の条件分岐
   // current_zone のセット
   // running_a の実行.
@@ -254,6 +255,7 @@ const data_layer_shift = (e, f) => {
 
 // e = 選択した要素
 const running_b = (e) => {
+  let current_states = native_value("current_states");
   // まず選択項目の名前を取得しましょう。
   let current_s_layer = document.getElementsByClassName("current_s_layer")[0];
 
@@ -305,6 +307,9 @@ const running_b = (e) => {
 // choose が選択された時に実行される、根幹となる関数。
 // まずは choose クラスを持つ要素を取得することから始めましょう。
 export const running_root = (e) => {
+  let current_states = native_value("current_states");
+  let previous_states = native_value("previous_states");
+  
   let choose = document.getElementsByClassName("choose")[0];
   let order = choose.parentElement.children.indexOf(choose);
   // この子要素が何番目かを知ることから。

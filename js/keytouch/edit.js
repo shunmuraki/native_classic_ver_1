@@ -7,27 +7,21 @@ import { go_top, go_left, go_bottom, go_right } from "../function/motion.js";
 import { the_name_list, screen, bo, blocksize, linesize, blocktime, half_left_width, full_end_scrollwidth, full_start_scrollwidth, custom_end_scrollwidth } from "../data/constant.js";
 import { native_value } from "../data/variable.js";
 
-let orange_data = native_value("orange_data");
-let timeoutArray = native_value("timeoutArray");
-let intervalArray = native_value("intervalArray");
-let the_scrolled_distance = native_value("the_scrolled_distance");
-
 window.addEventListener("keydown", (e)=>{
     
     if (document.activeElement.tagName == "TEXTAREA") {
         
-        let k = e.key;
-        let current;
-        let type_signiture;
-        let current_vertical;
-        let current_horizontal;
-        let current_sp_cover;
-        keytouch_basic(current, type_signiture, current_vertical, current_horizontal, current_sp_cover);
+        // 恒例の作業
+        let key_basis = keytouch_basic();
+        let current = key_basis[0];
+        let type_signiture = key_basis[1];
         
         // Editモードを展開.
         if (type_signiture.indexOf('edi') != -1) {
 
             if (screen.classList.contains("ms")) {
+
+                let orange_data = native_value("orange_data");
 
                 tracer_basis(document.querySelector(".centering"));
                 document.querySelector(".ms_area").remove();
@@ -261,6 +255,7 @@ window.addEventListener("keydown", (e)=>{
 
         let new_layer = document.querySelector(".new_layer");
         let new_layer_centering = document.querySelector(".new_layer_centering");
+        let orange_data = native_value("orange_data");
 
         // 下準備.
         let centering = null;
@@ -493,9 +488,14 @@ window.addEventListener("keydown", (e)=>{
                     let scrap = vertical_to_sp_cover(centering);
                     let hor = vertical_to_hor(centering);
                     let the_seeking_time;
+            
                     let players_list = new Array();
                     let play_when;
                     let pause_when;
+
+                    let timeoutArray = native_value("timeoutArray");
+                    let intervalArray = native_value("intervalArray");
+                    let the_scrolled_distance = native_value("the_scrolled_distance");
 
                     // ここも connected の場合に対応させる.
                     let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);
@@ -945,11 +945,9 @@ window.addEventListener("keydown", (e)=>{
                                         nex = target_data(scraps[i].children[l], "continue_num_");
                                     } else {
                                         // 通常処理
-                                        let same_data = same_data_getter();
-                                        same_data += 1;
-                                        same_data_counter(same_data);
-                                        nex = same_data + 1;
-                                        same_data_counter(nex);
+                                        // 2回分を兼ねている。ローカルのsame_numは -1 を維持。
+                                        same_num = native_value("same_num", 2);
+                                        nex = same_num - 1;
                                         st_block.classList.add("same_start");
                                     }
 
@@ -989,9 +987,9 @@ window.addEventListener("keydown", (e)=>{
 
                                     if (en_block.classList.contains("co")) {
                                         if (scraps[i + 1]) {
-                                            let same_data = same_data_getter();
+                                            // let same_data = same_data_getter();
                                             scraps[i + 1].classList.add("continue_former");
-                                            scraps[i + 1].children[l].classList.add("continue_num_" + same_data);
+                                            scraps[i + 1].children[l].classList.add("continue_num_" + same_num);
                                         } 
                                         en_block.classList.remove("same_end");
                                         en_block.classList.remove("co");

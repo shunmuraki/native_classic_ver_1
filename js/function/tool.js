@@ -1,5 +1,3 @@
-import { screen } from "../data/constant.js";
-
 // ブロックから指定の階層の要素を返す関数.
 export const vertical_to_hor = (e) => {
     return e.parentElement;
@@ -78,25 +76,6 @@ export const classmover = (e, f, g, h) => {
         }
     }
 } 
-
-// screen 要素に付与されている same　の数を取得する関数.
-export const same_data_getter = () => { 
-    let the_same_data_now = Number(target_data(screen, "same_data_"));
-    return the_same_data_now;
-}
-
-// screen 要素に付与されている same　の数を更新する関数.
-export const same_data_counter = (e) => { 
-    let screen = document.querySelector(".screen");
-    let screen_classlist = screen.classList;
-    for (let i = 0; i < screen_classlist.length; i++) {
-        let classname = screen_classlist[i];
-        if (classname.indexOf("same_data_") !== -1) {
-            screen.classList.remove(classname);
-            screen.classList.add("same_data_" + e);
-        }
-    }
-}
 
 // 対応する special_cov を返す関数.
 export const which_special_is = (e) => {

@@ -3,8 +3,6 @@ import { adjust_target_pos } from "../function/general.js";
 import { screen } from "../data/constant.js";
 import { native_value } from "../data/variable.js";
 
-let ms_adjust_target = native_value("ms_adjust_target");
-
 window.addEventListener("keydown", (e)=>{
   
     let k = e.key;
@@ -16,6 +14,7 @@ window.addEventListener("keydown", (e)=>{
 
         screen.classList.add("ms");
         let centering = document.querySelector(".centering");
+        let ms_adjust_target = native_value("ms_adjust_target");
 
         // ms の生成.
         let ms = document.createElement("textarea");

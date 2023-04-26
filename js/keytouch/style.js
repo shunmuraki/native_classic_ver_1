@@ -8,7 +8,7 @@ document.addEventListener("keydown", (e) => {
     let current = document.activeElement;
     let k = e.key;
     let type_signiture;
-    let centering = document.querySelector(".centering");;
+    let centering = document.querySelector(".centering");
     
     if (current.tagName == "TEXTAREA") {
         type_signiture = current.value;

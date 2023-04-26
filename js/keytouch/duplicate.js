@@ -6,13 +6,12 @@ import { blocksize } from "../data/constant.js";
 
 window.addEventListener("keydown", (e)=>{ 
   
-  let k = e.key;
-  let current;
-  let type_signiture;
-  let current_vertical;
-  let current_horizontal;
-  let current_sp_cover;
-  keytouch_basic(current, type_signiture, current_vertical, current_horizontal, current_sp_cover);
+// 恒例の作業
+let key_basis = keytouch_basic();
+let current = key_basis[0];
+let current_vertical = key_basis[2];
+let current_horizontal = key_basis[3];
+let current_sp_cover = key_basis[5];
 
   if(e.metaKey) {  
     // 以下 command + k の処理.

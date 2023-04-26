@@ -1,9 +1,7 @@
 import { all_view_changer } from "./edit.js";
-import { target_data, vertical_to_sp_cover, which_special_is, vertical_to_hor } from "./tool.js";
+import { target_data, vertical_to_sp_cover, which_special_is, vertical_to_hor, vertical_to_sp } from "./tool.js";
 import { screen, pointer, wheel, the_pointer, layer_base, blocksize, blocktime, window_height, the_sunsetline } from "../data/constant.js";
 import { native_value } from "../data/variable.js";
-
-let default_pos = native_value("default_pos");
 
 // centering クラスの調整関数
 export const centering_marker = (e, f, g) => {
@@ -136,6 +134,7 @@ export const cs_bye = () => {
 // muliable からの移籍（2023.4.20）
 // sameの途中に挿入がされる場合への対処関数. (両サイドがsameであることが条件で、かつ両者が start , end は持たない場合にのみ実行)
 export const same_cutter = (e, f) => {
+    let same_num = native_value("same_num");
     let the_target_left = e.previousElementSibling;
     let the_target_right;
 
@@ -160,14 +159,12 @@ export const same_cutter = (e, f) => {
                 let sames = document.getElementsByClassName(same_name);
                 let breakpoint = [].slice.call(sames).indexOf(the_target_right);
                 
-                let same_data = same_data_getter();
-                same_data += 1;
-                same_data_counter(same_data);
+                same_num = native_value("same_num", 1);
                 
                 for (let i = sames.length - 1; i >= breakpoint; i--) {
                     let same_block = sames[i];
                     classmover(same_block, same_block, "same_num_", "remove");
-                    same_block.classList.add("same_num_" + same_data);                    
+                    same_block.classList.add("same_num_" + same_num);                    
                 }
             } 
         }
@@ -230,6 +227,7 @@ export const wheel_seton = () => {
 // ホイールをブロックやポインター（編集時）に追従させる関数.
 export const adjust_target_pos = (e, f) => {
     if (e) {
+        let default_pos = native_value("default_pos");
         let ms_top = getComputedStyle(e).top;
         let ms_st;
         if (f == "on") {
@@ -264,18 +262,28 @@ export const optimize_writing = (e, f) => {
 // g = current_vertical
 // h = current_horizontal
 // i = current_sp_cover
-export const keytouch_basic = (e, f, g) => {
+export const keytouch_basic = () => {
+    let current;
+    let type_signiture;
+    let current_vertical;
+    let current_horizontal;
+    let current_sp;
+    let current_sp_cover;
     if (document.activeElement.tagName != "BODY") {
-        e = document.activeElement;
-        f = e.value;
-        g = document.querySelector(".centering");
+        current = document.activeElement;
+        type_signiture = current.value;
+        current_vertical = document.querySelector(".centering");
         if (document.activeElement.classList.contains("ms_area") == false) {
-            optimize_writing(e, g);
+            optimize_writing(current, current_vertical);
         }
     } else {
-        g = document.querySelector(".centering");
+        current_vertical = document.querySelector(".centering");
     }
 
-    h = vertical_to_hor(g);
-    i = vertical_to_sp_cover(g);
+    current_horizontal = vertical_to_hor(current_vertical);
+    current_sp = vertical_to_sp(current_vertical);
+    current_sp_cover = vertical_to_sp_cover(current_vertical);
+
+    let data = [current, type_signiture, current_vertical, current_horizontal, current_sp, current_sp_cover];
+    return data;
 }

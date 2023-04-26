@@ -1,20 +1,8 @@
 import { vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, which_special_is, target_data } from "./tool.js";
-import { is_it_same_series } from "./multi.js";
 import { all_view_changer } from "./edit.js";
 import { make_dup_fragment } from "./duplicate.js";
 import { screen, blocksize, blocktime, half_left_width } from "../data/constant.js";
 import { native_value } from "../data/variable.js";
-
-let yt_loop = native_value("yt_loop");
-let same_data = native_value("same_data");
-let special_playerlist = native_value("special_playerlist");
-let s_n = native_value("s_n");
-let same_start_content = native_value("same_start_content");
-
-// special_cov用に毎度作成する yt のリストを外部のJSファイルへ渡す関数.
-export const special_playlist_getter = () => {
-    return special_playerlist;
-}
 
 // extends
 // special_cov 向けでない、通常の yt プレイヤーの束から該当するプレイヤーを返す関数.
@@ -51,6 +39,8 @@ export const yt_resetter = (e) => {
 // センタリングしたブロックの動画をブロック分再生（or ループ再生）する関数
 export const yt_loop_player = (e, f, g) => {
     let the_time = yt_resetter(f);
+    let yt_loop = native_value("yt_loop");
+
     if (! yt_loop[g]) {
         yt_loop[g] = new Array();
     }
@@ -63,6 +53,8 @@ export const yt_loop_player = (e, f, g) => {
 
 // 上の関数によってセットされた interval 処理をクリアする関数.
 export const yt_loop_stopper = (e, f, g) => {
+    let yt_loop = native_value("yt_loop");
+
     let duration;
     e.pauseVideo();
     if (f == "start") {
@@ -78,6 +70,7 @@ export const yt_loop_stopper = (e, f, g) => {
 
 // 現在センタリングしているブロックが yt でループされているのを停止する関数.
 export const just_clear_yt_loop = (e) => {
+    let yt_loop = native_value("yt_loop");
     let target_dataset = yt_loop[e];
     if (target_dataset) {
         for (let i = target_dataset.length; i >= 0; i--)  {
@@ -137,10 +130,8 @@ export const block_multiable = (e, f) => {
 
 // 動画の読み込み・sp_cover内のラインの調整（ブロック数）などを行う関数. um と multiable にて共通利用.
 export const video_load_then = (e, f) => {
-    same_data = same_data_getter();
-    same_data += 1;
-    same_data_counter(same_data);
-    let the_id_name = "yt_editor_" + same_data;
+    let same_num = native_value("same_num", 1);
+    let the_id_name = "yt_editor_" + same_num;
     let the_code;
     
     // "v="以降の11文字を取得してcodeとする。
@@ -164,7 +155,7 @@ export const video_load_then = (e, f) => {
     
     setTimeout(() => {
         let the_duration = sessionStorage.getItem("the_duration");        
-        let the_name = "same_num_" + same_data;
+        let the_name = "same_num_" + same_num;
         the_box.classList.add("same");
         the_box.classList.add(the_name);
         
@@ -278,10 +269,12 @@ export const is_it_same_start = (e) => {
             // もし iframe だったら、yt idを取得して、新しく yt playerを生成するようにする。cloneNodeはしない.            
             if (hit_target.lastElementChild) {
                 if (hit_target.lastElementChild.tagName == "IFRAME") {
-    
+                    
+                    let s_s_num = native_value("s_s_num");
+                    let special_playerlist = native_value("special_playerlist");
                     let the_code = target_data(hit_target, "id_is_");
-                    s_n += 1;
-                    let the_keyname = String("yt_editor_" + s_n);
+                    s_s_num += 1;
+                    let the_keyname = String("yt_editor_" + s_s_num);
                     let the_sp_if = document.createElement("div");
                     the_sp_if.setAttribute("id", the_keyname); 
                     
@@ -363,11 +356,12 @@ export const is_it_same_alend = (e) => {
     let the_target_left = e.previousElementSibling;
     let the_target_right = e.nextElementSibling;
     let sp_cover = vertical_to_sp_cover(e);
-
+    let same_start_content = native_value("same_start_content");
+    
     function the_state(e) {
         let the_special_cov = which_special_is(e);
         let content = null;
-
+        
         // 削除する前に same_start が右隣の場合にコンテントを一時的に same_startへ移してあげる.
         // そして再度 same_start が centering した時にその中身を取り除くようにする.
         if (the_special_cov) {
