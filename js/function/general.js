@@ -2,6 +2,7 @@ import { all_view_changer } from "./edit.js";
 import { target_data, vertical_to_sp_cover, which_special_is, vertical_to_hor, vertical_to_sp } from "./tool.js";
 import { screen, pointer, wheel, the_pointer, layer_base, blocksize, blocktime, window_height, the_sunsetline } from "../data/constant.js";
 import { native_value } from "../data/variable.js";
+import { layerbase_switch, pointer_effect, pointer_grow, pointer_switch, wheel_grow, wheel_switch } from "./animation.js";
 
 // centering クラスの調整関数
 export const centering_marker = (e, f, g) => {
@@ -100,25 +101,7 @@ export const adjust_box = (e) => {
 // ブロックの生成やスプリット、ポインターを打つなどのタイミングで標準ポインターをアニメーションさせる際に使用する関数.
 export const pointer_anim = () => {                    
     let pri_pointer = document.querySelector(".pointer");
-    pri_pointer.animate(
-        [
-            { scale: 1 },
-            { scale: 0.8 }
-        ], {
-            duration: 300,
-            fill: "both",
-        }
-    );
-    pri_pointer.animate(
-        [
-            { scale: 0.8 },
-            { scale: 1,  }
-        ], {
-            duration: 300,
-            fill: "both",
-            delay: 300,
-        }
-    );
+    pointer_effect(pri_pointer);
 }
 
 // center_specialクラスを除去する（special_covは残す）
@@ -133,10 +116,11 @@ export const cs_bye = () => {
 
 // muliable からの移籍（2023.4.20）
 // sameの途中に挿入がされる場合への対処関数. (両サイドがsameであることが条件で、かつ両者が start , end は持たない場合にのみ実行)
-export const same_cutter = (e, f) => {
-    let same_num = native_value("same_num");
+export const same_cutter = (e, f) => { 
     let the_target_left = e.previousElementSibling;
     let the_target_right;
+
+    // same_num
 
     if (f == "addon") {
         the_target_right = e.nextElementSibling;
@@ -157,14 +141,13 @@ export const same_cutter = (e, f) => {
 
                 // same_start　以降の same_num_ を更新.
                 let sames = document.getElementsByClassName(same_name);
-                let breakpoint = [].slice.call(sames).indexOf(the_target_right);
-                
-                same_num = native_value("same_num", 1);
+                let breakpoint = [].slice.call(sames).indexOf(the_target_right);            
+                set("same_num", s => s += 1);
                 
                 for (let i = sames.length - 1; i >= breakpoint; i--) {
                     let same_block = sames[i];
                     classmover(same_block, same_block, "same_num_", "remove");
-                    same_block.classList.add("same_num_" + same_num);                    
+                    same_block.classList.add("same_num_" + get("same_num"));
                 }
             } 
         }
@@ -188,50 +171,20 @@ export const wheel_positioning = () => {
   
   // ホイールの描画アニメーションの関数.
 export const wheel_seton = () => {
-    the_pointer.animate(
-        [
-        { transform: 'scale(1)', opacity: 1, },
-        { transform: 'scale(5)', opacity: 1 },
-        ], {
-        duration: 300,
-        fill: "both",
-        easing: "ease-in-out"
-        }
-    );
+    pointer_switch(the_pointer, "on");
     wheel.style.display = "block";
-    layer_base.animate(
-        [
-        { transform: 'rotate(270)', },
-        { transform: 'rotate(360deg) ' }
-        ], {
-        duration: 700,        
-        fill: "both",
-        easing: "ease-in-out",
-        delay: 200,
-        }
-    );
-    wheel.animate(
-        [
-        { opacity: 0, },
-        { opacity: 1, }, 
-        ], {
-        duration: 400,
-        delay: 200,
-        fill: "both",
-        easing: "ease-in-out"
-        }
-    );
+    layerbase_switch(layer_base, "on");
+    wheel_switch(wheel, "on");
 }
 
 // ms からの移籍（2023.4.20）
 // ホイールをブロックやポインター（編集時）に追従させる関数.
 export const adjust_target_pos = (e, f) => {
     if (e) {
-        let default_pos = native_value("default_pos");
         let ms_top = getComputedStyle(e).top;
         let ms_st;
         if (f == "on") {
-            default_pos = Number(ms_top.substring(0, ms_top.length - 2));
+            set("default_pos", s => s = Number(ms_top.substring(0, ms_top.length - 2)));
             if (default_pos > 60) {
                 ms_st = 60 + default_pos;
             } else {
@@ -241,7 +194,7 @@ export const adjust_target_pos = (e, f) => {
             e.style.setProperty('top', ms_st_code, 'important');
         } else if (f == "off") {
             e.style.top = '';
-            default_pos = 0;
+            set("default_pos", s => s = 0);
         }
     }
 }
@@ -255,35 +208,4 @@ export const optimize_writing = (e, f) => {
     let height = e.clientHeight;
     e.parentElement.style.height = height + "px";
     adjust_box(f);
-}
-
-// e = current
-// f = type_signiture
-// g = current_vertical
-// h = current_horizontal
-// i = current_sp_cover
-export const keytouch_basic = () => {
-    let current;
-    let type_signiture;
-    let current_vertical;
-    let current_horizontal;
-    let current_sp;
-    let current_sp_cover;
-    if (document.activeElement.tagName != "BODY") {
-        current = document.activeElement;
-        type_signiture = current.value;
-        current_vertical = document.querySelector(".centering");
-        if (document.activeElement.classList.contains("ms_area") == false) {
-            optimize_writing(current, current_vertical);
-        }
-    } else {
-        current_vertical = document.querySelector(".centering");
-    }
-
-    current_horizontal = vertical_to_hor(current_vertical);
-    current_sp = vertical_to_sp(current_vertical);
-    current_sp_cover = vertical_to_sp_cover(current_vertical);
-
-    let data = [current, type_signiture, current_vertical, current_horizontal, current_sp, current_sp_cover];
-    return data;
 }

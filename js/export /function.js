@@ -1,9 +1,12 @@
-import { target_data, classmover } from "./tool.js";
+import { target_data, classmover } from "../function/tool.js";
+import { global_update } from "../data/variable.js";
 
 // actuar クラスへの対応や video_startpointのセットなど、 animation_data を更新する関数.
 export const ac_vi_adaptation = (e, f, g) => {
+    
     let classlist = e.classList;
-    let animation_data = f;
+    let animation = f;
+
     // まずはsame_end か same_start かだ.
     if (e.classList.contains("same_end")) {
         // 秒数に変換. (blocksize = 360)
@@ -13,13 +16,13 @@ export const ac_vi_adaptation = (e, f, g) => {
             let classname = classlist[i];
             if (classname.indexOf("this_video_st_") != -1) {
                 if (g == "active_st") {
-                    animation_data["video_startpoint"] = Math.floor(Number(target_data(e, "this_video_st_")));
+                    animation["video_startpoint"] = Math.floor(Number(target_data(e, "this_video_st_")));
                 }
             }
             if (classname.indexOf("actuar_time_") != -1) {
-                animation_data["finish_when"] = animation_data["finish_when"] - act_num + 5; 
+                animation["finish_when"] = animation["finish_when"] - act_num + 5; 
             } 
-        }    
+        }
     }
     if (e.classList.contains("same_start")) {
         let act_num = 5 * (Math.floor(Number(target_data(e, "actuar_time_"))) / 360);
@@ -27,15 +30,15 @@ export const ac_vi_adaptation = (e, f, g) => {
         for (let i = 0; i < classlist.length; i++) {
             let classname = classlist[i];
             if (classname.indexOf("actuar_st") != -1) {
-                animation_data["trigger_when"] = animation_data["trigger_when"] + act_num;
+                animation["trigger_when"] = animation["trigger_when"] + act_num;
                 if (g == "active_st") {
                     // actuar を video_startpoint にも反映.
-                    animation_data["video_startpoint"] = animation_data["video_startpoint"] + act_num;
+                    animation["video_startpoint"] = animation["video_startpoint"] + act_num;
                 }
             } 
         }
     }
-    return animation_data;
+    return animation;
 }
 
 // change クラスから スタイリングの変化前と変化後の値をセットにして返す関数.
@@ -87,14 +90,14 @@ export const en_change_adaptation = (e) => {
     }
 }
 
-
 // yt-IDからyt-iframeを生成するための仮置きのdiv要素をセットする関数.
 export const iframe_adaptation = (e) => {
     let the_content = e.lastElementChild;
     let value_id = target_data(e, "id_is_");
-    yt_id_list.push(value_id);
-    console.log(yt_id_list);
-    let the_name = "yt_" + String(yt_id_list.length - 1);
+
+    // Naive 新しい記法！！完全に山場を乗り越えた.
+    set("yt_id_list", s => s.push(value_id));
+    let the_name = "yt_" + String(get("yt_id_list").length - 1);
     console.log(the_name);
     // same_end 同士見つけあってDOMを節約するために発見用のidをクラスに付与する.
     e.classList.add("iframe");
@@ -152,45 +155,25 @@ export const object_generation = (e) => {
 }
 
 // 画像のパスを配列に加え、画像のElementにも対応するsrcの値をセットする関数.
-export const img_src_getter = (e) => {
+export const img_src_getter = (e, f) => {    
     let target = e.lastElementChild;
     if (target) {
         if (target.tagName == "IMG") {
-            let the_src = target.getAttribute('src');
-            images.push(the_src);
-            let the_num = Object.keys(the_img_blob_list).length;
-            the_img_blob_list["img_" + the_num] = the_src;
+            let the_src = target.getAttribute('src');        
+            // NEW !!!!!!
+            set("images", s => s.push(the_src));
+            let the_num = Object.keys(get("the_img_blob_list")).length; 
+            // NEW!!!!!!!
+            set("the_img_blob_list", s => s["img_" + the_num] = the_src);
             let the_filename = "images/img_" + the_num + ".png";
             target.setAttribute("src", the_filename);
         }
     }
 }
 
-// ２つのスタイリング配列（[0, 0, 0, 0] など）を比較して、そのギャップから animation_generate_list へ格納するデータを生成して返す関数.
-export const genedata_compare = (e, f) => {
-    let output = [];
-    let vertical_data = f[0] - e[0];
-    let horizontal_data = f[1] - e[1];
-    let scale_data = f[2] - e[2];
-    let opacity_data = f[3] - e[3];
-    if (vertical_data != 0) {
-        let new_prop_v = [["vertical", f[0]], 1];
-        output.push(new_prop_v);
-    }
-    if (horizontal_data != 0) {
-        let new_prop_h = [["horizontal", f[1]], 1];
-        output.push(new_prop_h);
-    }
-    if (scale_data != 0) {
-        let new_prop_s = [["scale", f[2]], 1]; 
-        output.push(new_prop_s);
-    }
-    if (opacity_data != 0) {
-        let new_prop_o = [["opacity", f[3]], 1];
-        output.push(new_prop_o);
-    }
-    return output;
-}
+// genedata_compare の跡地
+// genedata_compare の跡地
+// genedata_compare の跡地
 
 // animation_generate_list に格納するデータを生成して返す関数.
 export const generationdata_setup = (e, f) => {
@@ -198,30 +181,17 @@ export const generationdata_setup = (e, f) => {
     let anim_blockhas = [];
     if (f == "start") {
         // 比較する必要がない.
-        anim_blockhas = ["opacity", 1];
+        anim_blockhas = 1;
         // このブロックが change を持っていたら
         if (e.classList.contains("change")) {
             // finish_when = trigger_when.
-            final_data = [[anim_blockhas, 0]];
+            final_data = [anim_blockhas, 0];
         } else {
-            final_data = [[anim_blockhas, 1]];
+            final_data = [anim_blockhas, 1];
         }
     } else if (f == "end") {
         //  比較する必要がない.
-        final_data = [[["opacity", 0], 1]];
-        // 次のブロックが changeを持っていたら
-        let the_nextblock = e.nextElementSibling;
-        if (the_nextblock) {
-            if (the_nextblock.classList.contains("change")) {
-                let f_data = en_change_adaptation(e);
-                // * e: [0,0,0,0] - [1,1,1,1]
-                // 移動先で要素をすぐに消す。こっちはあくまでつなぎ役のため.
-                // あとで複製した 3（>） 番目のanimationを消せるように多めに値を与えておくのがポイント.
-                final_data = genedata_compare(f_data[0], f_data[1]); 
-                // * → [["vertical", 0], ["scale", 2]]            
-                final_data.push([["opacity", 0], 0, "re"]);
-            }
-        }
+        final_data = [0, 1];
     } 
     return final_data;
 }
@@ -248,6 +218,7 @@ export const animationdata_setup = (e, f, g, h) => {
     let gene_datas = g;
     let the_num = gene_datas.length;
     let animations = [];
+ 
     // [処理内容]
     // the_num 分のanimationを複製　→
     // anim_name のセット. ← animation_generation_list の何番目かの数字を格納.
@@ -261,7 +232,7 @@ export const animationdata_setup = (e, f, g, h) => {
         let the_keynum = animation_generate_list.length;
         new_typedata["anim_name"] = the_keynum;
         let the_name = "anim_num_" + the_keynum;
-        the_block.classList.add(the_name); 
+        the_block.classList.add(the_name);
         // モーション後の opacity: 0 に該当するものかどうかの判別.
         if (new_gene_datas[i][2]) {
             // * 計算上 finish_when はそのまま変更せずに済むので trigger_when の方だけ.
@@ -271,9 +242,10 @@ export const animationdata_setup = (e, f, g, h) => {
         }
         let the_value = new_gene_datas[i];
         let final_animation = ac_vi_adaptation(the_block, new_typedata, h);
-        animation_generate_list.push(the_value);
+        set("animation_generate_list", s => s.push(the_value))
         animations.push(final_animation);
     }
+
     return animations;
 }
 
@@ -290,6 +262,7 @@ export const object_setter = (e, f) => {
 export const image_make_it = (e, f) => {
     let dec = e.slice(0, 1);
     let the_textdata;
+
     if (dec == "[") {
         the_textdata = String(e) + "[:img]";
     } else {
@@ -320,7 +293,9 @@ export const image_make_it = (e, f) => {
         ctx.drawImage(image, 0, 0, w, h, 0, 0, trimed_w, trimed_h);
         the_textdata = String(canvas.toDataURL("image/png")) + "[:img]";
     }
-    final_textcontent += the_textdata;
+    
+    // NEW !!!!!!!!!!!!!
+    set("final_textcontent", s => s += the_textdata);
 }
 
 // start_animationを構成する.
@@ -339,7 +314,7 @@ export const image_make_it = (e, f) => {
 export const startblock_around = (e, f, g, h, w) => {
     let start_animation = base_setup(e, f, "start");
     let generative_data_start = generationdata_setup(e, "start");
-    let the_same_name = "same_num_" + target_data(e, "same_num_");                        
+    let the_same_name = "same_num_" + target_data(e, "same_num_");                         
     // ペアのsame_endを取得
     // この部分だけ外に出しましょうかね。
     // let target . もし w = "video" だったら
@@ -354,7 +329,8 @@ export const startblock_around = (e, f, g, h, w) => {
     let final_animation_start = animationdata_setup(target, start_animation, generative_data_start, "none_st");
     for (let k = 0; k < final_animation_start.length; k++) {
         g += 1;
-        animation_data["section_" + h]["about_anims"]["data_" + g] = final_animation_start[k];
+        // NEW !!!!!!!!!!!!!
+        set("animation_data", s => s["section_" + h]["about_anims"]["data_" + g] = final_animation_start[k]);
     }
 }
 
@@ -364,8 +340,9 @@ export const endblock_around = (e, f, g, h) => {
     let final_animation_end = animationdata_setup(e, end_animation, generative_data_end, "non_st");
     for (let k = 0; k < final_animation_end.length; k++) {
         g += 1;
-        animation_data["section_" + h]["about_anims"]["data_" + g] = final_animation_end[k];
-    }    
+        // NEW !!!!!!!!!!!!!
+        set("animation_data", s => s["section_" + h]["about_anims"]["data_" + g] = final_animation_end[k]);
+    } 
 }
 
 // [引数に渡す必要がある変数]

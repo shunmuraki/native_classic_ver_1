@@ -70,3 +70,39 @@ export const make_ver_fragment = (e, f) => {
     
     cs_bye();
 }
+
+// keytouch でインスタンスを作るためのもの。a
+class keytouch_base {
+    constructor() {
+        this.current = document.activeElement;
+        this.type_signiture = "native";
+        this.current_vertical = null;
+        this.current_horizontal = null;
+        this.current_sp = null;
+        this.current_sp_cover = null;
+    }
+
+    setText() {    
+        if (document.activeElement.tagName != "BODY") {
+            this.current = document.activeElement;
+            this.type_signiture = current.value;
+            this.current_vertical = document.querySelector(".centering");
+        } else {
+            this.current_vertical = document.querySelector(".centering");
+        }
+    }
+
+    setGroup() {
+        this.current_horizontal = vertical_to_hor(this.current_vertical);
+        this.current_sp = vertical_to_sp(this.current_vertical);
+        this.current_sp_cover = vertical_to_sp_cover(this.current_vertical);
+    }
+}
+
+// クラスを new してそのインスタンスまでセットしてくれる関数. 最終的なインスタンスを return してくれる。
+export const keytouch_setup = () => {
+    let keytouch = new keytouch_base();
+    keytouch.setText;
+    keytouch.setGroup;
+    return keytouch;
+}

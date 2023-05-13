@@ -22,7 +22,6 @@ window.onload = () => {
 
 (function () {
     let all_writearea = document.getElementsByClassName("write_area");
-    // 以下 export.html から回帰したケースへの対応.
     if (! sessionStorage.getItem("output")) {
         // 以下通常のリロードへの対応.
         let d = document.querySelector(".first_load_dummy");

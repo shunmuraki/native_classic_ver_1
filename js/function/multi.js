@@ -11,8 +11,7 @@ export const yt_player_getter = (e) => {
     let yt_iframe = null;
     if (the_keyid) {
         // 動画は必ずsameなのでspecialのみから検索.
-        let playlist = special_playlist_getter();
-        yt_iframe = playlist[the_keyid];
+        yt_iframe = get("special_playerlist")[the_keyid];;
     }
     return yt_iframe;
 }
@@ -39,12 +38,11 @@ export const yt_resetter = (e) => {
 // センタリングしたブロックの動画をブロック分再生（or ループ再生）する関数
 export const yt_loop_player = (e, f, g) => {
     let the_time = yt_resetter(f);
-    let yt_loop = native_value("yt_loop");
 
-    if (! yt_loop[g]) {
-        yt_loop[g] = new Array();
+    if (! get("yt_loop")[g]) {
+        set("yt_loop", s => s = new Array());
     }
-    yt_loop[g].push(
+    get("yt_loop")[g].push(
         setInterval(() => {
             e.seekTo(the_time);
             e.playVideo();
@@ -53,8 +51,6 @@ export const yt_loop_player = (e, f, g) => {
 
 // 上の関数によってセットされた interval 処理をクリアする関数.
 export const yt_loop_stopper = (e, f, g) => {
-    let yt_loop = native_value("yt_loop");
-
     let duration;
     e.pauseVideo();
     if (f == "start") {
@@ -63,18 +59,19 @@ export const yt_loop_stopper = (e, f, g) => {
         duration = e.getDuration();
         e.seekTo(duration);
     }
-    if (yt_loop[g]) {
-        clearInterval(yt_loop[g].shift());
-    }
+    if (get("yt_loop")[g]) {
+        // 直してー！
+        clearInterval(get("yt_loop")[g].shift());
+    } 
 }
 
 // 現在センタリングしているブロックが yt でループされているのを停止する関数.
-export const just_clear_yt_loop = (e) => {
-    let yt_loop = native_value("yt_loop");
-    let target_dataset = yt_loop[e];
-    if (target_dataset) {
-        for (let i = target_dataset.length; i >= 0; i--)  {
-            clearInterval(target_dataset.shift());
+export const just_clear_yt_loop = (e) => {;
+    if (get("yt_loop")[e]) {
+        for (let i = get("yt_loop")[e].length; i >= 0; i--)  {
+            // 直してー！
+            let v = set("yt_loop", s => s[e].shift());
+            clearInterval(v);
         }
     }
 }
@@ -120,18 +117,19 @@ export const block_multiable = (e, f) => {
             done = true;
         }
     }
+    
     function stopVideo() {
         player.pauseVideo();
     }
+    
     onYouTubeIframeAPIReady(e, f);
-
     return player;
 }
 
 // 動画の読み込み・sp_cover内のラインの調整（ブロック数）などを行う関数. um と multiable にて共通利用.
 export const video_load_then = (e, f) => {
-    let same_num = native_value("same_num", 1);
-    let the_id_name = "yt_editor_" + same_num;
+    set("same_num", s => s += 1);
+    let the_id_name = "yt_editor_" + get("same_num");
     let the_code;
     
     // "v="以降の11文字を取得してcodeとする。
@@ -155,7 +153,7 @@ export const video_load_then = (e, f) => {
     
     setTimeout(() => {
         let the_duration = sessionStorage.getItem("the_duration");        
-        let the_name = "same_num_" + same_num;
+        let the_name = "same_num_" + get("same_num");
         the_box.classList.add("same");
         the_box.classList.add(the_name);
         
@@ -269,12 +267,10 @@ export const is_it_same_start = (e) => {
             // もし iframe だったら、yt idを取得して、新しく yt playerを生成するようにする。cloneNodeはしない.            
             if (hit_target.lastElementChild) {
                 if (hit_target.lastElementChild.tagName == "IFRAME") {
-                    
-                    let s_s_num = native_value("s_s_num");
                     let special_playerlist = native_value("special_playerlist");
                     let the_code = target_data(hit_target, "id_is_");
-                    s_s_num += 1;
-                    let the_keyname = String("yt_editor_" + s_s_num);
+                    set("s_s_num", s => s+= 1);
+                    let the_keyname = String("yt_editor_" + get("s_s_num"));
                     let the_sp_if = document.createElement("div");
                     the_sp_if.setAttribute("id", the_keyname); 
                     
@@ -356,7 +352,6 @@ export const is_it_same_alend = (e) => {
     let the_target_left = e.previousElementSibling;
     let the_target_right = e.nextElementSibling;
     let sp_cover = vertical_to_sp_cover(e);
-    let same_start_content = native_value("same_start_content");
     
     function the_state(e) {
         let the_special_cov = which_special_is(e);
@@ -367,7 +362,7 @@ export const is_it_same_alend = (e) => {
         if (the_special_cov) {
             if (the_special_cov.lastElementChild) {
                 content = the_special_cov.lastElementChild.cloneNode(true);
-                same_start_content = content;
+                set("same_start_content", s => s = content);
             }
             the_special_cov.remove();
         }
@@ -397,7 +392,6 @@ export const is_it_same_alend = (e) => {
 
             the_state(the_target_left);
             if (the_target_left.lastElementChild) {
-
                 // here??
                 if (! the_target_left.classList.contains("stable")) {
                     the_target_left.lastElementChild.style.setProperty('opacity', 1, 'important');
@@ -436,7 +430,7 @@ export const is_it_same_alend = (e) => {
             if (the_target_right.lastElementChild) {
                 the_target_right.lastElementChild.remove();
             }
-            the_target_right.appendChild(same_start_content);
+            the_target_right.appendChild(get("same_start_content"));
 
         } else if (the_target_right.classList.contains("same_end")) {
             if (the_target_right.lastElementChild) {

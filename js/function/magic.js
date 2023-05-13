@@ -8,11 +8,11 @@ import { native_value } from "../data/variable.js";
 
 // マジックコピーの関数.
 export const the_magic_copy = (e) => {
-    let magic_elms = native_value("magic_elms");
+
     // スタイリング直後にカットされることを想定.
     tracer_basis(document.querySelector(".centering"));
     // 初期化
-    magic_elms = [];   
+    set("magic_elems", s => s = []);
     // 以降に残っているものを、動画に限らず全部コピー.
     let sp_cover = vertical_to_sp_cover(e);
     let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
@@ -24,8 +24,7 @@ export const the_magic_copy = (e) => {
 
         if (breaker.classList.contains("same")) {
             let same_name = "same_num_" + target_data(breaker, "same_num_");
-            let sames = document.getElementsByClassName(same_name);
-            let same_num = native_value("same_num");
+            let sames = document.getElementsByClassName(same_name);            
             // same_end同士中身をコピーしたい。
             let c = sames[sames.length - 1].lastElementChild.cloneNode(true);
             // 色々処理施す前に、0 で sameならsame_start を与えて same_num もう更新する.
@@ -35,11 +34,12 @@ export const the_magic_copy = (e) => {
             breaker.previousElementSibling.appendChild(c);
             breaker.classList.add("same_start");
             let breakpoint = [].slice.call(sames).indexOf(breaker);
-            same_num = native_value("same_num", 1);
+            set("same_num", s => s+= 1);
+            
             for (let i = sames.length - 1; i >= breakpoint; i--) {
                 let same_block = sames[i];
                 classmover(same_block, same_block, "same_num_", "remove");
-                same_block.classList.add("same_num_" + same_num);
+                same_block.classList.add("same_num_" + get("same_num"));
             }
         }
 
@@ -52,7 +52,8 @@ export const the_magic_copy = (e) => {
             line[o].remove();
         }
 
-        magic_elms.push(new_folder);
+        // NEW!!!!!
+        set("magic_elems", s => s.push(new_folder));
         sp_cover.children[i].lastElementChild.scrollLeft = current_scrollleft;
     }
 }
@@ -60,7 +61,7 @@ export const the_magic_copy = (e) => {
 // マジックペーストの関数.
 export const the_magic_paste = (e) => {
     // コピーしてあるfragmentを貼り付ける. ラインが足りないなら追加し、あとはペースト対象のラインとそれ以外のラインとで条件分岐して適当なタイプのブロックを同じ数だけ挿入している.
-    let the_line_num = magic_elms.length;    
+    let the_line_num = get("magic_elems").length;
     let sp_cover = vertical_to_sp_cover(e);
     let whole_line_num = sp_cover.childElementCount;
 
@@ -101,7 +102,7 @@ export const the_magic_paste = (e) => {
     // 不足分を補ってライン数が十分なsp_coverに対して再度子要素を取得してループ. 条件分岐はここから.
     for (let i = 1; i <= sp_cover.childElementCount; i++) {
         if (i < current_line_num || i > bottom_line_num) {
-            for (let o = 0; o < magic_elms[0].length; o++) {
+            for (let o = 0; o < get("magic_elems")[0].length; o++) {
                 let c_v = sp_cover.children[i - 1].lastElementChild.children[c_num + o];
                 if (c_v.classList.contains("same")) {
                     if (! c_v.classList.contains("same_end")) {
@@ -116,7 +117,7 @@ export const the_magic_paste = (e) => {
             }
 
         } else { 
-            let will_added_elems = magic_elms[i - current_line_num];
+            let will_added_elems = get("magic_elems")[i - current_line_num];
             for (let o = 0; o < will_added_elems.length; o++) {
                 sp_cover.children[i - 1].lastElementChild.children[c_num + o].after(will_added_elems[o]);
             }    

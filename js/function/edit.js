@@ -1,6 +1,6 @@
 import { target_data, grab_auto } from "../function/tool.js";
 import { wheel_positioning } from "./general.js";
-import { blocksize, half_left_width, full_end_scrollwidth, full_start_scrollwidth, window_height } from "../data/variable.js";
+import { blocksize, half_left_width, full_end_scrollwidth, full_start_scrollwidth, window_height } from "../data/constant.js";
 
 // ポインターやブロックからして一番近いブロックかポインターを検出する関数.
 export const best_related_element = (e, f, g, h) => {
@@ -11,6 +11,8 @@ export const best_related_element = (e, f, g, h) => {
     let orange = scrap.firstElementChild;
     let orange_pointer_list = orange.firstElementChild.firstElementChild;
     let orange_data = h;
+
+    // orange_data が修正ポイントの中心になりそうだね。
 
     if (g == "block") {
         let vers = scrap.firstElementChild.nextElementSibling.lastElementChild.children;
@@ -26,8 +28,7 @@ export const best_related_element = (e, f, g, h) => {
     
         // 今の scrap の orange_space が持つ orange_num_ を取得後、orange_data[orange_num_]["left"] で　そのscrapの pointer のscrollLeft 値の集合を取得して最も近いpointerを見つけ出す。
         let the_key_num = target_data(orange, "orange_num_");
-        let dataset = orange_data[the_key_num]["left"];
-
+        let dataset = get("orange_data")[the_key_num]["left"];
         let exact_distance = f;
 
         // それより小さいものの中で最大の値を取得. これが最も近い場所にあるポインターのscrollLeft.
@@ -110,6 +111,196 @@ export const all_view_changer = (e, f) => {
     }
 };
 
+
+// ---------------------------------- タイマー処理 ---------------------------------- 
+
+// * the_timeout から独立。
+// setTimeout は外に出したらいいか？ func - return か？
+
+// 引数に渡す必要があるものについてリストにしてほしい。
+// scrap, hor. pause_when, play_when, the_seeking_time
+
+// 厳密にはまだ引数の部分は接続し切れてないけどね。
+export const the_timeout = (e, f, g, h, j) => {
+    // push までをセットにしたいかな。
+    let scrap = e;
+    let hor = f;
+    let pause_when = g;
+    let play_when = h;
+    let the_seeking_time = j;
+
+    // 核となるタイマー処理.
+    let s_timeout = setTimeout(() => {    
+        let centering_you = document.getElementsByClassName("new_layer_centering")[0];
+        if (centering_you.nextElementSibling && scrap.classList.contains("playing")) {
+            let next_one_is_you = centering_you.nextElementSibling;
+            let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);
+            centering_marker(centering_you, next_one_is_you, "new_layer_centering");
+            is_it_same_series(next_one_is_you);
+            
+            // 再帰
+            set_timeout();
+            
+            centering = document.getElementsByClassName("new_layer_centering")[0];
+    
+            // このあたりをループにする connected に対応させる.
+            for (let i = 0; i < scrap.children.length; i++) {
+                // orange_space を弾く.
+                if (i > 0) {
+                    let horizon = scrap.children[i].lastElementChild;
+                    for (let o = 0; o < horizon.children.length; o++) {
+                        let the_block = horizon.children[the_block_num + 2];
+                        let the_special_cov = which_special_is(the_block);
+    
+                        if (the_special_cov) {
+                            if (! the_special_cov.isEqualNode(which_special_is(centering))) {
+                                // 新しいspecial_covが台頭する時.
+                                // special_cov = which_special_is(centering);                                            
+    
+                                the_clear_timeout();
+                                the_clear_interval();
+    
+                                let player;
+                                if (the_special_cov.lastElementChild) {
+                                    if (the_special_cov.lastElementChild.tagName == "IFRAME") {
+                                        player = yt_player_getter(the_special_cov.lastElementChild); 
+                                    }
+                                }
+
+                                // これって１秒ごとに切り替わったかどうかをチェックしてるってこと？
+                                // 5秒の setTime の間に？
+                                // 次の要素があることを確認してから実行をしたいんだと思う。
+                                // なかなか粋な計らいだと感じたが？
+                                setTimeout(() => {
+                                    if (player) {
+                                        player.pauseVideo();
+                                        let the_time = yt_resetter();
+                                        player.seekTo(the_time);
+                                        player.playVideo();
+                                    }        
+    
+                                    // この setTimeout １秒分を考慮する.
+                                    let ms = pause_when - play_when;
+                                    // 4秒ってこと？？
+                                    the_seeking_time = (blocktime * 1000) - ms;
+                                    set_timeout();
+                                    set_interval();
+                                }, 1000)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            // variable
+            // timeoutArray についても読み込む必要があったりするよね.
+            the_clear_timeout();
+        }
+    }, the_seeking_time);
+
+    // タイマー処理を返す。
+    return s_timeout;
+}
+
+// the_interval から外部化したタイマー処理
+// scrap, hor, the_scrolled_distance
+export const the_interval = (e, f) => {
+    
+    let scrap = e;
+    let hor = f;
+
+    let s_interval = setInterval(() => {
+        all_view_changer(scrap, blocksize / blocktime);
+        let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);                        
+        let the_pri_distance = window.innerWidth + (the_block_num * blocksize) - half_left_width;
+                                        
+        // 現在の、実際のhorのscrollLeft とそれがどれくらい離れているかの算出.
+        let the_gap =  hor.scrollLeft - the_pri_distance;
+        
+        // actuar の変化処理については connected の場合を想定して scrap 内の　sp - hor でループさせる必要がある.
+        for (let i = 0; i < scrap.children.length; i++) {
+            // orange_space を弾く.
+            if (i > 0) {
+                let horizon = scrap.children[i].lastElementChild;
+                for (let o = 0; o < horizon.children.length; o++) {
+                    let the_block = horizon.children[the_block_num + 1];
+                    let the_special_cov = which_special_is(the_block);
+                    // 自動シーキング中のacutar 描画.    
+                    if (the_block.classList.contains("actuar_st")) {
+                        let the_actuar_distance = Math.floor(Number(target_data(the_block, "actuar_time_")));
+                        if (the_gap > the_actuar_distance - 10) {
+                            if (the_special_cov) {
+                                the_special_cov.lastElementChild.style.setProperty('opacity', 1, 'important');
+                            } else {
+                                the_block.lastElementChild.style.setProperty('opacity', 1, 'important');
+                            }
+                        }
+                    } else if (the_block.classList.contains("actuar_en")) {
+                        let the_actuar_distance = Math.floor(Number(target_data(the_block, "actuar_time_")));
+                        if (the_gap > the_actuar_distance - 10) {
+                            if (the_special_cov) {
+                                the_special_cov.lastElementChild.style.setProperty('opacity', 0.5, 'important');
+                            } else {
+                                the_block.lastElementChild.style.setProperty('opacity', 0.5, 'important');
+                            }
+                        }
+                    }
+                }   
+            }
+        }
+    
+        if (hor.scrollLeft > full_end_scrollwidth - 110) {
+            // variable
+            if (get("intervalArray").length > 0) {
+                the_clear_interval();
+            }
+    
+            scrap.classList.remove("playing");
+            scrap.classList.add("pausing");
+        }
+    
+        set("the_scrolled_distance", s => s + 1);
+    
+    }, 1000);
+
+    return s_interval;
+}
+
+
+// 二大タイマー処理をここへ。
+export const set_timeout = () => {
+    // new する必要があるかも.
+    set("timeoutArray", s => s.push(the_timeout()));
+}
+
+export const set_interval = () => {
+    // new する必要があるかも.
+    set("intervalArray", s => s.push(the_interval()));
+}
+
+
+export const the_clear_timeout = () => {
+    // 戻り値を取得しつつ、shift() 実行後の timeoutArray を取得しておく。
+    let array = get("timeoutArray");
+    let the_v = timeout.shift();
+    set("timeoutArray", s => s = array);
+    // variable
+    clearTimeout(the_v);
+}
+
+export const the_clear_interval = () => { 
+    // 戻り値を取得しつつ、shift() 実行後の timeoutArray を取得しておく。
+    let array = get("intervalArray");
+    let the_v = array.shift();
+    set("intervalArray", s => s = array);
+    // variable
+    clearTimeout(the_v);
+}
+
+
+// ---------------------------------- タイマー処理 ---------------------------------- 
+
+
 // orange_space を生成・追加する関数.
 export function add_orange_space_for_everyone(e) {
     let orange_space = document.createElement("div");
@@ -144,7 +335,6 @@ export function add_orange_space_for_everyone(e) {
 export const pre_pointing_in = (e, f) => {
     
     let orange_num = target_data(e.firstElementChild, "orange_num_");
-    let orange_data = f;
     let orange = e.firstElementChild;
     let orange_pointer_space = orange.firstElementChild;
     let orange_stripe_space = orange.lastElementChild;
@@ -163,19 +353,23 @@ export const pre_pointing_in = (e, f) => {
             orange_pointer.classList.add("orange_pointer");
             orange_pointer.classList.add("orange_pointer_f");        
             orange_pointer.style.left = full_end_scrollwidth + half_left_width + "px";
-            orange_pointer.classList.add("num_" + orange_data[orange_num]["s_count"]);
+            orange_pointer.classList.add("num_" + get("orange_data")[orange_num]["s_count"]);
             orange_pointer.classList.add("scroll_left_" + full_end_scrollwidth);
-            orange_data[orange_num]["left"].push(full_end_scrollwidth);
+
+            // NEW !!!!
+            set("orange_data", s => s[orange_num]["left"].push(full_end_scrollwidth));
             orange_pointer_space_store.appendChild(orange_pointer);
 
         } else {
             
-            let the_name = "num_" + orange_data[orange_num]["s_count"];
+            let the_name = "num_" + get("orange_data")[orange_num]["s_count"];
             for (let i = 0; i < orange_pointer_space_store.children.length; i++) {
                 if (orange_pointer_space_store.children[i].classList.contains(the_name)) {
                     orange_pointer_space_store.children[i].remove();
                     let the_remover_keydata = target_data(orange_pointer_space_store.children[i], "scroll_left_");
-                    orange_data[orange_num]["left"].splice(orange_data[orange_num]["left"].indexOf(the_remover_keydata), 1);
+
+                    // NEW !!!!!
+                    set("orange_data", s => s[orange_num]["left"].splice(s[orange_num]["left"].indexOf(the_remover_keydata), 1));
                 }
             }
             for (let i = 0; i < orange_stripe_space_store.children.length; i++) {
@@ -192,15 +386,13 @@ export const pre_pointing_in = (e, f) => {
         // pre_pointer_out（） へ繋げる.
         orange.classList.add("pre_pointer_s");   
     }
-    return orange_data;
 }
 
 
 // s - f　の関係を pre_pointer_in で scrap 内は解消したものの、直下のscrapに本来は orange_sripe が全体へ続くはずなので、これを標準的なpointerの追加によってクリアする処理.
 export const pre_pointing_out = (e, f, g) => {
 
-    let orange_num = target_data(f.firstElementChild, "orange_num_");
-    let orange_data = g;
+    let orange_num = target_data(f.firstElementChild, "orange_num_"); 
     let the_stripe_width = 0;
     let this_orange = e.firstElementChild;
     let orange = f.firstElementChild;
@@ -225,17 +417,20 @@ export const pre_pointing_out = (e, f, g) => {
                 orange_pointer.classList.add("already");
                 orange_pointer.style.left = window.innerWidth + "px";
 
-                orange_data[orange_num]["s_count"] += 1; 
+                // NEW!!!!
+                set("orange_data", s => s[orange_num]["s_count"] += 1);
                 orange_pointer.classList.add("num_" + orange_data[orange_num]["s_count"]);
                 orange_pointer.classList.add("scroll_left_" + full_start_scrollwidth);
-                orange_data[orange_num]["left"].push(full_start_scrollwidth);
+
+                // NEW ~~~~~~
+                set("orange_data", s => s[orange_num]["left"].push(full_start_scrollwidth));
                 
-                orange_pointer.classList.add("num_" + orange_data[orange_num]["s_count"]);
+                orange_pointer.classList.add("num_" + get("orange_data")[orange_num]["s_count"]);
                 orange_pointer_space_store.prepend(orange_pointer);
     
                 let orange_stripe = document.createElement("div");
                 orange_stripe.classList.add("orange_stripe");
-                orange_stripe.classList.add("num_" + orange_data[orange_num]["s_count"]);
+                orange_stripe.classList.add("num_" + get("orange_data")[orange_num]["s_count"]);
                 orange_stripe.style.width = the_stripe_width + "px";
                 orange_stripe.style.left = window.innerWidth + "px";
                 orange_stripe_space_store.prepend(orange_stripe);
@@ -253,7 +448,6 @@ export const pre_pointing_out = (e, f, g) => {
         }
         this_orange.classList.remove("pre_pointer_s");
     }
-    return orange_data;
 }
 
 
@@ -261,7 +455,6 @@ export const pre_pointing_out = (e, f, g) => {
 export function orange_pointer_make(e, f) {
     
     let see = e;
-    let orange_data = f;
     let orange = see.firstElementChild;
     let orange_pointer_space = orange.firstElementChild;
     let orange_stripe_space = orange.lastElementChild;
@@ -280,13 +473,12 @@ export function orange_pointer_make(e, f) {
     orange_pointer.classList.add(the_sl_po);
     
     // orange_pointerがDOMにてscrollLeftの値順に挿入されるように工夫. (relatestなポインターを発見しやすくする狙い.)
-    let compare_classic = Object.create(orange_data[the_o_num]["left"]);
+    let compare_classic = Object.create(get("orange_data")[the_o_num]["left"]);
     compare_classic.push(orange_pointer_left);
     compare_classic.sort(sorter);
     let how_big = compare_classic.indexOf(orange_pointer_left);
 
     function funda_main() {
-        
         // [処理内容]
         // now_pointer_s を持っていたら
         // 正しいscrollLeftに対して、absoluteでorange_pointer_sを追加.
@@ -298,11 +490,11 @@ export function orange_pointer_make(e, f) {
         // centeringを基準にしてscrollLeftなどを計測.
         if (orange.classList.contains("now_pointer_s")) {
             orange_pointer.classList.add("orange_pointer_s");
-            orange_data[the_o_num]["s_count"] += 1;
-            orange_pointer.classList.add("num_" + orange_data[the_o_num]["s_count"]);
+            set("orange_data", s => s[the_o_num]["s_count"] += 1);
+            orange_pointer.classList.add("num_" + get("orange_data")[the_o_num]["s_count"]);
             
             // 大きかったものたちの集合.
-            let this_orange_data = Object.create(orange_data[the_o_num]["left"]);
+            let this_orange_data = Object.create(get("orange_data")[the_o_num]["left"]);
             let orange_lager_data_classic = [];
             
             for (let i = 0; i < this_orange_data.length; i++) {
@@ -317,7 +509,7 @@ export function orange_pointer_make(e, f) {
             orange_stripe.style.left = orange_pointer_left + half_left_width + "px";
 
             // pointer_s と同じ num_ をあてる.
-            orange_stripe.classList.add("num_" + orange_data[the_o_num]["s_count"]);
+            orange_stripe.classList.add("num_" + get("orange_data")[the_o_num]["s_count"]);
             if (orange_lager_data_classic.length == 0) {
                 // scrollLeftでより大きいものがなかったので、一番最後まで引っ張ってあげる場合.
                 orange_stripe.style.width = full_end_scrollwidth - orange_pointer_left + "px";
@@ -339,7 +531,7 @@ export function orange_pointer_make(e, f) {
             // そのhor に now_pointer_s クラスがセットされる.
             } else if (orange.classList.contains("now_pointer_f")) {
                 orange_pointer.classList.add("orange_pointer_f");
-                orange_pointer.classList.add("num_" + orange_data[the_o_num]["s_count"]);
+                orange_pointer.classList.add("num_" + get("orange_data")[the_o_num]["s_count"]);
         
                 // 外部の関数を用いて 本pointer_f と同じ num_ を共有する stripe, pointer_s を取得.
                 let the_comp_stripe = grab_auto(orange_pointer)[0];
@@ -365,7 +557,8 @@ export function orange_pointer_make(e, f) {
             }
         }
         
-        orange_data[the_o_num]["left"].push(orange_pointer_left);
+        // NEW!!!!!!
+        set("orange_data", s => s[the_o_num]["left"].push(orange_pointer_left));
 
         let comesin = document.querySelector(".comesin");
         if (comesin) {
@@ -404,14 +597,11 @@ export function orange_pointer_make(e, f) {
             fif();
         }
     }
-    return orange_data;
 }
 
 // ポインターを消す関数.
 export function delete_orange_p(e) {
-    let orange_data = e;
     let comesin = document.querySelector(".comesin");
-
     if (comesin) {
         let orange = comesin.parentElement.parentElement.parentElement;
         let the_o_num = Number(target_data(orange, "orange_num_"));
@@ -425,7 +615,8 @@ export function delete_orange_p(e) {
         let the_remover_keydata = Number(target_data(comesin, "scroll_left_"));
 
         // 消去されるcomesinが持つ scroll_left_ を取得して、その番号を scroll_left_escから削除.
-        orange_data[the_o_num]["left"].splice(orange_data[the_o_num]["left"].indexOf(the_remover_keydata), 1);
+        // NEW!!!!!
+        set("orange_data", s => s[the_o_num]["left"].splice(s[the_o_num]["left"].indexOf(the_remover_keydata), 1));
 
         // 描画サイドの削除.
         comesin.classList.add("opac_cam");
@@ -444,11 +635,11 @@ export function delete_orange_p(e) {
             orange.classList.toggle("now_pointer_f");                
         } else {
             grab_list[1].remove();
-            orange_data[the_o_num]["left"].splice(orange_data[the_o_num]["left"].indexOf(Number(target_data(grab_list[1], "scroll_left_"))), 1);
+
+            // NEW!!!!!!!
+            set("orange_data", s => [the_o_num]["left"].splice(s[the_o_num]["left"].indexOf(Number(target_data(grab_list[1], "scroll_left_"))), 1));
         }
     }
-
-    return orange_data;
 }
 
 // comesin クラス（最新のorange_pointerを検索できる）を管理する関数. (上下左右 ...　外してつける / space .. ただ外す)

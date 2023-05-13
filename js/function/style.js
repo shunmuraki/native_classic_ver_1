@@ -62,8 +62,8 @@ export const iframe_and_editor = (e) => {
 export const iframe_adaptation = (e) => {
   let the_content = e.lastElementChild;
   let value_id = target_data(e, "id_is_");
-  yt_id_list.push(value_id);
-  let the_name = "yt_" + String(yt_id_list.length - 1);  
+  set("yt_id_list", s => s.push(value_id));
+  let the_name = "yt_" + String(get("yt_id_list").length - 1);  
   // same_end 同士見つけあってDOMを節約するために発見用のidをクラスに付与する.
   e.classList.add("iframe");
   e.classList.add("same_deletable");
@@ -164,16 +164,13 @@ const layer_maker = (e) => {
 }
 
 // style_initial の中で実行する。
-const all_setup = (e) => {
-  let current_states = native_value("current_states");
-  let previous_states = native_value("previous_states");
+const all_setup = (e) => { 
   // まずはデフォルトの選択項目を決めて、クラスを振ってあげる必要がある。
   // ひとまずは layer_1 (0枚目) が来るから、この最初のブロックに対して choose クラスをつけるようにしよう。
   // sl_1_1　←この子がそれ。
   let title = String(document.querySelector(".choose").textContent);
-  current_states[1] = title;
-  previous_states[1] = title;
-  // 移動先のブロックがあれば、なければ一番下に戻る、といった条件分岐を中に記述する。
+  set("current_states", s => s[1] = title);
+  set("previous_states", s => s[1] = title);
 }
 
 // 引数に中身を渡す
@@ -211,9 +208,7 @@ const running_a = (e) => {
   }
 }
 
-export const style_initial = (e) => {  
-  let current_states = native_value("current_states");
-  let previous_states = native_value("previous_states");
+export const style_initial = (e) => {   
   // 中身の条件分岐
   // current_zone のセット
   // running_a の実行.
@@ -221,20 +216,22 @@ export const style_initial = (e) => {
   if (target.lastElementChild) {
     let tag = target.lastElementChild.tagName;
     if (tag == "TEXTAREA") {
-      current_states[0] = native_allstyles[0];
-      current_states[2].push(0);
-      previous_states[0] = native_allstyles[0];
-      previous_states[2].push(0);
+      // re
+      set("current_states", s => s[0] = native_allstyles[0]);
+      set("current_states", s => s[2].push(0));
+      set("previous_states", s => s[0] = native_allstyles[0]);
+      set("previous_states", s => s[2].push(0));
     } else if (tag == "IMG") {
-      current_states[0] = native_allstyles[1];
-      current_states[2].push(1);
-      previous_states[0] = native_allstyles[1];
-      previous_states[2].push(1);
+      set("current_states", s => s[0] = native_allstyles[1]);
+      set("current_states", s => s[2].push(1));
+      set("previous_states", s => s[0] = native_allstyles[1]);
+      set("previous_states", s => s[2].push(1));
+
     } else if (tag == "IFRAME") {
-      current_states[0] = native_allstyles[2];
-      current_states[2].push(2);
-      previous_states[0] = native_allstyles[2];
-      previous_states[2].push(2);
+      set("current_states", s => s[0] = native_allstyles[2]);
+      set("current_states", s => s[2].push(2));
+      set("previous_states", s => s[0] = native_allstyles[2]);
+      set("previous_states", s => s[2].push(2));
     }
   }
   running_a();
@@ -255,7 +252,6 @@ const data_layer_shift = (e, f) => {
 
 // e = 選択した要素
 const running_b = (e) => {
-  let current_states = native_value("current_states");
   // まず選択項目の名前を取得しましょう。
   let current_s_layer = document.getElementsByClassName("current_s_layer")[0];
 
@@ -293,7 +289,7 @@ const running_b = (e) => {
   func(target);
 
   // 同時にこの要素に対してスタイリングを付け替え。
-  style_changer(target, current_states[2]);
+  style_changer(target, get("current_states")[2]);
 
   let previous_layer = current_s_layer.previousElementSibling;
   previous_layer.classList.add("current_s_layer");
@@ -307,9 +303,6 @@ const running_b = (e) => {
 // choose が選択された時に実行される、根幹となる関数。
 // まずは choose クラスを持つ要素を取得することから始めましょう。
 export const running_root = (e) => {
-  let current_states = native_value("current_states");
-  let previous_states = native_value("previous_states");
-  
   let choose = document.getElementsByClassName("choose")[0];
   let order = choose.parentElement.children.indexOf(choose);
   // この子要素が何番目かを知ることから。
@@ -318,23 +311,20 @@ export const running_root = (e) => {
   let v = current_states[0][order];
 
   // title 名じゃなくて、ここも番号で管理するようにする。
-
   if (isObject(v)) {
     // --- もし中身があったら
     // ---- A を実行する
     running_a(v);
     // 最新の回想を保存
-    current_states[0] = v;
-    current_states[1] = title;
-    current_states[2].push(order);
+    set("current_states", s => s[0] = v);
+    set("current_states", s => s[1] = title);
+    set("current_states", s => s[2].push(order));
   } else {
     // --- 中身がなかったら
     // ---- B を実行する
     running_b(v);
     // 最新の回想を保存
-    current_states[0] = previous_states[0];
-    current_states[1] = previous_states[1];
-    current_states[2] = previous_states[2];
+    set("current_states", s => s = get("previous_states"));
   }
 }
 

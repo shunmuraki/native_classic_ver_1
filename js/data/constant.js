@@ -4,10 +4,10 @@ export const the_name_list = ['stable', 'stable_end', 'same_start', 'same_end', 
 // DOM系列
 export const screen = document.querySelector(".screen");
 // せめて "body" にしてくれ
-export const bo = document.getElementsByTagName("BODY")[0];
-export const pointer = document.querySelector(".pointer_and_wheel");
+export const body = document.getElementsByTagName("BODY")[0];
+export const p_and_w = document.querySelector(".pointer_and_wheel");
 export const wheel = document.querySelector(".wheel");
-export const the_pointer = document.querySelector(".pointer");
+export const pointer = document.querySelector(".pointer");
 // もしくは wheel じゃなくて layer_base に sw_basis を指定するか。
 export const layer_base = document.querySelector(".sw_basis");
 export const chartbox = document.querySelector(".charts");
