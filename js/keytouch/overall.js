@@ -91,7 +91,11 @@ window.addEventListener("keydown", (e)=>{
     if (k == "Escape") {
         if (e.metaKey) {
             if (screen.classList.contains("edit")) {
-                keytouch_edit_command_escape();
+                if (new_layer.classList.contains("autoseekingmode")) {
+                    keytouch_edit_command_autoseek_escape();
+                } else {
+                    keytouch_edit_command_mode_escape();
+                }
             }
         } else {
             // ms の終了処理.

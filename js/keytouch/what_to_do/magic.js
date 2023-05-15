@@ -3,8 +3,6 @@ import {the_magic_copy, the_magic_paste} from "../function/magic.js";
 import { screen} from "../data/constant.js";
 import { keytouch_setup } from "../../function/make.js";
 
-
-
 export const keytouch_magic_command_c = () => {
     let env = keytouch_setup();
     pointer_anim();

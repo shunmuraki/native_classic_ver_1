@@ -4,8 +4,6 @@ import { screen } from "../data/constant.js";
 import { native_value } from "../data/variable.js";
 import { keytouch_setup } from "../../function/make.js";
 
-
-
 export const keytouch_ms_command_slash = () => {
   if (! screen.classList.contains("ms")) {
 
@@ -63,9 +61,7 @@ export const keytouch_ms_command_escape_or_enter = () => {
     adjust_target_pos(get("ms_adjust_target"), "off");
 
     if (get("ms_adjust_target").tagName == "TEXTAREA") {
-
       get("ms_adjust_target").focus();
-    
     }
 
     screen.classList.remove("ms");

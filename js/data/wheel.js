@@ -1,65 +1,67 @@
 import {style_and_editor, none_title, iframe_and_editor, iframe_adaptation} from "../function/style.js";
 
-// テキストに対するスタイリング設定
+// * テキスト要素に提供する装飾のジャンルと選択項目.
 const text_styles = [
-    {
-      'weight': [
-        'regular', 
-        'medium', 
-        'bold'
-      ],
-    },
-    {
-      'transform': [
-        {
-          'size': [
-            'h1', 
-            'h2', 
-            'h3', 
-            'p'
-          ]
-        },
-        'link',
-        'embed'
-      ],
-    },
-    {
-      'deco': [
-        {
-          'color': [
-            'red',
-            'blue',
-            'orange',
-            'green',
-            'purple',
-            'pink'
-          ]
-        }, 
-        'underline',
-        'quote'
-      ]
-    }
-  ]
+  {
+    'weight': [
+      'regular', 
+      'medium', 
+      'bold'
+    ],
+  },
+  {
+    'transform': [
+      {
+        'size': [
+          'h1', 
+          'h2', 
+          'h3', 
+          'p'
+        ]
+      },
+      'link',
+      'embed'
+    ],
+  },
+  {
+    'deco': [
+      {
+        'color': [
+          'red',
+          'blue',
+          'orange',
+          'green',
+          'purple',
+          'pink'
+        ]
+      }, 
+      'underline',
+      'quote'
+    ]
+  }
+]
 
-// 画像に対するスタイリング設定
+// * 画像要素に提供する装飾のジャンルと選択項目.
 const img_styles = [
-'NONE'
+  'NONE'
 ]
-// 動画（iframe）に対するスタイリング設定
+
+// * 動画要素に提供する装飾のジャンルと選択項目.
 const iframe_styles = [
-'NONE'
+  'NONE'
 ]
 
+// ---------------------------------------------------------------------------------------------------------------
 
-// ----------------- final output -----------------------------
-
-
-// 全体 ←実際に使う対象のデータ。
+// * Nativeにおける装飾のすべてのジャンルと選択項目を統括する配列。
+// * ホイールを生成する際は常にこれを参照する.
 export const native_allstyles = [
-    text_styles, img_styles, iframe_styles
+    text_styles, 
+    img_styles,
+    iframe_styles
 ];
 
-// style_ 周辺
+// * Nativeで用意している装飾の項目ごとに実行される処理をまとめた連想配列.
 export const native_style_funcs = {
   'regular': [
       style_and_editor(e, "style_weight_"),

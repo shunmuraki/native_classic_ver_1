@@ -1,11 +1,8 @@
-// same_on (in status_bar) のマーク間のアニメーション
-
-// e には親の onsame を与える。
+// * statusbar にある same_on がクリックされた際のアイコンのアニメーション
 export const statusbar_animation = (e) => {
-    // クリックが実行された形跡として「did」クラスを親要素に付与する場合。
-    // アニメーションの上下まで親要素（onsame）のクラスで判断できたら賢いね、確かに。
+    // 一度クリックされているかどうか did クラスで判別する.
     if (e.classList.contains("did")) {
-        // 戻るパターン.
+        // * 戻る.
         e.animate(
             [
                 { top: '0%' },
@@ -17,7 +14,7 @@ export const statusbar_animation = (e) => {
             }
         ); 
     } else {
-        // 実行されるパターン.
+        // * 実行する.
         e.animate(
             [
             { top: '50%' },
@@ -31,8 +28,10 @@ export const statusbar_animation = (e) => {
     }
 }
 
-// 引数に /setup/cheetsheet.js の cs を与える。
-// f = on or off
+// ---------------------------------------------------------------------------------------------------------------
+
+// * チートシートを出し入れるアニメーション.
+// * 引数に /setup/cheetsheet.js の cs を与える.
 export const cheetsheet_animation = (e, f) => {
     if (f == "on") {
         e.animate(
@@ -59,7 +58,12 @@ export const cheetsheet_animation = (e, f) => {
     }
 }
 
-// style (/function/general) 周辺
+// ---------------------------------------------------------------------------------------------------------------
+
+// * 装飾ホイールのアニメーション
+
+// * 常駐のポインターが装飾ホイールに変形するアニメーション.
+// * もしくはその反対.
 export const pointer_switch = (e, f) => {
 
     if (f == "on") {
@@ -87,6 +91,8 @@ export const pointer_switch = (e, f) => {
     }
 }
 
+// * 装飾ホイール上で選択肢を表示するレイヤー「layer_base」を回転させるアニメーション.
+// * 上記の pointer_switch と同時に実行される.
 export const layerbase_switch = (e, f) => {
     if (f == "on") {
         e.animate(
@@ -113,6 +119,8 @@ export const layerbase_switch = (e, f) => {
     }
 }
 
+// * ポインターの上に重ねる ホイールを表示したり、隠したりするアニメーション.
+// * 上記 layerbase_switch と同時に実行される.
 export const wheel_switch = (e, f) => {
     if (f == "on") {
         e.animate(
@@ -140,8 +148,9 @@ export const wheel_switch = (e, f) => {
     }
 }
 
+// ---------------------------------------------------------------------------------------------------------------
 
-// pointer effect
+// * エディター上での動作に連動した、常駐しているポインターの装飾的なアニメーション.
 export const pointer_effect = (e) => {
     e.animate(
         [

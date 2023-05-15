@@ -4,7 +4,6 @@ import { make_ver_fragment } from "../function/make.js";
 import { the_name_list, screen, blocksize } from "../data/constant.js";
 import { keytouch_setup } from "../../function/magic.js";
 
-
 export const keytouch_connect = () => {
 
     let env = keytouch_setup();

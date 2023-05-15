@@ -1,4 +1,4 @@
-// Native で使用しているグローバル変数たち
+// * Native で使用しているグローバル変数たち.
 let native_values = {
     "magic_elems": [],
     "ms_adjust_target": 0,
@@ -24,15 +24,14 @@ let native_values = {
     "section_deletable_list": []
 }
 
+// * 上記 native_values の値を取得して返す関数.
 const get = (e) => {
     return native_object[e];
 }
 
-// set("yt_id_list", (e) => { e.push("anime") });
+// * native_values の値を外部から変更する際に使用する関数.
 const set = (e, f) => {
     let b = get(e);
     f(b);
     native_object[e] = b;
 }
-
-// USAGE: ex) set("yt_id_list", e => { e[0] = 100 });

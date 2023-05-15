@@ -107,7 +107,6 @@ export const keytouch_um_command_arrow_right = () => {
     }
 }
 
-
 export const keytouch_um_command_enter = () => {
     let env = keytouch_setup();
     let centering;

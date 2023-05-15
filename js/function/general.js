@@ -4,18 +4,17 @@ import { screen, pointer, wheel, the_pointer, layer_base, blocksize, blocktime, 
 import { native_value } from "../data/variable.js";
 import { layerbase_switch, pointer_effect, pointer_grow, pointer_switch, wheel_grow, wheel_switch } from "./animation.js";
 
-// centering クラスの調整関数
+// * centering クラスを管理する関数.
 export const centering_marker = (e, f, g) => {
     e.classList.remove(g);
     f.classList.add(g);
 }
 
-// original_centering クラスの調整関数
+// * original_centering クラスを管理する関数.
 export const original_centering_checker = (e, f) => {
     let sps = e.children;
     let centering = f;
     let centering_num = [].slice.call(vertical_to_hor(centering).children).indexOf(centering);
-
     for (let i = 0; i < sps.length; i++) {
         let vers = sps[i].lastElementChild.children;
         for (let o = 0; o < vers.length; o++) {
@@ -31,7 +30,34 @@ export const original_centering_checker = (e, f) => {
     }    
 }
 
-// textarea の存在を確認してfocusを挿れる関数.
+// scrapやsp_cover内のスクロール位置をすべて最適化する関数.
+export const all_view_changer = (e, f) => {
+    if (e.children[0].classList.contains("orange_space")) {
+        let orange = e.firstElementChild;
+        let orange_pointer_space = orange.firstElementChild;
+        let orange_stripe_space = orange.lastElementChild;
+    
+        let po_de = orange_pointer_space.scrollLeft;
+        orange_pointer_space.scrollLeft = po_de + f;
+        
+        let st_de = orange_stripe_space.scrollLeft;
+        orange_stripe_space.scrollLeft = st_de + f;
+
+        for (let i = 0; i < e.children.length; i++) {
+            if (i > 0) {
+                let hor_de = e.children[i].lastElementChild.scrollLeft;
+                e.children[i].lastElementChild.scrollLeft = hor_de + f;
+            }
+        }
+    } else {    
+        for (let i = 0; i < e.children.length; i++) {
+            let hor_de = e.children[i].lastElementChild.scrollLeft;
+            e.children[i].lastElementChild.scrollLeft = hor_de + f;
+        }
+    }
+};
+
+// * textarea の存在を確認して focus() を挿れる関数.
 export const focus_checker = (e) => {
     let bol = false;
     let content = e.lastElementChild;
@@ -47,7 +73,7 @@ export const focus_checker = (e) => {
     return bol;
 }
 
-// textarea の存在を確認してblurする関数.
+// * textarea の存在を確認して blur() を実行する関数.
 export const blur_checker = (e) => {
     let bol = false;
     let content = e.lastElementChild;
@@ -60,7 +86,8 @@ export const blur_checker = (e) => {
     return bol;
 }
 
-// Editモードにおけるスクロール位置の調整関数　(???)
+// * Editモードにおけるスクロール位置を管理する関数.
+// [* これが未だにどんな機能を持っているのかが分からない.]
 export const go_af_scroll = () => {
     let the_scrap = document.querySelector(".scrolled");
     if (the_scrap) {
@@ -70,7 +97,7 @@ export const go_af_scroll = () => {
     }
 }
 
-// 上下左右の移動の際に special_cov を same_end に反映させて special_cov を描画上の都合からも削除する関数.
+// * 上下左右の移動の際に special_cov が持つ要素(content) を same_end に反映させて special_cov を描画上の都合から削除する関数.
 export const special_cleaner = (e) => {
     let ends = document.querySelectorAll(".same_end");
     for (let i = 0; i < ends.length; i++) {
@@ -89,7 +116,7 @@ export const special_cleaner = (e) => {
     }
 }
 
-// センタリングしているブロックの位置から window のスクロール位置を調整する関数.
+// * センタリングしているブロックの位置を支点に window のスクロール位置(上下)を調整する関数.
 export const adjust_box = (e) => {
     if (window_height - e.getBoundingClientRect().bottom < the_sunsetline) {
         let the_adjust_num = the_sunsetline + e.getBoundingClientRect().bottom - window_height;
@@ -98,13 +125,14 @@ export const adjust_box = (e) => {
     }
 }
 
-// ブロックの生成やスプリット、ポインターを打つなどのタイミングで標準ポインターをアニメーションさせる際に使用する関数.
+// * ブロックの生成やスプリット、ポインターを打つなどのタイミングで標準ポインターをアニメーションさせる際に使用する関数.
 export const pointer_anim = () => {                    
     let pri_pointer = document.querySelector(".pointer");
     pointer_effect(pri_pointer);
 }
 
-// center_specialクラスを除去する（special_covは残す）
+// * 描画上の観点から center_special クラスを除去する（special_covは残す）
+// * centering_special によって選択しているブロックに CSS から box-shadow がかかる.
 export const cs_bye = () => {
     let specials = document.querySelectorAll(".special_cov");
     for (let i = 0; i < specials.length; i++) {
@@ -114,19 +142,18 @@ export const cs_bye = () => {
     }
 }
 
-// muliable からの移籍（2023.4.20）
-// sameの途中に挿入がされる場合への対処関数. (両サイドがsameであることが条件で、かつ両者が start , end は持たない場合にのみ実行)
+// ---------------------------------------------------------------------------------------------------------------
+
+// * sameの途中にブロックが挿入された場合に対処する関数. 
 export const same_cutter = (e, f) => { 
     let the_target_left = e.previousElementSibling;
     let the_target_right;
-
-    // same_num
-
     if (f == "addon") {
         the_target_right = e.nextElementSibling;
     } else if (f == "replace") {
         the_target_right = e;
     }
+    // * 両サイドがsameであることが条件で、かつ両者が特定のクラス(same_start, same_end)を持たない場合にのみ実行.
     if (the_target_left && the_target_right) {
         if (the_target_left.classList.contains("same") && the_target_right.classList.contains("same")) {
             if (the_target_left.classList.contains("same_start") == false && the_target_left.classList.contains("same_end") == false && the_target_right.classList.contains("same_start") == false && the_target_right.classList.contains("same_end") == false) { 
@@ -138,12 +165,11 @@ export const same_cutter = (e, f) => {
                 the_target_left.appendChild(spe_cont);
                 the_target_right.classList.add("same_start");
                 let same_name = "same_num_" + target_data(the_target_right, "same_num_");
-
-                // same_start　以降の same_num_ を更新.
+                
+                // * same_start　以降の same_num_ を更新.
                 let sames = document.getElementsByClassName(same_name);
                 let breakpoint = [].slice.call(sames).indexOf(the_target_right);            
                 set("same_num", s => s += 1);
-                
                 for (let i = sames.length - 1; i >= breakpoint; i--) {
                     let same_block = sames[i];
                     classmover(same_block, same_block, "same_num_", "remove");
@@ -154,8 +180,9 @@ export const same_cutter = (e, f) => {
     }
 }
 
-// stylable からの移籍（2023.4.20）
-// style_ クラスを取り外すことで content の位置を ms のスペースに対応させる関数.
+// ---------------------------------------------------------------------------------------------------------------
+
+// * 常駐のポインターの位置を決定する関数.
 export const wheel_positioning = () => {
     let centering;
     if (screen.classList.contains("edit")) {
@@ -169,7 +196,7 @@ export const wheel_positioning = () => {
     pointer.style.left = the_focus_left - 10 + "px";
 }
   
-  // ホイールの描画アニメーションの関数.
+// * 装飾ホイールを起動する関数.
 export const wheel_seton = () => {
     pointer_switch(the_pointer, "on");
     wheel.style.display = "block";
@@ -177,8 +204,9 @@ export const wheel_seton = () => {
     wheel_switch(wheel, "on");
 }
 
-// ms からの移籍（2023.4.20）
-// ホイールをブロックやポインター（編集時）に追従させる関数.
+// ---------------------------------------------------------------------------------------------------------------
+
+// * "/" コマンドに伴tってブロックの中の要素の位置を調整する関数.
 export const adjust_target_pos = (e, f) => {
     if (e) {
         let ms_top = getComputedStyle(e).top;
@@ -199,8 +227,7 @@ export const adjust_target_pos = (e, f) => {
     }
 }
 
-// e = current
-// f = current_vertical
+// * テキスト入力の過程で選択中のブロックの高さを最適化する関数.
 export const optimize_writing = (e, f) => {
     e.style.height = 24 + 'px';
     let scrollHeight = e.scrollHeight;
