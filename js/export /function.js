@@ -1,6 +1,3 @@
-import { target_data, classmover } from "../function/tool.js";
-import { global_update } from "../data/variable.js";
-
 // * animation について actuar を考慮して trigger_when | finish_when | video_startpoint を更新する関数.
 export const ac_vi_adaptation = (e, f, g) => {
     

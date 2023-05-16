@@ -1,10 +1,4 @@
-import { vertical_to_hor, vertical_to_sp_cover, vertical_to_sp } from "./tool.js";
-import { centering_marker, focus_checker, blur_checker, wheel_positioning, special_cleaner, cs_bye, go_af_scroll } from "./general.js";
-import { is_it_same_series } from "./multi.js";
-import { all_view_changer } from "./edit.js";
-import { blocksize, full_end_scrollwidth, full_start_scrollwidth, custom_end_scrollwidth } from "../data/constant.js";
-
-// topへの移動
+// * 上のブロックへ移動する際の共通処理.
 export const go_top = (e, f) => {
 
     let ver = e;
@@ -34,19 +28,19 @@ export const go_top = (e, f) => {
             centering_marker(ver, next_one, f);
             focus_checker(next_one);
             
-            // 対応するspecial_covを削除. 本来は左右の移動コマンドで対応していたが、上下移動の際は自動的にラインごとの位置が右揃えになるので、ここでその処理を実行しておく必要がある。
+            // * 対応するspecial_covを削除.
             let now_position = pre_sibling.lastElementChild.lastElementChild.scrollLeft;
             let the_distance = custom_end_scrollwidth(pre_sibling.lastElementChild.lastElementChild) - now_position;
             all_view_changer(pre_sibling, the_distance);
 
-            // 自分自身を変えろ。
             let my_position = this_sc.lastElementChild.lastElementChild.scrollLeft;
             let my_distance = full_start_scrollwidth - my_position;
             all_view_changer(this_sc, my_distance);
 
             special_cleaner(pre_sibling);
             cs_bye();
-            // 上下方向の位置調整. これが将来的にはしっかり機能することが重要.
+            
+            // *上下方向の位置調整.
             if (sibling_height > to_the_distance) {
                 scrollBy(0, - connected_your_height);
             } 
@@ -66,14 +60,13 @@ export const go_top = (e, f) => {
             let the_distance = full_end_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
 
-            // 自分を変えろ！
             let my_position = this_sc.children[1].lastElementChild.scrollLeft;
             let my_distance = full_start_scrollwidth - my_position;
             all_view_changer(this_sc, my_distance);    
 
             special_cleaner(vertical_to_sp_cover(ver));   
             cs_bye();
-            // edit モードは「see」ラインの位置を固定したい狙い.
+            // * 編集モードでは「see」ラインの位置を維持.
             scrollBy(0, - connected_your_height);
             is_it_same_series(next_one);
         }
@@ -81,7 +74,7 @@ export const go_top = (e, f) => {
     }
 }
 
-// bottomへの移動
+// * 下のブロックへ移動する際の共通処理.
 export const go_bottom = (e, f) => {
 
     let ver = e;
@@ -115,7 +108,6 @@ export const go_bottom = (e, f) => {
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);
 
-            // 自分を変えろ。
             let my_position = this_sc.lastElementChild.lastElementChild.scrollLeft;
             let my_distance = custom_end_scrollwidth(this_sc.lastElementChild.lastElementChild) - my_position;
             all_view_changer(this_sc, my_distance);
@@ -141,14 +133,13 @@ export const go_bottom = (e, f) => {
             let the_distance = full_start_scrollwidth - now_position;
             all_view_changer(pre_sibling, the_distance);    
             
-            // 自分を変えろ！
             let my_position = this_sc.children[1].lastElementChild.scrollLeft;
             let my_distance = full_end_scrollwidth - my_position;
             all_view_changer(this_sc, my_distance);
 
             special_cleaner(vertical_to_sp_cover(ver));     
             cs_bye();
-            // edit モードは「see」ラインの位置を固定したい狙い.
+            // * 編集モードでは「see」ラインの位置を維持.
             scrollBy(0, connected_your_height);
             is_it_same_series(next_one);
         }
@@ -157,7 +148,7 @@ export const go_bottom = (e, f) => {
 
 }
 
-// leftへの移動
+// * 左のブロックへ移動する際の共通処理.
 export const go_left = (e, f) => {
     go_af_scroll();
     let ver = e;
@@ -172,15 +163,14 @@ export const go_left = (e, f) => {
             if (f == "centering") {
                 focus_checker(next_one);
             }
-    
-            // 変更があったとしたら今のラインなのでconnectedの影響によるループは必要なし.
+            
             same_change_tracer(next_one);
             is_it_same_series(next_one);
         }
     }
 }
 
-// rightへの移動
+// * 右のブロックへ移動する際の共通処理.
 export const go_right = (e, f) => {
     go_af_scroll();
     let ver = e;
@@ -196,7 +186,6 @@ export const go_right = (e, f) => {
                 focus_checker(next_one);
             }
     
-            // 変更があったとしたら今のラインなのでconnectedの影響によるループは必要なし.
             same_change_tracer(next_one);
             is_it_same_series(next_one);
         }

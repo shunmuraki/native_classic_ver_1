@@ -1,21 +1,12 @@
-import { tracer_basis, vertical_to_hor, vertical_to_sp_cover, vertical_to_sp, target_data, classmover } from "./tool.js";
-import {make_ver_fragment} from "./make.js";
-import { centering_marker, original_centering_checker, same_cutter, focus_checker, adjust_box } from "./general.js";
-import { is_it_same_series } from "./multi.js";
-import { all_view_changer } from "./edit.js";
-import { the_name_list, blocksize } from "../data/constant.js";
-import { native_value } from "../data/variable.js";
-
 // * マジックコピーする関数.
 export const the_magic_copy = (e) => {
-    // スタイリング直後に実行されることを想定.
+    // * スタイリング直後に実行されることを想定.
     tracer_basis(document.querySelector(".centering"));
     // * 初期化
     set("magic_elems", s => s = []);
     // * 以降に残っているものを、動画に限らずすべてコピー.
     let sp_cover = vertical_to_sp_cover(e);
     let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
-
     // * 各spごとにコピーして以前のブロックをまとめて削除し fragment として変数に格納.
     for (let i = 0; i < sp_cover.childElementCount; i++) {
         let line = sp_cover.children[i].lastElementChild.children;
@@ -25,9 +16,9 @@ export const the_magic_copy = (e) => {
         if (breaker.classList.contains("same")) {
             let same_name = "same_num_" + target_data(breaker, "same_num_");
             let sames = document.getElementsByClassName(same_name);            
-            // 実態を中身に持つ same_end をコピー。
+            // * 実態を中身に持つ same_end をコピー。
             let c = sames[sames.length - 1].lastElementChild.cloneNode(true);
-            // same群の途中で実行された場合に コピー対象の最初のブロックに same_start を与えて same_num も更新する.
+            // * same群の途中で実行された場合に コピー対象の最初のブロックに same_start を与えて same_num も更新する.
             // [* 以下 same_cutter() で代替できないか.]
             breaker.previousElementSibling.classList.add("same_end");
             console.log(c);
@@ -44,7 +35,7 @@ export const the_magic_copy = (e) => {
 
         // * コピー対象を sp 単位で保存しつつ、エディター上から取り除く.
         let new_folder = new Array();
-        // adjuster を削除させない。
+        // * adjuster を削除させない。
         for (let o = line.length - 2; o >= c_num + 1; o--) {
             new_folder.unshift(line[o]);
             line[o].remove();
@@ -80,7 +71,7 @@ export const the_magic_paste = (e) => {
     the_name_list.push("centering");
     the_name_list.push("original_centering");
 
-    // 足りないラインを新しく生成.
+    // 足りない sp（列） を新しく生成.
     if (the_additional_num > 0) {
         for (let i = 1; i < current_ver_num; i++) {
             for (let o = 0; o < the_name_list.length; o++) {
@@ -101,7 +92,7 @@ export const the_magic_paste = (e) => {
         }
     }
 
-    // 
+    // 補填した「列」にブロックを追加して数を合わせる.
     for (let i = 1; i <= sp_cover.childElementCount; i++) {
         // * ペーストした領域の外の sp 群に絞った処理.
         if (i < current_line_num || i > bottom_line_num) {

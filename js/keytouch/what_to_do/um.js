@@ -1,9 +1,3 @@
-import { focus_checker, adjust_box } from "../function/general.js";
-import { video_street_scroll, audio_street_scroll } from "../function/um.js";
-import { target_data } from "../function/tool.js";
-import { screen, um, blocksize} from "../data/constant.js";
-import { keytouch_setup } from "../../function/make.js";
-
 export const keytouch_um_setup = () => {
     if (screen.classList.contains("ms")) {
         let env = keytouch_setup();
@@ -23,18 +17,7 @@ export const keytouch_um_setup = () => {
     }
 }
 
-export const keytouch_um_command_escape = () => {
-    let env = keytouch_setup();
-    let centering;
-    e.preventDefault();
-    um.style.display = "none";
-    centering = document.querySelector(".centering");
-    focus_checker(centering);        
-    screen.classList.remove("um");
-    screen.classList.remove("um_ready");
-    centering.style.opacity = 1;
-}
-
+// ---------------------------------------------------------------------------------------------------------------
 
 export const keytouch_um_command_arrow_left = () => {
     let env = keytouch_setup();
@@ -126,4 +109,18 @@ export const keytouch_um_command_enter = () => {
     screen.classList.remove("um");
     screen.classList.remove("um_ready");
     native_center.style.opacity = 1;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+export const keytouch_um_command_escape = () => {
+    let env = keytouch_setup();
+    let centering;
+    e.preventDefault();
+    um.style.display = "none";
+    centering = document.querySelector(".centering");
+    focus_checker(centering);        
+    screen.classList.remove("um");
+    screen.classList.remove("um_ready");
+    centering.style.opacity = 1;
 }

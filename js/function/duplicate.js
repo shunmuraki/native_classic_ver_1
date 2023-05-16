@@ -1,6 +1,3 @@
-import { centering_marker, focus_checker } from "../function/general.js";
-import { global_update } from "../data/variable.js";
-
 // * 空のブロックの生成関数.
 // * まだ same クラスを持たせる、といった処理はされていない、ただのブロックの挿入.
 export const make_dup_fragment = (e, f) => {

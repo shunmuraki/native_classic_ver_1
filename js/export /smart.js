@@ -1,5 +1,3 @@
-// ---------------------------------------------------------------------------------------------------------------
-
 let export_space = document.querySelector(".exporter");
 let sections = export_space.children;
 

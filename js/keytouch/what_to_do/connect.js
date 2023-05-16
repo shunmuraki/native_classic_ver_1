@@ -1,9 +1,3 @@
-import { focus_checker, keytouch_basic, focus_checker } from "../function/general.js";
-import { vertical_to_hor, which_special_is, is_it_same_series, vertical_to_hor, classmover, tracer_basis } from "../function/tool.js";
-import { make_ver_fragment } from "../function/make.js";
-import { the_name_list, screen, blocksize } from "../data/constant.js";
-import { keytouch_setup } from "../../function/magic.js";
-
 export const keytouch_connect = () => {
 
     let env = keytouch_setup();
@@ -52,6 +46,7 @@ export const keytouch_connect = () => {
         let the_original_bottoms = the_sp_cover_a.lastElementChild.lastElementChild.childElementCount - original_centering_num;
     
         // ブロック数の最大値を算出するための一連の計算処理.
+        // [* ここもっと、圧倒的に短くできるはず。できないなら一連の処理をオブジェクトにして外部化するべき.]
         let the_triumph_tops = 0;
         let the_triumph_bottoms = 0;
         
@@ -91,6 +86,7 @@ export const keytouch_connect = () => {
         let the_this_loop_endpoint = the_triumph_tops - the_centering_num + env.current_horizontal.childElementCount - 1;
 
         // 複製をする前に中身をクリーンにする.
+        // [* 中身を掃除する関数としてこのループをまるごと外部化するべき.]
         for (let i = 0; i < children_block.length; i++) {
             if (i > 0) {
                 for (let o = 0; o < the_name_list.length; o++) {

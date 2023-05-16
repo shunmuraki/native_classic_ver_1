@@ -1,3 +1,5 @@
+// * "/style" が押された際に実行される関数.
+// * 装飾ホイールを起動する.
 export const keytouch_style_setup = () => {
     if (screen.classList.contains("ms")) {
       let env = keytouch_setup();

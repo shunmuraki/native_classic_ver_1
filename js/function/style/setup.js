@@ -1,22 +1,13 @@
-// style_initial の中で実行する。
-const all_setup = (e) => { 
-    // まずはデフォルトの選択項目を決めて、クラスを振ってあげる必要がある。
-    // ひとまずは layer_1 (0枚目) が来るから、この最初のブロックに対して choose クラスをつけるようにしよう。
-    // sl_1_1　←この子がそれ。
-    let title = String(document.querySelector(".choose").textContent);
-    set("current_states", s => s[1] = title);
-    set("previous_states", s => s[1] = title);
-}
-
+// * "/style" コマンドが実行された時点で最初に実行される関数.
+// * 装飾ホイールを生成し、最初のジャンルを表示する.
 export const style_initial = (e) => {   
-    // 中身の条件分岐
-    // current_zone のセット
-    // running_a の実行.
+    // * current_states, previsous_states を初期設定.
+    // [* 正直まだ states の構造を把握できていない.]
     let target = who_is_target();
     if (target.lastElementChild) {
         let tag = target.lastElementChild.tagName;
+        // * state の初期設定.
         if (tag == "TEXTAREA") {
-            // re
             set("current_states", s => s[0] = native_allstyles[0]);
             set("current_states", s => s[2].push(0));
             set("previous_states", s => s[0] = native_allstyles[0]);
@@ -33,7 +24,11 @@ export const style_initial = (e) => {
             set("previous_states", s => s[2].push(2));
         }
     }
-    running_a();
-    // ↕︎ この間に choose は生じている。
-    all_setup();
+    genre_clicked();
+    // * genre_clicked() で choose クラスはいずれかの選択肢に設定される.
+    // * それを待ってから以下を実行.
+    // * choose が付いた選択肢のタイトルを取得してデータに格納.
+    let title = String(document.querySelector(".choose").textContent);
+    set("current_states", s => s[1] = title);
+    set("previous_states", s => s[1] = title);
 }

@@ -1,14 +1,6 @@
-import { which_special_is } from "../function/tool.js";
-import { adjust_target_pos } from "../function/general.js";
-import { screen } from "../data/constant.js";
-import { native_value } from "../data/variable.js";
-import { keytouch_setup } from "../../function/make.js";
-
 export const keytouch_ms_command_slash = () => {
   if (! screen.classList.contains("ms")) {
-
     let env = keytouch_setup();
-
     screen.classList.add("ms");
     let centering = document.querySelector(".centering");
     // ms_adjust_target の跡地
@@ -42,6 +34,8 @@ export const keytouch_ms_command_slash = () => {
     }, 10) 
   }
 }
+
+// ---------------------------------------------------------------------------------------------------------------
 
 export const keytouch_ms_command_escape_or_enter = () => {
   

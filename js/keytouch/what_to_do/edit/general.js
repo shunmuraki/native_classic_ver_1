@@ -1,21 +1,55 @@
-import { keytouch_basic, original_centering_checker, pointer_anim, adjust_box, focus_checker, centering_marker, adjust_target_pos, wheel_positioning, pointer_anim } from "../function/general.js";
-import { vertical_to_hor, is_it_same_series, vertical_to_hor, tracer_basis, elem_post_getter, classmover } from "../function/tool.js";
-import { is_it_same_series, yt_player_getter, yt_resetter, is_it_same_series } from "../function/multi.js";
-import { make_ver_fragment } from "../function/make.js";
-import { orange_pointer_make, add_orange_space_for_everyone, best_related_element, principle_management, all_view_changer, pre_pointing_in, pre_pointing_out, comesin_management, actuar_st_alloff, actuar_en_alloff  } from "../function/edit.js";
-import { go_top, go_left, go_bottom, go_right } from "../function/motion.js";
-import { the_name_list, screen, bo, blocksize, linesize, blocktime, half_left_width, full_end_scrollwidth, full_start_scrollwidth, custom_end_scrollwidth } from "../data/constant.js";
-import { native_value } from "../data/variable.js";
-import { the_clear_interval, the_clear_timeout } from "../../function/edit.js";
+// [* /function/edit へ移動させるべきでは.]
+function delete_opacam() {
+    // 「opac_cam」 を指標として利用してから即削除.
+    if (document.querySelector(".opac_cam")) {
+        document.querySelector(".opac_cam").remove();
+    }                         
+}
+
+export const keytouch_edit_command_c = () => {
+
+    let env = keytouch_setup();
+
+    if (centering) {
+        if (the_see_centering.firstElementChild.firstElementChild.scrollLeft == Number(target_data(centering, "scroll_left_"))) {
+            if (the_see_centering.classList.contains("principle_pointer") && centering.classList.contains("opac_cam") == false){
+                delete_opacam(); 
+                pointer_anim();
+
+                // ここ他の条件分岐の中とも共通してるから統一してもらって....。
+                setTimeout(() => {
+                    set("orange_data", s => s = delete_orange_p(get("orange_data")));
+                }, 200)
+            } else if (centering.classList.contains("opac_cam") == true) {
+                delete_opacam();
+                pointer_anim();
+                setTimeout(() => {
+                    set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
+                }, 200)
+            }
+        } else {
+            delete_opacam();   
+            pointer_anim();
+            setTimeout(() => {
+                set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
+            }, 200)
+        }
+    } else {
+        pointer_anim();
+        setTimeout(() => {
+            set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
+        }, 200)
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
 
 export const keytouch_edit_command_s = () => {
 
     let env = keytouch_setup();
-
     pointer_anim();
     // actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
     actuar_st_allon();
-    
     new_layer.classList.add("autoseekingmode");
     let centering = document.getElementsByClassName("new_layer_centering")[0];
     let scrap = vertical_to_sp_cover(centering);
@@ -138,48 +172,5 @@ export const keytouch_edit_command_s = () => {
             set_timeout();
             set_interval();
         } 
-    }
-}
-
-export const keytouch_edit_command_c = () => {
-
-    let env = keytouch_setup();
-
-    function delete_opacam() {
-        // 「opac_cam」 を指標として利用してから即削除.
-        if (document.querySelector(".opac_cam")) {
-            document.querySelector(".opac_cam").remove();
-        }                         
-    }
-
-    if (centering) {
-        if (the_see_centering.firstElementChild.firstElementChild.scrollLeft == Number(target_data(centering, "scroll_left_"))) {
-            if (the_see_centering.classList.contains("principle_pointer") && centering.classList.contains("opac_cam") == false){
-                delete_opacam(); 
-                pointer_anim();
-
-                // ここ他の条件分岐の中とも共通してるから統一してもらって....。
-                setTimeout(() => {
-                    set("orange_data", s => s = delete_orange_p(get("orange_data")));
-                }, 200)
-            } else if (centering.classList.contains("opac_cam") == true) {
-                delete_opacam();
-                pointer_anim();
-                setTimeout(() => {
-                    set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
-                }, 200)
-            }
-        } else {
-            delete_opacam();   
-            pointer_anim();
-            setTimeout(() => {
-                set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
-            }, 200)
-        }
-    } else {
-        pointer_anim();
-        setTimeout(() => {
-            set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
-        }, 200)
     }
 }

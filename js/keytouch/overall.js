@@ -1,10 +1,6 @@
-import { screen } from "../data/constant.js";
-
-window.addEventListener("keydown", (e)=>{ 
-
+window.addEventListener("keydown", (e)=>{
     // そもそも k とか e ってどうなっとんねん。
     let k = e.key;
-
     if (document.activeElement.tagName != "BODY") {        
         let type_signiture = document.activeElement.value;
         if (type_signiture) { 
@@ -32,8 +28,7 @@ window.addEventListener("keydown", (e)=>{
         }
     }
 
-    // -------------------------------------------------------------------
-    // --------- COMMANDS ------------
+    // ---------------------------------------------------------------------------------------------------------------
     
     // 以下 command + k の処理.
     if (k == "k") {
@@ -158,7 +153,7 @@ window.addEventListener("keydown", (e)=>{
         } else {
             if (screen.classList.contains("edit")) {
                 if (! new_layer.classList.contains("autoseekingmode")) {
-                    keytouch_edit_command_autoseek_arrow_left();
+                    keytouch_edit_command_change_to_pointer();
                 }
             } else if (screen.classList.contains("style")) {
                 keytouch_style_command_arrow_left();
@@ -191,7 +186,7 @@ window.addEventListener("keydown", (e)=>{
             }
         } else {
             if (! new_layer.classList.contains("autoseekingmode")) {
-                keytouch_edit_command_autoseek_arrow_right();
+                keytouch_edit_command_change_to_block();
             }
         }
     }
@@ -208,7 +203,6 @@ window.addEventListener("keydown", (e)=>{
         } else {
             if (screen.classList.contains("um") == false) {
                 keytouch_motion_command_arrow_bottom();
-
             }
         }
     }

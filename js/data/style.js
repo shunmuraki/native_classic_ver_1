@@ -1,5 +1,3 @@
-import {style_and_editor, none_title, iframe_and_editor, iframe_adaptation} from "../function/style.js";
-
 // * テキスト要素に提供する装飾のジャンルと選択項目.
 const text_styles = [
   {

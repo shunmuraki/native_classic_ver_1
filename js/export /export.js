@@ -1,9 +1,3 @@
-import { ac_vi_adaptation, iframe_adaptation, textarea_adaptation, object_setter, for_ind, image_make_it, startblock_around, endblock_around, img_src_getter } from "./function.js";
-import { target_data } from "../function/tool.js";
-import { global_update } from "../data/variable.js";
-
-// ---------------------------------------------------------------------------------------------------------------
-
 let export_space = document.querySelector(".exporter");
 let sp_covers = export_space.querySelectorAll(".sp_cover");
 

@@ -1,4 +1,3 @@
-
 export const keytouch_edit_command_mode_escape = () => {
     let env = keytouch_setup();
     e.preventDefault();    

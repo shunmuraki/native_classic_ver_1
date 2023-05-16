@@ -1,7 +1,3 @@
-// * 最後のデータ処理.
-
-// ---------------------------------------------------------------------------------------------------------------
-
 let export_space = document.querySelector(".exporter");
 let button = document.querySelector(".sb_export").firstElementChild;
 

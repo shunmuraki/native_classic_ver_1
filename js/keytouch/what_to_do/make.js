@@ -1,9 +1,3 @@
-import { keytouch_basic, pointer_anim, original_centering_checker, adjust_box, centering_marker, same_cutter, special_cleaner, wheel_positioning } from "../function/general.js";
-import { make_fragment, make_ver_fragment } from "../function/make.js";
-import { is_it_same_series } from "../function/multi.js";
-import { screen, blocksize } from "../data/constant.js";
-import { keytouch_setup } from "../../function/make.js";
-
 export const keytouch_make_command_enter = () => {
     let env = keytouch_setup();
     pointer_anim();
@@ -19,6 +13,7 @@ export const keytouch_make_command_enter = () => {
     wheel_positioning();
 }
 
+// ---------------------------------------------------------------------------------------------------------------
 
 export const keytouch_make_command_u = () => {
     let env = keytouch_setup();

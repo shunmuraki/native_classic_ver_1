@@ -1,9 +1,3 @@
-import { all_view_changer } from "./edit.js";
-import { target_data, vertical_to_sp_cover, which_special_is, vertical_to_hor, vertical_to_sp } from "./tool.js";
-import { screen, pointer, wheel, the_pointer, layer_base, blocksize, blocktime, window_height, the_sunsetline } from "../data/constant.js";
-import { native_value } from "../data/variable.js";
-import { layerbase_switch, pointer_effect, pointer_grow, pointer_switch, wheel_grow, wheel_switch } from "./animation.js";
-
 // * centering クラスを管理する関数.
 export const centering_marker = (e, f, g) => {
     e.classList.remove(g);
