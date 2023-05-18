@@ -4,7 +4,7 @@ export const keytouch_style_command_arrow_left = () => {
     let env = keytouch_setup();
     let next;
     let choose = document.getElementsByClassName("choose")[0];
-    // 移動先のブロックがあれば、なければ一番下に戻る
+    // * 移動先のブロックがあれば、なければ一番下に戻る.
     if (choose.previousElementSibling) {
       next = choose.previousElementSibling;     
     } else {
@@ -28,7 +28,7 @@ export const keytouch_style_command_arrow_right = () => {
     } else {
         next = choose.parentElement.firstElementChild;
     }
-    // choose クラスを同期.
+    // * choose クラスを同期.
     choose.classList.remove("choose");
     next.classList.add("choose");
 } 

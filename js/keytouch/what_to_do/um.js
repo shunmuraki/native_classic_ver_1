@@ -1,3 +1,5 @@
+// * マークダウンスペースにキーワードが入力された状態で Enter が押された際に実行されるキータッチ関数.
+// * UM を表示する. 
 export const keytouch_um_setup = () => {
     if (screen.classList.contains("ms")) {
         let env = keytouch_setup();
@@ -19,6 +21,8 @@ export const keytouch_um_setup = () => {
 
 // ---------------------------------------------------------------------------------------------------------------
 
+// * Native 上で UM が開かれた状態で command + ArrowLeft が押された際に実行される関数.
+// * UM 上で左に移動する.
 export const keytouch_um_command_arrow_left = () => {
     let env = keytouch_setup();
     let centering;
@@ -30,12 +34,11 @@ export const keytouch_um_command_arrow_left = () => {
     var audio_null = audio_list.lastElementChild;
     screen.classList.add("um_ready");
     if (audio_null.classList.contains("um_centering")) {
-        // videoゾーンとaudioゾーンの切り替え.
+        // * videoゾーンとaudioゾーンの切り替え.
         video_street_scroll();
     }  else {
-        // [全共通！！！] 今の所属しているスコープを引数に渡して、隣の場所に移ったりスクロールする.
+        // * 今の所属しているスコープを引数に渡して、隣の場所に移ったりスクロールする.
         if (the_now_parent.classList.contains("um_video")) {
-
             if (the_um_current.previousElementSibling) {
                 if (! the_um_current.previousElementSibling.classList.contains("panc")) {
                     video_list.scrollLeft -= blocksize;
@@ -55,6 +58,8 @@ export const keytouch_um_command_arrow_left = () => {
     }
 }
 
+// * Native 上で UM が開かれた状態で command + ArrowRight が押された際に実行されるキータッチ関数.
+// * UM 上で右に移動する.
 export const keytouch_um_command_arrow_right = () => {
     let env = keytouch_setup();
     let centering;
@@ -66,10 +71,10 @@ export const keytouch_um_command_arrow_right = () => {
     var audio_null = audio_list.lastElementChild;
     screen.classList.add("um_ready");
     if (video_null.classList.contains("um_centering")) {
-        // videoゾーンとaudioゾーンの切り替え.
+        // * videoゾーンとaudioゾーンの切り替え.
         audio_street_scroll();
     } else {
-        // 所属していたのが「img」[video][audio]で条件分岐して、それぞれで無効にしたり、移動をしたりする.
+        // * 所属していたのが「img」[video][audio]で条件分岐して、それぞれで無効にしたり移動をする.
         if (the_now_parent.classList.contains("um_audio")) {
             if (the_um_current.previousElementSibling) {
                 if (! the_um_current.previousElementSibling.classList.contains("panc")) {
@@ -90,6 +95,9 @@ export const keytouch_um_command_arrow_right = () => {
     }
 }
 
+// * Native 上で UM が開かれた状態で Enter が押された際に実行される関数.
+// * UM 上で選択中のブロックの中身をデフォルトレイヤーのブロックに取り込んだり、
+// * 選択した YT動画 をブロックに展開する.
 export const keytouch_um_command_enter = () => {
     let env = keytouch_setup();
     let centering;
@@ -113,6 +121,8 @@ export const keytouch_um_command_enter = () => {
 
 // ---------------------------------------------------------------------------------------------------------------
 
+// * Native 上で UM が開かれた状態で Escape が押された際に実行される関数.
+// * UM を閉じる.
 export const keytouch_um_command_escape = () => {
     let env = keytouch_setup();
     let centering;

@@ -29,7 +29,7 @@ export function audio_street_scroll() {
   audio_list.scrollLeft += blocksize;
 }
 
-// UM を削除する関数.
+// * UM を削除する関数.
 export function clear_umdisplay() {  
   var display_will_hidden = document.querySelector(".um_layer");
   display_will_hidden.style.display = "none";

@@ -20,12 +20,10 @@ export const blocktime = 5;
 // * width 関連
 let default_block_length = blocksize * linesize;
 let default_length = default_block_length + window.innerWidth;
-
 export const half_left_width = (window.innerWidth - blocksize) / 2;
 export const half_right_width = half_left_width + blocksize;
 export const full_start_scrollwidth = window.innerWidth - half_left_width;
 export const full_end_scrollwidth = default_length - half_right_width + blocksize;
-
 export const window_height = window.innerHeight;
 export const the_middline = window_height * 0.5;
 export const the_sunsetline = window_height * 0.3;

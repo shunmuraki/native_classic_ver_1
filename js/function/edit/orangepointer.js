@@ -18,7 +18,6 @@ export const pointer_central = () => {
         // * 実行時点の scrollLeft よりも大きかった値の集合.
         let this_orange_data = Object.create(get("orange_data")[the_o_num]["left"]);
         let orange_lager_data_classic = [];
-        
         for (let i = 0; i < this_orange_data.length; i++) {
             if (this_orange_data[i] > orange_pointer_left) {
                 orange_lager_data_classic.push(this_orange_data[i]);
@@ -209,4 +208,13 @@ export const comesin_management = (e, f, g) => {
             next_one.classList.toggle("comesin");
         }
     }
+}
+
+// * orange_pointer を追加する処理をカプセル化した関数.
+function pointer_setter() {
+    pointer_anim();
+    // * ここ他の条件分岐の中とも共通してるから統一し
+    setTimeout(() => {
+        set("orange_data", s => s = delete_orange_p(get("orange_data")));
+    }, 200)
 }

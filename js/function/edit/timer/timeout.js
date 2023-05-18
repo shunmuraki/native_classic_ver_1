@@ -62,7 +62,7 @@ export const the_timeout = (e, f, g, h, j) => {
                                         player.seekTo(the_time);
                                         player.playVideo();
                                     }        
-                                    // この setTimeout１秒分を考慮する.
+                                    // * この setTimeout１秒分を考慮する.
                                     let ms = pause_when - play_when;
                                     the_seeking_time = (blocktime * 1000) - ms;
                                     set_timeout();

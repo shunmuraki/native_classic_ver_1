@@ -1,3 +1,4 @@
+// * YouTube の動画を読み込んでブロックに展開する処理をカプセル化した関数.
 export const keytouch_multi_youtube = () => {
     let env = keytouch_setup();
     video_load_then(env.type_signiture, env.current);
@@ -6,6 +7,7 @@ export const keytouch_multi_youtube = () => {
     screen.classList.remove("ms");
 }
 
+// * ファイルマネージャーから選択された画像を読み込んでブロックに表示する処理をカプセル化した関数.
 export const keytouch_multi_image = () => {
     if (screen.classList.contains("ms")) {
         let env = keytouch_setup();

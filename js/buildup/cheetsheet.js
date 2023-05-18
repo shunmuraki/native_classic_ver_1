@@ -1,11 +1,8 @@
-// 以下チートシートの表示関連
-// チートシートをJSONから動的に読み込むようにする。
-
-// box を作って、中に引数に渡した文字列を配置する、ブロックの生成関数
-let cs_flex = document.querySelector(".cs_flex");
 let cs = document.querySelector(".cheet_sheet");
+let cs_flex = document.querySelector(".cs_flex");
+let csb = document.querySelector(".usage_button");
 
-// 今のチートシートをJSON形式にする.
+// * 今のチートシートをJSON形式にする.
 async function getCheetsheet() {
     const response = await fetch(
       "../cheetsheet.json"
@@ -14,39 +11,33 @@ async function getCheetsheet() {
     return data;
 }
 
-// e = key
-// f = value
+// * チートシートの項目を作成して追加.
 const cheetsheet_block_maker = (e, f) => {
-    // box
+    // * <div class="box">
     let box = document.createElement("div");
-    // h4
+    // * <h4>
     let title = document.createElement("h4");
     title.textContent = String(e);
-    // p
+    // * <p>
     let desc = document.createElement("p");
     desc.textContent = String(f);
     box.classList.add("box");
     box.appendChild(title);
     box.appendChild(desc);
-    
-    // 挿入
+    // * 挿入
     cs_flex.appendChild(box);
 }
 
-// json からループで ブロック生成関数にデータを渡すループ処理
-// const native_usages = getCheetsheet;
-
+// * json からループで ブロックを生成する関数 にデータを渡すループ処理.
 for (let key in native_usages) {
     let v = native_usages[key];
     cheetsheet_block_maker(key, v);
 }
 
+// * 以下チートシートの初期設定.
 if (cs) {
     cs.style.top = 100 + "%";
 }
-
-let csb = document.querySelector(".usage_button");
-// デフォルトのセットアップ
 csb.classList.add("off");
 csb.addEventListener("click", () => {
     let centering = document.querySelector(".centering");

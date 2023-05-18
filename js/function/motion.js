@@ -66,6 +66,7 @@ export const go_top = (e, f) => {
 
             special_cleaner(vertical_to_sp_cover(ver));   
             cs_bye();
+            
             // * 編集モードでは「see」ラインの位置を維持.
             scrollBy(0, - connected_your_height);
             is_it_same_series(next_one);

@@ -5,13 +5,12 @@ export const keytouch_edit_setup = () => {
     document.querySelector(".ms_area").remove();
     focus_checker(document.querySelector(".centering"));
 
-    // デフォルトレイヤーからの離脱.
+    // * デフォルトレイヤーからの離脱.
     if (env.current.tagName == "TEXTAREA") {
         env.current.blur();
     }
 
-    // なんかここに current_vertical current_horizontal とかをここで一生懸命定義してましたけど？
-    // これを機にデフォルトレイヤーのspecial_covを一掃.
+    // * これを機会に デフォルトレイヤーのspecial_cov を一掃.
     let specials = document.querySelectorAll(".special_cov");
     if (specials.length > 0) {
         for (let i = specials.length - 1; i >= 0; i--) {
@@ -19,13 +18,7 @@ export const keytouch_edit_setup = () => {
         }
     }
 
-    // special_cov を全削除した分、表示の都合上 same_end 側をすべて表示しておく必要がある.
-    let ends = document.querySelectorAll(".same_end");
-    for (let i = ends.length - 1; i >= 0; i--) {
-        // ends[i].lastElementChild.style.setProperty('opacity', 1, 'important');
-    }
-
-    // 編集レイヤーの生成と挿入.
+    // * 編集レイヤーの生成と挿入.
     const add_new_layer = document.createElement("div");
     add_new_layer.classList.add("new_layer");
     add_new_layer.classList.add("block_layer");
@@ -34,54 +27,54 @@ export const keytouch_edit_setup = () => {
     screen.after(add_new_layer);
     let new_layer = document.querySelector(".new_layer");
     
-    // Editモードの明示化. 編集レイヤー上での処理に限定.
+    // * 編集モードの明示化. 編集レイヤー上での処理に限定.
     screen.classList.add("edit");
     new_layer.style.display = "block";
     screen.style.display = "none";
     bo.style.backgroundColor = "#0070D8";
     bo.classList.add("edit_mode");
 
-    // 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
-    // adjuster が２つ。
+    // * 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
     let vh_count = env.current_horizontal.childElementCount - 2;
     let sp_cover_will_num = Math.ceil(vh_count / linesize);
     let new_sp_cov = env.current_sp_cover.cloneNode(true); 
     
-    // すでに sp_cover には適切なラインが築かれているので、これを崩さずにそのまま再利用する. (中身のブロックはクリア.)
+    // * すでに sp_cover には適切なラインが築かれているので、これを崩さずに再利用する. 
+    // * 中身のブロックはクリア.
     let newla_sps = new_sp_cov.children;
 
-    // のちのために screenレイヤーの sp_cover にもクラスを付与.
+    // * 編集モード終了後にデフォルトレイヤーへ回帰することを見越して、
+    // * screenレイヤーの sp_cover にもクラスを付与.
     env.current_sp_cover.classList.add("target_of_edition");
 
     for (let i = 0; i < newla_sps.length; i++) {
         let bye_once = newla_sps[i].lastElementChild.children;
         for (let o = bye_once.length - 1; o >= 0 ; o--) {
-            // adjusterは残しておく.
+            // * adjusterを残す.
             if (o > 0) { 
                 bye_once[o].remove();
             }
         }
         for (let o = 0; o < linesize; o++) {
-            // scrap(sp_cover) のclone の　horizontal に ver を10個詰める.
+            // * scrap(sp_cover) のclone の　horizontal に ver を10個詰める.
             make_ver_fragment(newla_sps[i].lastElementChild.lastElementChild, "after");
         }
 
-        // editモードは右半分のスペースまで利用するため、可動域を拡張する目的でお尻にも adjuster を挿入.
+        // * editモードは右半分のスペースまで利用するため、可動域を拡張する目的でお尻にも adjuster を挿入.
         let adjuster_element = document.createElement("div");
         adjuster_element.classList.add("adjuster");
         adjuster_element.classList.add("horizontal_child");
         newla_sps[i].lastElementChild.lastElementChild.after(adjuster_element);
     }
 
-    // Nativeにはラインごとのシーキング機能があるため、デフォルトでその状態をセット.
+    // * Nativeにはラインごとのシーキング機能があるため、デフォルトでその状態をセット.
     new_sp_cov.classList.add("pausing");
     
-    // 挿入前にorange_space を追加.
+    // * 挿入前にorange_space を追加.
     add_orange_space_for_everyone(new_sp_cov);
    
-    // scrap を必要な数だけ new_layer に追加。
-
-    // * このあたりで「余計に scrap が生成されている」疑いがある。
+    // * scrap を必要な数だけ new_layer に追加。
+    // [* このあたりで「余計に scrap が生成されている」疑いがある.]
     for (let i = 0; i < sp_cover_will_num; i++) {
         let new_one = new_sp_cov.cloneNode(true);
         new_one.firstElementChild.classList.add("orange_num_" + i);
@@ -89,14 +82,15 @@ export const keytouch_edit_setup = () => {
         new_layer.appendChild(new_one);
     }
 
-    // デフォルトレイヤーに存在する大元のブロックたちの中身を、編集レイヤーの対応するブロックへ移行.
+    // * デフォルトレイヤーに存在する大元のブロックたちの中身を、編集レイヤーの対応するブロックへ移行.
     let screen_sps = env.current_sp_cover.children;
     for (let i = 0; i < screen_sps.length; i++) {
         let screen_vers = screen_sps[i].lastElementChild.children;
-        // 最後尾のadjuster をスキップ  
+        // * 最後尾のadjuster をパス.
         for (let o = 0; o < screen_vers.length - 1; o++) {
-            // 前のadjuster をスキップ  
+            // * 前のadjuster をパス.  
             if (o > 0 ) {
+
                 let the_num = o;
                 let ver_side = Math.trunc(the_num / linesize);
                 let hor_side = the_num % linesize;
@@ -112,10 +106,8 @@ export const keytouch_edit_setup = () => {
                 }
                 
                 new_layer.children[ver_side].children[i + 1].lastElementChild.children[linesize].classList.add("you");
-                
                 // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
-                let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];
-                
+                let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];        
                 if (the_block_into.lastElementChild) {
                     the_block_into.lastElementChild.remove();
                 }
@@ -129,7 +121,7 @@ export const keytouch_edit_setup = () => {
                     the_block_into.classList.add("new_layer_centering");
                 } 
                 
-                // dupブロックの場合を考えて条件分岐.
+                // * dupブロックの場合を考えて条件分岐.
                 if (screen_vers[o].lastElementChild) {
                     let imp_content = screen_vers[o].lastElementChild.cloneNode(true);
                     the_block_into.appendChild(imp_content);
@@ -138,7 +130,7 @@ export const keytouch_edit_setup = () => {
         } 
     }
 
-    // 10個ずつで強制的に区分けされたscrapによって same が分裂したケースに対応.
+    // * 10個ずつで強制的に区分けされたscrapによって same が分裂したケースに対応.
     for (let i = 0; i < new_layer.childElementCount; i++) {
         for (let o = 0; o < new_layer.children[i].childElementCount; o++) {
             if (o > 0) {
@@ -146,31 +138,33 @@ export const keytouch_edit_setup = () => {
                 let the_target_end = new_layer.children[i].children[o].lastElementChild.lastElementChild.previousElementSibling;
                 if (the_target_start.classList.contains("same") && the_target_start.classList.contains("same_start") == false) {
                     the_target_start.classList.add("same_start");
-                    // 連続箇所の場合に無駄な分裂をさせずに済ませるために。
+                    // * 連続箇所の場合に無駄な分裂をさせないために。
+                    // [* 意味が不明.]
                     the_target_start.classList.add("co");
                 }
                 if (the_target_end.classList.contains("same") && the_target_end.classList.contains("same_end") == false) {
                     the_target_end.classList.add("same_end"); 
-                    // 連続箇所の場合に無駄な分裂をさせずに済ませるために。
+                    // * 連続箇所の場合に無駄な分裂をさせないために。
+                    // [* 意味が不明.]
                     the_target_end.classList.add("co");
                 }
             }
         }
     }
 
-    // デフォルトで center になったことを明示.
+    // * デフォルトで センタリング になったブロックを明示.
     let layer_centering = document.querySelector(".new_layer_centering");
     let default_scrap = vertical_to_sp_cover(layer_centering);
     default_scrap.classList.add("see");
 
-    // 移行先でのms分のスペースを調整.            
+    // * 移行先でのms分のスペースを調整.            
     adjust_target_pos(layer_centering.lastElementChild, "off");
 
-    // 画面の切り替え.
+    // * 画面を切り替える.
     screen.style.opacity = 0;
     new_layer.style.opacity = 1;
 
-    // 以下編集レイヤーのスクロール位置の調整.
+    // * 以下編集レイヤーのスクロール位置の調整.
     let centering_num = [].slice.call(layer_centering.parentElement.children).indexOf(layer_centering) - 1;
     let see = document.querySelector(".see");
     let see_num = [].slice.call(new_layer.children).indexOf(see);
@@ -179,12 +173,10 @@ export const keytouch_edit_setup = () => {
     
     for (let i = 0; i < scraps.length; i++) {
         let scrap = scraps[i];
-        
-        // orange_dataと連携が開始.
+        // * orange_dataと連携が開始.
         set("orange_data", s => s[i] = {});
         set("orange_data", s => s[i]["s_count"] = 0);
         set("orange_data", s => s[i]["left"] = []);
-
         if (i == see_num) {
             for (let o = 0; o < scrap.children.length; o++) {
                 // orange_space をスキップ
@@ -211,12 +203,10 @@ export const keytouch_edit_setup = () => {
     }
     
     let new_see = document.getElementsByClassName("see")[0];
-    
-    // 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
+    // * 「例えば」を提示する意味も込めて、編集モードになった時点で予めセンタリングから orange_pointer と orange_stripe を自動的に追加.
     set("orange_data", s => s = orange_pointer_make(new_see, get("orange_data")));
     new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
-
-    // 「see」ラインを画面中央に配置.
+    // * 「see」ラインを画面中央に配置.
     edit_mode_default_adjust(new_see);
     is_it_same_series(document.querySelector(".new_layer_centering"));
     layer_centering.classList.remove("new_layer_centering");

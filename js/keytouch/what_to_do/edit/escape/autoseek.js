@@ -3,12 +3,13 @@ export const keytouch_edit_command_autoseek_escape = () => {
     actuar_st_alloff();
     actuar_en_alloff();
 
-    // 一番近いブロックを探させてcenteringを渡すようにする.
+    // * 一番近いブロックを探させてcenteringを渡す.
     let see_target = document.querySelector(".see");
     let orange_pointer_space = see_target.firstElementChild.firstElementChild;
 
-    // comesin があるなら 無条件で クラスを取り外す.
+    // * comesin があるなら 無条件で クラスを取り外す.
     let current_comesin = document.querySelector(".comesin");
+    
     if (current_comesin) {
         current_comesin.classList.remove("comesin");
     }

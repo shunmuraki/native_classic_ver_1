@@ -1,68 +1,47 @@
-// [* /function/edit へ移動させるべきでは.]
-function delete_opacam() {
-    // 「opac_cam」 を指標として利用してから即削除.
-    if (document.querySelector(".opac_cam")) {
-        document.querySelector(".opac_cam").remove();
-    }                         
-}
-
+// * 編集モード中に command + C が押された際に実行される関数.
+// * orange_pointer を追加/除去する.
 export const keytouch_edit_command_c = () => {
-
     let env = keytouch_setup();
-
     if (centering) {
         if (the_see_centering.firstElementChild.firstElementChild.scrollLeft == Number(target_data(centering, "scroll_left_"))) {
             if (the_see_centering.classList.contains("principle_pointer") && centering.classList.contains("opac_cam") == false){
                 delete_opacam(); 
-                pointer_anim();
-
-                // ここ他の条件分岐の中とも共通してるから統一してもらって....。
-                setTimeout(() => {
-                    set("orange_data", s => s = delete_orange_p(get("orange_data")));
-                }, 200)
+                pointer_setter();
+                
             } else if (centering.classList.contains("opac_cam") == true) {
                 delete_opacam();
-                pointer_anim();
-                setTimeout(() => {
-                    set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
-                }, 200)
+                pointer_setter();
             }
         } else {
             delete_opacam();   
-            pointer_anim();
-            setTimeout(() => {
-                set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
-            }, 200)
+            pointer_setter();
         }
     } else {
-        pointer_anim();
-        setTimeout(() => {
-            set("orange_data", s => s = orange_pointer_make(the_see_centering, get("orange_data")));
-        }, 200)
+        pointer_setter();
     }
 }
 
 // ---------------------------------------------------------------------------------------------------------------
 
+// * 編集モード中に control + S が押された際に実行される関数.
+// * オートシーキングモードを開始/停止する.
 export const keytouch_edit_command_s = () => {
 
     let env = keytouch_setup();
     pointer_anim();
-    // actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
+    // * actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
     actuar_st_allon();
     new_layer.classList.add("autoseekingmode");
     let centering = document.getElementsByClassName("new_layer_centering")[0];
     let scrap = vertical_to_sp_cover(centering);
     let hor = vertical_to_hor(centering);
     let the_seeking_time;
-
     let play_when;
     let pause_when;
 
-    // ここも connected の場合に対応させる.
     let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);
     for (let i = 0; i < scrap.children.length; i++) {
-        // orange_space を弾く.
+        // * orange_space を弾く.
         if (i > 0) {
             let horizon = scrap.children[i].lastElementChild;
             for (let o = 0; o < horizon.children.length; o++) {
@@ -73,7 +52,7 @@ export const keytouch_edit_command_s = () => {
                         if (the_special_cov.lastElementChild.tagName == "IFRAME") {
                             let player = yt_player_getter(the_special_cov.lastElementChild);
                             player.pauseVideo();
-                            // この時点で動画が再生されていたらループをストップ.
+                            // * この時点で動画が再生されていた場合にループをストップ.
                             let the_name = "same_num_" + target_data(the_special_cov, "this_cov_is_");
                             just_clear_yt_loop(the_name);
                         }
@@ -84,12 +63,11 @@ export const keytouch_edit_command_s = () => {
     }
 
     if (hor.scrollLeft < full_end_scrollwidth) {
-        // 初期値のセット.
+        // * 初期値を設定.
         the_seeking_time = blocktime * 1000;
 
-        if (scrap.classList.contains("playing")) {                    
-            //　ここもループにする.
-            // すべての special_cov からすべての player を取って全部止める.
+        if (scrap.classList.contains("playing")) {                     
+            // * すべての special_cov からすべての player を取って全部止める.
             let specials = document.getElementsByClassName("special_cov");
             for (let i = 0; i < specials.length; i++) {
                 let player;
@@ -99,8 +77,7 @@ export const keytouch_edit_command_s = () => {
                         player = yt_player_getter(the_special_cov.lastElementChild); 
                         if (player) {
                             player.pauseVideo();
-
-                            // また再開する時に全部を開始できるように.
+                            // * また再開した際にすべてのラインで YT の再生を開始できるように.
                             set("players_list", s => s.push(player));
                         }
                     }
@@ -118,16 +95,13 @@ export const keytouch_edit_command_s = () => {
             }
 
             scrap.classList.add(the_a_name);
-
-
-            // NEW NEW!!!!!!!!
             the_clear_timeout();
             the_clear_interval();
 
             let stop = new Date();
             pause_when = stop.getTime();
 
-            // 経過時間をミリ秒で取得.
+            // * 経過時間をミリ秒で取得.
             let ms = pause_when - play_when;
             the_seeking_time = (blocktime * 1000) - ms;                            
 
@@ -135,18 +109,10 @@ export const keytouch_edit_command_s = () => {
 
             let start = new Date();
             play_when = start.getTime();
-
             scrap.classList.remove("pausing");
             scrap.classList.add("playing");
 
-            function player_starter(e) {
-                e.pauseVideo();
-                let the_time = yt_resetter();
-                e.seekTo(the_time);
-                e.playVideo();
-            }
-
-            // 現在表示しているすべての player の再生を開始する.
+            // * 現在表示しているすべての player の再生を開始する.
             if (get("players_list").length == 0) {
                 let specials = document.getElementsByClassName("special_cov");
                 for (let i = 0; i < specials.length; i++) {
@@ -168,7 +134,7 @@ export const keytouch_edit_command_s = () => {
                 }
             }
 
-            // 再実行.
+            // * 再実行.
             set_timeout();
             set_interval();
         } 

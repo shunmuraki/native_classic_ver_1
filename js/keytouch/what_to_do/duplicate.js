@@ -6,7 +6,7 @@ export const keytouch_duplicate = () => {
   if (env.current.tagName == "TEXTAREA") {
     env.current.blur();
   }
-  
+
   // ---------------------------------------------------------------------------------------------------------------
 
   // * 具体的な複製の処理.
@@ -14,7 +14,7 @@ export const keytouch_duplicate = () => {
   let c_v_num = [].slice.call(env.current_horizontal.children).indexOf(env.current_vertical);
   let scrollleft_b = env.current_horizontal.scrollLeft;
   let balanc = 0;
-  
+
   // * connected されたラインであれば、すでに隣にブロックが存在するため、
   // * same_dup_fragment() を実行する必要がない.
   if (sps.length > 1) {

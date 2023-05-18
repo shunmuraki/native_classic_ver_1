@@ -1,14 +1,12 @@
-// same群のどこかがセンタリングしている際に、上に対象要素を被せて描画する関数.
+// * same群のどこかがセンタリングしている際に、上に対象要素を被せて描画する関数.
 export const make_special_cov = (e, f) => {
     let special_cov = document.createElement("div");    
     let bottom_distance = e.getBoundingClientRect().top + window.pageYOffset;
     let left_distance = half_left_width;
-    
     special_cov.style.top = bottom_distance + "px";
     
-    // borderの有無の違いから 1px を調整....
+    // * borderの有無の違いから 1px を調整....
     special_cov.style.left = left_distance + 1 + "px";
-
     special_cov.style.width = blocksize + "px";
     special_cov.style.height = e.clientHeight + "px";
 
@@ -24,10 +22,11 @@ export const make_special_cov = (e, f) => {
 
 // ---------------------------------------------------------------------------------------------------------------
 
-// 左右上下の移動で使える、centering が same を持つか判定する関数.
+// * centering を持つブロックが same を持つか判定する関数.
+// * 左右上下の移動で使える.
 export const is_it_same_start = (e) => {
     
-    // special_cov の生成からコンテントの挿入までを処理.
+    // * special_cov の生成からコンテントの挿入までを処理.
     if (e.classList.contains("same")) {
 
         let special_cov = which_special_is(e);
@@ -38,37 +37,39 @@ export const is_it_same_start = (e) => {
             let special_cov = make_special_cov(e, the_num);
             let hit_target = document.getElementsByClassName(the_name)[document.getElementsByClassName(the_name).length - 1];
             
-            // もし iframe だったら、yt idを取得して、新しく yt playerを生成するようにする。cloneNodeはしない.            
+            // * もし iframe だった場合 YT player を生成するようにする。
+            // * cloneNode() はここでは使用しない.
             if (hit_target.lastElementChild) {
                 if (hit_target.lastElementChild.tagName == "IFRAME") {
+
                     let special_playerlist = native_value("special_playerlist");
                     let the_code = target_data(hit_target, "id_is_");
                     set("s_s_num", s => s+= 1);
                     let the_keyname = String("yt_editor_" + get("s_s_num"));
                     let the_sp_if = document.createElement("div");
-                    the_sp_if.setAttribute("id", the_keyname); 
-                    
+                    the_sp_if.setAttribute("id", the_keyname);      
                     classmover(hit_target.lastElementChild, the_sp_if, "style_", "add");
                     special_cov.appendChild(the_sp_if);
                     let pl = block_multiable(the_keyname, the_code);
                     special_playerlist[the_keyname] = pl;
-
-                    // スタイル維持のため.
+                    // * ブロックのスタイル維持のため.
                     special_cov.classList.add("video");
-
-                    // Escape後にiframeが復活するように id_is_ を複製したすべてにセット.
+                    // * Escape後にiframeが復活するように id_is_ を複製したすべてにセット.
+                    // [* 正直意味が分からない.]
                     special_cov.classList.add("id_is_" + the_code);
 
                 } else {
+
                     let the_one = hit_target.lastElementChild.cloneNode(true);
                     special_cov.appendChild(the_one);
-
                     if (the_one.tagName == "IMG") {
-                        // スタイル維持のため.
+                        // * スタイル維持のため.
                         special_cov.classList.add("img");
                         special_cov.style.height = 225 + "px";
                     }
+                    
                 }
+
                 hit_target.lastElementChild.style.setProperty('opacity', 0, 'important');
             }
         }
@@ -77,12 +78,7 @@ export const is_it_same_start = (e) => {
             the_state();
             special_cov = document.getElementsByClassName("this_cov_is_" + the_num)[0];
         }
-
-        // 中身が opacity 0 の same_end をコピーしたケースを想定して戻す.
-        // here??
-        // special_cov.lastElementChild.style.setProperty('opacity', 1, 'important');
-
-        // centering クラスを持つ e なんだったら special_cov にも center_special を与えるようにしたり、そうじゃなかったら除去するようにしないと.
+ 
         if (e.classList.contains("centering") || e.classList.contains("new_layer_centering")) {
             special_cov.classList.add("center_special");
         } else {
@@ -105,7 +101,7 @@ export const is_it_same_start = (e) => {
             }
         }
 
-        // dupブロックであるケースを配慮.
+        // * dup ブロックであるケースを配慮.
         if (special_cov.lastElementChild) {
             player = yt_player_getter(special_cov.lastElementChild);
             if (screen.classList.contains("edit")) {
@@ -119,7 +115,7 @@ export const is_it_same_start = (e) => {
     }
 }
 
-// となりのブロックが same_end クラスを持つ場合に対応する special_cov を削除する関数.
+// * となりのブロックが same_end クラスを持つ場合に対応する special_cov を削除する関数.
 export const is_it_same_alend = (e) => {
     
     let player;
@@ -129,10 +125,9 @@ export const is_it_same_alend = (e) => {
     
     function the_state(e) {
         let the_special_cov = which_special_is(e);
-        let content = null;
-        
-        // 削除する前に same_start が右隣の場合にコンテントを一時的に same_startへ移してあげる.
-        // そして再度 same_start が centering した時にその中身を取り除くようにする.
+        let content = null;   
+        // * 削除する前に same_start が右隣の場合にコンテントを一時的に same_startへ移してあげる.
+        // * そして再度 same_start が centering した時にその中身を取り除くようにする.
         if (the_special_cov) {
             if (the_special_cov.lastElementChild) {
                 content = the_special_cov.lastElementChild.cloneNode(true);
@@ -151,7 +146,7 @@ export const is_it_same_alend = (e) => {
     if (the_target_left) {
         if (the_target_left.classList.contains("same_end")) {
             player_setup(the_target_left);
-            // たぶんここが pausing も playing も複数存在する可能性を加味してないんだと思う.
+            // * たぶんここが pausing も playing も複数存在する可能性を加味してないんだと思う.
             if (sp_cover.classList.contains("pausing")) {
                 if (player) {
                     if (which_special_is(the_target_left)) {
@@ -163,18 +158,14 @@ export const is_it_same_alend = (e) => {
                     }
                 }
             }
-
             the_state(the_target_left);
             if (the_target_left.lastElementChild) {
-                // here??
                 if (! the_target_left.classList.contains("stable")) {
                     the_target_left.lastElementChild.style.setProperty('opacity', 1, 'important');
                 }
-                // test //
-                // console.log(the_target_left);
             } 
         } else if (the_target_left.classList.contains("same_start")) {
-            // 同 same_num を持つ same_start の content があれば削除.
+            // * 同じ same_num を持つ same_start の content があれば削除.
             if (the_target_left.lastElementChild) {
                 the_target_left.lastElementChild.style.setProperty('opacity', 0, 'important');
                 let d = the_target_left.lastElementChild;
@@ -199,7 +190,7 @@ export const is_it_same_alend = (e) => {
                     }
                 }
             }
-            // same_start に special_cov の content を一時的に複製して格納.
+            // * same_start に special_cov の content を一時的に複製して格納.
             the_state(the_target_right);
             if (the_target_right.lastElementChild) {
                 the_target_right.lastElementChild.remove();
@@ -218,8 +209,7 @@ export const is_it_same_alend = (e) => {
             e.lastElementChild.style.setProperty('opacity', 0, 'important');
         }
     }
-
-    // ここに新しく「e.classList.contains("stable")」みたいなものを追加してはどうだろう？
+ 
     if (e.classList.contains("stable_end")) {
         // 削除するバージョン。
         if (which_special_is(e)) {
@@ -237,12 +227,11 @@ export const is_it_same_alend = (e) => {
 
 // ---------------------------------------------------------------------------------------------------------------
 
-// special_cov関連の関数を束ねたもの.
+// * special_cov関連の関数を束ねたもの.
 export const is_it_same_series = (e) => {
     let sp_cover = vertical_to_sp_cover(e);
     let sps= sp_cover.children;
     let centering_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
-    
     for (let i = 0; i < sps.length; i++) {
         if (i == 0 && sps[0].classList.contains("orange_space")) {
         } else {

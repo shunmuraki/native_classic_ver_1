@@ -1,5 +1,4 @@
-window.addEventListener("keydown", (e)=>{
-    // そもそも k とか e ってどうなっとんねん。
+window.addEventListener("keydown", (e)=>{ 
     let k = e.key;
     if (document.activeElement.tagName != "BODY") {        
         let type_signiture = document.activeElement.value;
@@ -9,20 +8,16 @@ window.addEventListener("keydown", (e)=>{
                     keytouch_connect();
                 }
             } else if (env.type_signiture.indexOf('edi') != -1) {
-                // Editモードを展開.
                 if (screen.classList.contains("ms")) {
                     keytouch_edit_setup();
                 }
             } else if ( env.type_signiture.indexOf('youtube.com') != -1) {
-                // 以下YouTubeの動画のURLがペーストされた場合の処理.
                 keytouch_multi_youtube();
             } else if ( env.type_signiture.indexOf('imag') != -1) {
                 keytouch_multi_image();
             } else if ( env.type_signiture.indexOf('styl') != -1) {
-                // ホイールを起動する処理.
                 keytouch_style_setup();
-            } else if ( env.type_signiture.indexOf('ted') != -1) {
-                // 以下ユニバーサルマークダウン機能の例として「"ted"」が検索された場合の処理.
+            } else if ( env.type_signiture.indexOf('ted') != -1) { 
                 keytouch_um_setup();
             }
         }
@@ -30,13 +25,12 @@ window.addEventListener("keydown", (e)=>{
 
     // ---------------------------------------------------------------------------------------------------------------
     
-    // 以下 command + k の処理.
     if (k == "k") {
         if (e.metaKey) {
             keytouch_duplicate();
         }
     }
-    // ポインターの削除と追加.
+    
     if (k == "c") { 
         if (e.metaKey) {
             if (screen.classList.contains("edit")) {
@@ -71,7 +65,6 @@ window.addEventListener("keydown", (e)=>{
                 keytouch_make_command_enter();
             }
         } else {
-            // ms の終了処理.
             if (screen.classList.contains("ms")) {
                 keytouch_ms_command_escape_or_enter();
             } else if (screen.classList.contains("style")) {
@@ -82,7 +75,6 @@ window.addEventListener("keydown", (e)=>{
         }
     }
 
-    // Edit モードを終了.
     if (k == "Escape") {
         if (e.metaKey) {
             if (screen.classList.contains("edit")) {
@@ -93,7 +85,6 @@ window.addEventListener("keydown", (e)=>{
                 }
             }
         } else {
-            // ms の終了処理.
             if (screen.classList.contains("ms")) {
                 keytouch_ms_command_escape_or_enter();
             } else if (screen.classList.contains("style")) {
@@ -113,9 +104,10 @@ window.addEventListener("keydown", (e)=>{
     }
 
     if (k == "/") {
-        // マークダウンスペースの軌道処理.
         keytouch_ms_command_slash();
     }
+
+    // ---------------------------------------------------------------------------------------------------------------
     
     if (k == "ArrowUp") {
         if(e.shiftKey) {      

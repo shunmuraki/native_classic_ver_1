@@ -4,7 +4,7 @@ export const keytouch_style_setup = () => {
     if (screen.classList.contains("ms")) {
       let env = keytouch_setup();
       let centering = document.querySelector(".centering");
-      // 先にms調整箇所を戻しておいてそれから複製させる. 
+      // * 先にms調整箇所を戻してから複製させる. 
       let target = centering;
       if (centering.classList.contains("same")) {
           target = which_special_is(centering);

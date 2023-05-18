@@ -24,7 +24,7 @@ export const original_centering_checker = (e, f) => {
     }    
 }
 
-// scrapやsp_cover内のスクロール位置をすべて最適化する関数.
+// * scrap や sp_cover 内のスクロール位置をすべて最適化する関数.
 export const all_view_changer = (e, f) => {
     if (e.children[0].classList.contains("orange_space")) {
         let orange = e.firstElementChild;

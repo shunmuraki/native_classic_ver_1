@@ -32,7 +32,7 @@ export const same_around = (e, f) => {
             next_one.classList.add("same_start");
         }
     } else if (f == "connected") {
-        // * これってどういう場合？
+        // [* これはどういう場合だろう.]
         next_one = e.nextElementSibling;
         if (! e.classList.contains("same")) {
             same_setup(e);
@@ -56,6 +56,6 @@ export const same_around = (e, f) => {
     next_one.classList.add("same");          
     e.classList.add(the_name);
     next_one.classList.add(the_name);
-    // command + U では要らない配慮.
+    // * command + U では必要のない処理.
     focus_checker(next_one);
 }
