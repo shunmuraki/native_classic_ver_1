@@ -1,3 +1,21 @@
+let csb = document.querySelector(".usage_button");
+
+// * CS を出し入れするイベント.
+csb.addEventListener("click", () => {
+    let centering = document.querySelector(".centering");
+    if (csb.classList.contains("on")) {
+        cheetsheet_animation("on");
+        focus_checker(centering);
+    } else if (csb.classList.contains("off")) {
+        blur_checker(centering);
+        cheetsheet_animation("off");
+    }
+    csb.classList.toggle("on");
+    csb.classList.toggle("off");
+})
+
+// ---------------------------------------------------------------------------------------------------------------
+
 // * index.html → export.html のリダイレクト時に sessionStorage に保存した innerHTML には入らない <textarea> の value たちを重ねて保存しておく変数.
 let button = document.querySelector(".sb_export");
 

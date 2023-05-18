@@ -1,0 +1,50 @@
+{ 
+    "text_styles": [
+        {
+            "weight": [
+            "regular", 
+            "medium", 
+            "bold"
+            ]
+        },
+        {
+            "transform": [
+            {
+                "size": [
+                "h1", 
+                "h2", 
+                "h3", 
+                "p"
+                ]
+            },
+            "link",
+            "embed"
+            ]
+        },
+        {
+            "deco": [
+            {
+                "color": [
+                "red",
+                "blue",
+                "orange",
+                "green",
+                "purple",
+                "pink"
+                ]
+            }, 
+            "underline",
+            "quote"
+            ]
+        }
+    ],
+
+    "img_styles": [
+        "NONE" 
+    ],
+
+    "iframe_styles": [
+        "NONE"
+    ]
+    
+}
