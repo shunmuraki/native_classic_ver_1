@@ -1,7 +1,7 @@
 export const keytouch_edit_setup = () => {
+
     let env = keytouch_setup();
     tracer_basis(document.querySelector(".centering"));
-
     document.querySelector(".ms_area").remove();
     focus_checker(document.querySelector(".centering"));
 
@@ -19,7 +19,7 @@ export const keytouch_edit_setup = () => {
     }
 
     // * 編集レイヤーの生成と挿入.
-    const add_new_layer = document.createElement("div");
+    let add_new_layer = document.createElement("div");
     add_new_layer.classList.add("new_layer");
     add_new_layer.classList.add("block_layer");
     add_new_layer.style.display = "none";
@@ -106,7 +106,8 @@ export const keytouch_edit_setup = () => {
                 }
                 
                 new_layer.children[ver_side].children[i + 1].lastElementChild.children[linesize].classList.add("you");
-                // 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
+                
+                // * 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
                 let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];        
                 if (the_block_into.lastElementChild) {
                     the_block_into.lastElementChild.remove();
@@ -130,7 +131,7 @@ export const keytouch_edit_setup = () => {
         } 
     }
 
-    // * 10個ずつで強制的に区分けされたscrapによって same が分裂したケースに対応.
+    // * [linesize] 個ずつで強制的に区分けされたscrapによって same が分裂したケースに対応.
     for (let i = 0; i < new_layer.childElementCount; i++) {
         for (let o = 0; o < new_layer.children[i].childElementCount; o++) {
             if (o > 0) {
@@ -138,14 +139,12 @@ export const keytouch_edit_setup = () => {
                 let the_target_end = new_layer.children[i].children[o].lastElementChild.lastElementChild.previousElementSibling;
                 if (the_target_start.classList.contains("same") && the_target_start.classList.contains("same_start") == false) {
                     the_target_start.classList.add("same_start");
-                    // * 連続箇所の場合に無駄な分裂をさせないために。
-                    // [* 意味が不明.]
+                    // * 編集モードへの展開が、トリミング後に影響しないよう、エスケープ処理に備えて co クラスを付与.
                     the_target_start.classList.add("co");
                 }
                 if (the_target_end.classList.contains("same") && the_target_end.classList.contains("same_end") == false) {
                     the_target_end.classList.add("same_end"); 
-                    // * 連続箇所の場合に無駄な分裂をさせないために。
-                    // [* 意味が不明.]
+                    // * 編集モードへの展開が、トリミング後に影響しないよう、エスケープ処理に備えて co クラスを付与.
                     the_target_end.classList.add("co");
                 }
             }
@@ -210,4 +209,5 @@ export const keytouch_edit_setup = () => {
     edit_mode_default_adjust(new_see);
     is_it_same_series(document.querySelector(".new_layer_centering"));
     layer_centering.classList.remove("new_layer_centering");
+
 }

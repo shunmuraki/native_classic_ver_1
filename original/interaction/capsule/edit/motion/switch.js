@@ -1,10 +1,13 @@
 // * 編集モードにおいて、ブロック移動からポインター移動に切り替える関数.
-export const keytouch_edit_command_autoseek_arrow_left = () => {
+export const keytouch_edit_command_switch_to_pointer = () => {
     let env = keytouch_setup();
     let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
     let orange_pointer_list = orange_pointer_space.firstElementChild;
+    // ]* ここも the_see_centering の定義がされていない.
+    // [* 他のオブジェクトとともに、引数にこれを渡すようにするべきか.] 
     if (the_see_centering.classList.contains("principle_block")) {
         if (centering) {
+            // * センタリングが移動するので、まもなく役割を終える.
             if (centering.classList.contains("opac_cam")) {
                 centering.remove();
             }
@@ -25,7 +28,7 @@ export const keytouch_edit_command_autoseek_arrow_left = () => {
 }
 
 // * 編集モードにおいて、ポインター移動からブロック移動に切り替える関数.
-export const keytouch_edit_command_autoseek_arrow_right = () => {
+export const keytouch_edit_command_switch_to_block = () => {
     let env = keytouch_setup();
     let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
     let orange_pointer_list = orange_pointer_space.firstElementChild;
@@ -41,4 +44,23 @@ export const keytouch_edit_command_autoseek_arrow_right = () => {
     }
     // * principle_block だった場合は何もしない.                    
     set("the_scrolled_distance", s => s = 0);
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+
+// * 編集モード での 移動の仕方(ポインター移動 or ブロック移動) を管理する関数.
+export const principle_management = (e, f) => {
+    let scrap = e;
+    if (scrap.classList.contains("principle_block")) {
+        if ("principle_block" != f) {
+            scrap.classList.remove("principle_block");
+            scrap.classList.add(f);
+        }
+    } else if (scrap.classList.contains("principle_pointer")) {
+        if ("principle_pointer" != f) {
+            scrap.classList.remove("principle_pointer");
+            scrap.classList.add(f);
+        }
+    } 
 }

@@ -3,9 +3,6 @@ export const keytouch_edit_command_mode_escape = () => {
     let env = keytouch_setup();
     e.preventDefault();
 
-    // * 「pointer_s の相手がいなかった場合」ってどうやって導き出すんだろう。
-    // * pointer の数が奇数かどうかで判別ができる.
-    // * 「pointer の数が偶数である場合」という条件を全体に追加してあげる必要があると思う。
     let orange_pease = document.querySelectorAll(".orange_pointer").length;
     
     // * pointer が片方しか打たれていないまま escape キーの処理が実行されるのを回避。
@@ -60,11 +57,10 @@ export const keytouch_edit_command_mode_escape = () => {
                     let bbb = en_n - st_n + 1;
 
                     for (let l = 1; l < sps.length; l++) {
-            
+                        
+                        let fragment = document.createDocumentFragment();
                         let st_block = sps[l].lastElementChild.children[st_n];
                         let en_block = sps[l].lastElementChild.children[en_n];
-            
-                        let fragment = document.createDocumentFragment();
 
                         // ---------------------------------------------------------------------------------------------------------------                     
             

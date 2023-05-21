@@ -132,10 +132,8 @@ window.addEventListener("keydown", (e)=>{
             if (screen.classList.contains("edit")) {
                 if (! new_layer.classList.contains("autoseekingmode")) {
                     if (the_see_centering.classList.contains("principle_block")) {
-                        keytouch_edit_command_block_arrow_left();
-                    } else if (the_see_centering.classList.contains("principle_pointer")) {
-                        keytouch_edit_command_pointer_arrow_left();
-                    }
+                        keytouch_edit_command_switch_to_pointer();
+                    } 
                 }
             } else {
                 if (screen.classList.contains("um") == false) {
@@ -145,7 +143,7 @@ window.addEventListener("keydown", (e)=>{
         } else {
             if (screen.classList.contains("edit")) {
                 if (! new_layer.classList.contains("autoseekingmode")) {
-                    keytouch_edit_command_change_to_pointer();
+                    keytouch_edit_command_switch_to_pointer();
                 }
             } else if (screen.classList.contains("style")) {
                 keytouch_style_command_arrow_left();
@@ -159,10 +157,8 @@ window.addEventListener("keydown", (e)=>{
         if(e.shiftKey) {
             if (screen.classList.contains("edit")) {
                 if (! new_layer.classList.contains("autoseekingmode")) {
-                    if (the_see_centering.classList.contains("principle_block")) {
-                        keytouch_edit_command_block_arrow_right();
-                    } else if (the_see_centering.classList.contains("principle_pointer")) {
-                        keytouch_edit_command_pointer_arrow_right();
+                    if (the_see_centering.classList.contains("principle_pointer")) {
+                        keytouch_edit_command_switch_to_block();
                     }
                 }
             } else {
@@ -178,7 +174,7 @@ window.addEventListener("keydown", (e)=>{
             }
         } else {
             if (! new_layer.classList.contains("autoseekingmode")) {
-                keytouch_edit_command_change_to_block();
+                keytouch_edit_command_switch_to_block();
             }
         }
     }

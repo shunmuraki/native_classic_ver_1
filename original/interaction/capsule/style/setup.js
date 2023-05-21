@@ -11,8 +11,7 @@ export const keytouch_style_setup = () => {
       } 
       adjust_target_pos(target.lastElementChild, "off");
       document.querySelector(".ms_area").remove();
-      screen.classList.add("style");
-      wheel_seton();
+      screen.classList.add("style"); 
       env.current.blur();
       adjust_target_pos(centering.lastElementChild, "off");
       style_initial();

@@ -230,3 +230,49 @@ export const optimize_writing = (e, f) => {
     e.parentElement.style.height = height + "px";
     adjust_box(f);
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// * 左右の移動でspecial_covの変更内容を same_end に反映させる関数.
+export const tracer_basis = (e) => {
+    let special_cov = which_special_is(e);
+    if (special_cov) {
+        let specon_cloned = special_cov.lastElementChild.cloneNode(true);
+        specon_cloned.style.setProperty('opacity', 0, 'important');
+        let same_name = "same_num_" + target_data(e, "same_num_");
+        let sames = document.getElementsByClassName(same_name);
+        sames[sames.length - 1].lastElementChild.remove();
+        sames[sames.length - 1].appendChild(specon_cloned);
+    }
+}
+
+// * same(= special_cov) がセンタリングしている間にスタイリングを変更した場合に、sameの外に出る時に対象となっていた special_cov の要素を複製して大元の same_end に格納する関数.
+export const same_change_tracer = (e) => {
+    if (e.previousElementSibling) {
+        if (e.previousElementSibling.classList.contains("same_end")) {
+
+            let special_cov = which_special_is(e.previousElementSibling);
+            if (special_cov) {
+                let specon_cloned = special_cov.lastElementChild.cloneNode(true);
+                specon_cloned.style.setProperty('opacity', 0, 'important');
+                if (e.previousElementSibling.lastElementChild) {
+                    e.previousElementSibling.lastElementChild.remove();
+                }
+                e.previousElementSibling.appendChild(specon_cloned);
+                console.log(e.previousElementSibling);
+            }
+        }
+    } 
+    if (e.nextElementSibling) {
+        if (e.nextElementSibling.classList.contains("same_start")) {
+            tracer_basis(e.nextElementSibling);
+        }
+    }
+}
+
+// * 何番目のブロックか、数字を返す関数.
+export const elem_post_getter = (e) => {
+    let parent = e.parentElement;
+    let the_num = [].slice.call(parent.children).indexOf(e);
+    return the_num;
+}

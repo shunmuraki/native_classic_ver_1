@@ -1,7 +1,7 @@
 // * 移動元のorange_spaceにて orange_pointer_s - orange_pointer_f の関係が
-// * 完結していないストライプがある場合に対応する関数.
+// * 完結していないストライプがあるかチェックし、
+// * その場合にそのラインの一番後ろに orange_pointer_f を追加して対応する関数.
 export const pre_pointing_in = (e) => {
-    
     let orange_num = target_data(e.firstElementChild, "orange_num_");
     let orange = e.firstElementChild;
     let orange_pointer_space = orange.firstElementChild;

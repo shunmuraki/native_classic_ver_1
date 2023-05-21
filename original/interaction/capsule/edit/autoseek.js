@@ -1,45 +1,21 @@
-// * 編集モード中に command + C が押された際に実行される関数.
-// * orange_pointer を追加/除去する.
-export const keytouch_edit_command_c = () => {
-    let env = keytouch_setup();
-    if (centering) {
-        if (the_see_centering.firstElementChild.firstElementChild.scrollLeft == Number(target_data(centering, "scroll_left_"))) {
-            if (the_see_centering.classList.contains("principle_pointer") && centering.classList.contains("opac_cam") == false){
-                delete_opacam(); 
-                pointer_setter();
-                
-            } else if (centering.classList.contains("opac_cam") == true) {
-                delete_opacam();
-                pointer_setter();
-            }
-        } else {
-            delete_opacam();   
-            pointer_setter();
-        }
-    } else {
-        pointer_setter();
-    }
-}
-
-// ---------------------------------------------------------------------------------------------------------------
-
 // * 編集モード中に control + S が押された際に実行される関数.
 // * オートシーキングモードを開始/停止する.
 export const keytouch_edit_command_s = () => {
-
+    
+    let play_when;
+    let pause_when;
+    let the_seeking_time;
     let env = keytouch_setup();
-    pointer_anim();
-    // * actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
-    actuar_st_allon();
     new_layer.classList.add("autoseekingmode");
     let centering = document.getElementsByClassName("new_layer_centering")[0];
     let scrap = vertical_to_sp_cover(centering);
     let hor = vertical_to_hor(centering);
-    let the_seeking_time;
-    let play_when;
-    let pause_when;
-
     let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);
+
+    pointer_anim();
+    // * actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
+    actuar_st_allon();
+
     for (let i = 0; i < scrap.children.length; i++) {
         // * orange_space を弾く.
         if (i > 0) {

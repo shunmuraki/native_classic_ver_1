@@ -4,6 +4,7 @@ export const keytouch_style_command_escape = () => {
     let env = keytouch_setup();
     let centering = document.querySelector(".centering");
     e.preventDefault();
+    // * 以下のレイヤーの切り替えは外部でオブジェクトにする.
     let w_w = document.querySelector(".waiting_wheel");
     if (w_w) {
         // * セカンドレイヤーが表示中の場合の処理.
@@ -19,6 +20,6 @@ export const keytouch_style_command_escape = () => {
         screen.classList.remove("style");
         if (! centering.classList.contains("same")) {
             focus_checker(centering);
-        } 
+        }
     }
 }

@@ -28,3 +28,11 @@ export const actuar_en_alloff = () => {
         }
     }
 }
+
+// * オートシーキングモード中のラインの YT の再生をする関数.
+function player_starter(e) {
+    e.pauseVideo();
+    let the_time = yt_resetter();
+    e.seekTo(the_time);
+    e.playVideo();
+}

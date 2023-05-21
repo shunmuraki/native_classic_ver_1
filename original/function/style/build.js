@@ -1,6 +1,6 @@
 // * 装飾ホイールのレイヤーを生成する関数.
 // * e にはタイトルたちを渡す。
-const layer_maker = (e) => {
+export const layer_maker = (e) => {
     let container = document.querySelector(".container");
     let layer = document.createElement("div");
     layer.classList.add("style_layer");
