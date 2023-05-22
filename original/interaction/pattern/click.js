@@ -30,3 +30,10 @@ button.addEventListener("click", () => {
     you.classList.add("exporter");
     you.style.display = "none";
 });
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// 「編集に戻る」ボタンがクリックされた場合の処理.
+let getback = document.querySelector(".additional");
+    getback.addEventListener("click", () => { 
+})  
