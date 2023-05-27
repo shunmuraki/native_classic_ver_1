@@ -10,7 +10,7 @@ export const keytouch_style_command_arrow_left = () => {
     } else {
       next = choose.parentElement.lastElementChild;
     }
-  
+    // * choose クラスを同期.
     choose.classList.remove("choose");
     next.classList.add("choose");
 }

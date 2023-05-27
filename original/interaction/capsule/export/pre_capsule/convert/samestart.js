@@ -1,4 +1,4 @@
-export const case_samestart = () => {
+export const case_same_start = () => {
     if (! block.classList.contains("opening")) {
         if (block.previousElementSibling) {
             if (! block.previousElementSibling.classList.contains("same")) {

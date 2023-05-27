@@ -72,6 +72,8 @@ export const keytouch_edit_setup = () => {
     
     // * 挿入前にorange_space を追加.
     add_orange_space_for_everyone(new_sp_cov);
+
+    // ---------------------------------------------------------------------------------------------------------------
    
     // * scrap を必要な数だけ new_layer に追加。
     // [* このあたりで「余計に scrap が生成されている」疑いがある.]
@@ -131,6 +133,8 @@ export const keytouch_edit_setup = () => {
         } 
     }
 
+    // ---------------------------------------------------------------------------------------------------------------
+
     // * [linesize] 個ずつで強制的に区分けされたscrapによって same が分裂したケースに対応.
     for (let i = 0; i < new_layer.childElementCount; i++) {
         for (let o = 0; o < new_layer.children[i].childElementCount; o++) {
@@ -162,6 +166,8 @@ export const keytouch_edit_setup = () => {
     // * 画面を切り替える.
     screen.style.opacity = 0;
     new_layer.style.opacity = 1;
+
+    // ---------------------------------------------------------------------------------------------------------------
 
     // * 以下編集レイヤーのスクロール位置の調整.
     let centering_num = [].slice.call(layer_centering.parentElement.children).indexOf(layer_centering) - 1;

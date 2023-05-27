@@ -41,6 +41,22 @@ export const iframe_and_editor = (e) => {
     }
 }
 
+// * 装飾ホイールによるスタイルの変更を実際に反映する関数.
+export const style_changer = (e, f) => {
+    // * 共通のジャンルですでに別の項目が適用されている可能性を加味し実行.
+    style_replace(e, f);
+    let w = number_combinate(f).slice(0, -2);
+    // * 本命を追加.
+    e.classList.add(w);
+} 
+
+// * style のクラスを付け替える際に、同じ階層（同じジャンル）で別の選択肢を選択されていた場合、
+// * 既存の style_ クラスを削除し、新たに選んだ選択肢を含めたクラスに置き換える関数.
+export const style_replace = (e, f) => {     
+    let word = number_combinate(f);
+    classmover(e, e, word, "remove");
+}
+
 // * current_number の番号を文字列にして クラス名 完成させて返してくれる関数。
 export const number_combinate = (e) => {
     let output = "style";
@@ -50,19 +66,3 @@ export const number_combinate = (e) => {
     }
     return output;
 }
-
-// * style のクラスを付け替える際に、同じ階層（同じジャンル）で別の選択肢を選択されていた場合、
-// * 既存の style_ クラスを削除し、新たに選んだ選択肢を含めたクラスに置き換える関数.
-export const style_replace = (e, f) => {     
-    let word = number_combinate(f);
-    classmover(e, e, word, "remove");
-}
-
-// * 装飾ホイールによるスタイルの変更を実際に反映する関数.
-export const style_changer = (e, f) => {
-    // * 共通のジャンルですでに別の項目が適用されている可能性を加味し実行.
-    style_replace(e, f);
-    let w = number_combinate(f).slice(0, -2);
-    // * 本命を追加.
-    e.classList.add(w);
-}  

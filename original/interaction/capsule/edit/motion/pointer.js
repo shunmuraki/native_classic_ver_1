@@ -5,6 +5,7 @@ export const keytouch_edit_command_pointer_arrow_top = () => {
     // * スクロール位置の調整のため現在地を控えておく.
     let the_countingnow_pos = the_see_centering.getBoundingClientRect().top;
     while (the_countingstart_top >= 1) {
+        // [*  もっと簡単に調べられるようにするべき.]
         if (new_layer.children[the_countingstart_top].previousElementSibling.firstElementChild.firstElementChild.firstElementChild.childElementCount != 0) {
             // * もとの the_see_centering からクラスを外す.
             the_see_centering.classList.toggle("see");
@@ -12,7 +13,7 @@ export const keytouch_edit_command_pointer_arrow_top = () => {
             the_see_centering = new_layer.children[the_countingstart_top];
             let orange_pointer_space = the_see_centering.previousElementSibling.firstElementChild.firstElementChild;
             comesin_management("top", centering, the_see_centering);
-            // [* opac_com が何かが分からない.]
+            // [* opac_com の削除こそオブジェクトにするべき.]
             if (centering.classList.contains("opac_cam")) {
                 centering.remove();
             }

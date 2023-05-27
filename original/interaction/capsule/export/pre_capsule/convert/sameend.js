@@ -1,4 +1,4 @@
-export const case_sameend = () => {
+export const case_same_end = () => {
     if (! block.classList.contains("ending")) {
         if (block.nextElementSibling) {
             if (! block.nextElementSibling.classList.contains("same")) {
@@ -19,7 +19,7 @@ export const case_sameend = () => {
 
     // ---------------------------------------------------------------------------------------------------------------
     // * video属性の場合は、それ用の video_animation を併せて作成.
-    
+    // * 同時に adaptation についてもここで処理させちゃう.
     if (block.classList.contains("video")) {
         data_num += 1;
         let video_animation = {};

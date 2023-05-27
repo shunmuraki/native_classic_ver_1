@@ -1,44 +1,3 @@
-// * リニアスペース上に存在する same クラスを持たないブロックについて、
-// * start_animation と end_animation を作成する関数.
-export const for_ind = (e, f, g, h, m) => {
-    if (! e.classList.contains("opening")) {
-        if (e.previousElementSibling) {
-            if (! e.previousElementSibling.classList.contains("same")) {
-                startblock_around(e, g, h, m, "not");
-            } else {
-                if (! f) {
-                    startblock_around(e, g, h, m, "not");
-                } else {
-                    if (! e.previousElementSibling.classList.contains(f)) {
-                        startblock_around(e, g, h, m, "not");
-                    }
-                }
-            }
-        } else {
-            startblock_around(e, g, h, m, "not");
-        }
-    }
-    if (! e.classList.contains("ending")) {
-        if (e.nextElementSibling) {
-            if (! e.nextElementSibling.classList.contains("same")) {
-                endblock_around(e, g, h, m);
-            } else {
-                if (! f) {
-                    endblock_around(e, g, h, m);
-                } else {
-                    if (! e.nextElementSibling.classList.contains(f)) {
-                        endblock_around(e, g, h, m);
-                    }
-                }
-            }
-        } else {
-            endblock_around(e, g, h, m);
-        }
-    }
-}
-
-// ---------------------------------------------------------------------------------------------------------------
-
 // * start_animationを構成して格納する関数.
 export const startblock_around = (e, f, g, h, w) => {
     // * まず start_animation の土台を作成.
@@ -78,4 +37,45 @@ export const endblock_around = (e, f, g, h) => {
         g += 1;
         set("animation_data", s => s["section_" + h]["about_anims"]["data_" + g] = final_animation_end[k]);
     } 
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// * リニアスペース上に存在する same クラスを持たないブロックについて、
+// * start_animation と end_animation を作成する関数.
+export const for_ind = (e, f, g, h, m) => {
+    if (! e.classList.contains("opening")) {
+        if (e.previousElementSibling) {
+            if (! e.previousElementSibling.classList.contains("same")) {
+                startblock_around(e, g, h, m, "not");
+            } else {
+                if (! f) {
+                    startblock_around(e, g, h, m, "not");
+                } else {
+                    if (! e.previousElementSibling.classList.contains(f)) {
+                        startblock_around(e, g, h, m, "not");
+                    }
+                }
+            }
+        } else {
+            startblock_around(e, g, h, m, "not");
+        }
+    }
+    if (! e.classList.contains("ending")) {
+        if (e.nextElementSibling) {
+            if (! e.nextElementSibling.classList.contains("same")) {
+                endblock_around(e, g, h, m);
+            } else {
+                if (! f) {
+                    endblock_around(e, g, h, m);
+                } else {
+                    if (! e.nextElementSibling.classList.contains(f)) {
+                        endblock_around(e, g, h, m);
+                    }
+                }
+            }
+        } else {
+            endblock_around(e, g, h, m);
+        }
+    }
 }

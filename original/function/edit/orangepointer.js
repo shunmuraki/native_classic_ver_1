@@ -26,7 +26,8 @@ export const comesin_management = (e, f, g) => {
 // * 下記 pointer_control() の実行内容.
 // * orange_pointer を追加し、他のデータについても同期する.
 export const pointer_central = () => {
-    if (orange.classList.contains("now_pointer_s")) {        
+    if (orange.classList.contains("now_pointer_s")) {
+
         // * [orange_pointer_s] scrap がnow_pointer_s を持っていた場合は、orange_pointer_sを追加.
         // * [orange_stripe] もし このhor の中でそれより scrollLeft が大きい pointer_s が存在したらそこまで、 そうじゃなかったら最後まで orange_stripe を引く.
         // * [width of orange_stripe] その pointer_s の scrollLeft より大きい値の中で最小の scrollLeft を取得して、両者の差分を orange_stripe に適応させる. 
@@ -64,18 +65,21 @@ export const pointer_central = () => {
 
         // * stripe を追加.
         orange_stripe_space_store.appendChild(orange_stripe);
+
     } else if (orange.classList.contains("now_pointer_f")) {
-            // * scrap が now_pointer_f クラスだった場合に orange_pointer_fを追加.  
-            // * orange_pointer には scrollLeft の値も付与する.
-            // * 対応する orange_stripe をリサイズ。（scrollLeftの差分を算出して width に適用）.
-            orange_pointer.classList.add("orange_pointer_f");
-            orange_pointer.classList.add("num_" + get("orange_data")[the_o_num]["s_count"]);
-            // * 外部の関数を用いて 本 orange_pointer_f と同じ num_ を共有する stripe, pointer_s を取得.
-            let the_comp_stripe = grab_auto(orange_pointer)[0];
-            let the_comp_pointer = grab_auto(orange_pointer)[1];
-            // * stripe のサイズを調整.
-            let the_comp_s_pos = Number(target_data(the_comp_pointer, "scroll_left_"));            
-            the_comp_stripe.style.width = orange_pointer_left - the_comp_s_pos + "px";
+        
+        // * scrap が now_pointer_f クラスだった場合に orange_pointer_fを追加.  
+        // * orange_pointer には scrollLeft の値も付与する.
+        // * 対応する orange_stripe をリサイズ。（scrollLeftの差分を算出して width に適用）.
+        orange_pointer.classList.add("orange_pointer_f");
+        orange_pointer.classList.add("num_" + get("orange_data")[the_o_num]["s_count"]);
+        // * 外部の関数を用いて 本 orange_pointer_f と同じ num_ を共有する stripe, pointer_s を取得.
+        let the_comp_stripe = grab_auto(orange_pointer)[0];
+        let the_comp_pointer = grab_auto(orange_pointer)[1];
+        // * stripe のサイズを調整.
+        let the_comp_s_pos = Number(target_data(the_comp_pointer, "scroll_left_"));            
+        the_comp_stripe.style.width = orange_pointer_left - the_comp_s_pos + "px";
+
     }
     // * 最後に scrap の状態を更新.
     orange.classList.toggle("now_pointer_s");

@@ -22,19 +22,16 @@ export const the_timeout = (e, f, g, h, j) => {
     let the_seeking_time = j;
 
     // * 核となるタイマー処理.
-    let s_timeout = setTimeout(() => {    
+    let s_timeout = setTimeout(() => {
         let centering_you = document.getElementsByClassName("new_layer_centering")[0];
         if (centering_you.nextElementSibling && scrap.classList.contains("playing")) {
             let next_one_is_you = centering_you.nextElementSibling;
             let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);
             centering_marker(centering_you, next_one_is_you, "new_layer_centering");
             is_it_same_series(next_one_is_you);
-           
             // 自身を次のタイマーとして追加(高等技術).
             set_timeout();
             centering = document.getElementsByClassName("new_layer_centering")[0];
-
-            // このあたりをループにする connected に対応させる.
             for (let i = 0; i < scrap.children.length; i++) {
                 // orange_space を弾く.
                 if (i > 0) {

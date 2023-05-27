@@ -3,7 +3,6 @@ export const native_glimpse = () => {
     // * DOM
     let dom_text = String(screen.innerHTML) + "[:dom]";
     final_textcontent += dom_text;
-
     // * 画像
     for (let i=0; i < images.length; i++) {
         image_make_it(images[i], i);

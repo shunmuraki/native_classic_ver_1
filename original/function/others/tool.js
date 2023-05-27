@@ -2,10 +2,12 @@
 export const vertical_to_hor = (e) => {
     return e.parentElement;
 };
+
 // * ブロックの所属する sp を返す関数.
 export const vertical_to_sp = (e) => {
     return e.parentElement.parentElement;
 };
+
 // * ブロックの所属する sp_cover を返す関数.
 export const vertical_to_sp_cover = (e) => {
     return e.parentElement.parentElement.parentElement;
@@ -79,7 +81,7 @@ export const classmover = (e, f, g, h) => {
 }
 
 // * special_cov を考慮した「選択中のターゲット」を探して返す関数.
-const who_is_target = (e) => {
+export const who_is_target = (e) => {
     let centering = document.querySelector(".centering"); 
     if (centering.classList.contains("same")) {
       target = document.querySelector(".special_cov").lastElementChild;

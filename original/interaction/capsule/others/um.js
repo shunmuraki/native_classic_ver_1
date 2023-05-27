@@ -74,7 +74,7 @@ export const keytouch_um_command_arrow_right = () => {
         // * videoゾーンとaudioゾーンの切り替え.
         audio_street_scroll();
     } else {
-        // * 所属していたのが「img」[video][audio]で条件分岐して、それぞれで無効にしたり移動をする.
+        // * 所属していたのが 「img」[video][audio] で条件分岐して、それぞれで無効にしたり移動をする.
         if (the_now_parent.classList.contains("um_audio")) {
             if (the_um_current.previousElementSibling) {
                 if (! the_um_current.previousElementSibling.classList.contains("panc")) {

@@ -13,7 +13,9 @@ export const keytouch_style_setup = () => {
       document.querySelector(".ms_area").remove();
       screen.classList.add("style"); 
       env.current.blur();
+      // [* なぜ２回目の実行が必要なのか.]
       adjust_target_pos(centering.lastElementChild, "off");
+      // * 装飾ホイールを起動.
       style_initial();
     }
 }

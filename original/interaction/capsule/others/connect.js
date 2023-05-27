@@ -19,6 +19,7 @@ export const keytouch_connect = () => {
     }
 
     let the_sp_cover_a = env.current_sp_cover.previousElementSibling;
+
     // * 移動先にブロックたちを移動するために配列にブロックを格納.
     if (the_sp_cover_a) {
 
@@ -36,9 +37,12 @@ export const keytouch_connect = () => {
 
         let the_current_tops = the_centering_num;
         let the_current_bottoms = env.current_horizontal.childElementCount - the_centering_num;
+       
         // * original_centering を結合地点として全体のブロック数を算出するために 何番目 かを控える.
         let inc_last_children = the_sp_cover_a.lastElementChild.lastElementChild.children;
         let original_centering_num = 0;
+
+        // [* ここ絶対に書き換えられる]
         for (let i = 0; i < inc_last_children.length; i++) {
             if (i != 0) {
                 if (inc_last_children[i].classList.contains("original_centering")) {
@@ -46,6 +50,7 @@ export const keytouch_connect = () => {
                 }  
             }
         }
+        
         let the_original_tops = original_centering_num;
         let the_original_bottoms = the_sp_cover_a.lastElementChild.lastElementChild.childElementCount - original_centering_num;
     
@@ -90,7 +95,7 @@ export const keytouch_connect = () => {
         let the_this_loop_endpoint = the_triumph_tops - the_centering_num + env.current_horizontal.childElementCount - 1;
 
         // * 複製をする前に中身をクリーンにする.
-        // [* 中身を掃除する関数としてこのループをまるごと外部化するべき.]
+        // [* 中身を掃除する関数としてこのループをまるごと外部化する.]
         for (let i = 0; i < children_block.length; i++) {
             if (i > 0) {
                 for (let o = 0; o < the_name_list.length; o++) {
@@ -101,7 +106,9 @@ export const keytouch_connect = () => {
                     children_block[i].lastElementChild.remove();
                 }
                 let new_textarea = document.createElement("textarea");
-                new_textarea.classList.add("write_area")
+                new_textarea.classList.add("write_area");
+
+                // [* 改める.]
                 new_textarea.classList.add("style_1_1_0_1");
                 children_block[i].appendChild(new_textarea);
                 children_block[i].style.height = 66 + "px";
@@ -142,11 +149,10 @@ export const keytouch_connect = () => {
     
         // * ここで複製したラインを実際に sp_cover へ挿入.
         the_sp_cover_a.appendChild(sp_copied);
-        
         // * sp_cover 内のスタイリングのために追加.
         the_sp_cover_a.classList.add("connected");
-
         let before_in_sp_num = the_sp_cover_a.childElementCount;
+        // [* なぜこのクラスを付与する必要があるのだろうか.]
         let the_ined_name = "inner_sp_num_" + before_in_sp_num + 1;
         sp_copied.classList.add(the_ined_name);
         
@@ -160,8 +166,8 @@ export const keytouch_connect = () => {
         let latest_hor = vertical_to_hor(center);
         let the_center_num = [].slice.call(latest_hor.children).indexOf(center) + 1;
         let the_b_a_gap = the_center_num - the_center_num_b;
-        
         let the_redefault_scroll = the_b_a_gap * blocksize;
+        
         for (let i = 0; i < the_sp_cover_a.children.length; i++) {
             the_sp_cover_a.children[i].lastElementChild.scrollLeft = the_default_leng + the_redefault_scroll;
         }

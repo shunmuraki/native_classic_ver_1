@@ -14,12 +14,6 @@ export const make_dup_fragment = (e, f) => {
     }
 }
 
-// * same ブロックを新しく作り、同時に same_num の値も同期する関数.
-export const same_setup = (e) => {
-    e.classList.add("same");
-    set("same_num", s => s += 1);
-}
-
 // * 隣の空のブロックについて、 same, same_num_N といったクラスを与え、
 // * 同時にこの割り込みに応じて、その周辺のブロックのクラスも更新する.
 export const same_around = (e, f) => {
@@ -39,12 +33,15 @@ export const same_around = (e, f) => {
             e.classList.add("same_start");
             next_one.classList.add("same_end");
         }
+
+        // * クラス関係に伴う中身の移動.
         let the_content = e.lastElementChild;
         if (next_one.lastElementChild) {
             next_one.lastElementChild.remove();
             next_one.appendChild(the_content.cloneNode(true));
         }
         the_content.remove();
+        
         centering_marker(e, next_one, "centering");
         if(e.classList.contains("same_end")) {
             e.classList.remove("same_end");
@@ -58,4 +55,10 @@ export const same_around = (e, f) => {
     next_one.classList.add(the_name);
     // * command + U では必要のない処理.
     focus_checker(next_one);
+}
+
+// * same ブロックを新しく作り、同時に same_num の値も同期する関数.
+export const same_setup = (e) => {
+    e.classList.add("same");
+    set("same_num", s => s += 1);
 }

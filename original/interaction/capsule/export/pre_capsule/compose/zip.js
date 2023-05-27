@@ -19,12 +19,16 @@ export async function native_zip() {
             zip.file('index.html', get("the_html"));
         });
     });
+
+    // ---------------------------------------------------------------------------------------------------------------
     
     // * CSSファイルのエクスポート
     let css_url = '../linear/style.css';
     let css_res = await fetch(css_url);
     let cb = await css_res.text();
     zip.file('style.css', cb);
+
+    // ---------------------------------------------------------------------------------------------------------------
     
     // * JavaScriptファイル群のエクスポート. (commons系列)
     let lnjs_url_list = ["../linear/javascript/anim.js", "../linear/javascript/states.js", "../linear/javascript/setup.js", "../linear/javascript/parts.js", "../linear/javascript/ytp.js"];
@@ -46,10 +50,14 @@ export async function native_zip() {
         zip.folder("javascript").file(the_name, text);
     }
     
+    // ---------------------------------------------------------------------------------------------------------------
+
     // * JavaScriptファイルのエクスポート part. 1
     let base_file = await fetch("../linear/javascript/base/tools.js");
     let base_text = await base_file.text();
     zip.folder("javascript").folder("base").file("tools.js", base_text);
+
+    // ---------------------------------------------------------------------------------------------------------------
     
     // JavaScriptファイルのエクスポート. part. 2
     let final_animation_data = "let animation_data = " + JSON.stringify(get("animation_data")) + ";";
@@ -58,6 +66,8 @@ export async function native_zip() {
     let main_text = await main_res.text();
     set("the_js", s => s += main_text);
     zip.folder("javascript").file("main.js", get("the_js"));
+
+    // ---------------------------------------------------------------------------------------------------------------
     
     // * 予め用意された image ファイル群のエクスポート. 
     let img_url_list = ["../linear/images/native_logod.png", "../linear/images/olo.png", "../linear/images/spinner.png"];
@@ -71,6 +81,8 @@ export async function native_zip() {
         zip.folder("images").file(the_name, img);
     }
     
+    // ---------------------------------------------------------------------------------------------------------------
+
     // * img ファイルのエクスポート.
     for (let i = 0; i < images.length; i++){
         zip.folder("images").file('img_'+[i]+'.png', images[i].split(',')[1], {base64: true});

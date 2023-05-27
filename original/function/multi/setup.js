@@ -1,120 +1,20 @@
-// * ファイルマネージャーからアップロードされた画像をブロックに表示する関数.
-export const make_it_img = (e, m) => {
-    const input = document.createElement("input");
-    const label = document.createElement("label");
-
-    input.setAttribute("type", "file");
-    let inputs = document.getElementsByClassName("sp").length;
-    input.id = "media_input" + inputs;
-    input.classList.add("thisisinput" + inputs);
-    label.setAttribute("for", input.id);
-    label.appendChild(input);
-    
-    let multi_fragment = document.createDocumentFragment();
-    multi_fragment.append(label);
-
-    // * ブロック内の <textarea> を削除して <img> に置換.
-    e.lastElementChild.remove();
-    e.classList.add("img");
-    e.appendChild(multi_fragment);
-    e.style.height = 225 +  "px";
-    
-    if (m == "image") {
-        input.setAttribute("accept", ".png");
-        label.classList.add("image_input");
-        const uploaded_multi_media = document.createElement("img");
-        // * ブロック内の要素の変化に、スタイルも対応.
-        uploaded_multi_media.classList.add("style_1_1_1_1");
-        let multi_one_fragment = document.createDocumentFragment();
-        multi_one_fragment.append(uploaded_multi_media);
-        e.appendChild(multi_one_fragment);
-        // * 以下ファイルがアップロードされた際に実行される処理.
-        input.addEventListener("change", function(o) {            
-            let file = o.target.files;
-            const sizeLimit = 2048 * 2048 * 1;
-            console.log(file[0].size);
-            if (file[0].size <= sizeLimit) {
-                var reader = new FileReader();
-                reader.readAsDataURL(file[0]);
-                reader.onload = function() {
-                    label.remove();
-                    uploaded_multi_media.src = reader.result;
-                }
-            } else {
-                e.lastElementChild.remove();
-            }
-        }, false);
-    } 
-};
-
-// ---------------------------------------------------------------------------------------------------------------
-
-// * <textarea> 内に記述された YouTube動画ID から YT Player を生成し、
-// * player を返す関数.
-export const block_multiable = (e, f) => {
-    let player;
-    let duration_time;
-    var done = false;
-    let the_box = document.getElementById(e).parentElement;
-    the_box.style.height = 225 + "px";
-    the_box.classList.add("video");
-
-    function onYouTubeIframeAPIReady(g, h) {
-        window.YT.ready(function() {
-            player = new window.YT.Player(g, {
-                width: blocksize,
-                height: '202.5',
-                videoId: h,
-                events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-                }
-            });
-        })
-    }
-
-    function onPlayerReady(event) {
-        event.target.mute();
-        event.target.playVideo();
-        duration_time = player.getDuration();
-        // * 時間差の存在を考慮してsessionStorageを唯一この箇所で利用.
-        sessionStorage.removeItem("the_duration");
-        sessionStorage.setItem("the_duration", duration_time);
-        return duration_time;
-    }
-
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-            setTimeout(stopVideo, 100);
-            done = true;
-        }
-    }
-    
-    function stopVideo() {
-        player.pauseVideo();
-    }
-    
-    onYouTubeIframeAPIReady(e, f);
-    return player;
-}
-
-// ---------------------------------------------------------------------------------------------------------------
-
 // * <textarea> にペーストされた YouTube動画ID から動画のメタデータを読み込み、
-// * ブロックを duration 分複製しながら、動画をエディター上に展開する関数.
-// * UM からの読み込みでも実行される.
+// * ブロックを duration 分複製しながら、動画をエディター上に展開する関数. (UM からの読み込みでも実行される)
 export const video_load_then = (e, f) => {
+    
+    let the_code;
     set("same_num", s => s += 1);
     let the_id_name = "yt_editor_" + get("same_num");
-    let the_code;
     // * "v="以降の11文字を取得して YouTube動画IDを取得.
     let spl = e.indexOf("v=");
+    
     // * UMから取り込まれる場合と、通常のURLペーストの場合に対応。
     if (e.indexOf("v=") == -1) {
         the_code = e;
     } else {
         the_code = e.slice(spl + 2, spl + 13);
     }
+    
     let the_box = f.parentElement;
     the_box.lastElementChild.remove();
     let the_add_box = document.createElement("div");
@@ -179,12 +79,13 @@ export const video_load_then = (e, f) => {
         the_box.classList.add("id_is_" + the_code);
         
         // * fragment を適切な箇所へ挿入.
+        // * ここもなんか上手いことできるはず. tool.js のオブジェクトで代替できそうな処理に見える.
         let the_box_num = [].slice.call(vertical_to_hor(the_box).children).indexOf(the_box) - 1;
         the_box.before(the_fragment);
         let current_sp_cover = vertical_to_sp_cover(the_box);
         let the_sp_num = [].slice.call(current_sp_cover.children).indexOf(vertical_to_sp(the_box));
 
-        // * fragment を適切な箇所へ挿入.
+        // * それ以外の sp へも同様に fragment を適切な箇所へ挿入.
         for (let i = 0; i < current_sp_cover.childElementCount; i++) {
             if (i != the_sp_num) {
                 current_sp_cover.children[i].lastElementChild.children[the_box_num].before(the_fragment_stable);
@@ -196,3 +97,71 @@ export const video_load_then = (e, f) => {
         is_it_same_series(document.querySelector(".centering"));
     }, 1500);
 }
+
+// * <textarea> 内に記述された YouTube動画ID から YT Player を生成し、
+// * player を返す関数.
+export const block_multiable = (e, f) => {
+    let player;
+    let duration_time;
+    var done = false;
+    let the_box = document.getElementById(e).parentElement;
+    the_box.style.height = 225 + "px";
+    the_box.classList.add("video");
+    onYouTubeIframeAPIReady(e, f);
+    return player;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// * ファイルマネージャーからアップロードされた画像をブロックに表示する関数.
+export const make_it_img = (e, m) => {
+    
+    let input = document.createElement("input");
+    let label = document.createElement("label");
+    input.setAttribute("type", "file");
+    
+    let inputs = document.getElementsByClassName("sp").length;
+    input.id = "media_input" + inputs;
+    input.classList.add("thisisinput" + inputs);
+    
+    label.setAttribute("for", input.id);
+    label.appendChild(input);
+    
+    let multi_fragment = document.createDocumentFragment();
+    multi_fragment.append(label);
+
+    // * ブロック内の <textarea> を削除して <img> に置換.
+    e.lastElementChild.remove();
+    e.classList.add("img");
+    e.appendChild(multi_fragment);
+    e.style.height = 225 +  "px";
+    
+    if (m == "image") {
+        input.setAttribute("accept", ".png");
+        label.classList.add("image_input");
+        const uploaded_multi_media = document.createElement("img");
+        // * ブロック内の要素の変化に、スタイルも対応.
+        // [* ここ最新にする.] 
+        uploaded_multi_media.classList.add("style_1_1_1_1");
+        let multi_one_fragment = document.createDocumentFragment();
+        multi_one_fragment.append(uploaded_multi_media);
+        e.appendChild(multi_one_fragment);
+
+        // * 以下ファイルがアップロードされた際に実行される処理.
+        input.addEventListener("change", function(o) {            
+            let file = o.target.files;
+            const sizeLimit = 2048 * 2048 * 1;
+            console.log(file[0].size);
+            if (file[0].size <= sizeLimit) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file[0]);
+                reader.onload = function() {
+                    label.remove();
+                    uploaded_multi_media.src = reader.result;
+                }
+            } else {
+                e.lastElementChild.remove();
+            }
+        }, false);
+    } 
+};

@@ -1,8 +1,7 @@
 export const native_repair = () => {
+    
     let export_space = document.querySelector(".exporter");
     let sections = export_space.children;
-    
-    // ---------------------------------------------------------------------------------------------------------------
     
     // * same_num は異なっても、同じ YouTube動画ID を共有しているケースがある.
     // * これについて、このIDを持つ最後の same_end を覗いて、同一ライン上にある他のブロックを削除する.

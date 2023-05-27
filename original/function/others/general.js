@@ -30,10 +30,8 @@ export const all_view_changer = (e, f) => {
         let orange = e.firstElementChild;
         let orange_pointer_space = orange.firstElementChild;
         let orange_stripe_space = orange.lastElementChild;
-    
         let po_de = orange_pointer_space.scrollLeft;
         orange_pointer_space.scrollLeft = po_de + f;
-        
         let st_de = orange_stripe_space.scrollLeft;
         orange_stripe_space.scrollLeft = st_de + f;
 
@@ -151,11 +149,14 @@ export const same_cutter = (e, f) => {
     if (the_target_left && the_target_right) {
         if (the_target_left.classList.contains("same") && the_target_right.classList.contains("same")) {
             if (the_target_left.classList.contains("same_start") == false && the_target_left.classList.contains("same_end") == false && the_target_right.classList.contains("same_start") == false && the_target_right.classList.contains("same_end") == false) { 
+         
                 let spe_cont = document.querySelector(".special_cov").lastElementChild;
                 the_target_left.classList.add("same_end");
+         
                 if (spe_cont.tagName == "IMG") {
                     the_target_left.style.height = 225 + "px";
                 }
+         
                 the_target_left.appendChild(spe_cont);
                 the_target_right.classList.add("same_start");
                 let same_name = "same_num_" + target_data(the_target_right, "same_num_");
@@ -250,16 +251,15 @@ export const tracer_basis = (e) => {
 export const same_change_tracer = (e) => {
     if (e.previousElementSibling) {
         if (e.previousElementSibling.classList.contains("same_end")) {
-
             let special_cov = which_special_is(e.previousElementSibling);
+            // * 以下を stracer_basis (concealer_reflecton) で処理する.
             if (special_cov) {
                 let specon_cloned = special_cov.lastElementChild.cloneNode(true);
                 specon_cloned.style.setProperty('opacity', 0, 'important');
                 if (e.previousElementSibling.lastElementChild) {
                     e.previousElementSibling.lastElementChild.remove();
                 }
-                e.previousElementSibling.appendChild(specon_cloned);
-                console.log(e.previousElementSibling);
+                e.previousElementSibling.appendChild(specon_cloned); 
             }
         }
     } 

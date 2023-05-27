@@ -32,6 +32,7 @@ export const keytouch_edit_command_mode_escape = () => {
             }
 
             // ---------------------------------------------------------------------------------------------------------------                     
+            // ---------------------------------------------------------------------------------------------------------------                     
             
             // * BANSについてループ
             // * クラスの付与(same_start / same_end / actuar_st / actuar_en / actuar_time_), same_num の変更.
@@ -69,7 +70,6 @@ export const keytouch_edit_command_mode_escape = () => {
                         // * 最初に nex を決める。
                         if (st_block.classList.contains("co") && scraps[i].classList.contains("continue_former")) {
                             st_block.classList.remove("same_start");
-                            console.log(scraps[i].children[l]);
                             nex = target_data(scraps[i].children[l], "continue_num_");
                         } else {
                             // * 通常の処理.
@@ -123,6 +123,7 @@ export const keytouch_edit_command_mode_escape = () => {
                             en_block.classList.remove("same_end");
                             en_block.classList.remove("co");
                         } else {
+                            // この時点での same_end の中身をこちらにコピー.
                             en_block.classList.add("same_end");
                             let the_t = "id_is_" + target_data(en_block, "id_is_");
                             let hit_target = document.getElementsByClassName(the_t)[document.getElementsByClassName(the_t).length - 1];
@@ -147,6 +148,7 @@ export const keytouch_edit_command_mode_escape = () => {
                 }
             }
 
+            // ---------------------------------------------------------------------------------------------------------------
             // ---------------------------------------------------------------------------------------------------------------
 
             // * same_end のみについけていた stable クラスを、 same_start にも配る。

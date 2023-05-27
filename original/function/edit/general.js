@@ -1,3 +1,21 @@
+// * 編集モード での 移動の仕方(ポインター移動 or ブロック移動) を管理する関数.
+export const principle_management = (e, f) => {
+    let scrap = e;
+    if (scrap.classList.contains("principle_block")) {
+        if ("principle_block" != f) {
+            scrap.classList.remove("principle_block");
+            scrap.classList.add(f);
+        }
+    } else if (scrap.classList.contains("principle_pointer")) {
+        if ("principle_pointer" != f) {
+            scrap.classList.remove("principle_pointer");
+            scrap.classList.add(f);
+        }
+    } 
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
 // * 実行時点でのポインターに最も近いブロック、もしくはブロックに最も近いポインターを返す関数.
 export const best_related_element = (e, f, g) => {
 

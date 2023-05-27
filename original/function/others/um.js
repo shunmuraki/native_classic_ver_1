@@ -18,7 +18,7 @@ export function video_street_scroll() {
 }
 
 // UM において 右 に移動する関数.
-// [* video_street_scroll, audio_street_scroll は統一できるでしょう.]
+// [* video_street_scroll, audio_street_scroll は統一できる.]
 export function audio_street_scroll() {
   var before_choose = document.querySelector(".um_centering");
   before_choose.classList.remove("um_centering");

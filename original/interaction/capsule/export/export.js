@@ -94,12 +94,12 @@ export const native_convert = () => {
                         let the_same_name = "same_num_" + target_data(block, "same_num_");
                         // * [ケース1]の検査と start_animation の生成.                    
                         if (block.classList.contains("same_start")) {
-                            case_start();
+                            case_same_start();
 
                         }                        
                         // * [ケース2]の検査と end_animation の生成.
                         if (block.classList.contains("same_end")) {
-                            case_sameend();           
+                            case_same_end();           
                         }
                     }  
                     else {

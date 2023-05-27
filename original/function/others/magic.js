@@ -7,6 +7,7 @@ export const the_magic_copy = (e) => {
     // * 以降に残っているものを、動画に限らずすべてコピー.
     let sp_cover = vertical_to_sp_cover(e);
     let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
+    
     // * 各spごとにコピーして以前のブロックをまとめて削除し fragment として変数に格納.
     for (let i = 0; i < sp_cover.childElementCount; i++) {
         let line = sp_cover.children[i].lastElementChild.children;
@@ -19,9 +20,8 @@ export const the_magic_copy = (e) => {
             // * 実態を中身に持つ same_end をコピー。
             let c = sames[sames.length - 1].lastElementChild.cloneNode(true);
             // * same群の途中で実行された場合に コピー対象の最初のブロックに same_start を与えて same_num も更新する.
-            // [* 以下 same_cutter() で代替できないか.]
+            // [* 以下 same_cutter() で代替できるようにする.]
             breaker.previousElementSibling.classList.add("same_end");
-            console.log(c);
             breaker.previousElementSibling.appendChild(c);
             breaker.classList.add("same_start");
             let breakpoint = [].slice.call(sames).indexOf(breaker);
@@ -66,8 +66,7 @@ export const the_magic_paste = (e) => {
     let added_line = vertical_to_sp(e).cloneNode(true);
     let edit_contents = added_line.lastElementChild.children;
 
-    // [* the_name_list が宣言されていないのではないか.]
-    // [* いや、constant.js に記載しているのか.]
+    // [* the_name_list を import する.]
     the_name_list.push("centering");
     the_name_list.push("original_centering");
 

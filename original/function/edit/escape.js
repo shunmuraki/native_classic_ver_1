@@ -1,7 +1,7 @@
 // * orange_stripe 上にあるブロックだけを抽出する関数.
 // * トリミングの際に実行される.　(/keytouch/what_to_do/edit/escape)
 let stripe_inner_or_out = (e) => {
-
+    
     // [* cool の宣言が欠けている.]        
     let w_col = new Array();
     // * scrapごとに処理をする。
@@ -48,7 +48,6 @@ let stripe_inner_or_out = (e) => {
                 // co についても処理。
                 stcl.push([en, "NONE"]);
             }
-
             w_col.push(stcl);
         }
     }

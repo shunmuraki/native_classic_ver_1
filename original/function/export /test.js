@@ -1,8 +1,6 @@
+// * Native Export の出力結果を知りたい時に使用する開発用の関数.
 export const native_outcomecheck = () => {
     let export_space = document.querySelector(".exporter");
-
-    // ---------------------------------------------------------------------------------------------------------------
-    
     // * DOM
     console.log("dom");
     let dom_string = String(export_space.innerHTML);

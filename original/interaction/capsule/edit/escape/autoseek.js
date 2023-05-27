@@ -1,4 +1,5 @@
 export const keytouch_edit_command_autoseek_escape = () => {
+
     set("the_scrolled_distance", s => s = 0);
     actuar_st_alloff();
     actuar_en_alloff();
@@ -34,4 +35,5 @@ export const keytouch_edit_command_autoseek_escape = () => {
 
     wheel_positioning();
     new_layer.classList.remove("autoseekingmode");
+
 }

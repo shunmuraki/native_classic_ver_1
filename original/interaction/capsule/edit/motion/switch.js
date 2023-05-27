@@ -45,22 +45,3 @@ export const keytouch_edit_command_switch_to_block = () => {
     // * principle_block だった場合は何もしない.                    
     set("the_scrolled_distance", s => s = 0);
 }
-
-// ---------------------------------------------------------------------------------------------------------------
-
-
-// * 編集モード での 移動の仕方(ポインター移動 or ブロック移動) を管理する関数.
-export const principle_management = (e, f) => {
-    let scrap = e;
-    if (scrap.classList.contains("principle_block")) {
-        if ("principle_block" != f) {
-            scrap.classList.remove("principle_block");
-            scrap.classList.add(f);
-        }
-    } else if (scrap.classList.contains("principle_pointer")) {
-        if ("principle_pointer" != f) {
-            scrap.classList.remove("principle_pointer");
-            scrap.classList.add(f);
-        }
-    } 
-}
