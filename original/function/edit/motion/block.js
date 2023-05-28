@@ -9,7 +9,31 @@ export const keytouch_edit_command_block_arrow_top = () => {
         // * センタリングしている scrap には「see」クラスが付与される.
         the_see_centering.classList.toggle("see");
         the_see_centering.previousElementSibling.classList.toggle("see");
-        go_top(new_layer_centering, "new_layer_centering");
+        
+        
+        // * 編集モードだった場合.
+        // [* go_top() から移植.]
+        if (pre_sibling) {
+            // [* これの存在意義が分からない.]
+            go_af_scroll();
+            sibling_height = pre_sibling.clientHeight;
+            next_one = pre_sibling.children[1].lastElementChild.lastElementChild;
+            centering_marker(ver, next_one, f);
+            let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
+            let the_distance = full_end_scrollwidth - now_position;
+            // * 移動先のラインの scrollLeft を調整.
+            all_view_changer(pre_sibling, the_distance);
+            let my_position = this_sc.children[1].lastElementChild.scrollLeft;
+            let my_distance = full_start_scrollwidth - my_position;
+            // * 移動元のラインの scrollLeft を調整.
+            all_view_changer(this_sc, my_distance);    
+            special_cleaner(vertical_to_sp_cover(ver));   
+            cs_bye();
+            // * 編集モードでは「see」ラインの位置を維持.
+            scrollBy(0, - connected_your_height);
+            is_it_same_series(next_one);
+        }
+
         // [* これがひとつ目の問いで、 the_scrolled_distance は何の目的で用意されているのか.]
         set("the_scrolled_distance", s => s = 0);
     }
@@ -39,7 +63,29 @@ export const keytouch_edit_command_block_arrow_bottom = () => {
         principle_management(the_see_centering.nextElementSibling, "principle_block");
         the_see_centering.classList.toggle("see");
         the_see_centering.nextElementSibling.classList.toggle("see");
-        go_bottom(new_layer_centering, "new_layer_centering");
+ 
+        // [* go_bottm() から移植.]
+        if (pre_sibling) {
+            // [* これの存在意義が分からない.]
+            go_af_scroll();
+            sibling_height = pre_sibling.clientHeight;
+            next_one = pre_sibling.children[1].lastElementChild.children[1];
+            centering_marker(ver, next_one, f);        
+            let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
+            let the_distance = full_start_scrollwidth - now_position;
+            // * 移動先のラインの scrollLeft を調整.
+            all_view_changer(pre_sibling, the_distance);    
+            let my_position = this_sc.children[1].lastElementChild.scrollLeft;
+            let my_distance = full_end_scrollwidth - my_position;
+            // * 移動元のラインの scrollLeft を調整.
+            all_view_changer(this_sc, my_distance);
+            special_cleaner(vertical_to_sp_cover(ver));     
+            cs_bye();
+            // * 編集モードでは「see」ラインの位置を維持.
+            scrollBy(0, connected_your_height);
+            is_it_same_series(next_one);
+        }
+        
         // [* これがひとつ目の問いで、 the_scrolled_distance は何の目的で用意されているのか.]
         set("the_scrolled_distance", s => s = 0);
     }

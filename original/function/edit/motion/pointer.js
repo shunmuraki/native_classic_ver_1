@@ -61,10 +61,11 @@ export const keytouch_edit_command_pointer_arrow_bottom = () => {
             set("orange_data", s => s = pre_pointing_in(the_see_centering, get("orange_data")));
             set("orange_data", s => s = pre_pointing_out(the_see_centering, the_see_centering.nextElementSibling, get("orange_data")));
             comesin_management("bottom", centering, the_see_centering);
-            // [* opac_com が何かが分からない.]
+
             if (centering.classList.contains("opac_cam")) {
               centering.remove();
             }
+            
             let default_distance = document.querySelector(".comesin").parentElement.parentElement.scrollLeft;
             let the_gap = target_data(document.querySelector(".comesin"), "scroll_left_") - default_distance;
             // * 移動先の scrap の scrollLeft を調整.

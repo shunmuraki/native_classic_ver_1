@@ -1,4 +1,5 @@
 // * 上のブロックへ移動する際の共通処理.
+// [* block_go_top へ名称を変更.]
 export const go_top = (e, f) => {
 
     let ver = e;
@@ -47,34 +48,11 @@ export const go_top = (e, f) => {
             wheel_positioning();
         }
 
-    } else if (f == "new_layer_centering") {
-        
-        // * 編集モードだった場合.
-        if (pre_sibling) {
-            // [* これの存在意義が分からない.]
-            go_af_scroll();
-            sibling_height = pre_sibling.clientHeight;
-            next_one = pre_sibling.children[1].lastElementChild.lastElementChild;
-            centering_marker(ver, next_one, f);
-            let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
-            let the_distance = full_end_scrollwidth - now_position;
-            // * 移動先のラインの scrollLeft を調整.
-            all_view_changer(pre_sibling, the_distance);
-            let my_position = this_sc.children[1].lastElementChild.scrollLeft;
-            let my_distance = full_start_scrollwidth - my_position;
-            // * 移動元のラインの scrollLeft を調整.
-            all_view_changer(this_sc, my_distance);    
-            special_cleaner(vertical_to_sp_cover(ver));   
-            cs_bye();
-            // * 編集モードでは「see」ラインの位置を維持.
-            scrollBy(0, - connected_your_height);
-            is_it_same_series(next_one);
-        }
-
-    }
+    } 
 }
 
 // * 下のブロックへ移動する際の共通処理.
+// [* block_go_bottom へ名称を変更.]
 export const go_bottom = (e, f) => {
 
     let ver = e;
@@ -123,31 +101,7 @@ export const go_bottom = (e, f) => {
             wheel_positioning();
         }
 
-    } else if (f == "new_layer_centering") {
-
-        if (pre_sibling) {
-            // [* これの存在意義が分からない.]
-            go_af_scroll();
-            sibling_height = pre_sibling.clientHeight;
-            next_one = pre_sibling.children[1].lastElementChild.children[1];
-            centering_marker(ver, next_one, f);        
-            let now_position = pre_sibling.children[1].lastElementChild.scrollLeft;
-            let the_distance = full_start_scrollwidth - now_position;
-            // * 移動先のラインの scrollLeft を調整.
-            all_view_changer(pre_sibling, the_distance);    
-            let my_position = this_sc.children[1].lastElementChild.scrollLeft;
-            let my_distance = full_end_scrollwidth - my_position;
-            // * 移動元のラインの scrollLeft を調整.
-            all_view_changer(this_sc, my_distance);
-            special_cleaner(vertical_to_sp_cover(ver));     
-            cs_bye();
-            // * 編集モードでは「see」ラインの位置を維持.
-            scrollBy(0, connected_your_height);
-            is_it_same_series(next_one);
-        }
-
-    }
-
+    } 
 }
 
 // * 左のブロックへ移動する際の共通処理.

@@ -1,4 +1,5 @@
 // * 編集モードにおいて、ブロック移動からポインター移動に切り替える関数.
+// [* switch_to_pointer() に変更]
 export const keytouch_edit_command_switch_to_pointer = () => {
     let env = keytouch_setup();
     let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
@@ -28,6 +29,7 @@ export const keytouch_edit_command_switch_to_pointer = () => {
 }
 
 // * 編集モードにおいて、ポインター移動からブロック移動に切り替える関数.
+// [* switch_to_block() に変更]
 export const keytouch_edit_command_switch_to_block = () => {
     let env = keytouch_setup();
     let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
