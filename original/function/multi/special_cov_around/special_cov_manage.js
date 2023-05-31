@@ -162,3 +162,14 @@ export const is_it_same_series = (e) => {
         }
     }
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+
+export const delete_all_same_concealer = () => {
+    let specials = document.querySelectorAll(".special_cov");
+    if (specials.length > 0) {
+        for (let i = specials.length - 1; i >= 0; i--) {
+            specials[i].remove();
+        }
+    }
+}

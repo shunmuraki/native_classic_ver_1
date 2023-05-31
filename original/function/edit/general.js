@@ -1,3 +1,5 @@
+import { wrapper_index_make_essential } from "../make";
+
 // * 編集モード での 移動の仕方(ポインター移動 or ブロック移動) を管理する関数.
 export const principle_management = (e, f) => {
     let scrap = e;
@@ -126,4 +128,185 @@ export const edit_mode_default_adjust = (e) => {
         scrollBy(0, the_adjust_num);
         wheel_positioning();
     }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// * 分割された wrapper_index を生成する関数.
+export const edit_wrapper_index_make = (e) => {
+    // 最初に wrapper_index_make() を実行して、次にこの関数で中に必要なブロックを詰めるようにしたらどうだろう.
+    let fragment = wrapper_index_make_essential();
+
+    // * すでに sp_cover には適切なラインが築かれているので、これを崩さずに再利用する. 
+    // * 中身のブロックはクリア.
+    let newla_sps = fragment.children;
+    // * ここの処理をなんとかしたい.
+    // * 中身も一緒に複製してクリーンアップして、という処理を省いて、
+    // * 必要分を複製するところまで単一のオブジェクトにできたらいいんだろうか.
+    for (let i = 0; i < newla_sps.length; i++) {
+        let bye_once = newla_sps[i].lastElementChild.children;
+        for (let o = bye_once.length - 1; o >= 0 ; o--) {
+            // * adjusterを残す.
+            if (o > 0) { 
+                bye_once[o].remove();
+            }
+        }
+        for (let o = 0; o < linesize; o++) {
+            // * scrap(sp_cover) のclone の　horizontal に ver を10個詰める.
+            make_ver_fragment(newla_sps[i].lastElementChild.lastElementChild, "after");
+        }
+        // * editモードは右半分のスペースまで利用するため、可動域を拡張する目的でお尻にも adjuster を挿入.
+        let adjuster_element = document.createElement("div");
+        adjuster_element.classList.add("adjuster");
+        adjuster_element.classList.add("horizontal_child");
+        newla_sps[i].lastElementChild.lastElementChild.after(adjuster_element);
+    }
+
+    for (let o = 0; o < linesize; o++) {
+        // * scrap(sp_cover) のclone の　horizontal に ver を10個詰める.
+        make_ver_fragment(fragment[i].lastElementChild.lastElementChild, "after");
+    }
+
+    // * Nativeにはラインごとのシーキング機能があるため、デフォルトでその状態をセット.
+    new_sp_cov.classList.add("pausing");
+    
+    // * 挿入前にorange_space を追加.
+    add_orange_space_for_everyone(new_sp_cov);
+
+    return fragment;
+}
+
+
+// * 必要な数だけ edit_wrapper_index を編集レイヤーに挿入するオブジェクト.
+export const duplicate_edit_wrapper_index_enough = () => {
+    // * 横に 10 個ずつのブロックを展開し、縦にタイムラインを展開する.
+    let vh_count = env.current_horizontal.childElementCount - 2;
+    let sp_cover_will_num = Math.ceil(vh_count / linesize);    
+
+    // * scrap を必要な数だけ new_layer に追加。
+    // [* このあたりで「余計に scrap が生成されている」疑いがある.]
+    for (let i = 0; i < sp_cover_will_num; i++) {
+        let new_one = new_sp_cov.cloneNode(true);
+        new_one.firstElementChild.classList.add("orange_num_" + i);
+        new_one.classList.add("principle_pointer");
+        new_layer.appendChild(new_one);
+    }
+}
+
+
+// * 分割された wrapper_index へ移動元の wrapper_index のブロック群を移す関数.
+export const trace_to_edit_wrapper_index = (e) => {
+    let screen_sps = e;
+    for (let i = 0; i < e.length; i++) {
+        let screen_vers = screen_sps[i].lastElementChild.children;
+        // * 最後尾のadjuster をパス.
+        for (let o = 0; o < screen_vers.length - 1; o++) {
+            // * 前のadjuster をパス.  
+            if (o > 0 ) {
+
+                let the_num = o;
+                let ver_side = Math.trunc(the_num / linesize);
+                let hor_side = the_num % linesize;
+                
+                // 割り切れてしまった場合.
+                if (ver_side == 0 && hor_side == 1) {
+                    hor_side = 0;
+                } else if (ver_side > 0 && hor_side == 0) {
+                    ver_side -= 1;
+                    // * ここを動的にする必要がある.
+                    hor_side = 23;
+                } else {
+                    hor_side -= 1;
+                }
+                
+                new_layer.children[ver_side].children[i + 1].lastElementChild.children[linesize].classList.add("you");
+                
+                // * 編集レイヤーにおけるデフォルトのセンタリングを決定. 編集レイヤーにおける centering は 「new_layer_centering」クラスによる管理.
+                let the_block_into = new_layer.children[ver_side].children[i + 1].lastElementChild.children[hor_side + 1];        
+                if (the_block_into.lastElementChild) {
+                    the_block_into.lastElementChild.remove();
+                }
+
+                // * おそらくここで、デフォルトスクリーンのブロックたちから編集レイヤーの新しいブロックへ特定のクラスを移行している。
+                for (let j = 0; j < the_name_list.length; j++) {
+                    classmover(screen_vers[o], the_block_into, the_name_list[j], "add");
+                }
+                
+                if (screen_vers[o].classList.contains("centering")) {
+                    the_block_into.classList.add("new_layer_centering");
+                } 
+                
+                // * dupブロックの場合を考えて条件分岐.
+                if (screen_vers[o].lastElementChild) {
+                    let imp_content = screen_vers[o].lastElementChild.cloneNode(true);
+                    the_block_into.appendChild(imp_content);
+                }
+            }
+        } 
+    }
+}
+
+
+//[* これって same_cutter で実現できる処理じゃないのか？]
+// * 編集モード展開時に強制的に 複数の edit_wrapper_index へ分割された same 群を調整するオブジェクト.
+export const edit_wrapper_index_same_adaptation = (e) => {
+    // * [linesize] 個ずつで強制的に区分けされたscrapによって same が分裂したケースに対応.
+    for (let i = 0; i < new_layer.childElementCount; i++) {
+        for (let o = 0; o < new_layer.children[i].childElementCount; o++) {
+            if (o > 0) {
+                let the_target_start = new_layer.children[i].children[o].lastElementChild.firstElementChild.nextElementSibling;
+                let the_target_end = new_layer.children[i].children[o].lastElementChild.lastElementChild.previousElementSibling;
+                if (the_target_start.classList.contains("same") && the_target_start.classList.contains("same_start") == false) {
+                    the_target_start.classList.add("same_start");
+                    // * 編集モードへの展開が、トリミング後に影響しないよう、エスケープ処理に備えて co クラスを付与.
+                    the_target_start.classList.add("co");
+                }
+                if (the_target_end.classList.contains("same") && the_target_end.classList.contains("same_end") == false) {
+                    the_target_end.classList.add("same_end"); 
+                    // * 編集モードへの展開が、トリミング後に影響しないよう、エスケープ処理に備えて co クラスを付与.
+                    the_target_end.classList.add("co");
+                }
+            }
+        }
+    }
+}
+
+// * 以下編集レイヤーのスクロール位置の調整.
+export const edit_layer_positioning = (e) => {
+ let centering_num = [].slice.call(layer_centering.parentElement.children).indexOf(layer_centering) - 1;
+ let see = document.querySelector(".see");
+ let see_num = [].slice.call(new_layer.children).indexOf(see);
+ let scraps = new_layer.children;
+ let the_default_scrollleft = blocksize * centering_num + window.innerWidth - half_left_width;
+ 
+ for (let i = 0; i < scraps.length; i++) {
+     let scrap = scraps[i];
+     // * orange_dataと連携が開始.
+     set("orange_data", s => s[i] = {});
+     set("orange_data", s => s[i]["s_count"] = 0);
+     set("orange_data", s => s[i]["left"] = []);
+     if (i == see_num) {
+         for (let o = 0; o < scrap.children.length; o++) {
+             // orange_space をスキップ
+             if (o == 0) {
+                 scrap.children[o].children[0].scrollLeft = the_default_scrollleft;
+                 scrap.children[o].children[1].scrollLeft = the_default_scrollleft;
+             }
+             if (o > 0) {
+                 scrap.children[o].lastElementChild.scrollLeft = the_default_scrollleft;
+             }
+         }
+     } else {
+         for (let o = 0; o < scrap.children.length; o++) {
+             // orange_space をスキップ
+             if (o == 0) {
+                 scrap.children[o].children[0].scrollLeft = full_start_scrollwidth;
+                 scrap.children[o].children[1].scrollLeft = full_start_scrollwidth;
+             }
+             if (o > 0) {
+                 scrap.children[o].lastElementChild.scrollLeft = full_start_scrollwidth;
+             }
+         }
+     }
+ }   
 }

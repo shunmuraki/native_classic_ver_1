@@ -1,7 +1,4 @@
-// * sp_cover を作成する関数
-// [* wrapper_index_make() へ変更. その他の変数名も同様に変更.]
-export const make_fragment = (e, f) => {
-
+export const wrapper_index_make_essential = () => {
     // * element の 生成.
     const sp_cover = document.createElement("div");
     const sp = document.createElement("div");
@@ -41,6 +38,17 @@ export const make_fragment = (e, f) => {
     // [* 果たしてその必要があるのか.]
     let fragment = document.createDocumentFragment();
     fragment.append(sp_cover);
+
+    return fragment;
+}
+
+
+// * sp_cover を作成する関数
+// [* wrapper_index_make() へ変更. その他の変数名も同様に変更.]
+export const make_fragment = (e, f) => {
+
+    wrapper_index_make_essential();
+    
     // * 挿入.
     if (f == "before") {
         e.before(fragment);

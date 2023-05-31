@@ -1,3 +1,10 @@
+// * 編集モードに切り替えてから orange_pointer と orange_stripe を自動的に追加する.
+export const orange_pointer_initial = () => {
+    let new_see = document.getElementsByClassName("see")[0];
+    set("orange_data", s => s = orange_pointer_make(new_see, get("orange_data")));
+    new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
+}
+
 // * comesin クラス（最新のorange_pointerを表す）を管理する関数.
 export const comesin_management = (e, f, g) => {
     if (document.querySelector(".comesin")) {
@@ -170,16 +177,24 @@ export const orange_pointer_make = (e) => {
 
 // * orange_pointer を追加する処理をカプセル化した関数.
 // * keytouch_edit_command_c - keytouch/edit/general.js にて実行される.
-function pointer_setter() {
+export const add_orange_pointer = () => {
     pointer_anim();
     // * ここ他の条件分岐の中とも共通してるから統一し
     setTimeout(() => {
-        set("orange_data", s => s = delete_orange_p(get("orange_data")));
+        set("orange_data", s => s = orange_pointer_make(get("orange_data")));
     }, 200)
-}
+} 
+
+export const remove_orange_pointer = () => {
+    pointer_anim();
+    // * ここ他の条件分岐の中とも共通してるから統一し
+    setTimeout(() => {
+        set("orange_data", s => s = orange_pointer_delete(get("orange_data")));
+    }, 200)
+} 
 
 // * ポインターを削除する関数.
-export const delete_orange_p = () => {
+export const orange_pointer_delete = () => {
     let comesin = document.querySelector(".comesin");
     if (comesin) {
         let orange = comesin.parentElement.parentElement.parentElement;
@@ -217,9 +232,9 @@ export const delete_orange_p = () => {
 
 // [* 不明.]
 // [* opac_com の実態から分からない.]
-function delete_opacam() {
+function deleted_pointer_delete() {
     // [*「opac_cam」 を指標として利用し即削除.]
-    if (document.querySelector(".opac_cam")) {
-        document.querySelector(".opac_cam").remove();
+    if (document.querySelector(".deleted_pointer")) {
+        document.querySelector(".deleted_pointer").remove();
     }                         
 }

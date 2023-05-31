@@ -1,15 +1,15 @@
-// * ブロックの所属する horizontal を返す関数.
-export const vertical_to_hor = (e) => {
+// * ブロックの所属する block_list を返す関数.
+export const get_block_list = (e) => {
     return e.parentElement;
 };
 
-// * ブロックの所属する sp を返す関数.
-export const vertical_to_sp = (e) => {
+// * ブロックの所属する list_wrapper を返す関数.
+export const get_list_wrapper = (e) => {
     return e.parentElement.parentElement;
 };
 
-// * ブロックの所属する sp_cover を返す関数.
-export const vertical_to_sp_cover = (e) => {
+// * ブロックの所属する wrapper_index を返す関数.
+export const get_wrapper_index = (e) => {
     return e.parentElement.parentElement.parentElement;
 };
 

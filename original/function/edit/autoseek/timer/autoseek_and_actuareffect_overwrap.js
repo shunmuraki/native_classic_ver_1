@@ -1,10 +1,10 @@
 // * １秒おきに実行されるタイマー処理(setInterval)をセットする関数.
-export const set_interval = () => { 
-    set("intervalArray", s => s.push(the_interval()));
+export const seek_and_actuareffect_overwrap_activate = () => { 
+    set("intervalArray", s => s.push(seek_and_actuareffect_overwrap()));
 }
 
 // * １秒ごとに実行される s_interval (the_interval によってセットされる) を解除する関数.
-export const the_clear_interval = () => { 
+export const seek_and_actuareffect_overwrap_cancel = () => { 
     // * 戻り値を取得しつつ、shift() 実行後の timeoutArray を取得しておく。
     let array = get("intervalArray");
     let the_v = array.shift();
@@ -13,7 +13,7 @@ export const the_clear_interval = () => {
 }
 
 // * オートシーキング中に 1秒ごとに実行する処理を作成して返す関数.
-export const the_interval = (e, f) => {
+export const seek_and_actuareffect_overwrap = (e, f) => {
     
     let scrap = e;
     let hor = f;
@@ -58,7 +58,7 @@ export const the_interval = (e, f) => {
     
         if (hor.scrollLeft > full_end_scrollwidth - 110) {
             if (get("intervalArray").length > 0) {
-                the_clear_interval();
+                seek_and_actuareffect_overwrap_cancel();
             }
             scrap.classList.remove("playing");
             scrap.classList.add("pausing");

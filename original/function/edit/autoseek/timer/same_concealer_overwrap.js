@@ -1,10 +1,10 @@
 // * ５秒おきに実行されるタイマー処理(setTimeout)をセットする関数.
-export const set_timeout = () => {
-    set("timeoutArray", s => s.push(the_timeout()));
+export const same_concealer_overwrap_activate = () => {
+    set("timeoutArray", s => s.push(same_concealer_overwrap()));
 }
 
 // * ５秒ごとに実行される s_timeout (the_timeout によってセットされる) を解除する関数.
-export const the_clear_timeout = () => {
+export const same_concealer_overwrap_cancel = () => {
     // 戻り値を取得しつつ、shift() 実行後の timeoutArray を取得しておく。
     let array = get("timeoutArray");
     let the_v = timeout.shift();
@@ -13,7 +13,7 @@ export const the_clear_timeout = () => {
 }
 
 // * オートシーキング中に５秒おきに実行する処理を作成して返す関数.
-export const the_timeout = (e, f, g, h, j) => {
+export const same_concealer_overwrap = (e, f, g, h, j) => {
     
     let scrap = e;
     let hor = f;
@@ -30,7 +30,7 @@ export const the_timeout = (e, f, g, h, j) => {
             centering_marker(centering_you, next_one_is_you, "new_layer_centering");
             is_it_same_series(next_one_is_you);
             // 自身を次のタイマーとして追加(高等技術).
-            set_timeout();
+            same_concealer_overwrap_activate();
             centering = document.getElementsByClassName("new_layer_centering")[0];
             for (let i = 0; i < scrap.children.length; i++) {
                 // orange_space を弾く.
@@ -42,8 +42,8 @@ export const the_timeout = (e, f, g, h, j) => {
                         if (the_special_cov) {
                             // 新しいspecial_covが台頭する時.                                
                             if (! the_special_cov.isEqualNode(which_special_is(centering))) {
-                                the_clear_timeout();
-                                the_clear_interval();
+                                same_concealer_overwrap_cancel();
+                                seek_and_actuareffect_overwrap_cancel();
                                 let player;
                                 if (the_special_cov.lastElementChild) {
                                     if (the_special_cov.lastElementChild.tagName == "IFRAME") {
@@ -62,8 +62,8 @@ export const the_timeout = (e, f, g, h, j) => {
                                     // * この setTimeout１秒分を考慮する.
                                     let ms = pause_when - play_when;
                                     the_seeking_time = (blocktime * 1000) - ms;
-                                    set_timeout();
-                                    set_interval();
+                                    same_concealer_overwrap_activate();
+                                    seek_and_actuareffect_overwrap_activate();
                                 }, 1000)
                             }
                         }
@@ -72,7 +72,7 @@ export const the_timeout = (e, f, g, h, j) => {
             }
         } else {
             // * timeoutArray についても読み込む必要があったりするよね.
-            the_clear_timeout();
+            same_concealer_overwrap_cancel();
         }
     }, the_seeking_time);
 
