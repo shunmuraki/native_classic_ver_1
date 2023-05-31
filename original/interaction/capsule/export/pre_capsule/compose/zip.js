@@ -1,8 +1,7 @@
 export async function native_zip() {
 
-    let export_space = document.querySelector(".exporter");
-    let button = document.querySelector(".sb_export").firstElementChild;
-    
+    let export_space = element(".export_space");
+
     // ---------------------------------------------------------------------------------------------------------------
     
     // * HTMLファイルのエクスポート.
@@ -25,8 +24,8 @@ export async function native_zip() {
     // * CSSファイルのエクスポート
     let css_url = '../linear/style.css';
     let css_res = await fetch(css_url);
-    let cb = await css_res.text();
-    zip.file('style.css', cb);
+    let css_text = await css_res.text();
+    zip.file('style.css', css_text);
 
     // ---------------------------------------------------------------------------------------------------------------
     
@@ -90,7 +89,9 @@ export async function native_zip() {
     
     // ---------------------------------------------------------------------------------------------------------------
     // * 全体を包括する zipファイルのエクスポート.
-    
+
+    let zip_button = document.querySelector(".zip_button").firstElementChild;
+
     zip.generateAsync( 
         {type:"blob",
          compression: "DEFLATE",
@@ -98,7 +99,7 @@ export async function native_zip() {
         }).then(function (b) {
             const del = new Blob([b], { type: 'application/zip' });
             const uri = URL.createObjectURL(del);
-            button.download = 'output.zip';
-            button.href = uri;
+            zip_button.download = 'output.zip';
+            zip_button.href = uri;
     });
 }

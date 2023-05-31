@@ -1,5 +1,17 @@
+// * 仕上がった最後のブロックを <object> の形にして <section> に append する関数.
+export const object_conversion = (e, f) => {
+    let object_you = object_make(e);
+    classmover(object_you.lastElementChild, object_you, "style_", "add");
+    object_you.removeAttribute('style');
+    object_you.lastElementChild.removeAttribute("class");
+    // * すでに <img> 形式にはなっているが、
+    // * それが Linear においても正しく描画されるよう、追加でいくつか特定のクラスを付与.
+    img_conversion(object_you);
+    f.appendChild(object_you);
+}
+
 // * Linear において YouTubeの動画ID から YTプレイヤー(iframe) を生成するための仮置きのdiv要素を挿入する関数.
-export const iframe_adaptation = (e) => {
+export const iframe_conversion = (e) => {
     let the_content = e.lastElementChild;
     let value_id = target_data(e, "id_is_");
     set("yt_id_list", s => s.push(value_id));
@@ -19,7 +31,7 @@ export const iframe_adaptation = (e) => {
 }
 
 // * <textarea> を <p> で置き換える関数.
-export const textarea_adaptation = (e) => {
+export const textarea_conversion = (e) => {
     let the_content = e.lastElementChild;
     if (the_content) {
         if  (the_content.tagName == "TEXTAREA") {
@@ -35,7 +47,7 @@ export const textarea_adaptation = (e) => {
 }
 
 // * imgタグの親要素にクラス("img", "img_v")を付与する関数.
-export const img_adaptation = (e) => {
+export const img_conversion = (e) => {
     let the_content = e.lastElementChild;
     if (the_content) {
         if (the_content.tagName == "IMG") {

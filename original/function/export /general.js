@@ -1,17 +1,5 @@
-// * 仕上がった最後のブロックを <object> の形にして <section> に append する関数.
-export const object_setter = (e, f) => {
-    let object_you = object_generation(e);
-    classmover(object_you.lastElementChild, object_you, "style_", "add");
-    object_you.removeAttribute('style');
-    object_you.lastElementChild.removeAttribute("class");
-    // * すでに <img> 形式にはなっているが、
-    // * それが Linear においても正しく描画されるよう、追加でいくつか特定のクラスを付与.
-    img_adaptation(object_you);
-    f.appendChild(object_you);
-}
-
 // * blockから <object> を生成して返す関数.
-export const object_generation = (e) => {
+export const object_make = (e) => {
     let final_block = e.cloneNode(true);
     let classlist = final_block.classList;
     // * Linear にも必要なクラスだけを移し替える.
@@ -24,10 +12,8 @@ export const object_generation = (e) => {
     return final_block;
 }
 
-// ---------------------------------------------------------------------------------------------------------------
-
 // * 画像のパス を images 配列に加え、対応する画像のElementの src にもセットする関数.
-export const img_src_getter = (e) => {
+export const img_src_setup = (e) => {
     let target = e.lastElementChild;
     if (target) {
         if (target.tagName == "IMG") {
@@ -47,7 +33,7 @@ export const img_src_getter = (e) => {
 
 // * アップロードされた img ファイルを base64形式 へ変換し、
 // * 画像ごとに "[:img]" を間に挿入した、単一の文字列とし final_textcontent に追記する関数.
-export const image_make_it = (e) => {
+export const make_img_basesixfor = (e) => {
     let the_textdata;
     let dec = e.slice(0, 1);
     if (dec == "[") {

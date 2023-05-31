@@ -1,8 +1,31 @@
+// * "/style" が押された際に実行される関数.
+// * 装飾ホイールを起動する.
+export const keytouch_style_setup = () => {
+    let default_display = element(".default_display");
+    if (default_display.classList.contains("ms")) {
+      let env = keytouch_setup();
+      let centering = element(".centered_block");
+      // * 先にms調整箇所を戻してから複製させる. 
+      let target = centering;
+      if (centering.classList.contains("same")) {
+          target = which_special_is(centering);
+      } 
+      adjust_target_pos(target.lastElementChild, "off");
+      element(".ms_area").remove();
+      default_display.classList.add("style"); 
+      env.current.blur();
+      // [* なぜ２回目の実行が必要なのか.]
+      adjust_target_pos(centering.lastElementChild, "off");
+      // * 装飾ホイールを起動.
+      style_initial();
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
 // * "/style" コマンドが実行された時点で最初に実行される関数.
 // * 装飾ホイールを生成し、 native_styles の最上位のジャンルを表示する.
 export const style_initial = (e) => {   
-
-    // ---------------------------------------------------------------------------------------------------------------
 
     // * 装飾ホイールのデフォルトの「ジャンル」を設定.
 
@@ -29,14 +52,9 @@ export const style_initial = (e) => {
             set("previous_states", s => s[2].push(2));
         }
     }
-    
-    // ---------------------------------------------------------------------------------------------------------------
 
     // * デフォルトのジャンルレイヤーで装飾ホイールを起動.
-
     genre_clicked();
-
-    // ---------------------------------------------------------------------------------------------------------------
 
     // * 「ジャンル」の中の「項目」までデフォルトで選択をし、これも states データに反映.
     // * これで装飾レイヤーのセットアップが終了.

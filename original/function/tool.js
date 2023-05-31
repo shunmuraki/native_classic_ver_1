@@ -1,3 +1,8 @@
+export const element = (e) => {
+    let element = document.querySelector(e);
+    return element;
+}
+
 // * ブロックの所属する block_list を返す関数.
 export const get_block_list = (e) => {
     return e.parentElement;

@@ -1,3 +1,27 @@
+export const wheel_layer_back = () => {
+    // * セカンドレイヤーが表示中の場合の処理.
+    let waiting_wheel = element(".waiting_wheel");
+    waiting_wheel.classList.remove("waiting_wheel");
+    waiting_wheel.style.display = "none";
+    element(".style_wheel_baselayer").style.opacity = 1;
+}
+
+export const wheel_cancel = () => {
+    let env = e;
+    let wheel = element(".style_wheel");
+    let default_display = element(".default_display");
+
+    pointer_switch(the_pointer, "off");
+    layerbase_switch(layer_base, "off");
+    wheel_switch(wheel, "off");
+   
+    wheel.style.display = "none";
+    default_display.classList.remove("style");
+    if (! env.block.classList.contains("same")) {
+        focus_checker(env.block);
+    }
+}
+
 // * 「ジャンル」がクリックされたと分かった際に実行される関数.
 export const genre_clicked = (e) => {
     let titles = new Array();
@@ -17,7 +41,6 @@ export const genre_clicked = (e) => {
         // * 以下次の選択肢へ choose を移す処理.
         // [* 装飾ホイールの起動時は choose クラスを持つ要素が存在しないと思うが.]
         let origin = document.getElementsByClassName("choose")[0];
-
         origin.classList.remove("choose");
         // * レイヤーをひとつ前に戻れるように印をつけておく.
         origin.classList.add("origin");
@@ -29,15 +52,13 @@ export const genre_clicked = (e) => {
 
 // * 「項目」がクリックされたと分かった際に実行される関数.
 export const value_clicked = (e) => {
-    let current_s_layer = document.getElementsByClassName("current_s_layer")[0]; 
+ 
+    let current_wheel_layer = document.getElementsByClassName("current_s_layer")[0]; 
     let position = target_data(e, "style_");
     let nums = position.split("_");
     let you;
 
-    // ---------------------------------------------------------------------------------------------------------------
-    
     // [* ここは what_is_the_title()] に置き換える.
-
     for (let i = 0; i < nums.length - 3; i++) {
         // * １つ飛ばしで実行することで階層を下げていく.
         // [* １つ飛ばしすることが正しい処理なのだろうか.]
@@ -45,25 +66,26 @@ export const value_clicked = (e) => {
             data_layer_shift(you, i);
         }
     }
-
-    // ---------------------------------------------------------------------------------------------------------------
     
     // * この時点で you は末端に至っている。
     you = Object.keys(you)[0];
+    
+    // ---
+
     // * 装飾ホイールの実利的な影響(func(): 項目ごとの実行関数を取得.)
-    let func = native_style_funcs[you];
+    let the_function = native_style_funcs[you];
     let target = who_is_target();
-    func(target);
+    the_function(target);
     // * 同時にスタイリングを付け替え。
     style_changer(target, get("current_states")[2]);
 
     // ---------------------------------------------------------------------------------------------------------------
 
     // * 項目を選択したので、前の選択肢のレイヤーに戻る.
-    let previous_layer = current_s_layer.previousElementSibling;
+    let previous_layer = current_wheel_layer.previousElementSibling;
     previous_layer.classList.add("current_s_layer");
-    document.querySelector(".origin").classList.add("choose");
-    current_s_layer.remove();
+    element(".origin").classList.add("choose");
+    current_wheel_layer.remove();
 }
 
 // ---------------------------------------------------------------------------------------------------------------

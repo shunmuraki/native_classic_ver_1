@@ -1,38 +1,5 @@
-// * 基本的な animation を作成して返す関数.
-export const base_setup = (e, f, g) => {
-    let new_animation = {};
-    new_animation["trigger_when"] = f * 5;
-    // [* すでに change の使用はしないことにしているため、この条件分岐は簡素化できる.]
-    if (e.classList.contains("change") && g == "start") {
-        new_animation["trigger_when"] = new_animation["trigger_when"] + 1;
-        new_animation["finish_when"] = new_animation["trigger_when"];
-    } else {
-        new_animation["finish_when"] = new_animation["trigger_when"] + 1;
-    }
-    new_animation["video_startpoint"] = 0;
-    return new_animation;
-}
-
-// * animation_generate_data を生成して返す関数.
-export const generationdata_setup = (e, f) => {
-    let final_data = new Array();
-    let anim_blockhas = [];
-    if (f == "start") {
-        anim_blockhas = 1;
-        if (e.classList.contains("change")) {
-            // * finish_when = trigger_when とすることで、duration なしで要素を表示.
-            final_data = [anim_blockhas, 0];
-        } else {
-            final_data = [anim_blockhas, 1];
-        }
-    } else if (f == "end") {
-        final_data = [0, 1];
-    } 
-    return final_data;
-}
-
 // * animation_generate_list と animation を紐付けながら、後者を animations に束ねて返す関数.
-export const animationdata_setup = (e, f, g, h) => {
+export const animation_frontend_backend_push = (e, f, g, h) => {
    
     let the_block = e;
     let the_animation = f;
@@ -52,7 +19,7 @@ export const animationdata_setup = (e, f, g, h) => {
         let the_name = "anim_num_" + the_keynum;
         the_block.classList.add(the_name);
         let the_value = new_gene_datas[i];
-        let final_animation = ac_vi_adaptation(the_block, new_typedata, h);
+        let final_animation = animation_backend_shapeup(the_block, new_typedata, h);
         set("animation_generate_list", s => s.push(the_value));
         animations.push(final_animation);
     }
@@ -60,10 +27,8 @@ export const animationdata_setup = (e, f, g, h) => {
     return animations;
 }
 
-// ---------------------------------------------------------------------------------------------------------------
-
 // * animation について actuar を考慮して trigger_when | finish_when | video_startpoint を更新する関数.
-export const ac_vi_adaptation = (e, f, g) => {
+export const animation_backend_shapeup = (e, f, g) => {
     
     let classlist = e.classList;
     let animation = f;
