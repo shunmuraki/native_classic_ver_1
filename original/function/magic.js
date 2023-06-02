@@ -1,22 +1,24 @@
 // * マジックコピーする関数.
-export const the_magic_copy = (e) => {
+export const magic_copy = (e) => {
+    let env = keytouch_setup();
     // * スタイリング直後に実行されることを想定.
-    tracer_basis(document.querySelector(".centering"));
+    same_concealer_tracer(env.block);
     // * 初期化
     set("magic_elems", s => s = []);
+
     // * 以降に残っているものを、動画に限らずすべてコピー.
-    let sp_cover = vertical_to_sp_cover(e);
-    let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
+    let c_num = get_the_block_index_num(env.block_list, env.block);
     
     // * 各spごとにコピーして以前のブロックをまとめて削除し fragment として変数に格納.
-    for (let i = 0; i < sp_cover.childElementCount; i++) {
-        let line = sp_cover.children[i].lastElementChild.children;
-        let current_scrollleft = sp_cover.children[i].lastElementChild.scrollLeft;
+    for (let i = 0; i < env.get_wrapper_index.childElementCount; i++) {
+        
+        let line = env.get_wrapper_index.children[i].lastElementChild.children;
+        let current_scrollleft = env.get_wrapper_index.children[i].lastElementChild.scrollLeft;
         let breaker = line[c_num + 1];
 
         if (breaker.classList.contains("same")) {
             let same_name = "same_num_" + target_data(breaker, "same_num_");
-            let sames = document.getElementsByClassName(same_name);            
+            let sames = document.getElementsByClassName(same_name);
             // * 実態を中身に持つ same_end をコピー。
             let c = sames[sames.length - 1].lastElementChild.cloneNode(true);
             // * same群の途中で実行された場合に コピー対象の最初のブロックに same_start を与えて same_num も更新する.
@@ -41,62 +43,52 @@ export const the_magic_copy = (e) => {
             line[o].remove();
         }
         set("magic_elems", s => s.push(new_folder));
-        sp_cover.children[i].lastElementChild.scrollLeft = current_scrollleft;
+        env.wrapper_index.children[i].lastElementChild.scrollLeft = current_scrollleft;
+
     }
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+
 // * マジックペーストする関数.
-export const the_magic_paste = (e) => {
+export const magic_paste = (e) => {
+
+    let env = keytouch_setup();
     // * コピーしてあるfragmentを貼り付ける. 
     // * 同時に不足するラインも追加する.
     let the_line_num = get("magic_elems").length;
-    let sp_cover = vertical_to_sp_cover(e);
-    let whole_line_num = sp_cover.childElementCount;
+    let whole_line_num = env.wrapper_index.childElementCount;
 
-    let current_line_num = [].slice.call(sp_cover.children).indexOf(vertical_to_sp(e)) + 1;
-    let c_num = [].slice.call(vertical_to_hor(e).children).indexOf(e);
+    let current_line_num = get_the_block_index_num(env.wrapper_index, env.list_wrapper) + 1;
+    let c_num = get_the_block_index_num(env.block_list, env.block);
 
     let bottom_line_num = current_line_num + the_line_num - 1;
     let the_additional_num = bottom_line_num - whole_line_num;
 
-    let current_ver_num = vertical_to_hor(e).childElementCount;
-    let current_scrollleft = vertical_to_hor(e).scrollLeft;
+    let current_ver_num = env.block_list.childElementCount;
+    let current_scrollleft = env.block_list.scrollLeft;
 
+    // ---------------------------------------------------------------------------------------------------------------
+
+    let block_num = get_block_num(env.wrapper_index);
     // * ラインを複製.
-    let added_line = vertical_to_sp(e).cloneNode(true);
-    let edit_contents = added_line.lastElementChild.children;
+    let added_line = list_wrapper_with_enough_block_make();
 
-    // [* the_name_list を import する.]
-    the_name_list.push("centering");
-    the_name_list.push("original_centering");
-
-    // 足りない sp（列） を新しく生成.
-    if (the_additional_num > 0) {
-        for (let i = 1; i < current_ver_num; i++) {
-            for (let o = 0; o < the_name_list.length; o++) {
-                // * 複製した sp のブロックから無駄なクラスを除去.
-                classmover(edit_contents[i], edit_contents[i], the_name_list[o], "remove");
-            }
-            // * 複製したものは中身まで整える.
-            edit_contents[i].lastElementChild.remove();
-            let new_textarea = document.createElement("textarea");
-            new_textarea.classList.add("write_area");
-            edit_contents[i].appendChild(new_textarea);
-        }
-        for (let i = 0; i < the_additional_num; i++) {
-            let final_copy = added_line.cloneNode(true);
-            // * 初期化した 複製sp をエディターに追加.
-            sp_cover.appendChild(final_copy);
-            final_copy.lastElementChild.scrollLeft = current_scrollleft;
-        }
+    for (let i = 0; i < the_additional_num; i++) {
+        let final_copy = added_line.cloneNode(true);
+        // * 初期化した 複製sp をエディターに追加.
+        env.wrapper_index.appendChild(final_copy);
+        final_copy.lastElementChild.scrollLeft = current_scrollleft;
     }
 
+    // ---------------------------------------------------------------------------------------------------------------
+
     // 補填した「列」にブロックを追加して数を合わせる.
-    for (let i = 1; i <= sp_cover.childElementCount; i++) {
+    for (let i = 1; i <= env.wrapper_index.childElementCount; i++) {
         // * ペーストした領域の外の sp 群に絞った処理.
         if (i < current_line_num || i > bottom_line_num) {
             for (let o = 0; o < get("magic_elems")[0].length; o++) {
-                let c_v = sp_cover.children[i - 1].lastElementChild.children[c_num + o];
+                let c_v = env.wrapper_index.children[i - 1].lastElementChild.children[c_num + o];
                 // * 挿入地点から右に向かってひとブロックずつ増やしていく. (とはいえ外の sp の話)
                 if (c_v.classList.contains("same")) {
                     if (! c_v.classList.contains("same_end")) {
@@ -109,23 +101,24 @@ export const the_magic_paste = (e) => {
                     make_ver_fragment(c_v, "after");
                 }
             }
-        } else { 
+        } else {
             // ※ 以下まさにペーストがされる sp での処理.
             let will_added_elems = get("magic_elems")[i - current_line_num];
             for (let o = 0; o < will_added_elems.length; o++) {
-                sp_cover.children[i - 1].lastElementChild.children[c_num + o].after(will_added_elems[o]);
+                env.wrapper_index.children[i - 1].lastElementChild.children[c_num + o].after(will_added_elems[o]);
             }    
         }
     }
 
+    // ---------------------------------------------------------------------------------------------------------------
+
     // * 以下最終調整.
-    let old_center = document.querySelector(".centering");
-    let center = old_center.nextElementSibling;
-    centering_marker(old_center, center, "centering");
-    original_centering_checker(sp_cover, center);
-    same_cutter(center, "addon");
-    is_it_same_series(center);
-    all_view_changer(sp_cover, blocksize);
-    focus_checker(center);
-    adjust_box(center);
+    let newblock = env.block.nextElementSibling;
+    centered_block_management(env.block, newblock, "centering");
+    original_centered_block_management(env.wrapper_index, newblock);
+    same_cutter(newblock, "addon");
+    is_it_same_series(newblock);
+    all_view_changer(env.wrapper_index, blocksize);
+    focus_checker(newblock);
+    adjust_box(newblock);
 }

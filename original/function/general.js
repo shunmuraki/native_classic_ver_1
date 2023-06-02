@@ -120,7 +120,7 @@ export const adjust_box = (e) => {
 }
 
 // * ブロックの生成やスプリット、ポインターを打つなどのタイミングで標準ポインターをアニメーションさせる際に使用する関数.
-export const pointer_anim = () => {                    
+export const pointer_animate = () => {                    
     let pri_pointer = document.querySelector(".pointer");
     pointer_effect(pri_pointer);
 }

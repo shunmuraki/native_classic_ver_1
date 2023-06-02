@@ -115,7 +115,12 @@ export const get_block_num = (e) => {
 
 // * 指定したクラスを持っているブロックが所蔵する block_list の番号を取得できる関数.
 export const get_the_block_index_num = (e, f) => {
-    let block = e.querySelector(f);
+    let block;
+    if (f.tagName) {
+    block = f;
+    } else {
+        block = e.querySelector(f);
+    }
     let the_index_num = [].slice.call(e.children).indexOf(block) + 1;
     return the_index_num;
 }
