@@ -1,82 +1,93 @@
-export const wrapper_index_make_essential = () => {
-    // * element の 生成.
-    const sp_cover = document.createElement("div");
-    const sp = document.createElement("div");
-    const horizontal = document.createElement("div");
-    const adjuster = document.createElement("div");
-    const vertical = document.createElement("div");
-    const textarea = document.createElement("textarea");
-    const end_adjuster = document.createElement("div");
-    
-    // * クラスの初期設定.
-    sp_cover.classList.add("sp_cover");
-    sp_cover.classList.add("pausing");
-    sp.classList.add("sp");
-
-    horizontal.classList.add("horizontal");
-    adjuster.classList.add("adjuster");
-    vertical.classList.add("vertical");
-    textarea.classList.add("write_area");
-    
-    // [* これも改める必要がある.]
-    textarea.classList.add("style_1_1_0_1");
-    
-    adjuster.classList.add("horizontal_child");
-    vertical.classList.add("horizontal_child");
-    end_adjuster.classList.add("adjuster");
-    end_adjuster.classList.add("horizontal_child");
-    
-    // * 集結.
-    vertical.appendChild(textarea);
-    horizontal.appendChild(adjuster);
-    horizontal.appendChild(vertical);
-    horizontal.appendChild(end_adjuster);
-    sp.appendChild(horizontal);
-    sp_cover.appendChild(sp);
-    
-    // * fragment にする.
-    // [* 果たしてその必要があるのか.]
-    let fragment = document.createDocumentFragment();
-    fragment.append(sp_cover);
-
-    return fragment;
-}
-
-
-// * sp_cover を作成する関数
-// [* wrapper_index_make() へ変更. その他の変数名も同様に変更.]
-export const make_fragment = (e, f) => {
-
-    wrapper_index_make_essential();
-    
-    // * 挿入.
-    if (f == "before") {
-        e.before(fragment);
-        e.previousElementSibling.lastElementChild.lastElementChild.scrollLeft = full_start_scrollwidth;
-    } else if (f == "after") {
-        e.after(fragment);        
-        e.nextElementSibling.lastElementChild.lastElementChild.scrollLeft = full_start_scrollwidth;
+// * 必要な数のブロックを持った、 block_list を含んだ wrapper_index とか
+// * list_wrapper を生成してくれる関数.
+// [* 縦と横を指定することになる.]
+// e = 横, f = 縦
+export const wrapper_index_with_enough_block = (e, f) => {
+    let wrapper_index = wrapper_index_make(false);
+    let list_wrapper = list_wrapper_make(true);
+    // * すでに一つは追加してあるので.
+    for (let i = 0; i < e; i++) {
+        let block = block_make(true);
+        list_wrapper.lastElementChild.lastElementChild.before(block);
     }
 
-    cs_bye();
+    for (let i = 0; i < f-1; i++) {
+        let will_add_list_wrapper = list_wrapper.cloneNode(true);
+        wrapper_index.appendChild(will_add_list_wrapper);
+    }
+    // これで完成
+    return wrapper_index;
 }
 
-// * block_list に新しい block を追加する関数.
-// [* block_make() へ関数の名称を変更.]
-export const make_ver_fragment = (e, f) => {
-    let vertical = document.createElement("div");
+// * まだそんなのないけど.
+export const list_wrapper_with_enough_block = () => {
+    let list_wrapper = list_wrapper_make(true);
+    // * すでに一つは追加してあるので.
+    for (let i = 0; i < e-1; i++) {
+        block_make(true);
+    }
+    return list_wrapper;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+export const textarea_make = (e) => {
     let textarea = document.createElement("textarea");
-    vertical.classList.add("vertical");
     textarea.classList.add("write_area");
-    textarea.classList.add("style_1_1_0_1");
-    vertical.classList.add("horizontal_child");
-    vertical.appendChild(textarea);
-    let fragment = document.createDocumentFragment();
-    fragment.append(vertical);
-    if (f == "before") {
-        e.before(fragment);
-    } else if (f == "after") {
-        e.after(fragment);
+    return textarea;
+}
+
+export const adjuster_make = (e) => {
+    let adjuster = document.createElement("div");
+    adjuster.classList.add("adjuster");
+    return adjuster;
+}
+
+// * 要素を作るもの、セットするもの.
+// * ってかなんかオールマイティーな関数を作るべきだと思った.
+export const block_make = (e) => {
+    let block = document.createElement("div");
+    block.classList.add("block");
+    if (e === true) {
+        let block = block_make(true);
+        let head_adjuster = adjuster_make();
+        let tale_adjuster = adjuster_make();
+        block_list.appendChild(head_adjuster);
+        block_list.appendChild(block);
+        block_list.appendChild(tale_adjuster);
     }
-    cs_bye();
+    return block_list;
+}
+
+export const block_list_make = (e) => {
+    let block_list = document.createElement("div");
+    block_list.classList.add("block_list");
+    if (e === true) {
+        let block = block_make(true);
+        let adjuster = document.createElement("div");
+        adjuster.classList.add("adjuster");
+        adjuster.classList.add("adjuster");
+        block_list.appendChild(block_make);
+    }
+    return block_list;
+}
+
+export const list_wrapper_make = (e) => {
+    let list_wrapper = document.createElement("div");
+    list_wrapper.classList.add("list_wrapper");
+    if (e === true) {
+        let block_list = block_list_make(true);
+        list_wrapper.appendChild(block_list);
+    }
+    return block_list;
+}
+
+export const wrapper_index_make = (e) => {
+    let wrapper_index = document.createElement("div");
+    wrapper_index.classList.add("wrapper_index");
+    if (e === true) {
+        let list_wrapper = list_wrapper_make(true);
+        wrapper_index.appendChild(list_wrapper);
+    }
+    return wrapper_index;
 }

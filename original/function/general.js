@@ -1,3 +1,5 @@
+import { get_correspond_same_concealer } from "./tool";
+
 // * centering クラスを管理する関数.
 export const centering_marker = (e, f, g) => {
     e.classList.remove(g);
@@ -201,27 +203,6 @@ export const wheel_seton = () => {
 
 // ---------------------------------------------------------------------------------------------------------------
 
-// * "/" コマンドに伴tってブロックの中の要素の位置を調整する関数.
-export const adjust_target_pos = (e, f) => {
-    if (e) {
-        let ms_top = getComputedStyle(e).top;
-        let ms_st;
-        if (f == "on") {
-            set("default_pos", s => s = Number(ms_top.substring(0, ms_top.length - 2)));
-            if (default_pos > 60) {
-                ms_st = 60 + default_pos;
-            } else {
-                ms_st = 60;
-            }
-            let ms_st_code = ms_st + "px";
-            e.style.setProperty('top', ms_st_code, 'important');
-        } else if (f == "off") {
-            e.style.top = '';
-            set("default_pos", s => s = 0);
-        }
-    }
-}
-
 // * テキスト入力の過程で選択中のブロックの高さを最適化する関数.
 export const optimize_writing = (e, f) => {
     e.style.height = 24 + 'px';
@@ -234,21 +215,8 @@ export const optimize_writing = (e, f) => {
 
 // ---------------------------------------------------------------------------------------------------------------
 
-// * 左右の移動でspecial_covの変更内容を same_end に反映させる関数.
-export const tracer_basis = (e) => {
-    let special_cov = which_special_is(e);
-    if (special_cov) {
-        let specon_cloned = special_cov.lastElementChild.cloneNode(true);
-        specon_cloned.style.setProperty('opacity', 0, 'important');
-        let same_name = "same_num_" + target_data(e, "same_num_");
-        let sames = document.getElementsByClassName(same_name);
-        sames[sames.length - 1].lastElementChild.remove();
-        sames[sames.length - 1].appendChild(specon_cloned);
-    }
-}
-
 // * same(= special_cov) がセンタリングしている間にスタイリングを変更した場合に、sameの外に出る時に対象となっていた special_cov の要素を複製して大元の same_end に格納する関数.
-export const same_change_tracer = (e) => {
+export const same__concealer_tracer = (e) => {
     if (e.previousElementSibling) {
         if (e.previousElementSibling.classList.contains("same_end")) {
             let special_cov = which_special_is(e.previousElementSibling);
@@ -270,9 +238,62 @@ export const same_change_tracer = (e) => {
     }
 }
 
+// * 左右の移動でspecial_covの変更内容を same_end に反映させる関数.
+export const same_concealer_trace_essential = (e) => {
+    let special_cov = get_correspond_same_concealer(e);
+    if (special_cov) {
+        let specon_cloned = special_cov.lastElementChild.cloneNode(true);
+        specon_cloned.style.setProperty('opacity', 0, 'important');
+        let same_name = "same_num_" + target_data(e, "same_num_");
+        let sames = document.getElementsByClassName(same_name);
+        sames[sames.length - 1].lastElementChild.remove();
+        sames[sames.length - 1].appendChild(specon_cloned);
+    }
+}
+
 // * 何番目のブロックか、数字を返す関数.
 export const elem_post_getter = (e) => {
     let parent = e.parentElement;
     let the_num = [].slice.call(parent.children).indexOf(e);
     return the_num;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// * 単一同士の sp - sp ごとに提供する.
+// からのブロック群へ、ブロックの中身やクラスをトレースする関数.
+// magic_paste / edit_escape にて利用することを想定して設計.
+// * 引数を決めよう.
+
+// * e = 移動元
+// * f = 移動先
+// * g,= [移動元のst, 移動先のst]
+// * h = 何個分のブロックを移すか.
+export const trace_block_to_empties = (e, f, g, h) => {
+    // * wrapper_index 内の話に過ぎない.
+    let from_st = g[0];
+    let to_st = g[1];
+    let block_num = h;
+    let from_block_list = e.lastElementChild;
+    let to_block_list = f.lastElementChild;
+    // * 短い方をループ軸に採用すること.
+    // * もしくはその数をパラメータで受け取るような書き方の方が親切だろうか.
+    // * list_wrapper ごとに処理する.
+    let i_to_st = 0;
+    for (let i = from_st; i < block_num; i++) {
+        i_to_st ++;
+        // * 中身を移し替える.
+        let from_block = from_block_list.children[i];
+        let to_block = to_block_list.children[to_st + i_to_st];
+        let from_block_content = from_block.lastElementChild;
+        to_block.lastElementChild.remove();
+        to_block.appendChild(from_block_content.cloneNode(true));
+        // * クラスとスタイルをトレース.
+        for (let o = 0; o < the_name_list.length; o++) {
+            classmover(from_block, to_block, the_name_list[o], "add");
+            let from_style = getComputedStyle(from_block);
+            to_block.style.height = from_style.height;
+        }
+
+    }
 }

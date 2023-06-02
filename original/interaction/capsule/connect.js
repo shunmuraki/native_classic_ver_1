@@ -1,190 +1,74 @@
 // * デフォルトレイヤーで "/connect" が押された際に実行されるキータッチ関数.
+
 // * 現在のラインを上のラインに結合する.
 export const keytouch_connect = () => {
 
     let env = keytouch_setup();
     // * 先にms調整箇所を戻しておいてそれから複製させる. 
-    let target = env.current_vertical;
-    
-    if (env.current_vertical.classList.contains("same")) {
-        target = which_special_is(env.current_vertical);
+    let target = env.block;
+    if (env.block.classList.contains("same")) {
+        target = get_correspond_same_concealer(env.block);
     } 
     
-    adjust_target_pos(target.lastElementChild, "off");
-    tracer_basis(document.querySelector(".centering"));
-    document.querySelector(".ms_area").remove();
-    
-    if (document.querySelector(".centering").lastElementChild == "TEXTAREA") {
-        document.querySelector(".centering").lastElementChild.focus();
-    }
+    ms_mode_inactivate(target, "off");
+    same_concealer_trace_essential(element(".centered_block")); 
+    blur_checker(element(".centered_block"));
 
-    let the_sp_cover_a = env.current_sp_cover.previousElementSibling;
+    // * 移動先の wrapper_index
+    let previous_wrapper_index = env.wrapper_index.previousElementSibling;
 
     // * 移動先にブロックたちを移動するために配列にブロックを格納.
-    if (the_sp_cover_a) {
+    if (previous_wrapper_index) {
 
-        // * 移動を終えた上でスクロール位置が調整できるように centering の番号を控えておく.
-        let the_centering_num = 0;
-        
-        for (let i = 0; i < env.current_horizontal.children.length; i++) {
-            // adjuster をスキップ.
-            if (i != 0) {
-                if (env.current_horizontal.children[i].classList.contains("centering")) {
-                    the_centering_num = i;
-                }
-            }
-        }
-
-        let the_current_tops = the_centering_num;
-        let the_current_bottoms = env.current_horizontal.childElementCount - the_centering_num;
-       
-        // * original_centering を結合地点として全体のブロック数を算出するために 何番目 かを控える.
-        let inc_last_children = the_sp_cover_a.lastElementChild.lastElementChild.children;
-        let original_centering_num = 0;
-
-        // [* ここ絶対に書き換えられる]
-        for (let i = 0; i < inc_last_children.length; i++) {
-            if (i != 0) {
-                if (inc_last_children[i].classList.contains("original_centering")) {
-                    original_centering_num = i;
-                }  
-            }
-        }
-        
-        let the_original_tops = original_centering_num;
-        let the_original_bottoms = the_sp_cover_a.lastElementChild.lastElementChild.childElementCount - original_centering_num;
-    
-        // * ブロック数の最大値を算出するための一連の計算処理.
-        // [* ここもっと、圧倒的に短くできるはず。できないなら一連の処理をオブジェクトにして外部化するべき.]
-        let the_triumph_tops = 0;
-        let the_triumph_bottoms = 0;
-        
-        if (the_current_tops > the_original_tops) {
-            the_triumph_tops = the_current_tops;
-        } else {
-            the_triumph_tops = the_original_tops;
-        }
-    
-        if (the_current_bottoms > the_original_bottoms) {
-            the_triumph_bottoms = the_current_bottoms;
-        } else {
-            the_triumph_bottoms = the_original_bottoms;
-        }
-    
-        let the_top_less = the_triumph_tops - the_original_tops;
-        let the_bottom_less = the_triumph_bottoms - the_original_bottoms;
-    
-        for (let i = 0; i < the_sp_cover_a.children.length; i++) {
-            if (i >= 0) {
-                for (let o = 0; o < the_top_less; o++) {
-                    const first_block = the_sp_cover_a.children[i].lastElementChild.children[1];
-                    // * 先頭より小さかったら
-                    make_ver_fragment(first_block, "before");
-                }
-                for (let o = 0; o < the_bottom_less; o++) {
-                    let last_block = the_sp_cover_a.children[i].lastElementChild.lastElementChild;
-                    // * お尻より大きかったら実行.
-                    make_ver_fragment(last_block, "after");
-                }
-            }
-        }
+        // * 移動先のブロック数を満たす.
+        complete_list_wrapper(previous_wrapper_index);
     
         // * あとは複製をしてライン同士を同期.
-        let sp_copied = the_sp_cover_a.lastElementChild.cloneNode(true);
-        let children_block = sp_copied.lastElementChild.children;
+        let will_add_list_wrapper = list_wrapper_with_enough_block(get_block_num(previous_wrapper_index));
+        let children_block = will_add_list_wrapper.lastElementChild.children;
         let the_this_loop_endpoint = the_triumph_tops - the_centering_num + env.current_horizontal.childElementCount - 1;
-
-        // * 複製をする前に中身をクリーンにする.
-        // [* 中身を掃除する関数としてこのループをまるごと外部化する.]
-        for (let i = 0; i < children_block.length; i++) {
-            if (i > 0) {
-                for (let o = 0; o < the_name_list.length; o++) {
-                    classmover(children_block[i], children_block[i], the_name_list[o], "remove");
-                }
-
-                if (children_block[i].lastElementChild) {
-                    children_block[i].lastElementChild.remove();
-                }
-                let new_textarea = document.createElement("textarea");
-                new_textarea.classList.add("write_area");
-
-                // [* 改める.]
-                new_textarea.classList.add("style_1_1_0_1");
-                children_block[i].appendChild(new_textarea);
-                children_block[i].style.height = 66 + "px";
-                
-                if (i <= the_this_loop_endpoint) {
-                    let the_content_disi = i - the_triumph_tops + the_centering_num;
-    
-                    if (the_content_disi > 0) { 
-                        // * ブロック単位でクラスを引き継ぐ.
-                        let old_block = env.current_horizontal.children[the_content_disi];
-                        let the_content_embed = null;
-                        
-                        if (old_block.lastElementChild) {
-                            the_content_embed = old_block.lastElementChild.cloneNode(true);
-                        }
-                        
-                        for (let o = 0; o < the_name_list.length; o++) {
-                            classmover(old_block, children_block[i], the_name_list[o], "add");
-
-                            // * 表示上のスタイルも引き継ぐ.
-                            let s_h = getComputedStyle(old_block);
-                            children_block[i].style.height = s_h.height;
-                        }
-
-                        children_block[i].lastElementChild.remove();
-                        
-                        // * centering クラスを引き継ぐ.
-                        if (env.current_horizontal.children[the_content_disi].classList.contains("centering")) {
-                            children_block[i].classList.add("centering")
-                        }
-                        if (the_content_embed) {
-                            children_block[i].appendChild(the_content_embed);
-                        }
-                    }
-                }
-            }
-        }     
+        
+        // * 適切な箇所から適切な箇所まで、ブロックの中身やクラスを移す.
+        trace_block_to_empties(env.list_wrapper, will_add_list_wrapper, 0, the_triumph_tops, get_block_num(env.wrapper_index));
     
         // * ここで複製したラインを実際に sp_cover へ挿入.
-        the_sp_cover_a.appendChild(sp_copied);
+        previous_wrapper_index.appendChild(will_add_list_wrapper);
         // * sp_cover 内のスタイリングのために追加.
-        the_sp_cover_a.classList.add("connected");
-        let before_in_sp_num = the_sp_cover_a.childElementCount;
-        // [* なぜこのクラスを付与する必要があるのだろうか.]
-        let the_ined_name = "inner_sp_num_" + before_in_sp_num + 1;
-        sp_copied.classList.add(the_ined_name);
-        
-        let the_center_num_b = [].slice.call(env.current_horizontal.children).indexOf(env.current_vertical) + 1;
-        let the_default_leng = env.current_horizontal.scrollLeft;
+        previous_wrapper_index.classList.add("connected");
+
+        // * sp_num 関係の跡地
+        let the_default_leng = env.block_list.scrollLeft;
         
         // * 最後に移動元の sp_cover を削除.
-        env.current_sp_cover.remove();
+        env.wrapper_index.remove();
+        
         // * センタリングを本来の場所へ戻す.
-        let center = document.querySelector(".centering");
-        let latest_hor = vertical_to_hor(center);
-        let the_center_num = [].slice.call(latest_hor.children).indexOf(center) + 1;
+        let centered_block = element(".centered_block");
+        let latest_block_list = get_block_list(centered_block);
+        
+        // * もっと綺麗に取得できるようにしてよーーーーーーーーーーーーーーーーーーーー.
+        // * 変数名もなんか意味なさげだしwwwwwwwwーーーーーーーーーーーーーーーーーーーー.
+        let the_center_num = [].slice.call(latest_block_list.children).indexOf(centered_block) + 1;
+        let the_center_num_b = [].slice.call(env.block_list.children).indexOf(env.block) + 1;
+        
         let the_b_a_gap = the_center_num - the_center_num_b;
         let the_redefault_scroll = the_b_a_gap * blocksize;
+
+        // * scrollLeft の調整. これって all_view_changer じゃダメなんすか？？
+        all_view_changer(previous_wrapper_index, the_redefault_scroll);
+        let final_block = previous_wrapper_index.lastElementChild.lastElementChild.children[the_center_num - 1];
         
-        for (let i = 0; i < the_sp_cover_a.children.length; i++) {
-            the_sp_cover_a.children[i].lastElementChild.scrollLeft = the_default_leng + the_redefault_scroll;
-        }
-
-        let last_one = the_sp_cover_a.lastElementChild.lastElementChild.children[the_center_num - 1];
-
         // * connect の場合は この sp の special_cov だけ削除しているので、それを再起させるだけでいい.
-        is_it_same_series(last_one);
+        same_concealer_management(final_block);
         
         // * フォーカスを当てる.
-        let bol = focus_checker(last_one);
-        if (bol) {
+        let if_textarea = focus_checker(final_block);
+        if (if_textarea) {
             setTimeout(() => {
-                last_one.lastElementChild.value = last_one.lastElementChild.value.slice(0, -1);
+                final_block.lastElementChild.value = final_block.lastElementChild.value.slice(0, -1);
             }, 10)
         }
-        
-        screen.classList.remove("ms");
+
+        default_display.classList.remove("ms");
     }
 }

@@ -1,7 +1,7 @@
 // * special_cov を作成して追加する関数.
-function the_state() {
+export const same_concealer_activation_setup = () => {
     let the_name = "same_num_" + the_num;
-    let special_cov = make_special_cov(e, the_num);
+    let special_cov = same_concealer_make(e, the_num);
     let hit_target = document.getElementsByClassName(the_name)[document.getElementsByClassName(the_name).length - 1];
     
     // * もし iframe だった場合 YT player を生成するようにする。
@@ -15,7 +15,7 @@ function the_state() {
             set("s_s_num", s => s+= 1);
             let the_keyname = String("yt_editor_" + get("s_s_num"));
             let the_sp_if = document.createElement("div");
-            the_sp_if.setAttribute("id", the_keyname);      
+            the_sp_if.setAttribute("id", the_keyname);
             classmover(hit_target.lastElementChild, the_sp_if, "style_", "add");
             special_cov.appendChild(the_sp_if);
             let pl = block_multiable(the_keyname, the_code);

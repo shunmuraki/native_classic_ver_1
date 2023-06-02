@@ -1,5 +1,5 @@
 // * special_cov 向けでない、通常の YT Player の束から該当するプレイヤーを返す関数.
-export const yt_player_getter = (e) => {
+export const get_yt_player = (e) => {
     let the_keyid = e.id;
     let yt_iframe = null;
     if (the_keyid) {
@@ -10,16 +10,15 @@ export const yt_player_getter = (e) => {
 }
 
 // * yt のプレイヤーのシークポイントを最適化する関数.
-export const yt_resetter = (e) => {
+export const yt_player_reset = (e) => {
     let target;
-    if (screen.classList.contains("edit")) {
-        let the_see_centering = document.querySelector(".see");
-        if (the_see_centering.classList.contains("principle_block")) {
-            target = document.getElementsByClassName("new_layer_centering")[0];
-          } else if (the_see_centering.classList.contains("principle_pointer")) {
-            let orange_data = orange_data_getter();
-            let orange_pointer_space = the_see_centering.firstElementChild.firstElementChild;
-            target = best_related_element(the_see_centering, orange_pointer_space.scrollLeft, "block", orange_data)[0];
+    let default_display = element(".default_display");
+    if (default_display.classList.contains("edit_mode")) {
+        let centered_wrapper_index = element(".centered_wrapper_index");
+        if (centered_wrapper_index.classList.contains("block_motion")) {
+            target = element(".edit_centered_block");
+          } else if (centered_wrapper_index.classList.contains("pointer_motion")) {
+            target = best_related_element(centered_wrapper_index, get_orange_pointer_space(centered_wrapper_index).scrollLeft, "block", get("orange_data"))[0];
           }
     } else {
         target = e;
@@ -31,8 +30,8 @@ export const yt_resetter = (e) => {
 // ---------------------------------------------------------------------------------------------------------------
 
 // * センタリングしたブロックの動画を再生（or ループ再生）する関数
-export const yt_loop_player = (e, f, g) => {
-    let the_time = yt_resetter(f);
+export const yt_loop_start = (e, f, g) => {
+    let the_time = yt_player_reset(f);
     if (! get("yt_loop")[g]) {
         set("yt_loop", s => s = new Array());
     }
@@ -44,7 +43,7 @@ export const yt_loop_player = (e, f, g) => {
 }
 
 // * 上の yt_loop_player() によってセットされた interval 処理をクリアする関数.
-export const yt_loop_stopper = (e, f, g) => {
+export const yt_loop_stop = (e, f, g) => {
     let duration;
     e.pauseVideo();
     if (f == "start") {
@@ -54,21 +53,21 @@ export const yt_loop_stopper = (e, f, g) => {
         e.seekTo(duration);
     }
     if (get("yt_loop")[g]) {
-        let pre_yt_loop = get("yt_loop")[g];
+        let yt_loop_final_form = get("yt_loop")[g];
         clearInterval(pre_yt_loop.shift());
-        set("yt_loop", s => s = pre_yt_loop);
+        set("yt_loop", s => s = yt_loop_final_form);
     } 
 }
 
 // ---------------------------------------------------------------------------------------------------------------
 
 // * 現在センタリングしているブロックが yt でループされているのを停止する関数.
-export const just_clear_yt_loop = (e) => {;
+export const yt_loop_clear = (e) => {;
     if (get("yt_loop")[e]) {
         for (let i = get("yt_loop")[e].length; i >= 0; i--)  { 
-            let pre_yt_loop = get("yt_loop")[g];
-            clearInterval(pre_yt_loop.shift());
-            set("yt_loop", s => s = pre_yt_loop);
+            let yt_loop_final_form = get("yt_loop")[g];
+            clearInterval(yt_loop_final_form.shift());
+            set("yt_loop", s => s = yt_loop_final_form);
         }
     }
 }

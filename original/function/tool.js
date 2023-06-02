@@ -46,6 +46,7 @@ export function grab_auto(e) {
     let partner_pointer = null;
     let pointer_space = e.parentElement;
     let all_pointer = pointer_space.children;
+
     for (let i = 0; i < all_pointer.length; i++) {
         if (trigger_pointer.classList.contains("orange_pointer_s")) {
             if (all_pointer[i].classList.contains(the_key_classname) && all_pointer[i].classList.contains("orange_pointer_f")) {
@@ -97,8 +98,24 @@ export const who_is_target = (e) => {
 }  
 
 // * 対応する special_cov を返す関数.
-export const which_special_is = (e) => {
+export const get_correspond_same_concealer = (e) => {
     let the_name = "this_cov_is_" + target_data(e, "same_num_");
     let the_special_cov = document.getElementsByClassName(the_name)[0];
     return the_special_cov;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// * wrapper_index から直接その中の block の数を返してくれる関数.
+export const get_block_num = (e) => {
+    let block_list = e.lastElementChild.lastElementChild;
+    let block_num = block_list.children.length;
+    return block_num;
+}
+
+// * 指定したクラスを持っているブロックが所蔵する block_list の番号を取得できる関数.
+export const get_the_block_index_num = (e, f) => {
+    let block = e.querySelector(f);
+    let the_index_num = [].slice.call(e.children).indexOf(block) + 1;
+    return the_index_num;
 }
