@@ -64,7 +64,7 @@ export const cheetsheet_animation = (e, f) => {
 
 // * 常駐のポインターが装飾ホイールに変形するアニメーション.
 // * もしくはその反対.
-export const pointer_switch = (e, f) => {
+export const pointer_switch_animation = (e, f) => {
 
     if (f == "on") {
         e.animate(
@@ -93,7 +93,7 @@ export const pointer_switch = (e, f) => {
 
 // * 装飾ホイール上で選択肢を表示するレイヤー「layer_base」を回転させるアニメーション.
 // * 上記の pointer_switch と同時に実行される.
-export const layerbase_switch = (e, f) => {
+export const layerbase_switch_animation = (e, f) => {
     if (f == "on") {
         e.animate(
             [
@@ -121,7 +121,7 @@ export const layerbase_switch = (e, f) => {
 
 // * ポインターの上に重ねる ホイールを表示したり、隠したりするアニメーション.
 // * 上記 layerbase_switch と同時に実行される.
-export const wheel_switch = (e, f) => {
+export const wheel_switch_animation = (e, f) => {
     if (f == "on") {
         e.animate(
             [
@@ -151,7 +151,7 @@ export const wheel_switch = (e, f) => {
 // ---------------------------------------------------------------------------------------------------------------
 
 // * エディター上での動作に連動した、常駐しているポインターの装飾的なアニメーション.
-export const pointer_effect = (e) => {
+export const pointer_animation = (e) => {
     e.animate(
         [
             { scale: 1 },
@@ -176,7 +176,7 @@ export const pointer_effect = (e) => {
 // ---------------------------------------------------------------------------------------------------------------
 
 // * 円を回転させる関数.
-const compute_action = (e, f) => {
+const chart_rotation_make = (e, f) => {
     // * カスタムプロパティを取得
     const currentProperty = getComputedStyle(e).getPropertyValue("--rotate");
     // * カスタムプロパティから数値部分のみ取得
@@ -207,5 +207,5 @@ export const chart_rotater = (e) => {
     outcome = n;
   }
   // * 円の回転処理.
-  compute_action(c, outcome);
+  chart_rotation_make(c, outcome);
 }

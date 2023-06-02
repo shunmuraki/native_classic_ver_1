@@ -1,8 +1,6 @@
 // * 上のブロックへ移動する際の共通処理.
 // [* block_go_top へ名称を変更.]
-
 // * 以下は全部 env() をパラメータで受け取る書き方をしよう.
-
 export const block_go_top = (e, f) => {
     
     let env = e; 
@@ -62,7 +60,7 @@ export const block_go_bottom = (e, f) => {
     let next_one; 
     var sibling = env.list_wrapper.nextElementSibling;
     var pre_sibling = env.wrapper_index.nextElementSibling;
-    let connected_your_height = wnv.wrapper_index.clientHeight;
+    let connected_your_height = env.wrapper_index.clientHeight;
     let to_the_distance =  window.innerHeight - env.list_wrapper.getBoundingClientRect().bottom;
     let sibling_height = 0;
 

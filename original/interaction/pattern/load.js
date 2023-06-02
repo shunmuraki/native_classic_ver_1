@@ -2,10 +2,10 @@ window.onload = () => {
     // * 以下 Native を開いて最初に走る処理.
     let dummy = document.createElement("div");
     dummy.classList.add("first_load_dummy");
-    screen.appendChild(dummy);
+    element(".default_display").appendChild(dummy);
     
     // * 以下Native のパーツの初期の表示位置の調整.
-    um.style.display = "none";
+    element(".um_display").style.display = "none";
     $(function() {
         $('html,body').animate({ scrollTop: window_height - 200 }, {duration: 0});
         setTimeout(() => {
@@ -26,7 +26,7 @@ window.onload = () => {
         make_fragment(d, "after");
         d.remove();
         // * 最初のcenteringを用意.
-        all_writearea[0].parentElement.classList.add("centering");
+        all_writearea[0].parentElement.classList.add("centered_block");
         all_writearea[0].focus();
     }
 }());
@@ -46,6 +46,7 @@ audio_list.scrollLeft = the_audio_width;
 
 let video_list = document.querySelector(".um_video");
 let audio_list = document.querySelector(".um_audio");
+
 let video_null = video_list.lastElementChild;
 let audio_null = audio_list.lastElementChild;
 
@@ -60,24 +61,23 @@ for (let i = 0; i < 10; i++) {
   inner.src = the_srccode;
   container.appendChild(inner);
   container.classList.add("this_yt_id_" + yt_videolist_ted[i]);
-  let video_panc = document.querySelector(".video_panc");
-  video_panc.after(container);
+  let video_edge = document.querySelector(".um_video_edge_block");
+  video_edge.after(container);
 }
 
 // * UMレイヤーに画像を流し込む.
 for (let i = 0; i < 10; i++) {
   let container = document.createElement("div");
   container.classList.add("box");
-  let inner = document.createElement("img");
-  inner.classList.add("style_1_1_1_1");
+  let inner = document.createElement("img"); 
   inner.src = "img/ted_" + i + ".png";
   container.appendChild(inner);
-  let audio_panc = document.querySelector(".audio_panc");
-  audio_panc.after(container);
+  let audio_edge = document.querySelector(".audio_edge");
+  audio_edge.after(container);
 }
 
 // * デフォルトの設定.
-audio_list.lastElementChild.classList.add("um_centering");
+audio_list.lastElementChild.classList.add("um_centered_block");
 
 // * 以下デフォルトのスクロール位置の調整。
 let video_list_scrollwidth = video_list.scrollWidth;
@@ -88,7 +88,7 @@ audio_list.scrollLeft = - audio_list_scrollwidth;
 // ---------------------------------------------------------------------------------------------------------------
 
 // * Native のステータスバーにあるオプションすべてにインタラクティブなアニメーション機能を追加.
-let els = document.querySelectorAll(".el");
+let els = document.querySelectorAll(".option");
 for (let i = 0; i < els.length; i++) {
     els[i].addEventListener("click", () => {
         statusbar_animation(els[i]);

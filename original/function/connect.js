@@ -22,7 +22,6 @@ export const complete_list_wrapper = () => {
 }
 
 export const get_less_block_num = () => {
-
     // * 多分 centering_num と original_centering_num が同じ場所に来るから、
     // * それで位置の調整が図れると考えた.
     

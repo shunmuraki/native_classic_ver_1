@@ -19,7 +19,7 @@ export const get_wrapper_index = (e) => {
 };
 
 // * ターゲットの持つ特定のクラスに含まれる [意味のある数字] を返してくれる関数.
-export function target_data(e, f) {
+export function get_property_number(e, f) {
     const list = e.classList;
     for (let i = 0; i < list.length; i++) {
         if (list[i].includes(f)) {
@@ -30,9 +30,9 @@ export function target_data(e, f) {
 }
 
 // * ペアとなる orange_pointer, orange_stripe を返す関数.
-export function grab_auto(e) {
+export function get_orange_pair(e) {
     const trigger_pointer = e;
-    const num = target_data(trigger_pointer, "num_");
+    const num = get_property_number(trigger_pointer, "num_");
     const the_key_classname = "num_" + num;
     let partner_stripe = null;
     let stripe_space = e.parentElement.parentElement.nextElementSibling.firstElementChild;
@@ -69,7 +69,7 @@ export const sorter = (e, f) => {
 }
 
 // * クラスを追加したり外したり、ある element から別の element へ付け替える関数.
-export const classmover = (e, f, g, h) => {
+export const classlist_move = (e, f, g, h) => {
     let classlist = e.classList;
     for (let i = 0; i < classlist.length; i++) {
         if (classlist[i].indexOf(g) != -1) {    
@@ -87,7 +87,7 @@ export const classmover = (e, f, g, h) => {
 }
 
 // * special_cov を考慮した「選択中のターゲット」を探して返す関数.
-export const who_is_target = (e) => {
+export const get_real_target = (e) => {
     let centering = document.querySelector(".centering"); 
     if (centering.classList.contains("same")) {
       target = document.querySelector(".special_cov").lastElementChild;

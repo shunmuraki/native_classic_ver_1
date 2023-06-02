@@ -22,9 +22,9 @@ export const keytouch_make_command_enter = () => {
 export const keytouch_make_command_u = () => {
     
     let env = keytouch_setup();
-    let sps = env.current_sp_cover.children;
-    let c_v_num = [].slice.call(env.current_horizontal.children).indexOf(env.current_vertical);
-    let scrollleft_b = env.current_horizontal.scrollLeft;
+    let sps = env.wrapper_index.children;
+    let c_v_num = [].slice.call(env.block_list.children).indexOf(env.current_vertical);
+    let scrollleft_b = env.block_list.scrollLeft;
     let balanc = 0;
     let center_num = [].slice.call(sps).indexOf(vertical_to_sp(env.current_vertical)); 
     pointer_anim();
@@ -32,7 +32,7 @@ export const keytouch_make_command_u = () => {
     for (let i = 0; i < sps.length; i++) {
         if (i == center_num) {
             make_ver_fragment(env.current_vertical, "after");  
-            let next_one = env.current_vertical.nextElementSibling;
+            let next_one = env.block.nextElementSibling;
             next_one.lastElementChild.focus();
             centering_marker(env.current_vertical, next_one, "centering");
         } else {

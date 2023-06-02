@@ -6,8 +6,8 @@ export const  onYouTubeIframeAPIReady = (g, h) => {
             height: '202.5',
             videoId: h,
             events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
             }
         });
     })
