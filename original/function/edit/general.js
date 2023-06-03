@@ -1,5 +1,10 @@
 import { wrapper_index_make_essential } from "../make";
 
+export const get_custom_scroll_left = (e) => {
+    let scroll_left = e.scrollWidth - window.innerWidth - get("half_left_width") - get("block_width");
+    return scroll_left;
+}
+
 // * 編集モード での 移動の仕方(ポインター移動 or ブロック移動) を管理する関数.
 export const principle_management = (e, f) => {
     let scrap = e;

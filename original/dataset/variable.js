@@ -4,53 +4,55 @@
 // * Native の環境設定.
 let the_classname_list = ['stable', 'stable_end', 'same_start', 'same_end', 'same_num_', 'same', 'actuar_time_', 'actuar_st', 'actuar_en', 'this_video_st', 'this_video_en', "video", "img", "id_is_"];
 
-let blocksize = 360;
-let linesize = 24;
-let blocktime = 5;
+let block_width = 360;
+let edit_block_list_size = 24;
+let block_duration = 5;
 
 // ---------------------------------------------------------------------------------------------------------------
 
 // * width 関連
-let default_block_length = blocksize * linesize;
-let default_length = default_block_length + window.innerWidth;
+let edit_block_list_length = block_width * edit_block_list_size;
+let edit_list_wrapper_length = edit_block_list_length + window.innerWidth;
 
 // ---------------------------------------------------------------------------------------------------------------
 
-let half_left_width = (window.innerWidth - blocksize) / 2;
-let half_right_width = half_left_width + blocksize;
-let full_start_scrollwidth = window.innerWidth - half_left_width;
-let full_end_scrollwidth = default_length - half_right_width + blocksize;
 let window_height = window.innerHeight;
-let the_middline = window_height * 0.5;
-let the_sunsetline = window_height * 0.3;
-let custom_end_scrollwidth = e.scrollWidth - window.innerWidth - half_left_width - blocksize;
+let window_left_width = (window.innerWidth - block_width) / 2;
+let window_right_width = half_left_width + block_width;
+
+let list_wrapper_scrollwidth_at_start = window.innerWidth - window_left_width;
+let list_wrapper_scrollwidth_at_end = edit_list_wrapper_length - window_right_width + blocksize;
+
+let window_middle_height = window_height * 0.5;
+let window_medium_height = window_height * 0.3;
 
 // ---------------------------------------------------------------------------------------------------------------
 
 // * 上記 native_values の値を取得して返す関数.
 export const get = (e) => {
-    return native_object[e];
+    return native_variables[e];
 }
 
 // * native_values の値を外部から変更する際に使用する関数.
 export const set = (e, f) => {
     let b = get(e);
     f(b);
-    native_object[e] = b;
+    native_variables[e] = b;
 }
 
 // ---------------------------------------------------------------------------------------------------------------
 
 // * Native で使用しているグローバル変数たち.
-let native_values = {
-    "magic_elems": [],
-    "ms_adjust_target": 0,
-    "default_pos": 0,
-    "players_list": {},
-    "yt_loop": [],
-    "special_playerlist": {},
-    "s_s_num": 100,
-    "same_start_content": null,
+let native_variables = {
+    "magic_elements": [],
+    "ms_target": 0,
+    "ms_position": 0,
+    "playerlist": {},
+    "yt_loop_list": [],
+    "same_concealer_playerlist": {},
+    "same_num_counter": 100,
+    "same_concealer_same_num_counter": 100,
+    "same_concealer_content": null,
     "orange_data": {},
     "timeoutArray": [],
     "intervalArray": [],
@@ -61,20 +63,21 @@ let native_values = {
     "the_js": "",
     "the_img_blob_list": {},
     "images": [],
-    "animation_data": {},
-    "animation_generate_list": {},
+    "animation_backend_list": {},
+    "animation_frontend_list": {},
     "yt_id_list": [],
     "section_deletable_list": [],
     "the_classname_list": the_classname_list,
-    "blocksize": blocksize,
-    "linesize": linesize,
-    "blocksize": blocksize,
-    "half_left_width": half_left_width,
-    "half_right_width": half_right_width,
-    "full_start_scrollwidth": full_start_scrollwidth,
-    "full_end_scrollwidth": full_end_scrollwidth,
+    "block_width": block_width,
+    "edit_wrapper_index_size": edit_wrapper_index_size,
+    "block_duration": block_duration,
+
+    // * あとは以下の８つかな←ーーーーーーーーー　これが厄介.
+    "window_left_width": window_left_width,
+    "window_right_width": window_right_width,
+    "list_wrapper_scroll_width_at_start": list_wrapper_scrollwidth_at_start,
+    "list_wrapper_scroll_width_at_end": list_wrapper_scrollwidth_at_end,
     "width_height": width_height,
-    "the_middleline": the_middline,
-    "the_sunsetline": the_sunsetline,
-    "custom_end_scrollwidth": custom_end_scrollwidth,
+    "window_middle_height": window_middle_height,
+    "window_medium_height": window_medium_height,
 }
