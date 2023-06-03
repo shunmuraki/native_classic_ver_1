@@ -1,5 +1,3 @@
-import { get_correspond_same_concealer, get_property_number } from "./tool";
-
 // * special_cov関連の関数を束ねたもの.
 export const same_concealer_management = (e) => {
     let wrapper_index = get_wrapper_index(e);
@@ -113,9 +111,12 @@ export const concealer_activate_check = (e) => {
 // ------------------ * 中で何をしているのか. --------------------------------------------------------
 
 export const concealer_inactivate_check_left_block = () => {
+
+    // * ・・・・・・・・・・・・・・・・・・・「左から右へ向かって移動した時に移動元が same_end でした」ケース
     if (the_target_left.classList.contains("same_end")) {
         // * 領域を出た YT の Player の再生を停止する.
         player_setup(the_target_left); 
+
         if (wrapper_index.classList.contains("pausing")) {
             if (player) {
                 if (get_correspond_same_concealer(the_target_left)) {
@@ -135,6 +136,7 @@ export const concealer_inactivate_check_left_block = () => {
             }
         } 
     } else if (the_target_left.classList.contains("same_start")) {
+        // * ・・・・・・・・・・・・・・・・・・・「左から右に向かって移動した時に移動元が same_start でした」ケース
         // * 同じ same_num を持つ same_start の content があれば削除.
         if (the_target_left.lastElementChild) {
             the_target_left.lastElementChild.style.setProperty('opacity', 0, 'important');
@@ -153,7 +155,10 @@ export const concealer_inactivate_check_left_block = () => {
 // * 何をしているのか.
 
 
+
+// * 右のブロックが存在して、そのブロックが same_start ブロックだった場合に
 // * concealer 群に突入する際、まずはその中身を start にコピーする.
+// * それまでの yt があたら
 
 // ------------------ * 中で何をしているのか. --------------------------------------------------------
 
@@ -161,6 +166,11 @@ export const concealer_inactivate_check_left_block = () => {
 
 // * 左側のブロックに対してチェックし、適切に処理を実行する関数.
 export const concealer_inactivate_check_right_block = () => {
+
+    // * 俺が分からないのは、なぜ右のブロックが same_start であるときに
+    // * なんか concealer が存在するのか.
+
+    // * ・・・・・・・・・・・・・・・・・・・「右から左に向かって移動した時に移動元が same_start でした」ケース
     if (the_target_right.classList.contains("same_start")) {
         yt_player_setup(the_target_right);
         if (wrapper_index.classList.contains("pausing")) {
@@ -183,8 +193,10 @@ export const concealer_inactivate_check_right_block = () => {
         }
         
         // * ここがカギ.
+        // * っていうか same_start_content とか絶対グローバルなのおかしいでしょ.
         the_target_right.appendChild(get("same_start_content"));
 
+    // * ・・・・・・・・・・・・・・・・・・・「右から左に向かって移動した時に移動先が same_end でした」ケース <必要！！！！！>
     } else if (the_target_right.classList.contains("same_end")) {
         if (the_target_right.lastElementChild) {
             the_target_right.lastElementChild.style.setProperty('opacity', 0, 'important');
