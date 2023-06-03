@@ -1,29 +1,3 @@
-export const edit_display_setup = () => { 
-    edit_display = document.querySelector(".edit_display");
-    default_display.classList.add("edit");
-    edit_display.style.display = "block";
-    default_display.style.display = "none";
-    body.style.backgroundColor = "#0070D8";
-    body.classList.add("edit_mode");
-}
-
-// * 編集モードの明示化. 編集レイヤー上での処理に限定.
-export const edit_layer_make = () => {
-    let edit_display = document.createElement("div");
-    edit_display.classList.add("new_layer");
-    edit_display.classList.add("block_layer");
-    edit_display.style.display = "none";
-    edit_display.style.opacity = 0;
-    default_display.after(edit_display);
-    edit_display_setup();
-}
-
-// * 画面を切り替える.
-export const mode_switch_to_edit = () => {
-    default_display.style.opacity = 0;
-    edit_display.style.opacity = 1;
-}
-
 // * 編集モードを起動して次の入力を待機するまでの一連の処理.
 export const keytouch_edit_setup = () => {
 
@@ -33,14 +7,14 @@ export const keytouch_edit_setup = () => {
     same_concealer_trace_before_action(env.block);
 
     // * いろんな箇所で使うから外部オブジェクトに共通化した.
-    ms_mode_inactivate();
-    focus_checker(env.block);
+    ms_cancel();
+    focus_check(env.block);
     
     // * デフォルトレイヤーからの離脱.
-    blur_checker(env.block);
+    blur_check(env.block);
     
     // * 外部オブジェクトへ共通化した.
-    delete_all_same_concealer();
+    delete_all_concealer();
 
     // * 外部にオブジェクト化（すぐ上だけど）
     edit_layer_make();
@@ -81,4 +55,32 @@ export const keytouch_edit_setup = () => {
     is_it_same_series(document.querySelector(".edit_centerd_block"));
     
     layer_centering.classList.remove("edit_centerd_block");
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// * 編集モードの明示化. 編集レイヤー上での処理に限定.
+export const edit_layer_make = () => {
+    let edit_display = document.createElement("div");
+    edit_display.classList.add("new_layer");
+    edit_display.classList.add("block_layer");
+    edit_display.style.display = "none";
+    edit_display.style.opacity = 0;
+    default_display.after(edit_display);
+    edit_display_setup();
+}
+
+export const edit_display_setup = () => { 
+    edit_display = document.querySelector(".edit_display");
+    default_display.classList.add("edit");
+    edit_display.style.display = "block";
+    default_display.style.display = "none";
+    body.style.backgroundColor = "#0070D8";
+    body.classList.add("edit_mode");
+}
+
+// * 画面を切り替える.
+export const mode_switch_to_edit = () => {
+    default_display.style.opacity = 0;
+    edit_display.style.opacity = 1;
 }

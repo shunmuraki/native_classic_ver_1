@@ -1,8 +1,9 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 // * Native においてブロックを判別する際に扱う記号的な役割のクラス名の集合.
-// * Native の環境設定.
 let the_classname_list = ['stable', 'stable_end', 'same_start', 'same_end', 'same_num_', 'same', 'actuar_time_', 'actuar_st', 'actuar_en', 'this_video_st', 'this_video_en', "video", "img", "id_is_"];
+
+// ---------------------------------------------------------------------------------------------------------------
 
 let block_width = 360;
 let edit_block_list_size = 24;
@@ -10,7 +11,6 @@ let block_duration = 5;
 
 // ---------------------------------------------------------------------------------------------------------------
 
-// * width 関連
 let edit_block_list_length = block_width * edit_block_list_size;
 let edit_list_wrapper_length = edit_block_list_length + window.innerWidth;
 
@@ -71,8 +71,6 @@ let native_variables = {
     "block_width": block_width,
     "edit_wrapper_index_size": edit_wrapper_index_size,
     "block_duration": block_duration,
-
-    // * あとは以下の８つかな←ーーーーーーーーー　これが厄介.
     "window_left_width": window_left_width,
     "window_right_width": window_right_width,
     "list_wrapper_scroll_width_at_start": list_wrapper_scrollwidth_at_start,

@@ -47,7 +47,7 @@ export const all_view_changer = (e, f) => {
 };
 
 // * textarea の存在を確認して focus() を挿れる関数.
-export const focus_checker = (e) => {
+export const focus_check = (e) => {
     let if_textarea = false;
     let content = e.lastElementChild;
     if (content) {
@@ -63,7 +63,7 @@ export const focus_checker = (e) => {
 }
 
 // * textarea の存在を確認して blur() を実行する関数.
-export const blur_checker = (e) => {
+export const blur_check = (e) => {
     let if_textarea = false;
     let content = e.lastElementChild;
     if (content) {

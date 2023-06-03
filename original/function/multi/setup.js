@@ -1,5 +1,3 @@
-
-
 // * <textarea> 内に記述された YouTube動画ID から YT Player を生成し、
 // * player を返す関数.
 export const video_loading_setup_initial = (e, f) => {

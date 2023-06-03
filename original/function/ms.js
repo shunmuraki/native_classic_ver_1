@@ -1,4 +1,4 @@
-export const ms_mode_inactivate = (e) => {
+export const ms_cancel = (e) => {
     ms_close(e.lastElementChild);
     document.querySelector(".ms_area").remove();
 }

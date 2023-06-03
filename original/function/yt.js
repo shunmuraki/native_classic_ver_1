@@ -25,7 +25,6 @@ export const onPlayerReady = (event) => {
 }
 
 // var done = false;
-
 // * YT Iframe の状態が 再生 に変わった時点で実行される関.
 export const onPlayerStateChange = (event) => {
     if (event.data == YT.PlayerState.PLAYING && !done) {

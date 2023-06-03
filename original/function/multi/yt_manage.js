@@ -1,3 +1,12 @@
+// * このあたりに player_seup() が存在したんだと思う.
+export const yt_player_setup = () => {
+    let player;
+    if (e.lastElementChild) {
+        player = get_yt_player(e.lastElementChild);
+    }
+    return player;
+}
+
 // * special_cov 向けでない、通常の YT Player の束から該当するプレイヤーを返す関数.
 export const get_yt_player = (e) => {
     let the_keyid = e.id;

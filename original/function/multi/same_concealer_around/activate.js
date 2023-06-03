@@ -41,17 +41,3 @@ export const same_concealer_activation_setup = () => {
         hit_target.lastElementChild.style.setProperty('opacity', 0, 'important');
     }
 }
-
-// * 追加した special_cov の YT Iframe を再生する関数.
-function play_around() {
-    if (player) {
-        let the_name = "same_num_" + target_data(special_cov, "this_cov_is_");
-        just_clear_yt_loop(the_name);
-        setTimeout(() => {
-            let the_time = yt_resetter(e);
-            player.seekTo(the_time);
-            player.playVideo();
-            yt_loop_player(player, e, the_name);
-        }, 1000)
-    }
-}

@@ -13,7 +13,6 @@ export const get_yt_id = (e) => {
     return code;
 }
 
-
 export const actuar_setup_initial = (e) => {
     let the_v_en_name = "this_video_st_" + e;
     // * actuar を反映.

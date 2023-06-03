@@ -19,7 +19,7 @@ export const get_wrapper_index = (e) => {
 };
 
 // * ターゲットの持つ特定のクラスに含まれる [意味のある数字] を返してくれる関数.
-export function get_property_number(e, f) {
+export function get_value(e, f) {
     const list = e.classList;
     for (let i = 0; i < list.length; i++) {
         if (list[i].includes(f)) {
