@@ -1,18 +1,3 @@
-export const get_yt_id = (e) => {
-    // e = block
-    let code;
-    // * "v="以降の11文字を取得して YouTube動画IDを取得.
-    let st = e.indexOf("v="); 
-    // * UMから取り込まれる場合と、通常のURLペーストの場合に対応。
-    if (e.indexOf("v=") == -1) {
-        code = e;
-    } else {
-        code = e.slice(st + 2, st + 13);
-    }
-
-    return code;
-}
-
 export const actuar_setup_initial = (e) => {
     let the_v_en_name = "this_video_st_" + e;
     // * actuar を反映.
@@ -65,18 +50,17 @@ export const addition_of_video_other_list_wrapper_make = (e) => {
 export const video_pasted_list_wrapper_fragment_add = () => {
     // * fragment を適切な箇所へ挿入.
     // * ここもなんか上手いことできるはず. tool.js のオブジェクトで代替できそうな処理に見える.
-    let the_box_num = [].slice.call(vertical_to_hor(the_box).children).indexOf(the_box) - 1;
+    let the_box_num = [].slice.call(get_block_list(the_box).children).indexOf(the_box) - 1;
     the_box.before(the_fragment);
 }
 
-
 export const other_list_wrapper_fragment_add = () => {
-    let current_sp_cover = vertical_to_sp_cover(the_box);
-    let the_sp_num = [].slice.call(current_sp_cover.children).indexOf(vertical_to_sp(the_box));
+    let wrapper_index = get_wrapper_index(the_box);
+    let the_sp_num = [].slice.call(current_sp_cover.children).indexOf(get_list_wrapper(the_box));
     // * それ以外の sp へも同様に fragment を適切な箇所へ挿入.
-    for (let i = 0; i < current_sp_cover.childElementCount; i++) {
+    for (let i = 0; i < wrapper_index.childElementCount; i++) {
         if (i != the_sp_num) {
-            current_sp_cover.children[i].lastElementChild.children[the_box_num].before(the_fragment_stable);
+            wrapper_index.children[i].lastElementChild.children[the_box_num].before(the_fragment_stable);
         }
     } 
 }

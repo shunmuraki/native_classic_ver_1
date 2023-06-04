@@ -1,43 +1,46 @@
-// * special_cov を作成して追加する関数.
-export const same_concealer_activation_setup = () => {
-    let the_name = "same_num_" + the_num;
-    let special_cov = same_concealer_make(e, the_num);
-    let hit_target = document.getElementsByClassName(the_name)[document.getElementsByClassName(the_name).length - 1];
-    
-    // * もし iframe だった場合 YT player を生成するようにする。
-    // * ！cloneNode() はここでは使用しない！
-    if (hit_target.lastElementChild) {
+// ------------------ * 中で何をしているのか. --------------------------------------------------------
 
-        if (hit_target.lastElementChild.tagName == "IFRAME") {
+// * centering を持つブロックが same を持つか判定する関数.
 
-            let special_playerlist = native_value("special_playerlist");
-            let the_code = target_data(hit_target, "id_is_");
-            set("s_s_num", s => s+= 1);
-            let the_keyname = String("yt_editor_" + get("s_s_num"));
-            let the_sp_if = document.createElement("div");
-            the_sp_if.setAttribute("id", the_keyname);
-            classmover(hit_target.lastElementChild, the_sp_if, "style_", "add");
-            special_cov.appendChild(the_sp_if);
-            let pl = block_multiable(the_keyname, the_code);
-            special_playerlist[the_keyname] = pl;
-            // * ブロックのスタイル維持のため.
-            special_cov.classList.add("video");
-            // * Escape後にiframeが復活するように id_is_ を複製したすべてにセット.
-            // [* 正直意味が分からない.]
-            special_cov.classList.add("id_is_" + the_code);
+// * 左右上下の移動で使える.
+export const concealer_activate_check = (e) => {
+    // * special_cov の生成からコンテントの挿入までを処理.
+    if (e.classList.contains("same")) {
 
-        } else {
+        let concealer = get_correspond_same_concealer(e);
+        let the_num = get_value(e, "same_num_");
+        
+        if (concealer == null) {
 
-            let the_one = hit_target.lastElementChild.cloneNode(true);
-            special_cov.appendChild(the_one);
-            if (the_one.tagName == "IMG") {
-                // * スタイル維持のため.
-                special_cov.classList.add("img");
-                special_cov.style.height = 225 + "px";
-            }
-            
+            // * 下の関数使ってますよーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー！！！！！！！！！！！！！！
+            // * 下の関数使ってますよーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー！！！！！！！！！！！！！！
+            // * 下の関数使ってますよーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー！！！！！！！！！！！！！！
+            trace_original_to_concealer();
+            concealer = document.getElementsByClassName("this_cov_is_" + the_num)[0];
+
         }
-
-        hit_target.lastElementChild.style.setProperty('opacity', 0, 'important');
+ 
+        if (e.classList.contains("centered_block") || e.classList.contains(".edit_centered_block")) {
+            concealer.classList.add("center_special");
+        } else {
+            concealer.classList.remove("center_special");
+        }
+        
+        let player;
+        // * dup ブロックであるケースを配慮.
+        if (concealer.lastElementChild) {
+            player = get_yt_player(concealer.lastElementChild);
+            if (element(".default_display").classList.contains("edit")) {
+                if (get_wrapper_index(e).classList.contains("pausing")) {
+                    yt_player_on_concealer_start();
+                    // player_loop_clear()
+                    // player_loop_stasrt()
+                }
+            } else {
+                yt_player_on_concealer_start();
+                // player_loop_clear()
+                // player_loop_stasrt()
+            }
+        }
     }
 }

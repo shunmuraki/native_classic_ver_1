@@ -29,39 +29,6 @@ export function get_value(e, f) {
     return the_num;
 }
 
-// * ペアとなる orange_pointer, orange_stripe を返す関数.
-export function get_orange_pair(e) {
-    const trigger_pointer = e;
-    const num = get_property_number(trigger_pointer, "num_");
-    const the_key_classname = "num_" + num;
-    let partner_stripe = null;
-    let stripe_space = e.parentElement.parentElement.nextElementSibling.firstElementChild;
-    let all_stripe = stripe_space.children;
-    for (let i = 0; i < all_stripe.length; i++) {
-        if (all_stripe[i].classList.contains(the_key_classname)) {
-            partner_stripe = all_stripe[i];
-        }
-    }
-
-    let partner_pointer = null;
-    let pointer_space = e.parentElement;
-    let all_pointer = pointer_space.children;
-
-    for (let i = 0; i < all_pointer.length; i++) {
-        if (trigger_pointer.classList.contains("orange_pointer_s")) {
-            if (all_pointer[i].classList.contains(the_key_classname) && all_pointer[i].classList.contains("orange_pointer_f")) {
-                partner_pointer = all_pointer[i];
-            }
-        } else if (trigger_pointer.classList.contains("orange_pointer_f")) {
-            if (all_pointer[i].classList.contains(the_key_classname) && all_pointer[i].classList.contains("orange_pointer_s")) {
-                partner_pointer = all_pointer[i];
-            }
-        }
-    }
-    const grabed = [partner_stripe, partner_pointer];
-    return grabed;
-}
-
 // * ソートする関数.
 // [* この関数の使いどころが不明.]
 export const sorter = (e, f) => {
@@ -96,13 +63,6 @@ export const get_real_target = (e) => {
     }
     return target;
 }  
-
-// * 対応する special_cov を返す関数.
-export const get_correspond_same_concealer = (e) => {
-    let the_name = "this_cov_is_" + target_data(e, "same_num_");
-    let the_special_cov = document.getElementsByClassName(the_name)[0];
-    return the_special_cov;
-}
 
 // ---------------------------------------------------------------------------------------------------------------
 

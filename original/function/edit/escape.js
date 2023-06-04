@@ -56,7 +56,6 @@ export const default_landing_setup = (e) => {
     original_centering_checker(e, the_new_focusedblock);
 }
 
-
 export const back_to_defalutmode = () => {
     let edit_display = document.querySelector(".edit_display");
     let default_display = document.querySelector(".default_display");

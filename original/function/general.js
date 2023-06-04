@@ -1,5 +1,20 @@
 import { get_correspond_same_concealer, get_the_block_index_num } from "./tool";
 
+// * from /Multi
+export const get_video_id = (e) => {
+    // e = block
+    let code;
+    // * "v="以降の11文字を取得して YouTube動画IDを取得.
+    let st = e.indexOf("v="); 
+    // * UMから取り込まれる場合と、通常のURLペーストの場合に対応。
+    if (e.indexOf("v=") == -1) {
+        code = e;
+    } else {
+        code = e.slice(st + 2, st + 13);
+    }
+    return code;
+}
+
 // * centering クラスを管理する関数.
 export const centered_block_management = (e, f, g) => {
     e.classList.remove(g);
