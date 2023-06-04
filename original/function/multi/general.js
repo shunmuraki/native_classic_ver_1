@@ -10,14 +10,6 @@ export const actuar_setup_initial = (e) => {
     the_box.classList.add("id_is_" + the_code);
 }
 
-export const video_block_make = () => {
-    let block = document.createElement("div");
-    let the_name = "same_num_" + get("same_num");
-    block.classList.add("video");
-    block.classList.add(the_name);
-    return block;
-}
-
 // * おそらく enough でいけると思っている.
 export const addition_of_video_pasted_list_wrapper_make = (e) => {
     let pasted_list_wrapper_fragment = document.createDocumentFragment();

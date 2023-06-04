@@ -101,25 +101,6 @@ export const go_af_scroll = () => {
     }
 }
 
-// * 上下左右の移動の際に special_cov が持つ要素(content) を same_end に反映させて special_cov を描画上の都合から削除する関数.
-export const same_concealer_cleaner = (e) => {
-    let ends = document.querySelectorAll(".same_end");
-    for (let i = 0; i < ends.length; i++) {
-        if (get_wrapper_index(ends[i]).isEqualNode(e)) {
-            let same_concealer = get_correspond_same_concealer(ends[i]);
-            if (same_concealer) {
-                let content = same_concealer.lastElementChild.cloneNode(true);
-                content.style.setProperty('opacity', 1, 'important');
-                if (ends[i].lastElementChild) {
-                    ends[i].lastElementChild.remove();
-                }
-                ends[i].appendChild(content);
-                same_concealer.remove();
-            }
-        }
-    }
-}
-
 // * センタリングしているブロックの位置を支点に window のスクロール位置(上下)を調整する関数.
 export const window_positioning = (e) => {
     if (get("window_height") - e.getBoundingClientRect().bottom < get("the_sunsetline")) {
@@ -223,44 +204,6 @@ export const optimize_writing = (e, f) => {
     let height = e.clientHeight;
     e.parentElement.style.height = height + "px";
     window_positioning(f);
-}
-
-// ---------------------------------------------------------------------------------------------------------------
-
-// * same(= special_cov) がセンタリングしている間にスタイリングを変更した場合に、sameの外に出る時に対象となっていた special_cov の要素を複製して大元の same_end に格納する関数.
-export const same_concealer_tracer = (e) => {
-    if (e.previousElementSibling) {
-        if (e.previousElementSibling.classList.contains("same_end")) {
-            let same_concealer = get_correspond_same_concealer(e.previousElementSibling);
-            // * 以下を stracer_basis (concealer_reflecton) で処理する.
-            if (same_concealer) {
-                let cloned_same_concealer = special_cov.lastElementChild.cloneNode(true);
-                cloned_same_concealer.style.setProperty('opacity', 0, 'important');
-                if (e.previousElementSibling.lastElementChild) {
-                    e.previousElementSibling.lastElementChild.remove();
-                }
-                e.previousElementSibling.appendChild(cloned_same_concealer); 
-            }
-        }
-    } 
-    if (e.nextElementSibling) {
-        if (e.nextElementSibling.classList.contains("same_start")) {
-            same_concealer_tracer(e.nextElementSibling);
-        }
-    }
-}
-
-// * 左右の移動でspecial_covの変更内容を same_end に反映させる関数.
-export const same_concealer_trace_essential = (e) => {
-    let same_concealer = get_correspond_same_concealer(e);
-    if (same_concealer) {
-        let cloned_same_concealer = same_concealer.lastElementChild.cloneNode(true);
-        cloned_same_concealer.style.setProperty('opacity', 0, 'important');
-        let same_name = "same_num_" + target_data(e, "same_num_");
-        let sames = document.getElementsByClassName(same_name);
-        sames[sames.length - 1].lastElementChild.remove();
-        sames[sames.length - 1].appendChild(specon_cloned);
-    }
 }
 
 // ---------------------------------------------------------------------------------------------------------------
