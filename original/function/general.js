@@ -130,16 +130,17 @@ export const centered_same_concealer_cancel = () => {
 // ---------------------------------------------------------------------------------------------------------------
 
 // * sameの途中にブロックが挿入された場合に対処する関数. 
-export const same_devide = (e, f) => { 
+export const same_devide = (e, f) => {
     
     let the_target_left = e.previousElementSibling;
     let the_target_right;
+
     if (f == "addon") {
         the_target_right = e.nextElementSibling;
     } else if (f == "replace") {
         the_target_right = e;
     }
-
+    
     // * 両サイドがsameであることが条件で、かつ両者が特定のクラス(same_start, same_end)を持たない場合にのみ実行.
     if (the_target_left && the_target_right) {
         if (the_target_left.classList.contains("same") && the_target_right.classList.contains("same")) {
@@ -214,7 +215,7 @@ export const optimize_writing = (e, f) => {
 // * f = 移動先
 // * g,= [移動元のst, 移動先のst]
 // * h = 何個分のブロックを移すか.
-export const trace_block_to_empties = (e, f, g, h) => {
+export const trace_content_to_empties = (e, f, g, h) => {
     // * wrapper_index 内の話に過ぎない.
     let from_st = g[0];
     let to_st = g[1];
@@ -241,4 +242,10 @@ export const trace_block_to_empties = (e, f, g, h) => {
         }
 
     }
+}
+
+// 引数に渡したブロックを中央にした時の scrollLeft の値を返すオブジェクト.
+export const get_custom_scroll_left = (e) => {
+    let scroll_left = e.scrollWidth - window.innerWidth - get("half_left_width") - get("block_width");
+    return scroll_left;
 }

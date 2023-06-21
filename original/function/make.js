@@ -2,7 +2,7 @@
 // * list_wrapper を生成してくれる関数.
 // [* 縦と横を指定することになる.]
 // e = 横, f = 縦
-export const wrapper_index_with_enough_block_make = (e, f) => {
+export const wrapper_index_with_enough_container = (e, f) => {
     let wrapper_index = wrapper_index_make(false);
     let list_wrapper = list_wrapper_make(true);
     // * すでに一つは追加してあるので.
@@ -20,7 +20,7 @@ export const wrapper_index_with_enough_block_make = (e, f) => {
 }
 
 // * まだそんなのないけど.
-export const list_wrapper_with_enough_block_make = () => {
+export const list_wrapper_with_enough_container = () => {
     let list_wrapper = list_wrapper_make(true);
     // * すでに一つは追加してあるので.
     for (let i = 0; i < e-1; i++) {

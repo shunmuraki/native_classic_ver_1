@@ -84,3 +84,33 @@ export const get_the_block_index_num = (e, f) => {
     let the_index_num = [].slice.call(e.children).indexOf(block) + 1;
     return the_index_num;
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+
+// * 配列の中から近似値を取得するオブジェクト.
+export const get_nearest_number = (e) => {
+    let dataset = e;
+    let nearly_left = 0; 
+    let original_dataset_min = [];
+    for (let i = 0; i < dataset.length; i++) {
+        if (dataset[i] <= exact_distance) {
+            original_dataset_min.push(dataset[i]);
+        }
+    }
+    let original_dataset_max = [];
+    for (let i = 0; i < dataset.length; i++) {
+        if (dataset[i] > exact_distance) {
+            original_dataset_max.push(dataset[i]);
+        }
+    }
+
+    // * 予め pointer は scrollLeft の値順に並べてあり、
+    // * データの中の「何番目」とDOMの中の「何番目」が一致する.
+    if (original_dataset_min.length > 0) {
+        nearly_left = Math.max(...original_dataset_min);
+    } else if (original_dataset_min.length <= 0) { 
+        nearly_left = Math.min(...original_dataset_max);
+    } 
+
+    return nearly_left;
+}

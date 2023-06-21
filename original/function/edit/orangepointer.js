@@ -5,29 +5,6 @@ export const orange_pointer_initial = () => {
     new_see.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.add("comesin");
 }
 
-// * comesin クラス（最新のorange_pointerを表す）を管理する関数.
-export const comesin_management = (e, f, g) => {
-    if (document.querySelector(".comesin")) {
-        if (e == "top") {
-            let next_one = g.previousElementSibling.firstElementChild.firstElementChild.firstElementChild.lastElementChild;
-            f.classList.toggle("comesin");
-            next_one.classList.toggle("comesin");
-        } else if (e == "left") {
-            let next_one = f.previousElementSibling;
-            f.classList.toggle("comesin");
-            next_one.classList.toggle("comesin");
-        } else if (e == "bottom") {
-            let next_one = g.nextElementSibling.firstElementChild.firstElementChild.firstElementChild.firstElementChild;
-            f.classList.toggle("comesin");
-            next_one.classList.toggle("comesin");
-        } else if (e == "right") {
-            let next_one = f.nextElementSibling;
-            f.classList.toggle("comesin");
-            next_one.classList.toggle("comesin");
-        }
-    }
-}
-
 // ---------------------------------------------------------------------------------------------------------------
 
 // * 下記 pointer_control() の実行内容.
