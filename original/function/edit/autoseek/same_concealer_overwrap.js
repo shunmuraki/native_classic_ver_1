@@ -7,65 +7,57 @@ export const same_concealer_overwrap_activate = () => {
 export const same_concealer_overwrap_cancel = () => {
     // 戻り値を取得しつつ、shift() 実行後の timeoutArray を取得しておく。
     let array = get("timeoutArray");
-    let the_v = timeout.shift();
+    let log = timeout.shift();
     set("timeoutArray", s => s = array);
-    clearTimeout(the_v);
+    clearTimeout(log);
 }
 
 // * オートシーキング中に５秒おきに実行する処理を作成して返す関数.
-export const same_concealer_overwrap = (e, f, g, h, j) => {
-    
-    let scrap = e;
-    let hor = f;
-    let pause_when = g;
-    let play_when = h;
-    let the_seeking_time = j;
-
+export const same_concealer_overwrap = (edit_env, play_when, pause_when, seeking_duration) => {
     // * 核となるタイマー処理.
-    let s_timeout = setTimeout(() => {
-        let centering_you = document.getElementsByClassName("new_layer_centering")[0];
-        if (centering_you.nextElementSibling && scrap.classList.contains("playing")) {
-            let next_one_is_you = centering_you.nextElementSibling;
-            let the_block_num = Math.floor((hor.scrollLeft + half_left_width - window.innerWidth) / blocksize);
-            centering_marker(centering_you, next_one_is_you, "new_layer_centering");
-            is_it_same_series(next_one_is_you);
+    let five_second_timeout = setTimeout(() => {
+        let centering_block = document.getElementsByClassName("edit_centered_block")[0];
+        if (centering_block.nextElementSibling && scrap.classList.contains("playing")) {
+            let next_centering_block = centering_block.nextElementSibling;
+            let block_num = Math.floor((edit_env.block_list.scrollLeft + half_left_width - window.innerWidth) / blocksize);
+            centering_marker(centering_block, next_centering_block, "edit_centered_block");
+            is_it_same_series(next_centering_block);
             // 自身を次のタイマーとして追加(高等技術).
             same_concealer_overwrap_activate();
-            centering = document.getElementsByClassName("new_layer_centering")[0];
-            for (let i = 0; i < scrap.children.length; i++) {
+            let latest_centering_block = document.getElementsByClassName("edit_centered_block")[0];
+            for (let i = 0; i < edit_env.wrapper_index.children.length; i++) {
                 // orange_space を弾く.
-                if (i > 0) {
-                    let horizon = scrap.children[i].lastElementChild;
-                    for (let o = 0; o < horizon.children.length; o++) {
-                        let the_block = horizon.children[the_block_num + 2];
-                        let the_special_cov = which_special_is(the_block);
-                        if (the_special_cov) {
-                            // 新しいspecial_covが台頭する時.                                
-                            if (! the_special_cov.isEqualNode(which_special_is(centering))) {
-                                same_concealer_overwrap_cancel();
-                                seek_and_actuareffect_overwrap_cancel();
-                                let player;
-                                if (the_special_cov.lastElementChild) {
-                                    if (the_special_cov.lastElementChild.tagName == "IFRAME") {
-                                        player = yt_player_getter(the_special_cov.lastElementChild); 
-                                    }
+                let horizon = edit_env.wrapper_index.children[i].lastElementChild;
+                for (let o = 0; o < horizon.children.length; o++) {
+                    let the_block = horizon.children[block_num + 2];
+                    let the_same_concealer = which_special_is(the_block);
+                    if (the_same_concealer) {
+                        // 新しいspecial_covが台頭する時.                                
+                        if (! the_same_concealer.isEqualNode(which_special_is(latest_centering_block))) {
+                            same_concealer_overwrap_cancel();
+                            seek_and_actuareffect_overwrap_cancel();
+                            let player;
+                            if (the_same_concealer.lastElementChild) {
+                                if (the_same_concealer.lastElementChild.tagName == "IFRAME") {
+                                    player = yt_player_getter(the_same_concealer.lastElementChild); 
                                 }
-                                // * 次のブロックを参照してから続きの処理を決定.
-                                // [* もう少しちゃんと理解したい.]
-                                setTimeout(() => {
-                                    if (player) {
-                                        player.pauseVideo();
-                                        let the_time = yt_resetter();
-                                        player.seekTo(the_time);
-                                        player.playVideo();
-                                    }        
-                                    // * この setTimeout１秒分を考慮する.
-                                    let ms = pause_when - play_when;
-                                    the_seeking_time = (blocktime * 1000) - ms;
-                                    same_concealer_overwrap_activate();
-                                    seek_and_actuareffect_overwrap_activate();
-                                }, 1000)
                             }
+                            // * 次のブロックを参照してから続きの処理を決定.
+                            // [* もう少しちゃんと理解したい.]
+                            setTimeout(() => {
+                                if (player) {
+                                    player.pauseVideo();
+                                    let time_when = yt_resetter();
+                                    player.seekTo(time_when);
+                                    player.playVideo();
+                                }        
+                                // * この setTimeout１秒分を考慮する.
+                                let gap = pause_when - play_when;
+                                seeking_duration = (blocktime * 1000) - gap;
+                                same_concealer_overwrap_activate();
+                                seek_and_actuareffect_overwrap_activate();
+                            }, 1000)
+                            // * ここ変数にせなあかんのちゃう？
                         }
                     }
                 }
@@ -74,8 +66,7 @@ export const same_concealer_overwrap = (e, f, g, h, j) => {
             // * timeoutArray についても読み込む必要があったりするよね.
             same_concealer_overwrap_cancel();
         }
-    }, the_seeking_time);
-
+    }, seeking_duration);
     // * タイマー処理を返す.
-    return s_timeout;
+    return five_second_timeout;
 }

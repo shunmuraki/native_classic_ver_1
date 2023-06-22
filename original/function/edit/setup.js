@@ -49,21 +49,20 @@ export const edit_layer_make = () => {
     edit_display.classList.add("block_layer");
     edit_display.style.display = "none";
     edit_display.style.opacity = 0;
-    default_display.after(edit_display);
+    element(".default_display").after(edit_display);
     edit_display_setup();
 }
 
 export const edit_display_setup = () => { 
-    edit_display = document.querySelector(".edit_display");
-    default_display.classList.add("edit");
-    edit_display.style.display = "block";
-    default_display.style.display = "none";
-    body.style.backgroundColor = "#0070D8";
-    body.classList.add("edit_mode");
+    element(".default_display").classList.add("edit");
+    element(".edit_display").style.display = "block";
+    element(".default_display").style.display = "none";
+    element(".body").style.backgroundColor = "#0070D8";
+    element(".body").classList.add("edit_mode");
 }
 
 // * 画面を切り替える.
 export const mode_switch_to_edit = () => {
-    default_display.style.opacity = 0;
-    edit_display.style.opacity = 1;
+    element(".default_display").style.opacity = 0;
+    element(".edit_display").style.opacity = 1;
 }

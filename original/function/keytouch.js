@@ -40,6 +40,12 @@ class edit_keytouch_base {
         this.block_list = get_get_block_list(this.block);
         this.list_wrapper = get_list_wrapper(this.block);
         this.wrapper_index = get_wrapper_index(this.block);
+        this.orange_space = get_orange_space(this.wrapper_index);
+        this.orange_pointer_space = get_orange_pointer_space(this.wrapper_index);
+        this.orange_stripe_space = get_orange_stripe_space(this.wrapper_index);
+        this.orange_pointer_store_space = get_orange_pointer_store_space(this.wrapper_index);
+        this.orange_stripe_store_space = get_orange_stripe_store_space(this.wrapper_index);
+        this.orange_data = target_data(this.orange_space, "orange_num_");
     }
 }
 
