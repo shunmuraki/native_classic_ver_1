@@ -12,7 +12,6 @@ export const go_right_from_samestart_block = () => {
 export const go_right_from_sameend_block = () => {
     // * 領域を出た YT の Player の再生を停止する.
     player_setup(the_target_left); 
-
     if (wrapper_index.classList.contains("pausing")) {
         if (player) {
             if (get_correspond_same_concealer(the_target_left)) {
