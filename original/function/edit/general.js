@@ -22,17 +22,16 @@ export const centered_pointer_management = (e, f, g) => {
 }
 
 // * 編集モード での 移動の仕方(ポインター移動 or ブロック移動) を管理する関数.
-export const motion_type_management = (e, f) => {
-    let wrapper_index = e;
-    if (wrapper_index.classList.contains("block_motion")) {
-        if ("block_motion" != f) {
-            wrapper_index.classList.remove("block_motion");
-            wrapper_index.classList.add(f);
+export const motion_type_management = (wrapper_index, classname) => {
+    if (wrapper_index.classList.contains("motion_block")) {
+        if ("motion_block" != classname) {
+            wrapper_index.classList.remove("motion_block");
+            wrapper_index.classList.add(classname);
         }
-    } else if (wrapper_index.classList.contains("pointer_motion")) {
-        if ("pointer_motion" != f) {
-            wrapper_index.classList.remove("pointer_motion");
-            wrapper_index.classList.add(f);
+    } else if (wrapper_index.classList.contains("motion_pointer")) {
+        if ("motion_pointer" != classname) {
+            wrapper_index.classList.remove("motion_pointer");
+            wrapper_index.classList.add(classname);
         }
     } 
 }
