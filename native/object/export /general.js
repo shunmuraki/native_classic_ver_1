@@ -1,32 +1,32 @@
 // * blockから <object> を生成して返す関数.
-export const object_make = (e) => {
-    let final_block = e.cloneNode(true);
-    let classlist = final_block.classList;
+export const object_make = (block) => {
+    let object = block.cloneNode(true);
+    let classlist = object.classList;
     // * Linear にも必要なクラスだけを移し替える.
     for (let i = classlist.length - 1; i >= 0 ; i--) {
         if (classlist[i].indexOf("same_id_") == -1 && classlist[i].indexOf("same_deletable") == -1 && classlist[i].indexOf("anim_num_") == -1 && classlist[i].indexOf("outerstyle_") == -1 && classlist[i].indexOf("iframe") == -1) {
-            final_block.classList.remove(classlist[i]);
+            object.classList.remove(classlist[i]);
         }
     }
-    final_block.classList.add("object");
-    return final_block;
+    object.classList.add("object");
+    return object;
 }
 
 // * 画像のパス を images 配列に加え、対応する画像のElementの src にもセットする関数.
-export const img_src_setup = (e) => {
-    let target = e.lastElementChild;
-    if (target) {
-        if (target.tagName == "IMG") {
-            let the_src = target.getAttribute('src');
+export const img_src_setup = (block) => {
+    let content = block.lastElementChild;
+    if (content) {
+        if (content.tagName == "IMG") {
+            let src = content.getAttribute('src');
             // * 画像のパスの保存先のグローバル変数 images に追加.
-            set("images", s => s.push(the_src));
-            let the_num = Object.keys(get("the_img_blob_list")).length; 
+            set("images", s => s.push(src));
+            let num = Object.keys(get("the_img_blob_list")).length; 
             // * 画像のパスの保存先のグローバル変数 the_img_blob_list に追加.
             // * これと共有する the_num を target の src にも与えることで、書き出された Linear 自身が画像を表示できる.
             // [* しかしそもそも images の存在意義とは？同じ処理を the_img_blob_list にも施しているように見受けられるが.]
-            set("the_img_blob_list", s => s["img_" + the_num] = the_src);
-            let the_filename = "images/img_" + the_num + ".png";
-            target.setAttribute("src", the_filename);
+            set("the_img_blob_list", s => s["img_" + num] = src);
+            let filename = "images/img_" + num + ".png";
+            target.setAttribute("src", filename);
         }
     }
 }
@@ -34,10 +34,10 @@ export const img_src_setup = (e) => {
 // * アップロードされた img ファイルを base64形式 へ変換し、
 // * 画像ごとに "[:img]" を間に挿入した、単一の文字列とし final_textcontent に追記する関数.
 export const make_img_basesixfor = (e) => {
-    let the_textdata;
-    let dec = e.slice(0, 1);
-    if (dec == "[") {
-        the_textdata = String(e) + "[:img]";
+    let textdata;
+    let key_word = e.slice(0, 1);
+    if (key_word == "[") {
+        textdata = String(e) + "[:img]";
     } else {
         let image = new Image();
         image.src = String(e);
@@ -57,9 +57,9 @@ export const make_img_basesixfor = (e) => {
         }
         canvas.width = trimed_w;
         canvas.height = trimed_h;
-        let ctx = canvas.getContext("2d");
-        ctx.drawImage(image, 0, 0, w, h, 0, 0, trimed_w, trimed_h);
-        the_textdata = String(canvas.toDataURL("image/png")) + "[:img]";
+        let c = canvas.getContext("2d");
+        c.drawImage(image, 0, 0, w, h, 0, 0, trimed_w, trimed_h);
+        textdata = String(canvas.toDataURL("image/png")) + "[:img]";
     }
-    set("final_textcontent", s => s += the_textdata);
+    set("final_textcontent", s => s += textdata);
 }

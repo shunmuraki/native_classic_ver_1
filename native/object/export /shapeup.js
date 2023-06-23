@@ -1,5 +1,5 @@
 export const native_shapeup = () => {
-    
+
     let export_space = document.querySelector(".exporter");
     let sections = export_space.children;
     // * same_num は異なっても、同じ YouTube動画ID を共有しているケースがある.
@@ -44,7 +44,6 @@ export const native_shapeup = () => {
                 }
             }
         }
-    
         // * Linear の リニア スペースにて最初の要素は描画しておくようにするため.
         if (sections[i].classList.contains("linear")) {
             if (sections[i].firstElementChild) {
