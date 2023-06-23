@@ -16,7 +16,6 @@ export const video_animation_datasetup_from_individual = () => {
     set("animation_data", s => s["section_" + i]["about_anims"]["data_" + data_num] = video_animation);
 }
 
-
 // ---------------------------------------------------------------------------------------------------------------
 
 // * start_animationを構成して格納する関数.
