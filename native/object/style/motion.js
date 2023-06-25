@@ -31,32 +31,32 @@ export const keytouch_style_command_arrow_right = () => {
   next.classList.add("choose");
 } 
 
+// ---------------------------------------------------------------------------------------------------------------
+
 // * Enter が押された際に実行される関数.
 // * 選択中の選択肢を選択する.
 export const keytouch_style_command_enter = () => {  
   style_choose();
 }
 
-// ---------------------------------------------------------------------------------------------------------------
-
 // * 「ジャンル」か「項目」かによらず、選択肢がクリックされた際に実行される関数.
 // * 「ジャンル」なら genre_clicked() を、「項目」なら value_clicked() を実行する.
 export const style_choose = () => {
   let choose = element(".choose");
-  let order = choose.parentElement.children.indexOf(choose);    
+  let num = choose.parentElement.children.indexOf(choose);    
   let title = String(choose.textContent);
-  let v = current_states[0][order];
-  if (isObject(v)) {
+  let object = get("current_states")[0][num];
+  if (isObject(object)) {
       // * 選択したのが「ジャンル」だった場合.
-      genre_clicked(v);
+      genre_clicked(object);
       // * states を同期.
       // [* ここは states 管理関数で処理させる.]
-      set("current_states", s => s[0] = v);
+      set("current_states", s => s[0] = object);
       set("current_states", s => s[1] = title);
-      set("current_states", s => s[2].push(order));
+      set("current_states", s => s[2].push(num));
   } else {
       // * 選択したのが「項目」だった場合. 
-      value_clicked(v);
+      value_clicked(object);
       // * states を同期.
       set("current_states", s => s = get("previous_states"));
   }
