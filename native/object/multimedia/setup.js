@@ -1,39 +1,32 @@
 // * <textarea> 内に記述された YouTube動画ID から YT Player を生成し、
 // * player を返す関数.
-export const video_loading_setup_initial = (e, f) => {
+export const video_loading_setup_initial = (idname, yt_id) => {
     let player;
-    let duration_time;
-    var done = false;
-    let the_box = document.getElementById(e).parentElement;
+    let the_box = document.getElementById(id).parentElement;
     the_box.style.height = 225 + "px";
     the_box.classList.add("video");
-    onYouTubeIframeAPIReady(e, f);
+    onYouTubeIframeAPIReady(idname, yt_id);
     return player;
 }
 
-export const image_loading_setup_initial = () => {
+export const image_loading_setup_initial = (block) => {
     let input = document.createElement("input");
     let label = document.createElement("label");
     input.setAttribute("type", "file");
-    
     let inputs = document.getElementsByClassName("list_wrapper").length;
     input.id = "media_input" + inputs;
     input.classList.add("thisisinput" + inputs);
-    
     label.setAttribute("for", input.id);
     label.appendChild(input);
-    
     let multi_fragment = document.createDocumentFragment();
     multi_fragment.append(label);
-
     // * ブロック内の <textarea> を削除して <img> に置換.
-    e.lastElementChild.remove();
-    e.classList.add("img");
-    e.appendChild(multi_fragment);
-    e.style.height = 225 +  "px";
-
+    block.lastElementChild.remove();
+    block.classList.add("img");
+    block.appendChild(multi_fragment);
+    block.style.height = 225 +  "px";
     input.setAttribute("accept", ".png");
     label.classList.add("image_input");
     let uploaded_multi_media = document.createElement("img")    
-    e.appendChild(uploaded_multi_media);
+    block.appendChild(uploaded_multi_media);
 }
