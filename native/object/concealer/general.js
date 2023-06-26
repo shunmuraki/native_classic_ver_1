@@ -103,7 +103,7 @@ export const make_concealer_on_original = (same_num) => {
 // ---------------------------------------------------------------------------------------------------------------
 
 // * 上下左右の移動の際に special_cov が持つ要素(content) を same_end に反映させて special_cov を描画上の都合から削除する関数.
-export const concealer_on_wrapper_index_delete = (e) => {
+export const concealers_on_wrapper_index_delete = (e) => {
     // * なんか探し方がひどいし、中身を same_end に移すのは
     // * concealer_trace_to_original() でいいじゃん。
     let ends = e.querySelectorAll(".same_end");

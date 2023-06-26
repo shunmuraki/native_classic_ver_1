@@ -1,25 +1,25 @@
-export const ms_cancel = (e) => {
-    ms_close(e.lastElementChild);
-    document.querySelector(".ms_area").remove();
+export const ms_cancel = (block) => {
+    ms_close(block.lastElementChild);
+    element(".ms").remove();
 }
 
 // * "/" コマンドに伴tってブロックの中の要素の位置を調整する関数.
-export const ms_close = (e, f) => {
-    if (e) {
-        let ms_top = getComputedStyle(e).top;
-        let ms_st;
+export const ms_close = (content, f) => {
+    if (content) {
+        let ms_top = getComputedStyle(content).top;
+        let ms_new_top;
         if (f == "on") {
-            set("default_pos", s => s = Number(ms_top.substring(0, ms_top.length - 2)));
-            if (default_pos > 60) {
-                ms_st = 60 + default_pos;
+            set("ms_position", s => s = Number(ms_top.substring(0, ms_top.length - 2)));
+            if (ms_top > 60) {
+                ms_new_top = 60 + ms_top;
             } else {
-                ms_st = 60;
+                ms_new_top = 60;
             }
-            let ms_st_code = ms_st + "px";
-            e.style.setProperty('top', ms_st_code, 'important');
+            let ms_value = ms_new_top + "px";
+            content.style.setProperty('top', ms_value, 'important');
         } else if (f == "off") {
-            e.style.top = '';
-            set("default_pos", s => s = 0);
+            content.style.top = '';
+            set("ms_position", s => s = 0);
         }
     }
 }

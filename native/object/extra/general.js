@@ -20,18 +20,18 @@ export const centered_block_management = (block, next_block, classname) => {
 }
 
 // * last_centered_block クラスを管理する関数.
-export const origin_block_management = (env) => {
+export const last_block_management = (env) => {
     let list_wrappers = env.wrapper_index.children;
     let centering_num = get_the_block_index_num(env.block.parentElement, env.block);
     for (let i = 0; i < list_wrappers.length; i++) {
         let blocks = list_wrappers[i].lastElementChild.children;
         for (let o = 0; o < blocks.length; o++) {
             if (o > 0) {
-                if (blocks[o].classList.contains("last_centered_block")) {
-                    blocks[o].classList.remove("last_centered_block");
+                if (blocks[o].classList.contains("last_block")) {
+                    blocks[o].classList.remove("last_block");
                 }
                 if (o == centering_num) {
-                    blocks[o].classList.add("last_centered_block");
+                    blocks[o].classList.add("last_block");
                 }
             }
         }
@@ -111,7 +111,7 @@ export const pointer_animate = () => {
 
 // * 描画上の観点から center_special クラスを除去する（special_covは残す）
 // * centering_special によって選択しているブロックに CSS から box-shadow がかかる.
-export const centered_same_concealer_cancel = () => {
+export const centered_concealer_cancel = () => {
     let concealers = document.querySelectorAll(".concealer");
     for (let i = 0; i < concealers.length; i++) {
         if (concealers[i].classList.contains("concealer")) {

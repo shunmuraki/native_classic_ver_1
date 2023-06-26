@@ -1,32 +1,33 @@
-export const element = (e) => {
-    let element = document.querySelector(e);
+export const element = (keyname) => {
+    let element = document.querySelector(keyname);
     return element;
 }
 
 // * ブロックの所属する block_list を返す関数.
-export const get_block_list = (e) => {
-    return e.parentElement;
+export const get_block_list = (block) => {
+    return block.parentElement;
 };
 
 // * ブロックの所属する list_wrapper を返す関数.
-export const get_list_wrapper = (e) => {
-    return e.parentElement.parentElement;
+export const get_list_wrapper = (block) => {
+    return block.parentElement.parentElement;
 };
 
 // * ブロックの所属する wrapper_index を返す関数.
-export const get_wrapper_index = (e) => {
-    return e.parentElement.parentElement.parentElement;
+export const get_wrapper_index = (block) => {
+    return block.parentElement.parentElement.parentElement;
 };
 
 // * ターゲットの持つ特定のクラスに含まれる [意味のある数字] を返してくれる関数.
-export function value(e, f) {
-    const list = e.classList;
-    for (let i = 0; i < list.length; i++) {
-        if (list[i].includes(f)) {
-         var the_num = list[i].replace(f, '');
+export function value(element, keyname) {
+    let value;
+    let classlist = element.classList;
+    for (let i = 0; i < classlist.length; i++) {
+        if (classlist[i].includes(keyname)) {
+            value = classlist[i].replace(keyname, '');
         }
     }
-    return the_num;
+    return value;
 }
 
 // * ソートする関数.
@@ -36,17 +37,17 @@ export const sorter = (e, f) => {
 }
 
 // * クラスを追加したり外したり、ある element から別の element へ付け替える関数.
-export const classlist_move = (e, f, g, h) => {
-    let classlist = e.classList;
+export const class_move = (from_block, to_block, keyname, e) => {
+    let classlist = from_block.classList;
     for (let i = 0; i < classlist.length; i++) {
-        if (classlist[i].indexOf(g) != -1) {    
-            if (h == "add") {
-                if (f.classList.contains(classlist[i]) == false) {
-                    f.classList.add(classlist[i]);
+        if (classlist[i].indexOf(keyname) != -1) {    
+            if (e == "add") {
+                if (to_block.classList.contains(classlist[i]) == false) {
+                    to_block.classList.add(classlist[i]);
                 }
-            } else if (h == "remove") {
-                if (f.classList.contains(classlist[i]) == true) {
-                    f.classList.remove(classlist[i]);
+            } else if (e == "remove") {
+                if (to_block.classList.contains(classlist[i]) == true) {
+                    to_block.classList.remove(classlist[i]);
                 }
             }
         }
@@ -54,12 +55,11 @@ export const classlist_move = (e, f, g, h) => {
 }
 
 // * special_cov を考慮した「選択中のターゲット」を探して返す関数.
-export const get_real_target = (e) => {
-    let centering = document.querySelector(".centering"); 
-    if (centering.classList.contains("same")) {
-      target = document.querySelector(".special_cov").lastElementChild;
+export const get_target = (block) => {
+    if (block.classList.contains("same")) {
+      target = get_correspond_concealer(block);
     } else {
-      target = centering.lastElementChild;
+      target = block;
     }
     return target;
 }  
@@ -67,50 +67,41 @@ export const get_real_target = (e) => {
 // ---------------------------------------------------------------------------------------------------------------
 
 // * wrapper_index から直接その中の block の数を返してくれる関数.
-export const get_block_num = (e) => {
-    let block_list = e.lastElementChild.lastElementChild;
+export const get_block_num = (wrapper_index) => {
+    let block_list = wrapper_index.lastElementChild.lastElementChild;
     let block_num = block_list.children.length;
     return block_num;
 }
 
 // * 指定したクラスを持っているブロックが所蔵する block_list の番号を取得できる関数.
-export const get_the_block_index_num = (e, f) => {
-    let block;
-    if (f.tagName) {
-    block = f;
-    } else {
-        block = e.querySelector(f);
-    }
-    let the_index_num = [].slice.call(e.children).indexOf(block) + 1;
-    return the_index_num;
+export const get_the_block_index_num = (container, element) => {
+    let index_num = [].slice.call(container).indexOf(element) + 1;
+    return index_num;
 }
 
 // ---------------------------------------------------------------------------------------------------------------
 
 // * 配列の中から近似値を取得するオブジェクト.
-export const get_nearest_number = (e) => {
-    let dataset = e;
-    let nearly_left = 0; 
-    let original_dataset_min = [];
-    for (let i = 0; i < dataset.length; i++) {
-        if (dataset[i] <= exact_distance) {
-            original_dataset_min.push(dataset[i]);
+export const get_nearest_number = (data, value) => {
+    let nearest_value = 0; 
+    let min_datas = [];
+    for (let i = 0; i < data.length; i++) {
+        if (dataset[i] <= value) {
+            min_datas.push(data[i]);
         }
     }
-    let original_dataset_max = [];
-    for (let i = 0; i < dataset.length; i++) {
-        if (dataset[i] > exact_distance) {
-            original_dataset_max.push(dataset[i]);
+    let max_datas = [];
+    for (let i = 0; i < data.length; i++) {
+        if (data[i] > value) {
+            max_datas.push(data[i]);
         }
     }
-
     // * 予め pointer は scrollLeft の値順に並べてあり、
     // * データの中の「何番目」とDOMの中の「何番目」が一致する.
-    if (original_dataset_min.length > 0) {
-        nearly_left = Math.max(...original_dataset_min);
-    } else if (original_dataset_min.length <= 0) { 
-        nearly_left = Math.min(...original_dataset_max);
+    if (min_datas.length > 0) {
+        nearest_value = Math.max(...min_datas);
+    } else if (min_datas.length <= 0) { 
+        nearest_value = Math.min(...max_datas);
     } 
-
-    return nearly_left;
+    return nearest_value;
 }
