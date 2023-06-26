@@ -1,28 +1,28 @@
 // * 今のチートシートをJSON形式にする.
 async function getCheetsheet() {
-    const response = await fetch(
+    let response = await fetch(
       "../cheetsheet.json"
     );
-    const data = await response.json();
+    let data = await response.json();
     return data;
 }
 
 // * チートシートの項目を作成して追加.
-const cheetsheet_block_maker = (e, f) => {
+const cheetsheet_block_maker = (title_text, desc_text) => {
+    let container = document.querySelector(".cs_flex");
     let cs = document.querySelector(".cheet_sheet");
-    let cs_flex = document.querySelector(".cs_flex");
     let csb = document.querySelector(".usage_button");
     // * <div class="box"> を生成.
     let box = document.createElement("div");
     // * <h4> を生成.
     let title = document.createElement("h4");
-    title.textContent = String(e);
+    title.textContent = String(title_text);
     // * <p> を生成.
     let desc = document.createElement("p");
-    desc.textContent = String(f);
+    desc.textContent = String(desc_text);
     box.classList.add("box");
     box.appendChild(title);
     box.appendChild(desc);
     // * 挿入,
-    cs_flex.appendChild(box);
+    container.appendChild(box);
 }

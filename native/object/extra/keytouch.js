@@ -8,7 +8,6 @@ class keytouch_base {
         this.list_wrapper = null;
         this.wrapper_index = null;
     }
-
     setText() {
         if (document.activeElement.tagName != "BODY") {
             this.current = document.activeElement;
@@ -18,7 +17,6 @@ class keytouch_base {
             this.block = document.querySelector(".centerd_block");
         }
     }
-    
     setGroup() {
         this.block_list = get_get_block_list(this.block);
         this.list_wrapper = get_list_wrapper(this.block);

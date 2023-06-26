@@ -1,39 +1,37 @@
-import { get_correspond_same_concealer, get_the_block_index_num } from "./tool";
-
 // * from /Multi
-export const get_video_id = (e) => {
+export const get_video_id = (textcontent) => {
     // e = block
     let code;
     // * "v="以降の11文字を取得して YouTube動画IDを取得.
-    let st = e.indexOf("v="); 
+    let index_num = textcontent.indexOf("v=");
     // * UMから取り込まれる場合と、通常のURLペーストの場合に対応。
-    if (e.indexOf("v=") == -1) {
-        code = e;
+    if (textcontent.indexOf("v=") == -1) {
+        code = textcontent;
     } else {
-        code = e.slice(st + 2, st + 13);
+        code = textcontent.slice(index_num + 2, index_num + 13);
     }
     return code;
 }
 
-// * centering クラスを管理する関数.
-export const centered_block_management = (e, f, g) => {
-    e.classList.remove(g);
-    f.classList.add(g);
+// * centered_block, edit_centered_block クラスを管理する関数.
+export const centered_block_management = (block, next_block, classname) => {
+    block.classList.remove(classname);
+    next_block.classList.add(classname);
 }
 
-// * original_centering クラスを管理する関数.
-export const origin_block_management = (e, f) => {
-    let list_wrappers = e.children;
-    let centering_num = get_the_block_index_num(f.parentElement, f);
+// * last_centered_block クラスを管理する関数.
+export const origin_block_management = (env) => {
+    let list_wrappers = env.wrapper_index.children;
+    let centering_num = get_the_block_index_num(env.block.parentElement, env.block);
     for (let i = 0; i < list_wrappers.length; i++) {
         let blocks = list_wrappers[i].lastElementChild.children;
         for (let o = 0; o < blocks.length; o++) {
             if (o > 0) {
-                if (blocks[o].classList.contains("origin_block")) {
-                    blocks[o].classList.remove("origin_block");
+                if (blocks[o].classList.contains("last_centered_block")) {
+                    blocks[o].classList.remove("last_centered_block");
                 }
                 if (o == centering_num) {
-                    blocks[o].classList.add("origin_block");
+                    blocks[o].classList.add("last_centered_block");
                 }
             }
         }
@@ -41,46 +39,50 @@ export const origin_block_management = (e, f) => {
 }
 
 // * scrap や sp_cover 内のスクロール位置をすべて最適化する関数.
-export const all_view_changer = (e, f) => {
-    if (e.children[0].classList.contains("orange_space")) {
-        let po_de = get_orange_pointer_space(e).scrollLeft;
-        get_orange_pointer_space(e).scrollLeft = po_de + f;
-        let st_de = get_orange_stripe_space(e).scrollLeft;
-        get_orange_stripe_space(e).scrollLeft = st_de + f;
-        for (let i = 0; i < e.children.length; i++) {
+export const all_view_changer = (env, gap) => {
+    // e = children[e]
+    function general_view_change(e) {
+        let block_list_scrollleft = env.wrapper_index.children[e].lastElementChild.scrollLeft;
+        env.wrapper_index.children[e].lastElementChild.scrollLeft = block_list_scrollleft + gap;
+    }
+    
+    if (env.wrapper_index.children[0].classList.contains("orange_space")) {
+        let p_scrollleft = env.orange_pointer_space.scrollLeft;
+        env.orange_pointer_space.scrollLeft = p_scrollleft + gap;
+        let s_scrollleft = env.orange_pointer_space.scrollLeft;
+        env.orange_pointer_space.scrollLeft = s_scrollleft + gap;
+        for (let i = 0; i < env.wrapper_index.children.length; i++) {
             if (i > 0) {
-                let hor_de = e.children[i].lastElementChild.scrollLeft;
-                e.children[i].lastElementChild.scrollLeft = hor_de + f;
+                general_view_change(i);
             }
         }
     } else {    
-        for (let i = 0; i < e.children.length; i++) {
-            let hor_de = e.children[i].lastElementChild.scrollLeft;
-            e.children[i].lastElementChild.scrollLeft = hor_de + f;
+        for (let i = 0; i < env.wrapper_index.children.length; i++) {
+            general_view_change(i);
         }
     }
 };
 
 // * textarea の存在を確認して focus() を挿れる関数.
-export const focus_check = (e) => {
+export const focus_check = (block) => {
     let if_textarea = false;
-    let content = e.lastElementChild;
+    let content = block.lastElementChild;
     if (content) {
         if (content.tagName == "TEXTAREA") {
             if_textarea = true;
-            let v = content.value;
+            let text_value = content.value;
             content.value = "";
             content.focus();
-            content.value = v;
+            content.value = text_value;
         }
     }
     return if_textarea;
 }
 
 // * textarea の存在を確認して blur() を実行する関数.
-export const blur_check = (e) => {
+export const blur_check = (block) => {
     let if_textarea = false;
-    let content = e.lastElementChild;
+    let content = block.lastElementChild;
     if (content) {
         if (content.tagName == "TEXTAREA") {
             if_textarea = true;
@@ -90,22 +92,13 @@ export const blur_check = (e) => {
     return if_textarea;
 }
 
-// * Editモードにおけるスクロール位置を管理する関数.
-// [* これが未だにどんな機能を持っているのかが分からない.]
-export const go_af_scroll = () => {
-    let the_scrap = document.querySelector(".scrolled");
-    if (the_scrap) {
-        the_scrap.classList.remove("scrolled");
-        let the_dis = (Number(target_data(the_scrap, "scroll_over_")) * blocksize) / blocktime;
-        all_view_changer(the_scrap, -the_dis);
-    }
-}
+// ---------------------------------------------------------------------------------------------------------------
 
 // * センタリングしているブロックの位置を支点に window のスクロール位置(上下)を調整する関数.
-export const window_positioning = (e) => {
-    if (get("window_height") - e.getBoundingClientRect().bottom < get("the_sunsetline")) {
-        let the_adjust_num = get("the_sunsetline") + e.getBoundingClientRect().bottom - get("window_height");
-        scrollBy(0, the_adjust_num);
+export const window_positioning = (block) => {
+    if (get("window_height") - block.getBoundingClientRect().bottom < get("the_sunsetline")) {
+        let gap = get("the_sunsetline") + block.getBoundingClientRect().bottom - get("window_height");
+        scrollBy(0, gap);
         wheel_positioning();
     }
 }
@@ -119,10 +112,10 @@ export const pointer_animate = () => {
 // * 描画上の観点から center_special クラスを除去する（special_covは残す）
 // * centering_special によって選択しているブロックに CSS から box-shadow がかかる.
 export const centered_same_concealer_cancel = () => {
-    let same_concealers = document.querySelectorAll(".same_concealer");
-    for (let i = 0; i < same_concealers.length; i++) {
-        if (same_concealers[i].classList.contains("centered_same_concealer")) {
-            same_concealers[i].classList.remove("centered_same_concealer");
+    let concealers = document.querySelectorAll(".concealer");
+    for (let i = 0; i < concealers.length; i++) {
+        if (concealers[i].classList.contains("concealer")) {
+            concealers[i].classList.remove("concealer");
         }
     }
 }
@@ -130,40 +123,33 @@ export const centered_same_concealer_cancel = () => {
 // ---------------------------------------------------------------------------------------------------------------
 
 // * sameの途中にブロックが挿入された場合に対処する関数. 
-export const same_devide = (e, f) => {
-    
-    let the_target_left = e.previousElementSibling;
-    let the_target_right;
-
-    if (f == "addon") {
-        the_target_right = e.nextElementSibling;
-    } else if (f == "replace") {
-        the_target_right = e;
+export const devide_same_group = (block, e) => {
+    let left_block = block.previousElementSibling;
+    let right_block;
+    if (e == "addon") {
+        right_block = block.nextElementSibling;
+    } else if (e == "replace") {
+        right_block = block;
     }
-    
     // * 両サイドがsameであることが条件で、かつ両者が特定のクラス(same_start, same_end)を持たない場合にのみ実行.
-    if (the_target_left && the_target_right) {
-        if (the_target_left.classList.contains("same") && the_target_right.classList.contains("same")) {
-            if (the_target_left.classList.contains("same_start") == false && the_target_left.classList.contains("same_end") == false && the_target_right.classList.contains("same_start") == false && the_target_right.classList.contains("same_end") == false) { 
-         
-                let spe_cont = document.querySelector(".special_cov").lastElementChild;
-                the_target_left.classList.add("same_end");
-         
-                if (spe_cont.tagName == "IMG") {
-                    the_target_left.style.height = 225 + "px";
+    if (left_block && right_block) {
+        if (left_block.classList.contains("same") && right_block.classList.contains("same")) {
+            if (left_block.classList.contains("same_start") == false && left_block.classList.contains("same_end") == false && right_block.classList.contains("same_start") == false && right_block.classList.contains("same_end") == false) { 
+                let content = document.querySelector(".concealer").lastElementChild;
+                left_block.classList.add("same_end");
+                if (content.tagName == "IMG") {
+                    left_block.style.height = 225 + "px";
                 }
-         
-                the_target_left.appendChild(spe_cont);
-                the_target_right.classList.add("same_start");
-                let same_name = "same_num_" + target_data(the_target_right, "same_num_");
-                
+                left_block.appendChild(spe_cont);
+                right_block.classList.add("same_start");
+                let classname = "same_num_" + value(right_block, "same_num_");
                 // * same_start　以降の same_num_ を更新.
-                let sames = document.getElementsByClassName(same_name);
-                let breakpoint = [].slice.call(sames).indexOf(the_target_right);            
+                let sames = document.getElementsByClassName(classname);
+                let breakpoint = [].slice.call(sames).indexOf(right_block);            
                 set("same_num", s => s += 1);
                 for (let i = sames.length - 1; i >= breakpoint; i--) {
                     let same_block = sames[i];
-                    classmover(same_block, same_block, "same_num_", "remove");
+                    classmove(same_block, same_block, "same_num_", "remove");
                     same_block.classList.add("same_num_" + get("same_num"));
                 }
             } 
@@ -198,13 +184,14 @@ export const wheel_activate = () => {
 // ---------------------------------------------------------------------------------------------------------------
 
 // * テキスト入力の過程で選択中のブロックの高さを最適化する関数.
-export const optimize_writing = (e, f) => {
-    e.style.height = 24 + 'px';
+export const optimize_writing = (block) => {
+    let textarea = block.lastElementChild;
+    textarea.style.height = 24 + 'px';
     let scrollHeight = e.scrollHeight;
-    e.style.height = scrollHeight + 'px'; 
-    let height = e.clientHeight;
-    e.parentElement.style.height = height + "px";
-    window_positioning(f);
+    textarea.style.height = scrollHeight + 'px'; 
+    let height = textarea.clientHeight;
+    block.style.height = height + "px";
+    window_positioning(block);
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -215,22 +202,21 @@ export const optimize_writing = (e, f) => {
 // * f = 移動先
 // * g,= [移動元のst, 移動先のst]
 // * h = 何個分のブロックを移すか.
-export const trace_content_to_empties = (e, f, g, h) => {
+export const trace_content_to_empties = (from_list_wrapper, to_list_wrapper, index_data, block_num) => {
     // * wrapper_index 内の話に過ぎない.
-    let from_st = g[0];
-    let to_st = g[1];
-    let block_num = h;
-    let from_block_list = e.lastElementChild;
-    let to_block_list = f.lastElementChild;
+    let from_index_num = index_data[0];
+    let to_index_num = index_data[1];
+    let from_block_list = from_list_wrapper.lastElementChild;
+    let to_block_list = to_list_wrapper.lastElementChild;
     // * 短い方をループ軸に採用すること.
     // * もしくはその数をパラメータで受け取るような書き方の方が親切だろうか.
     // * list_wrapper ごとに処理する.
-    let i_to_st = 0;
-    for (let i = from_st; i < block_num; i++) {
-        i_to_st ++;
+    let adjuster = 0;
+    for (let i = from_index_num; i < block_num; i++) {
+        adjuster ++;
         // * 中身を移し替える.
         let from_block = from_block_list.children[i];
-        let to_block = to_block_list.children[to_st + i_to_st];
+        let to_block = to_block_list.children[to_index_num + adjuster];
         let from_block_content = from_block.lastElementChild;
         to_block.lastElementChild.remove();
         to_block.appendChild(from_block_content.cloneNode(true));
@@ -240,12 +226,11 @@ export const trace_content_to_empties = (e, f, g, h) => {
             let from_style = getComputedStyle(from_block);
             to_block.style.height = from_style.height;
         }
-
     }
 }
 
 // 引数に渡したブロックを中央にした時の scrollLeft の値を返すオブジェクト.
 export const get_custom_scroll_left = (e) => {
-    let scroll_left = e.scrollWidth - window.innerWidth - get("half_left_width") - get("block_width");
-    return scroll_left;
+    let scrollleft = e.scrollWidth - window.innerWidth - get("half_left_width") - get("block_width");
+    return scrollleft;
 }

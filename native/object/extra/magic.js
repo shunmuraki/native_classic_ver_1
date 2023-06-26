@@ -8,10 +8,8 @@ export const magic_copy = (e) => {
 
     // * 以降に残っているものを、動画に限らずすべてコピー.
     let c_num = get_the_block_index_num(env.block_list, env.block);
-    
     // * 各spごとにコピーして以前のブロックをまとめて削除し fragment として変数に格納.
     for (let i = 0; i < env.get_wrapper_index.childElementCount; i++) {
-        
         let line = env.get_wrapper_index.children[i].lastElementChild.children;
         let current_scrollleft = env.get_wrapper_index.children[i].lastElementChild.scrollLeft;
         let breaker = line[c_num + 1];
@@ -34,7 +32,6 @@ export const magic_copy = (e) => {
                 same_block.classList.add("same_num_" + get("same_num"));
             }
         }
-
         // * コピー対象を sp 単位で保存しつつ、エディター上から取り除く.
         let new_folder = new Array();
         // * adjuster を削除させない。
