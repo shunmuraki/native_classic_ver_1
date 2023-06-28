@@ -10,12 +10,10 @@ export const keytouch_edit_command_s = () => {
     let the_seeking_time;
 
     edit_display.classList.add("autoseekingmode");
-
     let the_block_num = Math.floor((edit_env.block_list.scrollLeft + half_left_width - window.innerWidth) / blocksize);
-
-    pointer_anim();    
+    pointer_animate();
     // * actuar_st は途中から始まるわけだから、最初に opacity をいじっておく必要がある.
-    actuar_st_effect_activate();
+    actuar_start_effect_activate();
 
     for (let i = 0; i < edit_env.wrapper_index.children.length; i++) {
         // * orange_space を弾く.

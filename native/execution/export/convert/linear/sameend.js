@@ -1,8 +1,10 @@
-export const case_of_same_end = () => {
+export const conversion_on_same_end = (block, section) => {
     if (! block.classList.contains("ending")) {
         if (block.nextElementSibling) {
             if (! block.nextElementSibling.classList.contains("same")) {
+                // * j, data_num, i が未定義。
                 animation_datasetup_from_end_block(block, j, data_num, i);
+                // * j, data_num, i が未定義。
             } else {
                 if (! the_imp_id) {
                     animation_datasetup_from_end_block(block, j, data_num, i);
@@ -28,6 +30,7 @@ export const case_of_same_end = () => {
     } else if (block.lastElementChild.tagName == "TEXTAREA") {
         textarea_conversion(block);
     }
-    block.classList.add(the_classname);            
-    object_conversion(block, the_big_section);
+    // * classname が未定義。
+    block.classList.add(classname);            
+    object_conversion(block, section);
 }
