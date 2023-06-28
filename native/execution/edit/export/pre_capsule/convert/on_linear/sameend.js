@@ -16,7 +16,6 @@ export const case_of_same_end = () => {
             animation_datasetup_from_end_block(block, j, data_num, i);
         }
     }
-
     // * video属性の場合は、それ用の video_animation を併せて作成.
     // * 同時に adaptation についてもここで処理させちゃう.
     if (block.classList.contains("video")) {

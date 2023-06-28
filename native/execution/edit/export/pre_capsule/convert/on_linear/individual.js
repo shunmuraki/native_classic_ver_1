@@ -3,7 +3,7 @@ export const case_individual = () => {
     
     // * video 属性の場合は追加で video_animation を作成.
     if (block.classList.contains("video")) {
-
+        
         // * same を持たない、単一の流れていくブロックについて start_animation と end_animation を生成.
         animation_datasetup_from_individual_block(block, the_imp_id, j, data_num, i);  
         video_animation_datasetup_from_individual();

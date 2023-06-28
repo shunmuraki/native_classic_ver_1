@@ -5,17 +5,17 @@ export async function native_zip() {
     // ---------------------------------------------------------------------------------------------------------------
     
     // * HTMLファイルのエクスポート.
-    let final_dom = String(export_space.innerHTML);
+    let dom_output = String(export_space.innerHTML);
     fetch('../linear/index_head.html') 
     .then(response => response.text()) 
-    .then(data => { 
-        set("the_html", s => s += data);
-        set("the_html", s => s += final_dom);
+    .then(head_data => { 
+        set("output_html", s => s += head_data);
+        set("output_html", s => s += dom_output);
         fetch('../linear/index_bottom.html')
         .then(response => response.text()) 
-        .then(data_second => { 
-            set("the_html", s => s += data_second);
-            zip.file('index.html', get("the_html"));
+        .then(bottom_data => { 
+            set("output_html", s => s += bottom_data);
+            zip.file('index.html', get("output_html"));
         });
     });
 
@@ -29,38 +29,38 @@ export async function native_zip() {
 
     // ---------------------------------------------------------------------------------------------------------------
     
-    // * JavaScriptファイル群のエクスポート. (commons系列)
+    // * JavaScriptファイル群のエクスポート part. 1 (commons系列)
     let lnjs_url_list = ["../linear/javascript/anim.js", "../linear/javascript/states.js", "../linear/javascript/setup.js", "../linear/javascript/parts.js", "../linear/javascript/ytp.js"];
     for (let i = 0; i < lnjs_url_list.length; i++) {
         let url = lnjs_url_list[i];
         let res = await fetch(url);
         let text = await res.text();
         if (i == 1) {
-            let final_animation_generate_list =  "let animation_generate_list = " + JSON.stringify(get("animation_generate_list")) + ";";
-            text = final_animation_generate_list + text;
+            let animation_front_data_text =  "let animation_front_data = " + JSON.stringify(get("animation_front_data")) + ";";
+            text = animation_front_data_text + text;
         }
         if (i == 2) {
             let final_yt_id_list =  "let yt_id_list = " + JSON.stringify(get("yt_id_list")) + ";";
             text = final_yt_id_list + text;
         }
-        let the_s_num =  url.indexOf("/javascript/") + String("/javascript/").length;
-        let the_e_num =  url.indexOf(".js");
-        let the_name =  url.slice(the_s_num, the_e_num) + ".js";
-        zip.folder("javascript").file(the_name, text);
+        let start_num =  url.indexOf("/javascript/") + String("/javascript/").length;
+        let end_num =  url.indexOf(".js");
+        let file_name =  url.slice(start_num, end_num) + ".js";
+        zip.folder("javascript").file(file_name, text);
     }
     
     // ---------------------------------------------------------------------------------------------------------------
 
-    // * JavaScriptファイルのエクスポート part. 1
-    let base_file = await fetch("../linear/javascript/base/tools.js");
-    let base_text = await base_file.text();
-    zip.folder("javascript").folder("base").file("tools.js", base_text);
+    // * JavaScriptファイルのエクスポート part. 2
+    let tools_file = await fetch("../linear/javascript/base/tools.js");
+    let tools_text = await tools_file.text();
+    zip.folder("javascript").folder("base").file("tools.js", tools_text);
 
     // ---------------------------------------------------------------------------------------------------------------
     
-    // JavaScriptファイルのエクスポート. part. 2
-    let final_animation_data = "let animation_data = " + JSON.stringify(get("animation_data")) + ";";
-    set("the_js", s => s += final_animation_data);
+    // JavaScriptファイルのエクスポート. part. 3
+    let animation_back_data_text = "let animation_data = " + JSON.stringify(get("animation_data")) + ";";
+    set("the_js", s => s += animation_back_data_text);
     let main_res = await fetch("../linear/javascript/main.js");
     let main_text = await main_res.text();
     set("the_js", s => s += main_text);
@@ -73,25 +73,24 @@ export async function native_zip() {
     for (let i = 0; i < img_url_list.length; i++) {
         let url = img_url_list[i];
         let res = await fetch(url);
-        let img = await res.blob();
-        let the_s_num =  url.indexOf("/images/") + String("/images/").length;
-        let the_e_num =  url.indexOf(".png");    
-        let the_name =  url.slice(the_s_num, the_e_num) + ".png";
-        zip.folder("images").file(the_name, img);
+        let image_blob = await res.blob();
+        let start_num =  url.indexOf("/images/") + String("/images/").length;
+        let end_num =  url.indexOf(".png");    
+        let file_name =  url.slice(start_num, end_num) + ".png";
+        zip.folder("images").file(file_name, image_blob);
     }
     
     // ---------------------------------------------------------------------------------------------------------------
 
     // * img ファイルのエクスポート.
-    for (let i = 0; i < images.length; i++){
+    for (let i = 0; i < get("images").length; i++){
         zip.folder("images").file('img_'+[i]+'.png', images[i].split(',')[1], {base64: true});
     }
     
     // ---------------------------------------------------------------------------------------------------------------
+   
     // * 全体を包括する zipファイルのエクスポート.
-
     let zip_button = document.querySelector(".zip_button").firstElementChild;
-
     zip.generateAsync( 
         {type:"blob",
          compression: "DEFLATE",

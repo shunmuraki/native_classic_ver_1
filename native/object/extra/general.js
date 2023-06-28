@@ -14,9 +14,9 @@ export const get_video_id = (textcontent) => {
 }
 
 // * centered_block, edit_centered_block クラスを管理する関数.
-export const centered_block_management = (block, next_block, classname) => {
-    block.classList.remove(classname);
-    next_block.classList.add(classname);
+export const class_replace = (from_block, to_block, classname) => {
+    from_block.classList.remove(classname);
+    to_block.classList.add(classname);
 }
 
 // * last_centered_block クラスを管理する関数.
