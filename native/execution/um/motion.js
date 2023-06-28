@@ -2,10 +2,8 @@
 // * UM 上で左に移動する.
 export const keytouch_um_command_arrow_left = () => {
 
-    let env = keytouch_setup();
     let um_centered_block = element(".um_centered_block");
     let um_scope = um_centered_block.parentElement;
-
     var video_list = element(".um_video");
     var audio_list = element(".um_audio");
 
@@ -39,8 +37,6 @@ export const keytouch_um_command_arrow_left = () => {
 // * UM 上で右に移動する.
 export const keytouch_um_command_arrow_right = () => {
     
-    let env = keytouch_setup();
-    let centering;
     let um_centered_block = document.querySelector(".um_centered_block");
     let um_scope = um_centered_block.parentElement;
 
@@ -79,10 +75,9 @@ export const keytouch_um_command_arrow_right = () => {
 export const keytouch_um_command_enter = () => {
     let env = keytouch_setup();
     let um_centered_block = document.querySelector(".um_centered_block");
-
     if (um_centered_block.parentElement.classList.contains("um_video")) {
-        let the_uri = target_data(um_centered_block, "this_yt_id_");
-        video_load_then(the_uri, env.block.lastElementChild);
+        let yt_id = value(um_centered_block, "this_yt_id_");
+        load_player_as_block(yt_id, env.block.lastElementChild);
     } else {
         let new_elm = um_centered_block.lastElementChild.cloneNode(true);
         env.block.lastElementChild.remove();
