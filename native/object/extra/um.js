@@ -5,7 +5,7 @@ export const keytouch_um_setup = () => {
   if (default_display.classList.contains("ms")) {
       ms_close();
       let env = keytouch_setup();
-      focus_checker(env.block);
+      focus_check(env.block);
       default_display.classList.add("um");
       env.current.value = '';
       element(".um").style.display = "block";
