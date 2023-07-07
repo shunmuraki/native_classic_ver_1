@@ -18,12 +18,12 @@ export const keytouch_connect = () => {
         complete_list_wrapper(previous_wrapper_index);
         // * あとは複製をしてライン同士を同期.
         let new_list_wrapper = list_wrapper_with_enough_block(get_block_num(previous_wrapper_index));
-
+        
         // * このあたり正してください。 -  - - - - -
         let children_block = new__list_wrapper.lastElementChild.children;
         let the_this_loop_endpoint = the_triumph_tops - the_centering_num + env.current_horizontal.childElementCount - 1;
-        // * このあたり正してください。 -  - - - - -
         
+        // * このあたり正してください。 -  - - - - -
         // * 適切な箇所から適切な箇所まで、ブロックの中身やクラスを移す.
         trace_block_to_empties(env.list_wrapper, new_list_wrapper, 0, the_triumph_tops, get_block_num(env.wrapper_index));
         // * ここで複製したラインを実際に sp_cover へ挿入.
@@ -36,7 +36,6 @@ export const keytouch_connect = () => {
         // * センタリングを本来の場所へ戻す.
         let centered_block = element(".centered_block");
         let latest_block_list = get_block_list(centered_block);
-        
         // * もっと綺麗に取得できるようにしてよーーーーーーーーーーーーーーーーーーーー.
         // * 変数名もなんか意味なさげだしwwwwwwwwーーーーーーーーーーーーーーーーーーーー.
         let default_scrollleft_num = get_block_index_num(env.block_list, env.block);

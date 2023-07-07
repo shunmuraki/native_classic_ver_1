@@ -1,3 +1,23 @@
+export const native_mode_check = (e) => {
+    let how;
+    if (get("native_mode").indexOf(e) != -1) {
+        how = true;
+    } else {
+        how = false;
+    }
+    return how;
+}
+
+export const native_mode_on = (e) => {
+    set("native_mode", s => s.push(e));
+}
+
+export const native_mode_off = (e) => {
+    let native_mode = get("native_mode");
+    native_mode.delete(e);
+    set("native_mode", s => native_mode);
+}
+
 export const element = (keyname) => {
     let element = document.querySelector(keyname);
     return element;

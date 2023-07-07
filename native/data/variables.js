@@ -44,6 +44,8 @@ export const set = (e, f) => {
 
 // * Native で使用しているグローバル変数たち.
 let native_variables = {
+    // * Nativeの状態を管理するもの.
+    "native_mode": [],
     "magic_elements": [],
     "ms_target": 0,
     "ms_position": 0,
